@@ -61,7 +61,10 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                     <img
                       src={showAfter ? current.afterImage : current.beforeImage}
                       alt={showAfter ? "Después" : "Antes"}
-                      className="w-full h-full object-cover transition-all duration-500"
+                      className="w-full h-full object-cover transition-all duration-700 ease-in-out transform"
+                      style={{
+                        filter: showAfter ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.95) saturate(0.9)',
+                      }}
                     />
                     
                     {/* Before/After Toggle */}
@@ -124,9 +127,9 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                   {/* Get This Look Button */}
                   <Button
                     onClick={() => onGetThisLook?.(current.serviceId, current.lookName)}
-                    className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white w-full md:w-auto"
+                    className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
-                    <Heart className="h-4 w-4 mr-2" />
+                    <Heart className="h-4 w-4 mr-2 animate-pulse" />
                     Conseguir Este Look
                   </Button>
                 </div>

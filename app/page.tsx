@@ -10,6 +10,7 @@ import { MobileNavigation } from "@/components/mobile-navigation"
 import { HeroSection } from "@/components/hero-section"
 import { TransformationsShowcase } from "@/components/transformations-showcase"
 import { StarProfessionals } from "@/components/star-professionals"
+import { NearbyBeauty } from "@/components/nearby-beauty"
 
 export default function HomePage() {
   const router = useRouter()
@@ -196,6 +197,142 @@ export default function HomePage() {
     }
   ]
 
+  // Sample nearby locations data
+  const nearbyLocations = [
+    {
+      id: 1,
+      name: "Salon Elite Santo Domingo",
+      type: "Salon de Belleza Premium",
+      address: "Av. Winston Churchill 78",
+      neighborhood: "Piantini",
+      distance: "0.8 km",
+      travelTime: "3",
+      rating: 4.9,
+      reviewCount: 245,
+      specialties: ["Balayage", "Cortes", "Extensiones", "Color"],
+      openNow: true,
+      closingTime: "8:00 PM",
+      phone: "+1 809-555-0123",
+      image: "/professional-makeup-artist.png",
+      featuredService: {
+        name: "Balayage Dorado Caribeño",
+        price: "RD$3,500",
+        duration: "2.5 hrs"
+      },
+      localSpecialty: "Técnicas de coloración para clima tropical"
+    },
+    {
+      id: 2,
+      name: "Glamour House",
+      type: "Estudio de Maquillaje",
+      address: "Calle José Reyes 45",
+      neighborhood: "Zona Colonial",
+      distance: "1.2 km",
+      travelTime: "5",
+      rating: 4.8,
+      reviewCount: 189,
+      specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
+      openNow: true,
+      closingTime: "9:00 PM",
+      phone: "+1 809-555-0124",
+      image: "/facial-treatment-spa.png",
+      featuredService: {
+        name: "Glamour Tropical Night",
+        price: "RD$2,800",
+        duration: "1.5 hrs"
+      },
+      localSpecialty: "Maquillaje resistente al calor caribeño"
+    },
+    {
+      id: 3,
+      name: "Spa Paradise",
+      type: "Spa & Wellness",
+      address: "Av. Máximo Gómez 67",
+      neighborhood: "Bella Vista",
+      distance: "2.1 km",
+      travelTime: "7",
+      rating: 4.7,
+      reviewCount: 203,
+      specialties: ["Faciales", "Masajes", "Hidratación"],
+      openNow: false,
+      closingTime: "6:00 PM",
+      phone: "+1 809-555-0125",
+      image: "/premium-gel-manicure.png",
+      featuredService: {
+        name: "Piel Radiante Caribeña",
+        price: "RD$4,200",
+        duration: "2 hrs"
+      },
+      localSpecialty: "Tratamientos con ingredientes naturales dominicanos"
+    },
+    {
+      id: 4,
+      name: "Beauty Studio RD",
+      type: "Nail Art Studio",
+      address: "Plaza Central, Local 15",
+      neighborhood: "Naco",
+      distance: "1.5 km",
+      travelTime: "4",
+      rating: 4.6,
+      reviewCount: 156,
+      specialties: ["Nail Art", "Gel X", "Pedicure"],
+      openNow: true,
+      closingTime: "7:30 PM",
+      phone: "+1 809-555-0126",
+      image: "/professional-makeup-artist.png",
+      featuredService: {
+        name: "Tropical Nail Art",
+        price: "RD$1,800",
+        duration: "1 hr"
+      },
+      localSpecialty: "Diseños inspirados en la flora dominicana"
+    },
+    {
+      id: 5,
+      name: "Estética Los Corales",
+      type: "Centro de Belleza",
+      address: "Calle Santiago 123",
+      neighborhood: "Gazcue",
+      distance: "2.8 km",
+      travelTime: "9",
+      rating: 4.5,
+      reviewCount: 134,
+      specialties: ["Depilación", "Cejas", "Microblading"],
+      openNow: true,
+      closingTime: "8:30 PM",
+      phone: "+1 809-555-0127",
+      image: "/facial-treatment-spa.png",
+      featuredService: {
+        name: "Microblading Natural",
+        price: "RD$6,500",
+        duration: "3 hrs"
+      },
+      localSpecialty: "Técnicas adaptadas a tonos de piel caribeños"
+    },
+    {
+      id: 6,
+      name: "Rizos & Ondas",
+      type: "Especialistas en Cabello Rizado",
+      address: "Av. Abraham Lincoln 234",
+      neighborhood: "Piantini",
+      distance: "1.1 km",
+      travelTime: "4",
+      rating: 4.8,
+      reviewCount: 198,
+      specialties: ["Cabello Rizado", "Tratamientos", "Cortes"],
+      openNow: false,
+      closingTime: "6:30 PM",
+      phone: "+1 809-555-0128",
+      image: "/premium-gel-manicure.png",
+      featuredService: {
+        name: "Definición de Rizos Naturales",
+        price: "RD$2,200",
+        duration: "1.5 hrs"
+      },
+      localSpecialty: "Expertos en texturas de cabello afrocaribeño"
+    }
+  ]
+
   const handleSearch = (query: string) => {
     if (query.trim()) {
       router.push(`/search?q=${encodeURIComponent(query)}`)
@@ -225,6 +362,21 @@ export default function HomePage() {
   const handleViewPortfolio = (professionalId: number) => {
     console.log("View portfolio:", professionalId)
     router.push(`/professional/${professionalId}/portfolio`)
+  }
+
+  const handleGetDirections = (locationId: number) => {
+    console.log("Get directions to:", locationId)
+    // TODO: Integrate with maps service
+  }
+
+  const handleCallLocation = (phone: string) => {
+    console.log("Call location:", phone)
+    window.open(`tel:${phone}`)
+  }
+
+  const handleBookLocation = (locationId: number) => {
+    console.log("Book location:", locationId)
+    router.push(`/booking/location/${locationId}`)
   }
 
   const handleTabChange = (tab: "home" | "search" | "bookings" | "profile") => {
@@ -265,6 +417,15 @@ export default function HomePage() {
         professionals={professionals}
         onBookNow={handleBookProfessional}
         onViewPortfolio={handleViewPortfolio}
+      />
+
+      {/* Nearby Beauty */}
+      <NearbyBeauty 
+        locations={nearbyLocations}
+        userLocation="Piantini, Santo Domingo"
+        onGetDirections={handleGetDirections}
+        onCallLocation={handleCallLocation}
+        onBookLocation={handleBookLocation}
       />
 
       {/* Featured Services */}

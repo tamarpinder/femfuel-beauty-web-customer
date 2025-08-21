@@ -1,0 +1,16 @@
+# Cursor AI ignore patterns
+
+# Dependencies
+node_modules/
+.next/
+out/
+build/
+
+# Supabase credentials - DO NOT INDEX
+supabase-keys.md
+
+# Environment files
+.env*
+
+# Logs
+*.log

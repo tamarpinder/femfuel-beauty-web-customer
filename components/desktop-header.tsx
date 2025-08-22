@@ -20,11 +20,13 @@ export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2">
-              <div className="w-12 h-12 bg-femfuel-rose rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">F</span>
-              </div>
-              <span className="text-xl font-bold text-femfuel-dark">FemFuel</span>
+            <div className="flex items-center gap-3">
+              <img 
+                src="/femfuel-logo.png" 
+                alt="FemFuel Beauty"
+                className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-300"
+              />
+              <span className="text-xl font-bold text-femfuel-dark">FemFuel Beauty</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-femfuel-medium">
               <MapPin className="h-4 w-4" />
@@ -32,17 +34,17 @@ export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
             </div>
           </div>
           <nav className="flex items-center gap-6">
-            <a href="#" className="text-femfuel-medium hover:text-femfuel-dark">
+            <a href="/search" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
               Servicios
             </a>
-            <a href="#" className="text-femfuel-medium hover:text-femfuel-dark">
-              Categorías
+            <a href="/bookings" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+              Mis Citas
             </a>
-            <a href="#" className="text-femfuel-medium hover:text-femfuel-dark">
-              Salones
+            <a href="/shop" className="text-femfuel-dark font-bold hover:text-femfuel-rose transition-colors">
+              TIENDA
             </a>
-            <a href="#" className="text-femfuel-medium hover:text-femfuel-dark">
-              Ofertas
+            <a href="/blog" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+              Blog
             </a>
             <UserMenu />
           </nav>

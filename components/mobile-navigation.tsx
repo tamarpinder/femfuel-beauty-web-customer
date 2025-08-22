@@ -1,12 +1,12 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Home, Search, Calendar, User } from "lucide-react"
+import { Home, Search, Calendar, ShoppingBag, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface MobileNavigationProps {
-  activeTab?: "home" | "search" | "bookings" | "profile"
-  onTabChange?: (tab: "home" | "search" | "bookings" | "profile") => void
+  activeTab?: "home" | "search" | "bookings" | "shop" | "profile"
+  onTabChange?: (tab: "home" | "search" | "bookings" | "shop" | "profile") => void
 }
 
 export function MobileNavigation({ activeTab = "home", onTabChange }: MobileNavigationProps) {
@@ -15,7 +15,8 @@ export function MobileNavigation({ activeTab = "home", onTabChange }: MobileNavi
   const tabs = [
     { id: "home" as const, icon: Home, label: "Inicio", path: "/" },
     { id: "search" as const, icon: Search, label: "Buscar", path: "/search" },
-    { id: "bookings" as const, icon: Calendar, label: "Reservas", path: "/bookings" },
+    { id: "bookings" as const, icon: Calendar, label: "Mis Citas", path: "/bookings" },
+    { id: "shop" as const, icon: ShoppingBag, label: "Tienda", path: "/shop" },
     { id: "profile" as const, icon: User, label: "Perfil", path: "/profile" },
   ]
 

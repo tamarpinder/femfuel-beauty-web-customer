@@ -346,7 +346,17 @@ export default function HomePage() {
   }
 
   const handleCategoryClick = (categoryName: string) => {
-    router.push(`/search?category=${encodeURIComponent(categoryName)}`)
+    // Map Spanish names to slugs
+    const categorySlugMap: { [key: string]: string } = {
+      "Uñas": "unas",
+      "Maquillaje": "maquillaje",
+      "Cuerpo": "cuerpo", 
+      "Spa": "spa",
+      "Peinados": "peinados",
+      "Pestañas": "pestañas"
+    }
+    const slug = categorySlugMap[categoryName] || categoryName.toLowerCase()
+    router.push(`/category/${slug}`)
   }
 
   const handleGetThisLook = (serviceId: number, lookName: string) => {

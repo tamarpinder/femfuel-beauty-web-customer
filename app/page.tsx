@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Sparkles, Palette, Droplets, Flower2, Scissors, Eye } from "lucide-react"
+import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type Service } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
 import { MobileHeader } from "@/components/mobile-header"
@@ -16,9 +16,9 @@ export default function HomePage() {
   const router = useRouter()
 
   const categories: Category[] = [
-    { name: "Uñas", icon: Sparkles, count: "2,450" },
+    { name: "Uñas", icon: Hand, count: "2,450" },
     { name: "Maquillaje", icon: Palette, count: "1,890" },
-    { name: "Facial", icon: Droplets, count: "1,234" },
+    { name: "Cuerpo", icon: User, count: "1,234" },
     { name: "Spa", icon: Flower2, count: "987" },
     { name: "Peinados", icon: Scissors, count: "1,567" },
     { name: "Pestañas", icon: Eye, count: "876" },

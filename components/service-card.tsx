@@ -16,6 +16,7 @@ export interface Service {
   reviews: number
   duration: number
   image?: string
+  category?: string
 }
 
 interface ServiceCardProps {

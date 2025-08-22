@@ -379,9 +379,15 @@ export default function HomePage() {
     router.push(`/booking/location/${locationId}`)
   }
 
-  const handleTabChange = (tab: "home" | "search" | "bookings" | "profile") => {
+  const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile") => {
     if (tab === "search") {
       router.push("/search")
+    } else if (tab === "shop") {
+      router.push("/shop")
+    } else if (tab === "bookings") {
+      router.push("/bookings")
+    } else if (tab === "profile") {
+      router.push("/profile")
     }
   }
 

@@ -53,10 +53,11 @@ export default function BookingsPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/")
-      return
-    }
+    // TODO: Re-enable authentication once auth system is fully implemented
+    // if (!isAuthenticated) {
+    //   router.push("/")
+    //   return
+    // }
 
     // Mock bookings data
     const mockBookings: Booking[] = [
@@ -140,13 +141,13 @@ export default function BookingsPage() {
       },
     ]
 
-    // Simulate loading
+    // Simulate loading (reduced for testing)
     setTimeout(() => {
       setBookings(mockBookings)
       setFilteredBookings(mockBookings)
       setIsLoading(false)
-    }, 1500)
-  }, [isAuthenticated, router])
+    }, 500)
+  }, [router])
 
   // Filter and sort bookings
   useEffect(() => {
@@ -243,9 +244,10 @@ export default function BookingsPage() {
     }
   }
 
-  if (!isAuthenticated) {
-    return null
-  }
+  // TODO: Re-enable this check once auth is fully implemented
+  // if (!isAuthenticated) {
+  //   return null
+  // }
 
   return (
     <div className="min-h-screen bg-white">

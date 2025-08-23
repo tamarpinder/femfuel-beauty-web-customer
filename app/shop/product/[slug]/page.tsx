@@ -13,18 +13,19 @@ import { ProductCard } from "@/components/product-card"
 import { mockProducts, getProductById } from "@/data/products"
 import { deliveryZones, calculateDeliveryFee } from "@/data/warehouses"
 import { Product } from "@/types/product"
+import { useCart } from "@/contexts/cart-context"
 
 export default function ProductDetailPage() {
   const params = useParams()
   const router = useRouter()
   const productSlug = params.slug as string
   
+  const { addToCart, userLocation } = useCart()
   const [product, setProduct] = useState<Product | null>(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isLiked, setIsLiked] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [userZoneId] = useState("zone-sd-centro") // Mock user zone
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -42,10 +43,9 @@ export default function ProductDetailPage() {
     router.back()
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product) return
-    console.log("Added to cart:", product.id, "quantity:", quantity)
-    // TODO: Implement cart functionality
+    await addToCart(product.id, quantity)
   }
 
   const handleQuantityChange = (change: number) => {
@@ -84,10 +84,10 @@ export default function ProductDetailPage() {
   }
 
   const getDeliveryInfo = () => {
-    if (!product) return null
+    if (!product || !userLocation?.deliveryZone) return null
     
-    const deliveryFee = calculateDeliveryFee(userZoneId, product.price * quantity)
-    const zone = deliveryZones.find(z => z.id === userZoneId)
+    const deliveryFee = calculateDeliveryFee(userLocation.deliveryZone.id, product.price * quantity)
+    const zone = deliveryZones.find(z => z.id === userLocation.deliveryZone?.id)
     const defaultOption = zone?.deliveryOptions.find(opt => opt.isDefault)
     
     return {

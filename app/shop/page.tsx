@@ -8,11 +8,11 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { ProductCard } from "@/components/product-card"
 import { LocationModal } from "@/components/location-modal"
 import { CartDrawer } from "@/components/cart-drawer"
+import { CategoryGrid } from "@/components/category-grid"
 import { useCart } from "@/contexts/cart-context"
 import { 
   mockProducts, 
@@ -139,6 +139,20 @@ export default function ShopPage() {
     
     return [...new Set(categoryProducts.map(product => product.subcategory))]
   }, [selectedCategory])
+
+  // Calculate product counts by category
+  const productCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      all: sortedProducts.length
+    }
+    
+    categories.forEach((category) => {
+      const categoryProducts = filteredProducts.filter(product => product.category === category.id)
+      counts[category.id] = categoryProducts.length
+    })
+    
+    return counts
+  }, [sortedProducts, filteredProducts])
 
   const handleBack = () => {
     router.push("/")
@@ -287,95 +301,86 @@ export default function ShopPage() {
           )}
         </div>
 
-        {/* Category Tabs */}
-        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="mb-6">
-          <div className="overflow-x-auto">
-            <TabsList className="grid w-max grid-cols-9 mb-4">
-              <TabsTrigger value="all" className="whitespace-nowrap">
-                Todos
-              </TabsTrigger>
-              {categories.map((category) => (
-                <TabsTrigger key={category.id} value={category.id} className="whitespace-nowrap">
-                  {category.icon} {category.name.split(' ')[0]}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
+        {/* Category Grid */}
+        <CategoryGrid
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          productCounts={productCounts}
+        />
 
-          {/* Results Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-lg font-semibold text-femfuel-dark">
-                {searchQuery ? `Resultados para "${searchQuery}"` : 
-                 selectedCategory === "all" ? "Todos los productos" : 
-                 categories.find(c => c.id === selectedCategory)?.name}
-              </h2>
-              <p className="text-sm text-femfuel-medium">
-                {sortedProducts.length} productos encontrados
-                {userLocation && !userLocation.isServiceable && (
-                  <span className="text-red-600 ml-2">
-                    • No hay entrega disponible en tu ubicación
-                  </span>
-                )}
+        {/* Results Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-femfuel-dark">
+              {searchQuery ? `Resultados para "${searchQuery}"` : 
+               selectedCategory === "all" ? "Todos los productos" : 
+               categories.find(c => c.id === selectedCategory)?.name}
+            </h2>
+            <p className="text-sm text-femfuel-medium">
+              {sortedProducts.length} productos encontrados
+              {userLocation && !userLocation.isServiceable && (
+                <span className="text-red-600 ml-2">
+                  • No hay entrega disponible en tu ubicación
+                </span>
+              )}
+            </p>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        {!userLocation?.isServiceable ? (
+          <Card className="p-8 text-center bg-red-50 border-red-200">
+            <div className="mb-4">
+              <Truck className="h-12 w-12 mx-auto text-red-400 mb-4" />
+              <h3 className="text-lg font-semibold text-red-800 mb-2">
+                Entrega no disponible en tu área
+              </h3>
+              <p className="text-red-600 mb-4">
+                Actualmente solo ofrecemos entrega en Santo Domingo. 
+                Estamos trabajando para expandir a más ciudades pronto.
               </p>
+              <Button 
+                onClick={() => setShowLocationModal(true)}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                Cambiar ubicación
+              </Button>
             </div>
+          </Card>
+        ) : sortedProducts.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {sortedProducts.map((product) => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                onAddToCart={handleAddToCart}
+              />
+            ))}
           </div>
-
-          {/* Products Grid */}
-          {!userLocation?.isServiceable ? (
-            <Card className="p-8 text-center bg-red-50 border-red-200">
-              <div className="mb-4">
-                <Truck className="h-12 w-12 mx-auto text-red-400 mb-4" />
-                <h3 className="text-lg font-semibold text-red-800 mb-2">
-                  Entrega no disponible en tu área
-                </h3>
-                <p className="text-red-600 mb-4">
-                  Actualmente solo ofrecemos entrega en Santo Domingo. 
-                  Estamos trabajando para expandir a más ciudades pronto.
-                </p>
-                <Button 
-                  onClick={() => setShowLocationModal(true)}
-                  className="bg-red-600 hover:bg-red-700"
-                >
-                  Cambiar ubicación
-                </Button>
-              </div>
-            </Card>
-          ) : sortedProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {sortedProducts.map((product) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
-                  onAddToCart={handleAddToCart}
-                />
-              ))}
+        ) : (
+          <Card className="p-8 text-center">
+            <div className="mb-4">
+              <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
+                No se encontraron productos
+              </h3>
+              <p className="text-femfuel-medium mb-4">
+                Intenta ajustar tus filtros o términos de búsqueda
+              </p>
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  setSearchQuery("")
+                  setSelectedCategory("all")
+                  setSelectedSubcategory("all")
+                  setShowFilters(false)
+                }}
+              >
+                Limpiar filtros
+              </Button>
             </div>
-          ) : (
-            <Card className="p-8 text-center">
-              <div className="mb-4">
-                <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
-                  No se encontraron productos
-                </h3>
-                <p className="text-femfuel-medium mb-4">
-                  Intenta ajustar tus filtros o términos de búsqueda
-                </p>
-                <Button 
-                  variant="outline"
-                  onClick={() => {
-                    setSearchQuery("")
-                    setSelectedCategory("all")
-                    setSelectedSubcategory("all")
-                    setShowFilters(false)
-                  }}
-                >
-                  Limpiar filtros
-                </Button>
-              </div>
-            </Card>
-          )}
-        </Tabs>
+          </Card>
+        )}
       </div>
 
       {/* Mobile Navigation */}

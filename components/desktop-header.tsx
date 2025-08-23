@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import Link from "next/link"
 
 import { Search, MapPin } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -34,18 +35,18 @@ export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
             </div>
           </div>
           <nav className="flex items-center gap-6">
-            <a href="/search" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+            <Link href="/search" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
               Servicios
-            </a>
-            <a href="/bookings" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+            </Link>
+            <Link href="/bookings" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
               Mis Citas
-            </a>
-            <a href="/shop" className="text-femfuel-dark font-bold hover:text-femfuel-rose transition-colors">
+            </Link>
+            <Link href="/shop" className="text-femfuel-dark font-bold hover:text-femfuel-rose transition-colors">
               TIENDA
-            </a>
-            <a href="/blog" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+            </Link>
+            <Link href="/blog" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
               Blog
-            </a>
+            </Link>
             <UserMenu />
           </nav>
         </div>

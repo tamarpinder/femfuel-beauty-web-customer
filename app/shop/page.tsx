@@ -12,7 +12,7 @@ import { MobileNavigation } from "@/components/mobile-navigation"
 import { ProductCard } from "@/components/product-card"
 import { LocationModal } from "@/components/location-modal"
 import { CartDrawer } from "@/components/cart-drawer"
-import { CategoryGrid } from "@/components/category-grid"
+import { CategoryCarousel } from "@/components/category-carousel"
 import { useCart } from "@/contexts/cart-context"
 import { 
   mockProducts, 
@@ -301,8 +301,8 @@ export default function ShopPage() {
           )}
         </div>
 
-        {/* Category Grid */}
-        <CategoryGrid
+        {/* Category Carousel */}
+        <CategoryCarousel
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
           productCounts={productCounts}

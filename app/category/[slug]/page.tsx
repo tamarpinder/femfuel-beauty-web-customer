@@ -8,15 +8,6 @@ import { ServiceCard, type Service } from "@/components/service-card"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
 import { MobileNavigation } from "@/components/mobile-navigation"
 
-// Category mapping for services
-const categoryMapping = {
-  unas: ["manicure", "pedicure", "nail", "uñas"],
-  maquillaje: ["maquillaje", "makeup", "base", "labios"],
-  cuerpo: ["masaje", "corporal", "body", "cuerpo"],
-  spa: ["spa", "facial", "tratamiento", "relajante"],
-  peinados: ["corte", "peinado", "cabello", "hair"],
-  pestañas: ["pestañas", "extensiones", "lash", "cejas"]
-}
 
 // Mock data with category associations
 const mockServices: Service[] = [
@@ -129,11 +120,10 @@ export default function CategoryPage() {
   })
   const [filteredServices, setFilteredServices] = useState<Service[]>([])
 
-  // Get category services
-  const categoryServices = mockServices.filter(service => service.category === categorySlug)
-  
-  // Filter services based on filters
+  // Filter services based on category and filters
   useEffect(() => {
+    // Get category services first
+    const categoryServices = mockServices.filter(service => service.category === categorySlug)
     let filtered = categoryServices
 
     // Service type filter
@@ -155,7 +145,7 @@ export default function CategoryPage() {
     }
 
     setFilteredServices(filtered)
-  }, [filters, categorySlug, categoryServices])
+  }, [filters, categorySlug])
 
   const handleBookService = (serviceId: number) => {
     console.log("Book service:", serviceId)
@@ -167,6 +157,21 @@ export default function CategoryPage() {
   }
 
   const categoryName = categoryNames[categorySlug as keyof typeof categoryNames] || categorySlug
+  
+  // Handle invalid category slug
+  if (!categoryNames[categorySlug as keyof typeof categoryNames]) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-femfuel-dark mb-4">Categoría no encontrada</h1>
+          <p className="text-femfuel-medium mb-6">La categoría "{categorySlug}" no existe.</p>
+          <Button onClick={() => router.push("/")} className="bg-femfuel-rose hover:bg-[#9f1853] text-white">
+            Volver al Inicio
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white">

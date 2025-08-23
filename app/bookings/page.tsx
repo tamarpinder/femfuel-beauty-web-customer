@@ -218,6 +218,26 @@ export default function BookingsPage() {
     // TODO: Implement review functionality
   }
 
+  // Helper function for responsive date formatting
+  const formatDateResponsive = (date: Date, isUpcoming: boolean = false) => {
+    if (isUpcoming) {
+      // For upcoming bookings, show full format on all devices
+      return date.toLocaleDateString("es-DO", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    } else {
+      // For completed bookings, show shorter format
+      return date.toLocaleDateString("es-DO", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    }
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "upcoming":
@@ -258,12 +278,12 @@ export default function BookingsPage() {
             <Button variant="ghost" size="sm" onClick={handleBack}>
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-lg font-semibold text-femfuel-dark">Mis Reservas</h1>
+            <h1 className="text-lg font-semibold text-femfuel-dark">Mis Citas</h1>
           </div>
         </div>
       </header>
 
-      <div className="p-4 max-w-4xl mx-auto">
+      <div className="px-2 sm:px-4 py-4 max-w-4xl mx-auto overflow-hidden">
         {/* Search and Filters */}
         <div className="mb-4 space-y-3">
           <div className="flex gap-2">
@@ -284,9 +304,9 @@ export default function BookingsPage() {
           </div>
           
           {showFilters && (
-            <div className="flex gap-2 p-3 bg-gray-50 rounded-lg">
+            <div className="flex flex-col sm:flex-row gap-2 p-3 bg-gray-50 rounded-lg">
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="w-full sm:w-[140px]">
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
                 <SelectContent>
@@ -298,7 +318,7 @@ export default function BookingsPage() {
               </Select>
               
               <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="w-full sm:w-[140px]">
                   <SelectValue placeholder="Estado" />
                 </SelectTrigger>
                 <SelectContent>
@@ -313,10 +333,10 @@ export default function BookingsPage() {
         </div>
         
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="upcoming">Próximas ({upcomingBookings.length})</TabsTrigger>
-            <TabsTrigger value="completed">Completadas ({completedBookings.length})</TabsTrigger>
-            <TabsTrigger value="cancelled">Canceladas ({cancelledBookings.length})</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 text-xs sm:text-sm">
+            <TabsTrigger value="upcoming" className="truncate">Próximas ({upcomingBookings.length})</TabsTrigger>
+            <TabsTrigger value="completed" className="truncate">Completadas ({completedBookings.length})</TabsTrigger>
+            <TabsTrigger value="cancelled" className="truncate">Canceladas ({cancelledBookings.length})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="upcoming" className="space-y-4 mt-6">
@@ -325,31 +345,36 @@ export default function BookingsPage() {
             ) : upcomingBookings.length > 0 ? (
               upcomingBookings.map((booking) => (
                 <Card key={booking.id} className="shadow-sm">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-4">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-start gap-3">
                       <img
                         src={booking.service.image || "/placeholder.svg?height=64&width=64&query=beauty service"}
                         alt={booking.service.name}
-                        className="w-16 h-16 rounded-xl object-cover"
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl object-cover flex-shrink-0"
                       />
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3 className="font-semibold text-femfuel-dark">{booking.service.name}</h3>
-                            <p className="text-sm text-femfuel-medium">{booking.service.vendor}</p>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-femfuel-dark text-sm sm:text-base truncate">{booking.service.name}</h3>
+                            <p className="text-xs sm:text-sm text-femfuel-medium truncate">{booking.service.vendor}</p>
                           </div>
-                          <Badge className={getStatusColor(booking.status)}>{getStatusText(booking.status)}</Badge>
+                          <div className="flex flex-col items-end gap-1 ml-2">
+                            <Badge className={`${getStatusColor(booking.status)} text-xs`}>{getStatusText(booking.status)}</Badge>
+                            <span className="font-bold text-femfuel-rose text-sm sm:text-base">{booking.service.price}</span>
+                          </div>
                         </div>
 
                         {/* Professional Info */}
-                        <div className="flex items-center gap-2 mb-2">
-                          <img
-                            src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
-                            alt={booking.vendor.professionalName}
-                            className="w-6 h-6 rounded-full object-cover"
-                          />
-                          <span className="text-sm text-femfuel-medium">{booking.vendor.professionalName}</span>
-                          <div className="flex items-center gap-1">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
+                              alt={booking.vendor.professionalName}
+                              className="w-6 h-6 rounded-full object-cover"
+                            />
+                            <span className="text-sm text-femfuel-medium truncate">{booking.vendor.professionalName}</span>
+                          </div>
+                          <div className="flex items-center gap-1 ml-8 sm:ml-0">
                             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                             <span className="text-xs text-femfuel-medium">{booking.vendor.rating}</span>
                             <span className="text-xs text-femfuel-light">({booking.vendor.reviewCount})</span>
@@ -358,25 +383,20 @@ export default function BookingsPage() {
 
                         <div className="space-y-1 mb-3">
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <Calendar className="h-4 w-4" />
-                            <span>
-                              {booking.date.toLocaleDateString("es-DO", {
-                                weekday: "long",
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })}
+                            <Calendar className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate">
+                              {formatDateResponsive(booking.date, true)}
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <Clock className="h-4 w-4" />
+                            <Clock className="h-4 w-4 flex-shrink-0" />
                             <span>
                               {booking.time} ({booking.service.duration} min)
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <MapPin className="h-4 w-4" />
-                            <span>{booking.vendor.address}</span>
+                            <MapPin className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate" title={booking.vendor.address}>{booking.vendor.address}</span>
                           </div>
                         </div>
 
@@ -384,20 +404,18 @@ export default function BookingsPage() {
                           <p className="text-sm text-femfuel-medium mb-3 italic">Nota: {booking.notes}</p>
                         )}
 
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-femfuel-rose">{booking.service.price}</span>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative">
-                              <MessageCircle className="h-4 w-4 mr-1" />
-                              Contactar
-                              {booking.vendor.isOnline && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                              )}
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleReschedule(booking.id)}>
-                              Reprogramar
-                            </Button>
-                          </div>
+                        {/* Mobile-optimized buttons - no price here since it's in header */}
+                        <div className="flex gap-1.5">
+                          <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative flex-1 text-xs py-1.5 px-2">
+                            <MessageCircle className="h-3 w-3 mr-1" />
+                            Chat
+                            {booking.vendor.isOnline && (
+                              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
+                            )}
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleReschedule(booking.id)} className="flex-1 text-xs py-1.5 px-2">
+                            Cambiar
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -465,31 +483,36 @@ export default function BookingsPage() {
             ) : completedBookings.length > 0 ? (
               completedBookings.map((booking) => (
                 <Card key={booking.id} className="shadow-sm">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-4">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-start gap-3">
                       <img
                         src={booking.service.image || "/placeholder.svg?height=64&width=64&query=beauty service"}
                         alt={booking.service.name}
-                        className="w-16 h-16 rounded-xl object-cover"
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl object-cover flex-shrink-0"
                       />
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3 className="font-semibold text-femfuel-dark">{booking.service.name}</h3>
-                            <p className="text-sm text-femfuel-medium">{booking.service.vendor}</p>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-femfuel-dark text-sm sm:text-base truncate">{booking.service.name}</h3>
+                            <p className="text-xs sm:text-sm text-femfuel-medium truncate">{booking.service.vendor}</p>
                           </div>
-                          <Badge className={getStatusColor(booking.status)}>{getStatusText(booking.status)}</Badge>
+                          <div className="flex flex-col items-end gap-1 ml-2">
+                            <Badge className={`${getStatusColor(booking.status)} text-xs`}>{getStatusText(booking.status)}</Badge>
+                            <span className="font-bold text-femfuel-rose text-sm sm:text-base">{booking.service.price}</span>
+                          </div>
                         </div>
 
                         {/* Professional Info */}
-                        <div className="flex items-center gap-2 mb-2">
-                          <img
-                            src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
-                            alt={booking.vendor.professionalName}
-                            className="w-6 h-6 rounded-full object-cover"
-                          />
-                          <span className="text-sm text-femfuel-medium">{booking.vendor.professionalName}</span>
-                          <div className="flex items-center gap-1">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
+                              alt={booking.vendor.professionalName}
+                              className="w-6 h-6 rounded-full object-cover"
+                            />
+                            <span className="text-sm text-femfuel-medium truncate">{booking.vendor.professionalName}</span>
+                          </div>
+                          <div className="flex items-center gap-1 ml-8 sm:ml-0">
                             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                             <span className="text-xs text-femfuel-medium">{booking.vendor.rating}</span>
                             <span className="text-xs text-femfuel-light">({booking.vendor.reviewCount})</span>
@@ -498,34 +521,32 @@ export default function BookingsPage() {
 
                         <div className="space-y-1 mb-3">
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <Calendar className="h-4 w-4" />
-                            <span>{booking.date.toLocaleDateString("es-DO")}</span>
+                            <Calendar className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate">{formatDateResponsive(booking.date, false)}</span>
                           </div>
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <Clock className="h-4 w-4" />
+                            <Clock className="h-4 w-4 flex-shrink-0" />
                             <span>{booking.time}</span>
                           </div>
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <MapPin className="h-4 w-4" />
-                            <span>{booking.vendor.address}</span>
+                            <MapPin className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate" title={booking.vendor.address}>{booking.vendor.address}</span>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-femfuel-rose">{booking.service.price}</span>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative">
-                              <MessageCircle className="h-4 w-4 mr-1" />
-                              Contactar
-                              {booking.vendor.isOnline && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                              )}
-                            </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleReview(booking.id)}>
-                              <Star className="h-4 w-4 mr-1" />
-                              Reseñar
-                            </Button>
-                          </div>
+                        {/* Mobile-optimized buttons - no price here since it's in header */}
+                        <div className="flex gap-1.5">
+                          <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative flex-1 text-xs py-1.5 px-2">
+                            <MessageCircle className="h-3 w-3 mr-1" />
+                            Chat
+                            {booking.vendor.isOnline && (
+                              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
+                            )}
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => handleReview(booking.id)} className="flex-1 text-xs py-1.5 px-2">
+                            <Star className="h-3 w-3 mr-1" />
+                            Reseñar
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -574,20 +595,23 @@ export default function BookingsPage() {
             ) : cancelledBookings.length > 0 ? (
               cancelledBookings.map((booking) => (
                 <Card key={booking.id} className="shadow-sm opacity-75">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-4">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex items-start gap-3">
                       <img
                         src={booking.service.image || "/placeholder.svg?height=64&width=64&query=beauty service"}
                         alt={booking.service.name}
-                        className="w-16 h-16 rounded-xl object-cover grayscale"
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl object-cover grayscale flex-shrink-0"
                       />
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3 className="font-semibold text-femfuel-dark">{booking.service.name}</h3>
-                            <p className="text-sm text-femfuel-medium">{booking.service.vendor}</p>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-femfuel-dark text-sm sm:text-base truncate">{booking.service.name}</h3>
+                            <p className="text-xs sm:text-sm text-femfuel-medium truncate">{booking.service.vendor}</p>
                           </div>
-                          <Badge className="bg-red-100 text-red-800">Cancelada</Badge>
+                          <div className="flex flex-col items-end gap-1 ml-2">
+                            <Badge className="bg-red-100 text-red-800 text-xs">Cancelada</Badge>
+                            <span className="font-bold text-femfuel-medium line-through text-sm sm:text-base">{booking.service.price}</span>
+                          </div>
                         </div>
 
                         {/* Professional Info */}
@@ -597,26 +621,27 @@ export default function BookingsPage() {
                             alt={booking.vendor.professionalName}
                             className="w-6 h-6 rounded-full object-cover grayscale"
                           />
-                          <span className="text-sm text-femfuel-medium">{booking.vendor.professionalName}</span>
+                          <span className="text-sm text-femfuel-medium truncate">{booking.vendor.professionalName}</span>
                         </div>
 
                         <div className="space-y-1 mb-3">
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <Calendar className="h-4 w-4" />
-                            <span>{booking.date.toLocaleDateString("es-DO")}</span>
+                            <Calendar className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate">{formatDateResponsive(booking.date, false)}</span>
                           </div>
                           <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                            <Clock className="h-4 w-4" />
+                            <Clock className="h-4 w-4 flex-shrink-0" />
                             <span>{booking.time}</span>
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-femfuel-medium line-through">{booking.service.price}</span>
+                        {/* Mobile-optimized button - no price here since it's in header */}
+                        <div className="flex">
                           <Button 
                             variant="outline" 
                             size="sm" 
                             onClick={() => router.push("/search")}
+                            className="flex-1 text-xs py-1.5 px-2"
                           >
                             Reservar de nuevo
                           </Button>
@@ -639,6 +664,9 @@ export default function BookingsPage() {
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="bookings" />
+      
+      {/* Extra bottom padding for mobile to ensure content visibility */}
+      <div className="md:hidden pb-6"></div>
     </div>
   )
 }

@@ -7,15 +7,17 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Product } from "@/types/product"
+import { useCart } from "@/contexts/cart-context"
 
 interface ProductCardProps {
   product: Product
-  onAddToCart: (productId: string) => void
+  onAddToCart?: (productId: string) => void
   layout?: "grid" | "list"
 }
 
 export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCardProps) {
   const router = useRouter()
+  const { addToCart } = useCart()
   const [isLiked, setIsLiked] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -23,9 +25,10 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
     router.push(`/shop/product/${product.slug}`)
   }
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    onAddToCart(product.id)
+    await addToCart(product.id, 1)
+    onAddToCart?.(product.id)
   }
 
   const handleToggleLike = (e: React.MouseEvent) => {

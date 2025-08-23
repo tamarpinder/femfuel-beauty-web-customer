@@ -12,6 +12,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { ProductCard } from "@/components/product-card"
 import { LocationModal } from "@/components/location-modal"
+import { CartDrawer } from "@/components/cart-drawer"
+import { useCart } from "@/contexts/cart-context"
 import { 
   mockProducts, 
   getProductsByCategory, 
@@ -47,32 +49,33 @@ const sortOptions = [
 
 export default function ShopPage() {
   const router = useRouter()
+  const { itemCount, userLocation, setUserLocation } = useCart()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | "all">("all")
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | "all">("all")
   const [sortBy, setSortBy] = useState("popular")
   const [showFilters, setShowFilters] = useState(false)
   const [showLocationModal, setShowLocationModal] = useState(false)
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
-  const [cartCount, setCartCount] = useState(0)
 
-  // Initialize location on mount
+  // Initialize location on mount if not already set
   useEffect(() => {
-    // Mock user location for Santo Domingo Centro
-    const mockLocation: UserLocation = {
-      coordinates: { lat: 18.4861, lng: -69.9312 },
-      address: "Av. Winston Churchill, Piantini",
-      district: "Piantini",
-      city: "Santo Domingo",
-      isServiceable: true
+    if (!userLocation) {
+      // Mock user location for Santo Domingo Centro
+      const mockLocation: UserLocation = {
+        coordinates: { lat: 18.4861, lng: -69.9312 },
+        address: "Av. Winston Churchill, Piantini",
+        district: "Piantini",
+        city: "Santo Domingo",
+        isServiceable: true
+      }
+      
+      const serviceabilityCheck = isLocationServiceable(mockLocation.coordinates)
+      mockLocation.isServiceable = serviceabilityCheck.isServiceable
+      mockLocation.deliveryZone = serviceabilityCheck.zone
+      
+      setUserLocation(mockLocation)
     }
-    
-    const serviceabilityCheck = isLocationServiceable(mockLocation.coordinates)
-    mockLocation.isServiceable = serviceabilityCheck.isServiceable
-    mockLocation.deliveryZone = serviceabilityCheck.zone
-    
-    setUserLocation(mockLocation)
-  }, [])
+  }, [userLocation, setUserLocation])
 
   // Filter and search products
   const filteredProducts = useMemo(() => {
@@ -147,8 +150,7 @@ export default function ShopPage() {
   }
 
   const handleAddToCart = (productId: string) => {
-    // TODO: Implement cart functionality
-    setCartCount(prev => prev + 1)
+    // Cart functionality is handled in ProductCard component
     console.log("Added to cart:", productId)
   }
 
@@ -190,14 +192,16 @@ export default function ShopPage() {
               >
                 <MapPin className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="sm" className="relative">
-                <ShoppingCart className="h-4 w-4" />
-                {cartCount > 0 && (
-                  <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-femfuel-rose">
-                    {cartCount}
-                  </Badge>
-                )}
-              </Button>
+              <CartDrawer>
+                <Button variant="ghost" size="sm" className="relative">
+                  <ShoppingCart className="h-4 w-4" />
+                  {itemCount > 0 && (
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-femfuel-rose">
+                      {itemCount}
+                    </Badge>
+                  )}
+                </Button>
+              </CartDrawer>
             </div>
           </div>
         </div>

@@ -46,7 +46,7 @@ export function MobileNavigation({ activeTab = "home", onTabChange }: MobileNavi
         </div>
       </nav>
       {/* Bottom Padding for Mobile Navigation */}
-      <div className="md:hidden h-20"></div>
+      <div className="md:hidden h-24"></div>
     </>
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowLeft, Calendar, Clock, MapPin, MessageCircle, Star, User, Filter, SlidersHorizontal } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, MapPin, MessageCircle, Star, User, Filter, SlidersHorizontal, Hand, Flower2, Palette, Scissors } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -438,7 +438,7 @@ export default function BookingsPage() {
                     onClick={() => router.push("/category/unas")}
                     className="flex flex-col items-center p-3 h-auto"
                   >
-                    <span className="text-lg mb-1">💅</span>
+                    <Hand className="h-5 w-5 mb-1 text-femfuel-medium" />
                     <span className="text-xs">Manicure</span>
                   </Button>
                   <Button 
@@ -447,7 +447,7 @@ export default function BookingsPage() {
                     onClick={() => router.push("/category/spa")}
                     className="flex flex-col items-center p-3 h-auto"
                   >
-                    <span className="text-lg mb-1">🧖‍♀️</span>
+                    <Flower2 className="h-5 w-5 mb-1 text-femfuel-medium" />
                     <span className="text-xs">Facial</span>
                   </Button>
                   <Button 
@@ -456,7 +456,7 @@ export default function BookingsPage() {
                     onClick={() => router.push("/category/maquillaje")}
                     className="flex flex-col items-center p-3 h-auto"
                   >
-                    <span className="text-lg mb-1">💄</span>
+                    <Palette className="h-5 w-5 mb-1 text-femfuel-medium" />
                     <span className="text-xs">Maquillaje</span>
                   </Button>
                   <Button 
@@ -465,7 +465,7 @@ export default function BookingsPage() {
                     onClick={() => router.push("/category/peinados")}
                     className="flex flex-col items-center p-3 h-auto"
                   >
-                    <span className="text-lg mb-1">💇‍♀️</span>
+                    <Scissors className="h-5 w-5 mb-1 text-femfuel-medium" />
                     <span className="text-xs">Peinado</span>
                   </Button>
                 </div>
@@ -561,7 +561,7 @@ export default function BookingsPage() {
                 
                 {/* Quick Service Access */}
                 <div className="bg-femfuel-purple rounded-lg p-4 max-w-sm mx-auto mb-4">
-                  <p className="text-sm text-femfuel-dark mb-3">🌟 Servicios más populares:</p>
+                  <p className="text-sm text-femfuel-dark mb-3">Servicios más populares:</p>
                   <div className="flex justify-center gap-2">
                     <Button 
                       variant="outline" 

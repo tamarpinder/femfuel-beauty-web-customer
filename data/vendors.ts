@@ -995,6 +995,103 @@ export const mockVendors: Vendor[] = [
       saturday: { open: "8:00", close: "16:00" },
       sunday: { isClosed: true, open: "", close: "" }
     }
+  },
+  // Test vendor for Vendor app integration
+  {
+    id: "belleza-dominicana-salon",
+    name: "Belleza Dominicana Salon",
+    slug: "belleza-dominicana-salon",
+    logo: "/vendors/belleza-dominicana-logo.png",
+    coverImage: "/vendors/belleza-dominicana-cover.jpg",
+    description: "Salón auténticamente dominicano que celebra la belleza caribeña con técnicas tradicionales y modernas. Especialistas en looks que resaltan el orgullo dominicano.",
+    rating: 4.9,
+    reviewCount: 147,
+    serviceCount: 4,
+    location: {
+      address: "Calle Duarte 456",
+      district: "Gazcue",
+      city: "Santo Domingo",
+      distance: "2.2km"
+    },
+    contact: {
+      phone: "+1 809-555-0199",
+      email: "owner@bellezadominicana.com",
+      whatsapp: "+1 809-555-0199"
+    },
+    categories: ["unas", "peinados", "maquillaje"],
+    popularServices: ["Manicure Dominicana Especial", "Peinado Merengue Style", "Pedicure Playa Dorada"],
+    badges: ["Auténtico Dominicano", "Premium Partner", "Top Rated"],
+    availability: {
+      isOpen: true,
+      nextSlot: "Hoy 2:00 PM",
+      todayAvailable: true
+    },
+    professionalCount: 4,
+    priceRange: {
+      min: 950,
+      max: 2200
+    },
+    services: [
+      {
+        id: "manicure-dominicana-especial",
+        name: "Manicure Dominicana Especial",
+        description: "Manicure tradicional dominicano con técnicas ancestrales y productos locales",
+        price: 950,
+        duration: 75,
+        category: "unas",
+        isPopular: true,
+        image: "/services/dominican-manicure.jpg",
+        addons: [
+          { id: "tropical-nail-art", name: "Arte Tropical", price: 350, duration: 20 },
+          { id: "coconut-treatment", name: "Tratamiento de Coco", price: 250, duration: 15 }
+        ]
+      },
+      {
+        id: "peinado-merengue-style",
+        name: "Peinado Merengue Style",
+        description: "Peinado inspirado en la cultura dominicana, perfecto para eventos y celebraciones",
+        price: 1800,
+        duration: 90,
+        category: "peinados",
+        isPopular: true,
+        image: "/services/merengue-hairstyle.jpg"
+      },
+      {
+        id: "maquillaje-caribeno",
+        name: "Maquillaje Caribeño",
+        description: "Look radiante con colores tropicales que resaltan la belleza natural caribeña",
+        price: 2200,
+        duration: 60,
+        category: "maquillaje",
+        isPopular: false,
+        image: "/services/caribbean-makeup.jpg"
+      },
+      {
+        id: "pedicure-playa-dorada",
+        name: "Pedicure Playa Dorada",
+        description: "Pedicure relajante con exfoliación de arena de playa y aceites tropicales",
+        price: 1650,
+        duration: 105,
+        category: "unas",
+        isPopular: true,
+        image: "/services/golden-beach-pedicure.jpg"
+      }
+    ],
+    businessHours: {
+      monday: { open: "9:00", close: "18:00" },
+      tuesday: { open: "9:00", close: "18:00" },
+      wednesday: { open: "9:00", close: "18:00" },
+      thursday: { open: "9:00", close: "18:00" },
+      friday: { open: "9:00", close: "19:00" },
+      saturday: { open: "8:00", close: "17:00" },
+      sunday: { open: "10:00", close: "16:00" }
+    },
+    gallery: [
+      "/vendors/belleza-dominicana-1.jpg",
+      "/vendors/belleza-dominicana-2.jpg",
+      "/vendors/belleza-dominicana-3.jpg",
+      "/vendors/belleza-dominicana-4.jpg"
+    ]
   }
 ]
 

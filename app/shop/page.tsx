@@ -27,15 +27,15 @@ import { deliveryZones, isLocationServiceable } from "@/data/warehouses"
 import { Product, ProductCategory, ProductFilter } from "@/types/product"
 import { UserLocation } from "@/types/delivery"
 
-const categories: Array<{ id: ProductCategory; name: string; icon: string }> = [
-  { id: "skincare", name: "Cuidado Facial", icon: "🧴" },
-  { id: "makeup", name: "Maquillaje", icon: "💄" },
-  { id: "haircare", name: "Cuidado Capilar", icon: "💇‍♀️" },
-  { id: "nailcare", name: "Cuidado Uñas", icon: "💅" },
-  { id: "fragrance", name: "Fragancias", icon: "🌸" },
-  { id: "bodycare", name: "Cuidado Corporal", icon: "🧴" },
-  { id: "tools", name: "Herramientas", icon: "🔧" },
-  { id: "accessories", name: "Accesorios", icon: "✨" }
+const categories: Array<{ id: ProductCategory; name: string }> = [
+  { id: "skincare", name: "Cuidado Facial" },
+  { id: "makeup", name: "Maquillaje" },
+  { id: "haircare", name: "Cuidado Capilar" },
+  { id: "nailcare", name: "Cuidado Uñas" },
+  { id: "fragrance", name: "Fragancias" },
+  { id: "bodycare", name: "Cuidado Corporal" },
+  { id: "tools", name: "Herramientas" },
+  { id: "accessories", name: "Accesorios" }
 ]
 
 const sortOptions = [
@@ -256,7 +256,7 @@ export default function ShopPage() {
                     <SelectItem value="all">Todas las categorías</SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
-                        {category.icon} {category.name}
+                        {category.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

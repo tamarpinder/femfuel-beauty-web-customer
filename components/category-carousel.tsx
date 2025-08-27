@@ -5,6 +5,7 @@ import { ProductCategory } from "@/types/product"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { mockProducts } from "@/data/products"
+import { Sparkles, Droplet, Palette, Scissors, Hand, Flower2, Package, Wrench, Gem } from "lucide-react"
 
 interface CategoryCarouselProps {
   selectedCategory: ProductCategory | "all"
@@ -15,61 +16,61 @@ interface CategoryCarouselProps {
 const categories: Array<{ 
   id: ProductCategory | "all"
   name: string
-  icon: string
+  icon: React.ComponentType<{ className?: string }>
   shortName: string
 }> = [
   { 
     id: "all", 
     name: "Todos", 
-    icon: "✨", 
+    icon: Sparkles, 
     shortName: "Todos"
   },
   { 
     id: "skincare", 
     name: "Cuidado Facial", 
-    icon: "🧴", 
+    icon: Droplet, 
     shortName: "Facial"
   },
   { 
     id: "makeup", 
     name: "Maquillaje", 
-    icon: "💄", 
+    icon: Palette, 
     shortName: "Makeup"
   },
   { 
     id: "haircare", 
     name: "Cuidado Capilar", 
-    icon: "💇‍♀️", 
+    icon: Scissors, 
     shortName: "Cabello"
   },
   { 
     id: "nailcare", 
     name: "Cuidado Uñas", 
-    icon: "💅", 
+    icon: Hand, 
     shortName: "Uñas"
   },
   { 
     id: "fragrance", 
     name: "Fragancias", 
-    icon: "🌸", 
+    icon: Flower2, 
     shortName: "Fragancia"
   },
   { 
     id: "bodycare", 
     name: "Cuidado Corporal", 
-    icon: "🧼", 
+    icon: Package, 
     shortName: "Cuerpo"
   },
   { 
     id: "tools", 
     name: "Herramientas", 
-    icon: "🔧", 
+    icon: Wrench, 
     shortName: "Tools"
   },
   { 
     id: "accessories", 
     name: "Accesorios", 
-    icon: "✨", 
+    icon: Gem, 
     shortName: "Acceso"
   }
 ]
@@ -154,9 +155,7 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                     
                     {/* Icon Overlay */}
                     <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                      <span className="text-lg drop-shadow-sm">
-                        {category.icon}
-                      </span>
+                      <category.icon className="h-5 w-5 text-white drop-shadow-sm" />
                     </div>
                     
                     {/* Product Count Badge */}

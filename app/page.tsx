@@ -11,6 +11,7 @@ import { HeroSection } from "@/components/hero-section"
 import { TransformationsShowcase } from "@/components/transformations-showcase"
 import { StarProfessionals } from "@/components/star-professionals"
 import { NearbyBeauty } from "@/components/nearby-beauty"
+import { CustomerFooter } from "@/components/customer-footer"
 
 export default function HomePage() {
   const router = useRouter()
@@ -464,6 +465,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Desktop Footer */}
+      <CustomerFooter />
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="home" onTabChange={handleTabChange} />

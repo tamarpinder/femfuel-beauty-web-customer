@@ -163,3 +163,140 @@
 .bg-femfuel-light {
   background-color: var(--femfuel-light-gray);
 }
+
+/* Custom Glassmorphism Button */
+.glassmorphism-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #b91c5c;
+  color: #b91c5c;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.glassmorphism-button:hover {
+  background: #b91c5c !important;
+  color: white !important;
+  border-color: #b91c5c !important;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(185, 28, 92, 0.3);
+}
+
+.glassmorphism-button:focus-visible {
+  outline: 2px solid #b91c5c;
+  outline-offset: 2px;
+}
+
+/* Large Glassmorphism Button for Hero Section */
+.glassmorphism-button-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 2rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid #b91c5c;
+  color: #b91c5c;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.glassmorphism-button-lg:hover {
+  background: #b91c5c !important;
+  color: white !important;
+  border-color: #b91c5c !important;
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(185, 28, 92, 0.4);
+}
+
+.glassmorphism-button-lg:focus-visible {
+  outline: 2px solid #b91c5c;
+  outline-offset: 2px;
+}
+
+/* Solid FemFuel Button for Primary Actions */
+.femfuel-button-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 2rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: #b91c5c;
+  border: 1px solid #b91c5c;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(185, 28, 92, 0.3);
+  outline: none;
+}
+
+.femfuel-button-lg:hover {
+  background: #9f1653 !important;
+  border-color: #9f1653 !important;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 24px rgba(185, 28, 92, 0.4);
+}
+
+.femfuel-button-lg:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Perfect Glassmorphism Button based on Homepage Login Button */
+.glassmorphism-button-perfect {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(185, 28, 92, 0.2);
+  color: #b91c5c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.glassmorphism-button-perfect:hover {
+  background: #b91c5c !important;
+  color: white !important;
+  border-color: #b91c5c !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(185, 28, 92, 0.3);
+}
+
+.glassmorphism-button-perfect:focus-visible {
+  outline: 2px solid #b91c5c;
+  outline-offset: 2px;
+}

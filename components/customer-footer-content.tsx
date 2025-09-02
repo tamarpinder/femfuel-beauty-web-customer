@@ -5,8 +5,7 @@ export const customerFooterSections = [
       { label: "Buscar Servicios", href: "/search" },
       { label: "Salones Cercanos", href: "/nearby" },
       { label: "Profesionales Top", href: "/professionals" },
-      { label: "Ofertas Especiales", href: "/deals" },
-      { label: "Nuevos en FemFuel", href: "/new" },
+      { label: "Nuevos en FemFuel", href: "/register" },
     ],
   },
   {

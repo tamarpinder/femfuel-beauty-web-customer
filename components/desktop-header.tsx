@@ -35,17 +35,33 @@ export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
             </div>
           </div>
           <nav className="flex items-center gap-6">
-            <Link href="/search" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+            <Link 
+              href="/search" 
+              className="relative px-2 py-1 text-sm font-medium transition-all duration-300 text-femfuel-medium hover:text-femfuel-dark hover:scale-105 group"
+            >
               Servicios
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-femfuel-rose transform origin-left transition-transform duration-300 scale-x-0 group-hover:scale-x-100" />
             </Link>
-            <Link href="/bookings" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+            <Link 
+              href="/bookings" 
+              className="relative px-2 py-1 text-sm font-medium transition-all duration-300 text-femfuel-medium hover:text-femfuel-dark hover:scale-105 group"
+            >
               Mis Citas
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-femfuel-rose transform origin-left transition-transform duration-300 scale-x-0 group-hover:scale-x-100" />
             </Link>
-            <Link href="/shop" className="text-femfuel-dark font-bold hover:text-femfuel-rose transition-colors">
+            <Link 
+              href="/shop" 
+              className="relative px-2 py-1 text-sm font-bold transition-all duration-300 text-femfuel-dark hover:text-femfuel-rose hover:scale-105 group"
+            >
               TIENDA
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-femfuel-rose transform origin-left transition-transform duration-300 scale-x-0 group-hover:scale-x-100" />
             </Link>
-            <Link href="/blog" className="text-femfuel-medium hover:text-femfuel-dark transition-colors">
+            <Link 
+              href="/blog" 
+              className="relative px-2 py-1 text-sm font-medium transition-all duration-300 text-femfuel-medium hover:text-femfuel-dark hover:scale-105 group"
+            >
               Blog
+              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-femfuel-rose transform origin-left transition-transform duration-300 scale-x-0 group-hover:scale-x-100" />
             </Link>
             <UserMenu />
           </nav>

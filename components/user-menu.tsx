@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { User, Settings, Heart, Calendar, LogOut, ChevronDown } from "lucide-react"
+import { User, Settings, Heart, Calendar, LogOut, ChevronDown, UserPlus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -18,15 +18,33 @@ import { AuthModal } from "@/components/auth-modal"
 export function UserMenu() {
   const { user, isAuthenticated, login, logout } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login")
+
+  const handleAuthClick = (mode: "login" | "signup") => {
+    setAuthMode(mode)
+    setShowAuthModal(true)
+  }
 
   if (!isAuthenticated) {
     return (
       <>
-        <Button variant="ghost" size="sm" onClick={() => setShowAuthModal(true)} className="flex items-center gap-2">
-          <User className="h-4 w-4" />
-          <span className="hidden md:inline">Iniciar Sesión</span>
-        </Button>
-        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onAuthSuccess={login} />
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => handleAuthClick("login")}
+            className="glassmorphism-button"
+          >
+            <User className="h-4 w-4" />
+            <span>Iniciar Sesión</span>
+          </button>
+          <button 
+            onClick={() => handleAuthClick("signup")}
+            className="femfuel-button-lg"
+          >
+            <UserPlus className="h-4 w-4" />
+            <span>Comenzar</span>
+          </button>
+        </div>
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onAuthSuccess={login} initialMode={authMode} />
       </>
     )
   }

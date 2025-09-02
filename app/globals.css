@@ -300,3 +300,108 @@
   outline: 2px solid #b91c5c;
   outline-offset: 2px;
 }
+
+/* Mobile Button Variants - Optimized for mobile UX */
+.glassmorphism-button-mobile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(185, 28, 92, 0.3);
+  color: #b91c5c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+  min-height: 44px; /* iOS touch target minimum */
+  min-width: 44px;
+}
+
+.glassmorphism-button-mobile:hover {
+  background: #b91c5c !important;
+  color: white !important;
+  border-color: #b91c5c !important;
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(185, 28, 92, 0.3);
+}
+
+.glassmorphism-button-mobile:focus-visible {
+  outline: 2px solid #b91c5c;
+  outline-offset: 2px;
+}
+
+/* Mobile Primary Button */
+.femfuel-button-mobile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: #b91c5c;
+  border: 1px solid #b91c5c;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(185, 28, 92, 0.3);
+  outline: none;
+  min-height: 44px; /* iOS touch target minimum */
+  min-width: 44px;
+}
+
+.femfuel-button-mobile:hover {
+  background: #9f1653 !important;
+  border-color: #9f1653 !important;
+  transform: scale(1.02);
+  box-shadow: 0 3px 8px rgba(185, 28, 92, 0.4);
+}
+
+.femfuel-button-mobile:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Compact Mobile Icon Button */
+.icon-button-mobile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(185, 28, 92, 0.2);
+  color: #b91c5c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+  min-height: 44px; /* iOS touch target minimum */
+  min-width: 44px;
+}
+
+.icon-button-mobile:hover {
+  background: #b91c5c !important;
+  color: white !important;
+  border-color: #b91c5c !important;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(185, 28, 92, 0.3);
+}
+
+.icon-button-mobile:focus-visible {
+  outline: 2px solid #b91c5c;
+  outline-offset: 2px;
+}

@@ -28,7 +28,8 @@ export function UserMenu() {
   if (!isAuthenticated) {
     return (
       <>
-        <div className="flex items-center gap-3">
+        {/* Desktop Layout */}
+        <div className="hidden md:flex items-center gap-3">
           <button 
             onClick={() => handleAuthClick("login")}
             className="glassmorphism-button"
@@ -44,6 +45,25 @@ export function UserMenu() {
             <span>Comenzar</span>
           </button>
         </div>
+
+        {/* Mobile Layout */}
+        <div className="md:hidden flex items-center gap-2">
+          <button 
+            onClick={() => handleAuthClick("login")}
+            className="glassmorphism-button-mobile"
+          >
+            <User className="h-3 w-3" />
+            <span className="hidden xs:inline">Entrar</span>
+          </button>
+          <button 
+            onClick={() => handleAuthClick("signup")}
+            className="femfuel-button-mobile"
+          >
+            <UserPlus className="h-3 w-3" />
+            <span>Comenzar</span>
+          </button>
+        </div>
+
         <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onAuthSuccess={login} initialMode={authMode} />
       </>
     )

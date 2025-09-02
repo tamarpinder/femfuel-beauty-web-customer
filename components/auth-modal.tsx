@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Mail, Lock, User, Phone, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,6 +21,11 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
   const [mode, setMode] = useState<"login" | "signup">(initialMode)
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  // Update mode when initialMode prop changes
+  useEffect(() => {
+    setMode(initialMode)
+  }, [initialMode])
   const [formData, setFormData] = useState({
     email: "",
     password: "",

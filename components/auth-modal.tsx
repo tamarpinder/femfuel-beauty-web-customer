@@ -76,7 +76,8 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
       } else {
         const { data, error: authError } = await signUp(formData.email, formData.password, {
           name: formData.name,
-          phone: formData.phone
+          phone: formData.phone,
+          user_type: 'customer'
         })
         if (authError) {
           setError(authError.message || "Error al crear cuenta")

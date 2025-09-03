@@ -25,10 +25,10 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
   const [error, setError] = useState<string | null>(null)
   const { signIn, signUp } = useAuth()
 
-  // Test credentials
-  const testCredentials = {
+  // Demo customer credentials
+  const demoCredentials = {
     email: "maria.gonzalez@gmail.com",
-    password: "TestCustomer2025!"
+    password: "CustomerLogin2025!"
   }
 
   // Update mode when initialMode prop changes
@@ -197,8 +197,8 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                     <h4 className="font-medium text-blue-900 mb-1">Credenciales de Demostración</h4>
                     <p className="text-sm text-blue-700 mb-2">Para pruebas, usa la cuenta de María González:</p>
                     <div className="text-sm font-mono bg-white rounded px-2 py-1 border">
-                      <div>📧 {testCredentials.email}</div>
-                      <div>🔒 {testCredentials.password}</div>
+                      <div>📧 {demoCredentials.email}</div>
+                      <div>🔒 {demoCredentials.password}</div>
                     </div>
                   </div>
                 </div>

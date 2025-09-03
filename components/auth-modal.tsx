@@ -3,12 +3,13 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { Mail, Lock, User, Phone, Eye, EyeOff } from "lucide-react"
+import { Mail, Lock, User, Phone, Eye, EyeOff, Info } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useAuth } from "@/contexts/auth-context"
 
 interface AuthModalProps {
   isOpen: boolean
@@ -21,11 +22,20 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
   const [mode, setMode] = useState<"login" | "signup">(initialMode)
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { signIn, signUp } = useAuth()
+
+  // Test credentials
+  const testCredentials = {
+    email: "maria.gonzalez@gmail.com",
+    password: "TestCustomer2025!"
+  }
 
   // Update mode when initialMode prop changes
   useEffect(() => {
     setMode(initialMode)
   }, [initialMode])
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,27 +45,50 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+    // Clear error when user starts typing
+    if (error) setError(null)
+  }
+
+  const handleFillTestCredentials = () => {
+    setFormData(prev => ({
+      ...prev,
+      email: testCredentials.email,
+      password: testCredentials.password
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
-    // Mock authentication - in real app this would call your auth API
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
-
-      const mockUser = {
-        id: "1",
-        name: mode === "signup" ? formData.name : "Usuario Demo",
-        email: formData.email,
-        phone: mode === "signup" ? formData.phone : "+1 809 555 0123",
-        avatar: "/diverse-user-avatars.png",
+      if (mode === "login") {
+        const { data, error: authError } = await signIn(formData.email, formData.password)
+        if (authError) {
+          setError(authError.message || "Error al iniciar sesión")
+          return
+        }
+        if (data?.user) {
+          onAuthSuccess?.(data.user)
+          onClose()
+        }
+      } else {
+        const { data, error: authError } = await signUp(formData.email, formData.password, {
+          name: formData.name,
+          phone: formData.phone
+        })
+        if (authError) {
+          setError(authError.message || "Error al crear cuenta")
+          return
+        }
+        if (data?.user) {
+          onAuthSuccess?.(data.user)
+          onClose()
+        }
       }
-
-      onAuthSuccess?.(mockUser)
-      onClose()
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.message || "Error de conexión")
       console.error("Auth error:", error)
     } finally {
       setIsLoading(false)
@@ -64,22 +97,14 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
   const handleSocialLogin = async (provider: "google" | "facebook") => {
     setIsLoading(true)
+    setError(null)
 
-    // Mock social login
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800))
-
-      const mockUser = {
-        id: "1",
-        name: `Usuario ${provider === "google" ? "Google" : "Facebook"}`,
-        email: `usuario@${provider}.com`,
-        phone: "+1 809 555 0123",
-        avatar: "/diverse-user-avatars.png",
-      }
-
-      onAuthSuccess?.(mockUser)
-      onClose()
-    } catch (error) {
+      // For now, social login is not implemented
+      // In a real app, you would call Supabase social auth here
+      setError(`${provider === "google" ? "Google" : "Facebook"} login no está disponible aún. Usa email y contraseña.`)
+    } catch (error: any) {
+      setError(error.message || "Error con login social")
       console.error("Social login error:", error)
     } finally {
       setIsLoading(false)
@@ -161,6 +186,42 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
               <span className="bg-white px-2 text-femfuel-medium">O continúa con email</span>
             </div>
           </div>
+
+          {/* Test Credentials Notice - Only in Login Mode */}
+          {mode === "login" && (
+            <div className="space-y-3">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-medium text-blue-900 mb-1">Credenciales de Demostración</h4>
+                    <p className="text-sm text-blue-700 mb-2">Para pruebas, usa la cuenta de María González:</p>
+                    <div className="text-sm font-mono bg-white rounded px-2 py-1 border">
+                      <div>📧 {testCredentials.email}</div>
+                      <div>🔒 {testCredentials.password}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <button
+                type="button"
+                onClick={handleFillTestCredentials}
+                className="glassmorphism-button w-full"
+                disabled={isLoading}
+              >
+                <User className="h-4 w-4" />
+                <span>Usar Credenciales de Prueba</span>
+              </button>
+            </div>
+          )}
+
+          {/* Error Display */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
 
           {/* Email/Password Form */}
           <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,6 +1,8 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { getFeaturedVendors } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type Service } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
@@ -15,6 +17,113 @@ import { CustomerFooter } from "@/components/customer-footer"
 
 export default function HomePage() {
   const router = useRouter()
+  const [featuredServices, setFeaturedServices] = useState<Service[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Load real vendor data on component mount
+  useEffect(() => {
+    async function loadFeaturedServices() {
+      try {
+        const vendors = await getFeaturedVendors(6)
+        
+        // Transform vendor services into featured services
+        const services: Service[] = []
+        vendors.forEach((vendor: any) => {
+          vendor.services?.forEach((service: any, index: number) => {
+            if (services.length < 3 && service.isPopular) {
+              services.push({
+                id: parseInt(service.id.replace(/[^0-9]/g, '') || '0') + index,
+                name: service.name,
+                vendor: vendor.name,
+                price: `RD$${service.price?.toLocaleString()}`,
+                rating: vendor.rating,
+                reviews: vendor.reviewCount,
+                duration: service.duration,
+                image: service.image || "/premium-gel-manicure.png",
+              })
+            }
+          })
+        })
+
+        // Fallback to static data if no services found
+        if (services.length === 0) {
+          setFeaturedServices([
+            {
+              id: 1,
+              name: "Manicure Gel Premium",
+              vendor: "Beauty Studio RD",
+              price: "RD$1,200",
+              rating: 4.8,
+              reviews: 124,
+              duration: 60,
+              image: "/premium-gel-manicure.png",
+            },
+            {
+              id: 2,
+              name: "Maquillaje Profesional",
+              vendor: "Glamour House",
+              price: "RD$2,500",
+              rating: 4.9,
+              reviews: 89,
+              duration: 90,
+              image: "/professional-makeup-artist.png",
+            },
+            {
+              id: 3,
+              name: "Tratamiento Facial",
+              vendor: "Spa Paradise",
+              price: "RD$3,500",
+              rating: 4.7,
+              reviews: 156,
+              duration: 75,
+              image: "/facial-treatment-spa.png",
+            },
+          ])
+        } else {
+          setFeaturedServices(services)
+        }
+      } catch (error) {
+        console.error('Error loading featured services:', error)
+        // Use fallback static data on error
+        setFeaturedServices([
+          {
+            id: 1,
+            name: "Manicure Gel Premium", 
+            vendor: "Beauty Studio RD",
+            price: "RD$1,200",
+            rating: 4.8,
+            reviews: 124,
+            duration: 60,
+            image: "/premium-gel-manicure.png",
+          },
+          {
+            id: 2,
+            name: "Maquillaje Profesional",
+            vendor: "Glamour House", 
+            price: "RD$2,500",
+            rating: 4.9,
+            reviews: 89,
+            duration: 90,
+            image: "/professional-makeup-artist.png",
+          },
+          {
+            id: 3,
+            name: "Tratamiento Facial",
+            vendor: "Spa Paradise",
+            price: "RD$3,500", 
+            rating: 4.7,
+            reviews: 156,
+            duration: 75,
+            image: "/facial-treatment-spa.png",
+          },
+        ])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadFeaturedServices()
+  }, [])
 
   const categories: Category[] = [
     { name: "Uñas", icon: Hand, count: "2,450" },
@@ -23,39 +132,6 @@ export default function HomePage() {
     { name: "Spa", icon: Flower2, count: "987" },
     { name: "Peinados", icon: Scissors, count: "1,567" },
     { name: "Pestañas", icon: Eye, count: "876" },
-  ]
-
-  const featuredServices: Service[] = [
-    {
-      id: 1,
-      name: "Manicure Gel Premium",
-      vendor: "Beauty Studio RD",
-      price: "RD$1,200",
-      rating: 4.8,
-      reviews: 124,
-      duration: 60,
-      image: "/premium-gel-manicure.png",
-    },
-    {
-      id: 2,
-      name: "Maquillaje Profesional",
-      vendor: "Glamour House",
-      price: "RD$2,500",
-      rating: 4.9,
-      reviews: 89,
-      duration: 90,
-      image: "/professional-makeup-artist.png",
-    },
-    {
-      id: 3,
-      name: "Tratamiento Facial",
-      vendor: "Spa Paradise",
-      price: "RD$3,500",
-      rating: 4.7,
-      reviews: 156,
-      duration: 75,
-      image: "/facial-treatment-spa.png",
-    },
   ]
 
   // Sample transformation data

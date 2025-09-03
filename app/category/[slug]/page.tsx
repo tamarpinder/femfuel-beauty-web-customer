@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { VendorCard } from "@/components/vendor-card"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
 import { MobileNavigation } from "@/components/mobile-navigation"
-import { getVendorsByCategory } from "@/data/vendors"
+import { getVendorsByCategory } from "@/lib/vendors-api"
 import { Vendor } from "@/types/vendor"
 
 
@@ -38,9 +38,11 @@ export default function CategoryPage() {
 
   // Filter vendors based on category and filters
   useEffect(() => {
-    // Get category vendors first
-    const categoryVendors = getVendorsByCategory(categorySlug)
-    let filtered = categoryVendors
+    async function loadVendors() {
+      try {
+        // Get category vendors first from API
+        const categoryVendors = await getVendorsByCategory(categorySlug)
+        let filtered = categoryVendors
 
     // Service type filter - check if vendor offers any matching services
     if (filters.serviceTypes.length > 0) {
@@ -75,7 +77,14 @@ export default function CategoryPage() {
       filtered = filtered.filter((vendor) => vendor.availability.todayAvailable)
     }
 
-    setFilteredVendors(filtered)
+        setFilteredVendors(filtered)
+      } catch (error) {
+        console.error('Error loading vendors:', error)
+        setFilteredVendors([])
+      }
+    }
+
+    loadVendors()
   }, [filters, categorySlug])
 
   const handleBack = () => {

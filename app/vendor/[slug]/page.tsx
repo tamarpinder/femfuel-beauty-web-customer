@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ServiceCard } from "@/components/service-card"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingModal } from "@/components/booking-modal"
-import { getVendorBySlug } from "@/data/vendors"
+import { getVendorBySlug } from "@/lib/vendors-api"
 import { Vendor, VendorService } from "@/types/vendor"
 
 export default function VendorPage() {
@@ -27,10 +27,15 @@ export default function VendorPage() {
   useEffect(() => {
     const fetchVendor = async () => {
       setIsLoading(true)
-      // Simulate API call
-      const vendorData = getVendorBySlug(vendorSlug)
-      setVendor(vendorData || null)
-      setIsLoading(false)
+      try {
+        const vendorData = await getVendorBySlug(vendorSlug)
+        setVendor(vendorData || null)
+      } catch (error) {
+        console.error('Error fetching vendor:', error)
+        setVendor(null)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchVendor()

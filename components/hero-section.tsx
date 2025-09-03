@@ -1,18 +1,11 @@
 "use client"
 
 import { Star } from "lucide-react"
-import { UserMenu } from "@/components/user-menu"
 
 export function HeroSection() {
   return (
     <section className="relative px-4 py-12 md:py-16">
       <div className="max-w-4xl mx-auto text-center">
-        {/* Login Icon - Mobile Only */}
-        <div className="md:hidden absolute top-4 right-4">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-1">
-            <UserMenu />
-          </div>
-        </div>
 
         {/* Logo */}
         <div className="mb-8">

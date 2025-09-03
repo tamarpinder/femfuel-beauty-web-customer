@@ -52,8 +52,8 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
   const handleFillTestCredentials = () => {
     setFormData(prev => ({
       ...prev,
-      email: testCredentials.email,
-      password: testCredentials.password
+      email: demoCredentials.email,
+      password: demoCredentials.password
     }))
   }
 

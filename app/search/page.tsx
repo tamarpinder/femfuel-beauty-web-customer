@@ -8,67 +8,8 @@ import { Input } from "@/components/ui/input"
 import { ServiceCard, type Service } from "@/components/service-card"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
 import { MobileNavigation } from "@/components/mobile-navigation"
-
-// Mock data - in real app this would come from API
-const mockServices: Service[] = [
-  {
-    id: 1,
-    name: "Manicure Gel Premium",
-    vendor: "Beauty Studio RD",
-    price: "RD$1,200",
-    rating: 4.8,
-    reviews: 124,
-    duration: 60,
-    image: "/premium-gel-manicure.png",
-  },
-  {
-    id: 2,
-    name: "Maquillaje Profesional",
-    vendor: "Glamour House",
-    price: "RD$2,500",
-    rating: 4.9,
-    reviews: 89,
-    duration: 90,
-    image: "/professional-makeup-artist.png",
-  },
-  {
-    id: 3,
-    name: "Tratamiento Facial Hidratante",
-    vendor: "Spa Paradise",
-    price: "RD$3,500",
-    rating: 4.7,
-    reviews: 156,
-    duration: 75,
-    image: "/facial-treatment-spa.png",
-  },
-  {
-    id: 4,
-    name: "Pedicure Spa Completo",
-    vendor: "Relax Nails",
-    price: "RD$1,800",
-    rating: 4.6,
-    reviews: 98,
-    duration: 90,
-  },
-  {
-    id: 5,
-    name: "Extensiones de Pestañas",
-    vendor: "Lash Studio DR",
-    price: "RD$2,200",
-    rating: 4.9,
-    reviews: 67,
-    duration: 120,
-  },
-  {
-    id: 6,
-    name: "Corte y Peinado",
-    vendor: "Hair Salon Elite",
-    price: "RD$1,500",
-    rating: 4.5,
-    reviews: 203,
-    duration: 60,
-  },
-]
+import { getVendors, searchVendors } from "@/lib/vendors-api"
+import { Vendor } from "@/types/vendor"
 
 export default function SearchPage() {
   const searchParams = useSearchParams()
@@ -82,40 +23,75 @@ export default function SearchPage() {
     rating: 0,
     availability: "anytime",
   })
-  const [filteredServices, setFilteredServices] = useState<Service[]>(mockServices)
+  const [filteredServices, setFilteredServices] = useState<Service[]>([])
 
   // Filter services based on search query and filters
   useEffect(() => {
-    let filtered = mockServices
+    async function loadServices() {
+      try {
+        let vendors: Vendor[] = []
+        
+        // Search vendors based on query
+        if (searchQuery.trim()) {
+          vendors = await searchVendors(searchQuery)
+        } else {
+          vendors = await getVendors()
+        }
 
-    // Text search
-    if (searchQuery.trim()) {
-      filtered = filtered.filter(
-        (service) =>
-          service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          service.vendor.toLowerCase().includes(searchQuery.toLowerCase()),
-      )
+        // Convert vendor services to Service format
+        let allServices: Service[] = []
+        vendors.forEach(vendor => {
+          vendor.services.forEach(service => {
+            allServices.push({
+              id: service.id,
+              name: service.name,
+              vendor: vendor.name,
+              vendorId: vendor.id,
+              price: service.price,
+              duration: service.duration || "30 min",
+              rating: vendor.rating,
+              reviewCount: vendor.reviewCount,
+              image: service.image || vendor.logo,
+              category: service.category,
+              description: service.description,
+              isPopular: service.isPopular,
+              addons: service.addons || []
+            })
+          })
+        })
+
+        // Apply filters
+        let filtered = allServices
+
+        // Service type filter
+        if (filters.serviceTypes.length > 0) {
+          filtered = filtered.filter((service) => {
+            return filters.serviceTypes.some((type) => 
+              service.name.toLowerCase().includes(type.toLowerCase()) ||
+              service.category.toLowerCase().includes(type.toLowerCase())
+            )
+          })
+        }
+
+        // Price range filter
+        filtered = filtered.filter((service) => {
+          const price = Number.parseInt(service.price.replace(/[^\d]/g, ""))
+          return price >= filters.priceRange[0] && price <= filters.priceRange[1]
+        })
+
+        // Rating filter
+        if (filters.rating > 0) {
+          filtered = filtered.filter((service) => service.rating >= filters.rating)
+        }
+
+        setFilteredServices(filtered)
+      } catch (error) {
+        console.error('Error loading services:', error)
+        setFilteredServices([])
+      }
     }
 
-    // Service type filter
-    if (filters.serviceTypes.length > 0) {
-      filtered = filtered.filter((service) => {
-        return filters.serviceTypes.some((type) => service.name.toLowerCase().includes(type.toLowerCase()))
-      })
-    }
-
-    // Price range filter
-    filtered = filtered.filter((service) => {
-      const price = Number.parseInt(service.price.replace(/[^\d]/g, ""))
-      return price >= filters.priceRange[0] && price <= filters.priceRange[1]
-    })
-
-    // Rating filter
-    if (filters.rating > 0) {
-      filtered = filtered.filter((service) => service.rating >= filters.rating)
-    }
-
-    setFilteredServices(filtered)
+    loadServices()
   }, [searchQuery, filters])
 
   const handleBookService = (serviceId: number) => {

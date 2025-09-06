@@ -1,107 +1,77 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { mockData } from '@/data/shared/mock-data'
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !supabaseServiceKey) {
-    console.error('Missing Supabase environment variables')
-    return NextResponse.json({ error: 'Database configuration missing' }, { status: 500 })
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseServiceKey)
-  
   try {
     const vendorId = params.id
 
-    // Fetch vendor by slug or vendor_id
-    const { data: vendor, error } = await supabase
-      .from('vendor_profiles')
-      .select(`
-        *,
-        vendor_services (
-          id,
-          service_id,
-          name,
-          description,
-          price,
-          duration,
-          category,
-          is_popular,
-          image_url,
-          addons
-        ),
-        vendor_business_hours (
-          business_hours
-        )
-      `)
-      .or(`vendor_slug.eq.${vendorId},vendor_id.eq.${vendorId}`)
-      .eq('is_active', true)
-      .single()
+    // Find vendor by ID or slug
+    const vendor = mockData.vendorProfiles.find(v => 
+      v.id === vendorId || 
+      v.id.toLowerCase().replace(/[^a-z0-9]/g, '-') === vendorId
+    )
 
-    if (error || !vendor) {
+    if (!vendor) {
       return NextResponse.json({ error: 'Vendor not found' }, { status: 404 })
     }
 
+    // Get vendor services
+    const vendorServices = mockData.services.filter(s => s.vendorId === vendor.id)
+
     // Transform data to match frontend format
     const transformedVendor = {
-      id: vendor.vendor_id || vendor.id,
-      name: vendor.business_name,
-      slug: vendor.vendor_slug || vendor.vendor_id,
-      logo: `/vendors/${vendor.vendor_id}-logo.png`,
-      coverImage: `/vendors/${vendor.vendor_id}-cover.jpg`,
+      id: vendor.id,
+      name: vendor.businessName,
+      slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      logo: vendor.user.avatar,
+      coverImage: `/vendor-cover-${vendor.id}.jpg`,
       description: vendor.description,
-      rating: parseFloat(vendor.rating) || 0,
-      reviewCount: vendor.review_count || 0,
-      serviceCount: vendor.service_count || vendor.vendor_services?.length || 0,
+      rating: vendor.rating,
+      reviewCount: vendor.reviewCount,
+      serviceCount: vendorServices.length,
       location: {
-        address: vendor.business_address,
-        district: vendor.business_district,
-        city: vendor.business_city,
-        distance: "2.5km" // Calculate based on user location
+        address: vendor.location.address,
+        district: vendor.location.district,
+        city: vendor.location.city,
+        distance: "2.5km"
       },
       contact: {
-        phone: vendor.business_phone,
-        email: vendor.business_email,
-        whatsapp: vendor.business_whatsapp
+        phone: vendor.user.phone,
+        email: vendor.user.email,
+        whatsapp: vendor.user.phone
       },
-      categories: vendor.categories?.split(',') || [],
-      popularServices: vendor.vendor_services
-        ?.filter(s => s.is_popular)
-        ?.slice(0, 3)
-        ?.map(s => s.name) || [],
-      badges: vendor.badges?.split(',').filter(b => b) || [],
+      categories: vendor.categories,
+      popularServices: vendorServices
+        .filter(s => s.isPopular)
+        .slice(0, 3)
+        .map(s => s.name),
+      badges: vendor.isVerified ? ['Verificado'] : [],
       availability: {
-        isOpen: true, // Calculate based on current time and business hours
+        isOpen: true,
         nextSlot: "Hoy 3:00 PM",
         todayAvailable: true
       },
-      professionalCount: vendor.professional_count || 1,
+      professionalCount: 1,
       priceRange: {
-        min: vendor.price_range_min || 0,
-        max: vendor.price_range_max || 0
+        min: vendorServices.length > 0 ? Math.min(...vendorServices.map(s => s.price)) : 0,
+        max: vendorServices.length > 0 ? Math.max(...vendorServices.map(s => s.price)) : 0
       },
-      services: vendor.vendor_services?.map(service => ({
-        id: service.service_id,
+      services: vendorServices.map(service => ({
+        id: service.id,
         name: service.name,
         description: service.description,
         price: service.price,
         duration: service.duration,
         category: service.category,
-        isPopular: service.is_popular,
-        image: service.image_url,
-        addons: service.addons ? JSON.parse(service.addons as string) : []
-      })) || [],
-      businessHours: vendor.vendor_business_hours?.[0]?.business_hours || {},
-      gallery: [
-        `/vendors/${vendor.vendor_id}-1.jpg`,
-        `/vendors/${vendor.vendor_id}-2.jpg`,
-        `/vendors/${vendor.vendor_id}-3.jpg`
-      ]
+        isPopular: service.isPopular,
+        image: service.images?.[0]?.url,
+        addons: []
+      })),
+      businessHours: vendor.businessHours,
+      gallery: vendor.portfolio.map(p => p.url)
     }
 
     return NextResponse.json(transformedVendor)

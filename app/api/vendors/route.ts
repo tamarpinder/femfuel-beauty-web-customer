@@ -1,111 +1,90 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { mockData } from '@/data/shared/mock-data'
 
 export async function GET(request: Request) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseUrl || !supabaseServiceKey) {
-    console.error('Missing Supabase environment variables')
-    return NextResponse.json({ error: 'Database configuration missing' }, { status: 500 })
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseServiceKey)
-  
   try {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
     const search = searchParams.get('search')
-    const limit = searchParams.get('limit') || '20'
+    const limit = parseInt(searchParams.get('limit') || '20')
 
-    // Build query
-    let query = supabase
-      .from('vendor_profiles')
-      .select(`
-        *,
-        vendor_services (
-          id,
-          service_id,
-          name,
-          description,
-          price,
-          duration,
-          category,
-          is_popular
-        ),
-        vendor_business_hours (
-          business_hours
-        )
-      `)
-      .eq('is_active', true)
-      .order('rating', { ascending: false })
-      .limit(parseInt(limit))
+    // Start with all vendors
+    let filteredVendors = [...mockData.vendorProfiles]
 
-    // Apply filters
+    // Apply category filter
     if (category) {
-      query = query.ilike('categories', `%${category}%`)
+      filteredVendors = filteredVendors.filter(vendor => 
+        vendor.categories.includes(category)
+      )
     }
 
+    // Apply search filter
     if (search) {
-      query = query.or(`business_name.ilike.%${search}%,description.ilike.%${search}%,business_district.ilike.%${search}%`)
+      const searchLower = search.toLowerCase()
+      filteredVendors = filteredVendors.filter(vendor =>
+        vendor.businessName.toLowerCase().includes(searchLower) ||
+        vendor.description.toLowerCase().includes(searchLower) ||
+        vendor.location.district.toLowerCase().includes(searchLower)
+      )
     }
 
-    const { data: vendors, error } = await query
-
-    if (error) {
-      console.error('Error fetching vendors:', error)
-      return NextResponse.json({ error: 'Failed to fetch vendors' }, { status: 500 })
-    }
+    // Limit results
+    filteredVendors = filteredVendors.slice(0, limit)
 
     // Transform data to match frontend format
-    const transformedVendors = vendors?.map(vendor => ({
-      id: vendor.vendor_id || vendor.id,
-      name: vendor.business_name,
-      slug: vendor.vendor_slug || vendor.vendor_id,
-      logo: `/vendors/${vendor.vendor_id}-logo.png`,
-      coverImage: `/vendors/${vendor.vendor_id}-cover.jpg`,
-      description: vendor.description,
-      rating: parseFloat(vendor.rating) || 0,
-      reviewCount: vendor.review_count || 0,
-      serviceCount: vendor.service_count || vendor.vendor_services?.length || 0,
-      location: {
-        address: vendor.business_address,
-        district: vendor.business_district,
-        city: vendor.business_city,
-        distance: "2.5km" // Calculate based on user location
-      },
-      contact: {
-        phone: vendor.business_phone,
-        email: vendor.business_email,
-        whatsapp: vendor.business_whatsapp
-      },
-      categories: vendor.categories?.split(',') || [],
-      popularServices: vendor.vendor_services
-        ?.filter(s => s.is_popular)
-        ?.slice(0, 3)
-        ?.map(s => s.name) || [],
-      badges: vendor.badges?.split(',').filter(b => b) || [],
-      availability: {
-        isOpen: true, // Calculate based on current time and business hours
-        nextSlot: "Hoy 3:00 PM",
-        todayAvailable: true
-      },
-      professionalCount: vendor.professional_count || 1,
-      priceRange: {
-        min: vendor.price_range_min || 0,
-        max: vendor.price_range_max || 0
-      },
-      services: vendor.vendor_services?.map(service => ({
-        id: service.service_id,
-        name: service.name,
-        description: service.description,
-        price: service.price,
-        duration: service.duration,
-        category: service.category,
-        isPopular: service.is_popular
-      })) || [],
-      businessHours: vendor.vendor_business_hours?.[0]?.business_hours || {}
-    }))
+    const transformedVendors = filteredVendors.map(vendor => {
+      const vendorServices = mockData.services.filter(s => s.vendorId === vendor.id)
+      
+      return {
+        id: vendor.id,
+        name: vendor.businessName,
+        slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        logo: vendor.user.avatar,
+        coverImage: `/vendor-cover-${vendor.id}.jpg`,
+        description: vendor.description,
+        rating: vendor.rating,
+        reviewCount: vendor.reviewCount,
+        serviceCount: vendorServices.length,
+        location: {
+          address: vendor.location.address,
+          district: vendor.location.district,
+          city: vendor.location.city,
+          distance: "2.5km"
+        },
+        contact: {
+          phone: vendor.user.phone,
+          email: vendor.user.email,
+          whatsapp: vendor.user.phone
+        },
+        categories: vendor.categories,
+        popularServices: vendorServices
+          .filter(s => s.isPopular)
+          .slice(0, 3)
+          .map(s => s.name),
+        badges: vendor.isVerified ? ['Verificado'] : [],
+        availability: {
+          isOpen: true,
+          nextSlot: "Hoy 3:00 PM",
+          todayAvailable: true
+        },
+        professionalCount: 1,
+        priceRange: {
+          min: Math.min(...vendorServices.map(s => s.price)),
+          max: Math.max(...vendorServices.map(s => s.price))
+        },
+        services: vendorServices.map(service => ({
+          id: service.id,
+          name: service.name,
+          description: service.description,
+          price: service.price,
+          duration: service.duration,
+          category: service.category,
+          isPopular: service.isPopular,
+          image: service.images?.[0]?.url
+        })),
+        businessHours: vendor.businessHours
+      }
+    })
 
     return NextResponse.json(transformedVendors)
   } catch (error) {

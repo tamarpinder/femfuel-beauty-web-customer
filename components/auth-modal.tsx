@@ -27,8 +27,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
   // Demo customer credentials
   const demoCredentials = {
-    email: "maria.gonzalez@gmail.com",
-    password: "CustomerLogin2025!"
+    email: "customer1@example.com",
+    password: "CustomerLogin2025!",
+    name: "María García"
   }
 
   // Update mode when initialMode prop changes
@@ -62,31 +63,34 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
     setIsLoading(true)
     setError(null)
 
+    // LIVE INTEGRATION DISABLED - Using mock authentication for demo
     try {
       if (mode === "login") {
-        const { data, error: authError } = await signIn(formData.email, formData.password)
-        if (authError) {
-          setError(authError.message || "Error al iniciar sesión")
-          return
-        }
-        if (data?.user) {
-          onAuthSuccess?.(data.user)
-          onClose()
-        }
-      } else {
-        const { data, error: authError } = await signUp(formData.email, formData.password, {
-          name: formData.name,
-          phone: formData.phone,
+        // Mock login - always successful for demo
+        // TODO: Replace with real authentication
+        // const { data, error: authError } = await signIn(formData.email, formData.password)
+        console.log('Customer login (MOCK MODE):', { email: formData.email, mode });
+        const mockUser = {
+          id: 'customer-001',
+          name: 'María González',
+          email: formData.email,
           role: 'customer'
-        })
-        if (authError) {
-          setError(authError.message || "Error al crear cuenta")
-          return
-        }
-        if (data?.user) {
-          onAuthSuccess?.(data.user)
-          onClose()
-        }
+        };
+        onAuthSuccess?.(mockUser);
+        onClose();
+      } else {
+        // Mock signup - always successful for demo
+        // TODO: Replace with real authentication
+        // const { data, error: authError } = await signUp(formData.email, formData.password, {...})
+        console.log('Customer signup (MOCK MODE):', formData);
+        const mockUser = {
+          id: 'customer-new',
+          name: formData.name,
+          email: formData.email,
+          role: 'customer'
+        };
+        onAuthSuccess?.(mockUser);
+        onClose();
       }
     } catch (error: any) {
       setError(error.message || "Error de conexión")
@@ -196,7 +200,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                   <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-medium text-blue-900 mb-1">Credenciales de Demostración</h4>
-                    <p className="text-sm text-blue-700 mb-2">Para pruebas, usa la cuenta de María González:</p>
+                    <p className="text-sm text-blue-700 mb-2">Para pruebas, usa la cuenta de {demoCredentials.name}:</p>
                     <div className="text-sm font-mono bg-white rounded px-2 py-1 border">
                       <div>📧 {demoCredentials.email}</div>
                       <div>🔒 {demoCredentials.password}</div>

@@ -30,27 +30,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    // LIVE INTEGRATION DISABLED - Using mock authentication for demo
+    // TODO: Replace with real Supabase authentication
     // Get initial session
-    auth.getSession().then(({ session }) => {
-      setSession(session)
-      if (session?.user) {
-        setUser(mapSupabaseUserToUser(session.user))
-      }
-      setIsLoading(false)
-    })
+    // auth.getSession().then(({ session }) => {
+    //   setSession(session)
+    //   if (session?.user) {
+    //     setUser(mapSupabaseUserToUser(session.user))
+    //   }
+    //   setIsLoading(false)
+    // })
 
-    // Listen for auth changes
-    const { data: { subscription } } = auth.onAuthStateChange(async (event, session) => {
-      setSession(session)
-      if (session?.user) {
-        setUser(mapSupabaseUserToUser(session.user))
-      } else {
-        setUser(null)
-      }
-      setIsLoading(false)
-    })
+    // Mock session check - check localStorage for demo user
+    const mockUser = localStorage.getItem('mockCustomerUser');
+    if (mockUser) {
+      setUser(JSON.parse(mockUser));
+    }
+    setIsLoading(false);
 
-    return () => subscription.unsubscribe()
+    // Listen for auth changes - COMMENTED OUT FOR DEMO
+    // const { data: { subscription } } = auth.onAuthStateChange(async (event, session) => {
+    //   setSession(session)
+    //   if (session?.user) {
+    //     setUser(mapSupabaseUserToUser(session.user))
+    //   } else {
+    //     setUser(null)
+    //   }
+    //   setIsLoading(false)
+    // })
+
+    // return () => subscription.unsubscribe()
   }, [])
 
   // Helper function to map Supabase user to our User interface
@@ -64,25 +73,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // LIVE INTEGRATION DISABLED - Mock auth methods for demo
   const signUp = async (email: string, password: string, userData?: any) => {
     setIsLoading(true)
-    const result = await auth.signUp(email, password, userData)
+    // TODO: Replace with real Supabase auth
+    // const result = await auth.signUp(email, password, userData)
+    
+    // Mock signup - always successful
+    const mockUser = {
+      id: 'customer-' + Date.now(),
+      name: userData?.name || 'Nuevo Usuario',
+      email: email,
+      phone: userData?.phone || '',
+      avatar: ''
+    };
+    setUser(mockUser);
+    localStorage.setItem('mockCustomerUser', JSON.stringify(mockUser));
     setIsLoading(false)
-    return result
+    return { data: { user: mockUser }, error: null }
   }
 
   const signIn = async (email: string, password: string) => {
     setIsLoading(true)
-    const result = await auth.signIn(email, password)
+    // TODO: Replace with real Supabase auth
+    // const result = await auth.signIn(email, password)
+    
+    // Mock signin - always successful
+    const mockUser = {
+      id: 'customer-001',
+      name: 'María González',
+      email: email,
+      phone: '+1 809 555 0101',
+      avatar: ''
+    };
+    setUser(mockUser);
+    localStorage.setItem('mockCustomerUser', JSON.stringify(mockUser));
     setIsLoading(false)
-    return result
+    return { data: { user: mockUser }, error: null }
   }
 
   const signOut = async () => {
     setIsLoading(true)
-    const result = await auth.signOut()
+    // TODO: Replace with real Supabase auth
+    // const result = await auth.signOut()
+    
+    // Mock signout
+    setUser(null);
+    setSession(null);
+    localStorage.removeItem('mockCustomerUser');
     setIsLoading(false)
-    return result
+    return { error: null }
   }
 
   const value = {

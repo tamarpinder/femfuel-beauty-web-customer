@@ -140,7 +140,7 @@ export const vendorProfiles: VendorProfile[] = vendorUsers.map((user, i) => ({
   businessHours: standardHours,
   rating: Math.round((4.0 + Math.random() * 1.0) * 10) / 10,
   reviewCount: Math.floor(Math.random() * 200) + 50,
-  isVerified: Math.random() > 0.2,
+  isVerified: i === 0 ? true : Math.random() > 0.2, // First vendor always verified
   isActive: true,
   joinedDate: user.createdAt,
   portfolio: Array.from({ length: 6 }, (_, j) => ({
@@ -199,37 +199,48 @@ export const customerProfiles: CustomerProfile[] = customerUsers.map((user, i) =
 // Generate Services (100 services across 25 vendors)
 const serviceTemplates = {
   nails: [
+    { name: 'Manicure Gel Premium', price: 1200, duration: 60 },
+    { name: 'Tropical Nail Art', price: 1800, duration: 75 },
     { name: 'Classic Manicure', price: 800, duration: 45 },
-    { name: 'Gel Manicure', price: 1200, duration: 60 },
     { name: 'Acrylic Extensions', price: 2000, duration: 90 },
-    { name: 'Nail Art Design', price: 1500, duration: 75 },
-    { name: 'French Pedicure', price: 1000, duration: 50 }
+    { name: 'Caribbean French Design', price: 1500, duration: 65 },
+    { name: 'Pedicure Spa Completo', price: 1200, duration: 60 },
+    { name: 'Uñas Esculpidas', price: 2500, duration: 120 }
   ],
   hair: [
-    { name: 'Haircut & Style', price: 1800, duration: 60 },
-    { name: 'Hair Color', price: 3500, duration: 120 },
-    { name: 'Highlights', price: 4000, duration: 150 },
-    { name: 'Keratin Treatment', price: 6000, duration: 180 },
     { name: 'Dominican Blowout', price: 1500, duration: 90 },
-    { name: 'Deep Conditioning', price: 2200, duration: 75 }
+    { name: 'Balayage Dorado Caribeño', price: 4500, duration: 180 },
+    { name: 'Corte y Peinado', price: 1800, duration: 60 },
+    { name: 'Tratamiento de Keratina', price: 6000, duration: 180 },
+    { name: 'Mechas Californianas', price: 4000, duration: 150 },
+    { name: 'Alisado Natural', price: 3500, duration: 120 },
+    { name: 'Hidratación Profunda', price: 2200, duration: 75 },
+    { name: 'Reparación Capilar', price: 2800, duration: 90 }
   ],
   makeup: [
-    { name: 'Bridal Makeup', price: 5000, duration: 90 },
-    { name: 'Event Makeup', price: 3000, duration: 60 },
-    { name: 'Photo Shoot Makeup', price: 4000, duration: 75 },
-    { name: 'Natural Look', price: 2000, duration: 45 }
+    { name: 'Maquillaje de Novia', price: 5000, duration: 90 },
+    { name: 'Glamour Tropical Night', price: 3500, duration: 75 },
+    { name: 'Maquillaje Profesional', price: 2800, duration: 60 },
+    { name: 'Look Natural Caribeño', price: 2000, duration: 45 },
+    { name: 'Maquillaje Editorial', price: 4000, duration: 75 },
+    { name: 'Smokey Eyes Dorado', price: 2500, duration: 50 }
   ],
   spa: [
-    { name: 'Relaxing Facial', price: 2500, duration: 60 },
-    { name: 'Anti-Aging Treatment', price: 4500, duration: 90 },
-    { name: 'Deep Cleansing Facial', price: 3000, duration: 75 },
-    { name: 'Full Body Massage', price: 3500, duration: 60 }
+    { name: 'Piel Radiante Caribeña', price: 4200, duration: 90 },
+    { name: 'Facial Antienvejecimiento', price: 4500, duration: 90 },
+    { name: 'Limpieza Facial Profunda', price: 3000, duration: 75 },
+    { name: 'Masaje Relajante', price: 3500, duration: 60 },
+    { name: 'Tratamiento Hidratante', price: 2800, duration: 60 },
+    { name: 'Exfoliación Corporal', price: 3200, duration: 75 },
+    { name: 'Ritual de Belleza Tropical', price: 5500, duration: 120 }
   ],
   lashes: [
-    { name: 'Classic Lash Extensions', price: 2800, duration: 90 },
-    { name: 'Volume Lashes', price: 3500, duration: 120 },
-    { name: 'Lash Lift & Tint', price: 1800, duration: 60 },
-    { name: 'Eyebrow Shaping', price: 800, duration: 30 }
+    { name: 'Extensiones de Pestañas Clásicas', price: 2800, duration: 90 },
+    { name: 'Pestañas Volumen Ruso', price: 3500, duration: 120 },
+    { name: 'Lifting de Pestañas', price: 1800, duration: 60 },
+    { name: 'Diseño de Cejas', price: 800, duration: 30 },
+    { name: 'Microblading Cejas', price: 4500, duration: 120 },
+    { name: 'Tinte de Pestañas', price: 600, duration: 25 }
   ]
 }
 
@@ -258,7 +269,7 @@ vendorProfiles.forEach(vendor => {
           alt: `${template.name} at ${vendor.businessName}`,
           type: 'image' as const
         })),
-        isPopular: Math.random() > 0.7,
+        isPopular: Math.random() > 0.4, // 60% chance of being popular for better demo
         isActive: true,
         createdAt: vendor.createdAt,
         updatedAt: vendor.updatedAt

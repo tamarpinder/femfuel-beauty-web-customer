@@ -47,7 +47,7 @@ export default function SearchPage() {
               name: service.name,
               vendor: vendor.name,
               vendorId: vendor.id,
-              price: service.price,
+              price: `RD$${service.price?.toLocaleString()}`,
               duration: service.duration || "30 min",
               rating: vendor.rating,
               reviewCount: vendor.reviewCount,
@@ -75,7 +75,9 @@ export default function SearchPage() {
 
         // Price range filter
         filtered = filtered.filter((service) => {
-          const price = Number.parseInt(service.price.replace(/[^\d]/g, ""))
+          const price = typeof service.price === 'string' 
+            ? Number.parseInt(service.price.replace(/[^\d]/g, ""))
+            : service.price
           return price >= filters.priceRange[0] && price <= filters.priceRange[1]
         })
 

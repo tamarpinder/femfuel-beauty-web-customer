@@ -10,6 +10,7 @@ import { MobileHeader } from "@/components/mobile-header"
 import { DesktopHeader } from "@/components/desktop-header"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { HeroSection } from "@/components/hero-section"
+import { HowItWorks } from "@/components/how-it-works"
 import { TransformationsShowcase } from "@/components/transformations-showcase"
 import { StarProfessionals } from "@/components/star-professionals"
 import { NearbyBeauty } from "@/components/nearby-beauty"
@@ -26,13 +27,13 @@ export default function HomePage() {
       try {
         const vendors = await getFeaturedVendors(6)
         
-        // Transform vendor services into featured services
-        const services: Service[] = []
+        // Transform vendor services into featured services - get more than 3 for variety
+        const allPopularServices: Service[] = []
         vendors.forEach((vendor: any) => {
-          vendor.services?.forEach((service: any, index: number) => {
-            if (services.length < 3 && service.isPopular) {
-              services.push({
-                id: parseInt(service.id.replace(/[^0-9]/g, '') || '0') + index,
+          vendor.services?.forEach((service: any) => {
+            if (service.isPopular) {
+              allPopularServices.push({
+                id: service.id,
                 name: service.name,
                 vendor: vendor.name,
                 price: `RD$${service.price?.toLocaleString()}`,
@@ -45,78 +46,16 @@ export default function HomePage() {
           })
         })
 
-        // Fallback to static data if no services found
-        if (services.length === 0) {
-          setFeaturedServices([
-            {
-              id: 1,
-              name: "Manicure Gel Premium",
-              vendor: "Beauty Studio RD",
-              price: "RD$1,200",
-              rating: 4.8,
-              reviews: 124,
-              duration: 60,
-              image: "/premium-gel-manicure.png",
-            },
-            {
-              id: 2,
-              name: "Maquillaje Profesional",
-              vendor: "Glamour House",
-              price: "RD$2,500",
-              rating: 4.9,
-              reviews: 89,
-              duration: 90,
-              image: "/professional-makeup-artist.png",
-            },
-            {
-              id: 3,
-              name: "Tratamiento Facial",
-              vendor: "Spa Paradise",
-              price: "RD$3,500",
-              rating: 4.7,
-              reviews: 156,
-              duration: 75,
-              image: "/facial-treatment-spa.png",
-            },
-          ])
-        } else {
-          setFeaturedServices(services)
-        }
+        // Sort by rating and take top 6 for variety
+        const topServices = allPopularServices
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 6)
+
+        setFeaturedServices(topServices)
       } catch (error) {
         console.error('Error loading featured services:', error)
-        // Use fallback static data on error
-        setFeaturedServices([
-          {
-            id: 1,
-            name: "Manicure Gel Premium", 
-            vendor: "Beauty Studio RD",
-            price: "RD$1,200",
-            rating: 4.8,
-            reviews: 124,
-            duration: 60,
-            image: "/premium-gel-manicure.png",
-          },
-          {
-            id: 2,
-            name: "Maquillaje Profesional",
-            vendor: "Glamour House", 
-            price: "RD$2,500",
-            rating: 4.9,
-            reviews: 89,
-            duration: 90,
-            image: "/professional-makeup-artist.png",
-          },
-          {
-            id: 3,
-            name: "Tratamiento Facial",
-            vendor: "Spa Paradise",
-            price: "RD$3,500", 
-            rating: 4.7,
-            reviews: 156,
-            duration: 75,
-            image: "/facial-treatment-spa.png",
-          },
-        ])
+        // Keep services empty to show loading state or retry
+        setFeaturedServices([])
       } finally {
         setLoading(false)
       }
@@ -126,121 +65,115 @@ export default function HomePage() {
   }, [])
 
   const categories: Category[] = [
-    { name: "Uñas", icon: Hand, count: "2,450" },
-    { name: "Maquillaje", icon: Palette, count: "1,890" },
-    { name: "Cuerpo", icon: User, count: "1,234" },
-    { name: "Spa", icon: Flower2, count: "987" },
-    { name: "Peinados", icon: Scissors, count: "1,567" },
-    { name: "Pestañas", icon: Eye, count: "876" },
+    { name: "Uñas", icon: Hand, count: "45+" },
+    { name: "Maquillaje", icon: Palette, count: "32+" },
+    { name: "Cuerpo", icon: User, count: "28+" },
+    { name: "Spa", icon: Flower2, count: "35+" },
+    { name: "Peinados", icon: Scissors, count: "40+" },
+    { name: "Pestañas", icon: Eye, count: "25+" },
   ]
 
-  // Sample transformation data
+  // Generate transformations from real mock data
   const transformations = [
     {
       id: 1,
       name: "Isabella Martínez",
-      service: "Balayage + Corte",
-      vendor: "Salon Elite Santo Domingo",
-      beforeImage: "/placeholder.jpg",
-      afterImage: "/professional-makeup-artist.png",
+      service: "Balayage Dorado Caribeño",
+      vendor: "Salon Elite DR",
+      beforeImage: "/transformation-before-1.jpg",
+      afterImage: "/transformation-after-1.jpg",
       rating: 5.0,
       testimonial: "¡Increíble! Me siento como una nueva persona. El balayage quedó perfecto y el corte me favorece muchísimo.",
-      serviceId: 101,
+      serviceId: "service-001",
       lookName: "Balayage Dorado Caribeño"
     },
     {
       id: 2,
       name: "María José Peña",
-      service: "Maquillaje de Evento",
-      vendor: "Glamour House",
-      beforeImage: "/placeholder.jpg",
-      afterImage: "/facial-treatment-spa.png",
+      service: "Glamour Tropical Night",
+      vendor: "Beauty Studio Elite",
+      beforeImage: "/transformation-before-2.jpg",
+      afterImage: "/transformation-after-2.jpg",
       rating: 4.9,
       testimonial: "El maquillaje duró toda la noche. Recibí tantos cumplidos en la fiesta. Definitivamente regreso.",
-      serviceId: 102,
+      serviceId: "service-002",
       lookName: "Glamour Tropical Night"
     },
     {
       id: 3,
       name: "Carmen Delgado",
-      service: "Tratamiento Facial Antiedad",
-      vendor: "Spa Paradise",
-      beforeImage: "/placeholder.jpg",
-      afterImage: "/premium-gel-manicure.png",
+      service: "Piel Radiante Caribeña",
+      vendor: "Spa Bella Vista",
+      beforeImage: "/transformation-before-3.jpg",
+      afterImage: "/transformation-after-3.jpg",
       rating: 4.8,
       testimonial: "Mi piel se ve y se siente increíble. El tratamiento fue relajante y los resultados son visibles.",
-      serviceId: 103,
+      serviceId: "service-003",
       lookName: "Piel Radiante Caribeña"
     }
   ]
 
-  // Sample professionals data
+  // Star professionals from real mock data
   const professionals = [
     {
       id: 1,
       name: "Carla Rodríguez",
       specialty: "Especialista en Color",
-      salon: "Salon Elite Santo Domingo",
-      location: "Zona Colonial",
+      salon: "Salon Elite DR",
+      location: "Piantini",
       rating: 4.9,
       reviewCount: 156,
       yearsExperience: 8,
-      avatar: "/placeholder-user.jpg",
+      avatar: "/professional-1.jpg",
       portfolioImages: [
-        "/professional-makeup-artist.png",
-        "/facial-treatment-spa.png",
-        "/premium-gel-manicure.png",
-        "/placeholder.jpg",
-        "/placeholder.jpg",
-        "/placeholder.jpg"
+        "/portfolio-hair-1.jpg",
+        "/portfolio-hair-2.jpg",
+        "/portfolio-hair-3.jpg",
+        "/portfolio-hair-4.jpg"
       ],
       specialties: ["Balayage", "Colorimetría", "Cabello Rizado"],
       availableToday: true,
       nextAvailable: "Hoy 2:00 PM",
       signature: "Balayage Dorado Caribeño",
-      price: "RD$3,500"
+      price: "RD$4,500"
     },
     {
       id: 2,
       name: "Alejandra Santos",
       specialty: "Maquilladora Profesional",
-      salon: "Glamour House",
-      location: "Piantini",
+      salon: "Beauty Studio Elite",
+      location: "Zona Colonial",
       rating: 5.0,
       reviewCount: 89,
       yearsExperience: 6,
-      avatar: "/placeholder-user.jpg",
+      avatar: "/professional-2.jpg",
       portfolioImages: [
-        "/facial-treatment-spa.png",
-        "/professional-makeup-artist.png",
-        "/premium-gel-manicure.png",
-        "/placeholder.jpg",
-        "/placeholder.jpg",
-        "/placeholder.jpg"
+        "/portfolio-makeup-1.jpg",
+        "/portfolio-makeup-2.jpg",
+        "/portfolio-makeup-3.jpg",
+        "/portfolio-makeup-4.jpg"
       ],
       specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
       availableToday: false,
       nextAvailable: "Mañana 10:00 AM",
       signature: "Glamour Tropical Night",
-      price: "RD$2,800"
+      price: "RD$3,500"
     },
     {
       id: 3,
       name: "Gabriela Méndez",
       specialty: "Terapeuta Facial",
-      salon: "Spa Paradise",
+      salon: "Spa Bella Vista",
       location: "Bella Vista",
       rating: 4.8,
       reviewCount: 203,
       yearsExperience: 12,
-      avatar: "/placeholder-user.jpg",
+      avatar: "/professional-3.jpg",
       portfolioImages: [
-        "/premium-gel-manicure.png",
-        "/facial-treatment-spa.png",
-        "/professional-makeup-artist.png",
-        "/placeholder.jpg",
-        "/placeholder.jpg",
-        "/placeholder.jpg"
+        "/portfolio-spa-1.jpg",
+        "/portfolio-spa-2.jpg",
+        "/portfolio-spa-3.jpg",
+        "/portfolio-spa-4.jpg"
       ],
       specialties: ["Antiedad", "Acné", "Hidratación"],
       availableToday: true,
@@ -252,19 +185,17 @@ export default function HomePage() {
       id: 4,
       name: "Patricia López",
       specialty: "Nail Artist",
-      salon: "Beauty Studio RD",
+      salon: "Nails & More RD",
       location: "Naco",
       rating: 4.7,
       reviewCount: 178,
       yearsExperience: 5,
-      avatar: "/placeholder-user.jpg",
+      avatar: "/professional-4.jpg",
       portfolioImages: [
-        "/professional-makeup-artist.png",
-        "/premium-gel-manicure.png",
-        "/facial-treatment-spa.png",
-        "/placeholder.jpg",
-        "/placeholder.jpg",
-        "/placeholder.jpg"
+        "/portfolio-nails-1.jpg",
+        "/portfolio-nails-2.jpg",
+        "/portfolio-nails-3.jpg",
+        "/portfolio-nails-4.jpg"
       ],
       specialties: ["Nail Art", "Gel X", "Decoraciones"],
       availableToday: true,
@@ -487,6 +418,9 @@ export default function HomePage() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* How It Works */}
+      <HowItWorks />
+
       {/* Service Categories */}
       <section className="px-4 py-12 bg-femfuel-purple">
         <div className="max-w-6xl mx-auto">
@@ -526,19 +460,32 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-bold text-femfuel-dark mb-8 text-center">Recomendados para ti</h2>
 
-          {/* Mobile Layout - Horizontal Cards */}
-          <div className="md:hidden space-y-4">
-            {featuredServices.map((service) => (
-              <ServiceCard key={service.id} service={service} layout="horizontal" onBook={handleBookService} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-femfuel-rose mx-auto"></div>
+              <p className="text-femfuel-medium mt-2">Cargando servicios populares...</p>
+            </div>
+          ) : featuredServices.length > 0 ? (
+            <>
+              {/* Mobile Layout - Horizontal Cards */}
+              <div className="md:hidden space-y-4">
+                {featuredServices.slice(0, 4).map((service) => (
+                  <ServiceCard key={service.id} service={service} layout="horizontal" onBook={handleBookService} />
+                ))}
+              </div>
 
-          {/* Desktop Layout - Vertical Cards */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6">
-            {featuredServices.map((service) => (
-              <ServiceCard key={service.id} service={service} layout="vertical" onBook={handleBookService} />
-            ))}
-          </div>
+              {/* Desktop Layout - Vertical Cards */}
+              <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {featuredServices.slice(0, 8).map((service) => (
+                  <ServiceCard key={service.id} service={service} layout="vertical" onBook={handleBookService} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-femfuel-medium">No hay servicios disponibles en este momento.</p>
+            </div>
+          )}
         </div>
       </section>
 

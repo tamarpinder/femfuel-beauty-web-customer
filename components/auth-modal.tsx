@@ -63,34 +63,26 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
     setIsLoading(true)
     setError(null)
 
-    // LIVE INTEGRATION DISABLED - Using mock authentication for demo
     try {
       if (mode === "login") {
-        // Mock login - always successful for demo
-        // TODO: Replace with real authentication
-        // const { data, error: authError } = await signIn(formData.email, formData.password)
-        console.log('Customer login (MOCK MODE):', { email: formData.email, mode });
-        const mockUser = {
-          id: 'customer-001',
-          name: 'María González',
-          email: formData.email,
-          role: 'customer'
-        };
-        onAuthSuccess?.(mockUser);
-        onClose();
+        const { data, error: authError } = await signIn(formData.email, formData.password)
+        if (authError) {
+          setError(authError.message || "Error al iniciar sesión")
+        } else {
+          onAuthSuccess?.(data.user);
+          onClose();
+        }
       } else {
-        // Mock signup - always successful for demo
-        // TODO: Replace with real authentication
-        // const { data, error: authError } = await signUp(formData.email, formData.password, {...})
-        console.log('Customer signup (MOCK MODE):', formData);
-        const mockUser = {
-          id: 'customer-new',
+        const { data, error: authError } = await signUp(formData.email, formData.password, {
           name: formData.name,
-          email: formData.email,
-          role: 'customer'
-        };
-        onAuthSuccess?.(mockUser);
-        onClose();
+          phone: formData.phone
+        })
+        if (authError) {
+          setError(authError.message || "Error al crear cuenta")
+        } else {
+          onAuthSuccess?.(data.user);
+          onClose();
+        }
       }
     } catch (error: any) {
       setError(error.message || "Error de conexión")

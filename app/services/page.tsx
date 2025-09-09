@@ -246,7 +246,7 @@ export default function ServicesPage() {
                     {/* Service Image */}
                     <div className="aspect-[4/3] relative overflow-hidden">
                       <OptimizedImage
-                        src={service.image || "/services/hair/modern-haircut.png"}
+                        src={service.image || "/femfuel-logo.png"}
                         alt={service.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         context={service.category}

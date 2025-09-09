@@ -4,22 +4,22 @@ export const defaultImages = {
   userAvatar: '/professionals/portraits/hair-stylist-maria.png',
   
   // Service category defaults
-  hair: '/services/hair/modern-haircut.png',
-  nails: '/services/nails/classic-manicure.png',
-  makeup: '/services/makeup/natural-makeup.png',
-  spa: '/services/spa/luxury-facial-treatment.png',
-  lashes: '/services/lashes/lash-extensions.png',
-  body: '/services/body/body-waxing.png',
+  hair: '/femfuel-logo.png',
+  nails: '/femfuel-logo.png',
+  makeup: '/femfuel-logo.png',
+  spa: '/femfuel-logo.png',
+  lashes: '/femfuel-logo.png',
+  body: '/femfuel-logo.png',
   
   // Vendor defaults
   vendorLogo: '/vendors/logos/beauty-studio-logo.png',
   vendorCover: '/vendors/covers/modern-beauty-salon-interior.png',
   
   // Product defaults
-  productImage: '/premium-gel-manicure.png',
+  productImage: '/femfuel-logo.png',
   
   // General fallback
-  placeholder: '/services/hair/modern-haircut.png'
+  placeholder: '/femfuel-logo.png'
 }
 
 export function getDefaultImage(context: string = 'general'): string {

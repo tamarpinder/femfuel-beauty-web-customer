@@ -294,14 +294,20 @@ export default function ServicesPage() {
                       </p>
 
                       {/* Vendor Info */}
-                      <div className="flex items-center gap-2 mb-3">
+                      <div 
+                        className="flex items-center gap-2 mb-3 cursor-pointer hover:text-femfuel-rose transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation() // Prevent service click
+                          router.push(`/vendor/${service.vendor.slug}`)
+                        }}
+                      >
                         <OptimizedImage
                           src={service.vendor.logo || "/vendors/logos/beauty-studio-logo.png"}
                           alt={service.vendor.name}
                           className="w-6 h-6 rounded-full object-cover"
                           context="vendor-logo"
                         />
-                        <span className="text-sm text-femfuel-medium truncate">
+                        <span className="text-sm text-femfuel-medium truncate hover:text-femfuel-rose transition-colors">
                           {service.vendor.name}
                         </span>
                       </div>

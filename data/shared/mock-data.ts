@@ -57,7 +57,7 @@ const vendorUsers: User[] = Array.from({ length: 25 }, (_, i) => ({
   id: `vendor-${String(i + 1).padStart(3, '0')}`,
   email: `vendor${i + 1}@femfuel.com`,
   name: `Vendor User ${i + 1}`,
-  avatar: `/vendor-avatar-${i + 1}.jpg`,
+  avatar: `/vendors/logos/vendor-${i + 1}-logo.png`,
   phone: `+1-809-555-${String(1000 + i).slice(-4)}`,
   role: 'vendor' as const,
   status: 'active' as const,
@@ -70,7 +70,7 @@ const customerUsers: User[] = Array.from({ length: 50 }, (_, i) => ({
   id: `customer-${String(i + 1).padStart(3, '0')}`,
   email: `customer${i + 1}@example.com`,
   name: `Customer User ${i + 1}`,
-  avatar: `/customer-avatar-${i + 1}.jpg`,
+  avatar: `/professionals/portraits/customer-${i + 1}.png`,
   phone: `+1-809-555-${String(2000 + i).slice(-4)}`,
   role: 'customer' as const,
   status: 'active' as const,
@@ -145,7 +145,7 @@ export const vendorProfiles: VendorProfile[] = vendorUsers.map((user, i) => ({
   joinedDate: user.createdAt,
   portfolio: Array.from({ length: 6 }, (_, j) => ({
     id: `media-${i}-${j}`,
-    url: `/vendor-portfolio-${i + 1}-${j + 1}.jpg`,
+    url: `/professionals/portfolios/portfolio-${i + 1}-${j + 1}.png`,
     alt: `${vendorBusinessData[i].name} portfolio image ${j + 1}`,
     type: 'image' as const
   })),
@@ -265,7 +265,7 @@ vendorProfiles.forEach(vendor => {
         duration: template.duration,
         images: Array.from({ length: 3 }, (_, j) => ({
           id: `service-media-${serviceCounter}-${j}`,
-          url: `/service-${category}-${serviceCounter}-${j + 1}.jpg`,
+          url: `/services/${category}/${template.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}.png`,
           alt: `${template.name} at ${vendor.businessName}`,
           type: 'image' as const
         })),

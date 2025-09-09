@@ -10,7 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ServiceCard } from "@/components/service-card"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingModal } from "@/components/booking-modal"
+import { ServiceDetailGallery } from "@/components/service-detail-gallery"
 import { getVendorBySlug } from "@/lib/vendors-api"
+import { getServiceDetailImages } from "@/lib/service-detail-mappings"
 import { Vendor, VendorService } from "@/types/vendor"
 
 export default function VendorPage() {
@@ -22,6 +24,8 @@ export default function VendorPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [showBookingModal, setShowBookingModal] = useState(false)
   const [selectedService, setSelectedService] = useState<VendorService | null>(null)
+  const [showServiceGallery, setShowServiceGallery] = useState(false)
+  const [galleryService, setGalleryService] = useState<VendorService | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -51,6 +55,15 @@ export default function VendorPage() {
     if (service) {
       setSelectedService(service)
       setShowBookingModal(true)
+    }
+  }
+
+  const handleServiceGallery = (serviceId: string) => {
+    if (!vendor) return
+    const service = vendor.services.find(s => s.id === serviceId)
+    if (service) {
+      setGalleryService(service)
+      setShowServiceGallery(true)
     }
   }
 
@@ -282,6 +295,14 @@ export default function VendorPage() {
                           <div className="flex items-center gap-1 text-sm text-femfuel-medium">
                             <Clock className="h-4 w-4" />
                             <span>{service.duration} min</span>
+                            {getServiceDetailImages(service.name).length > 0 && (
+                              <button
+                                onClick={() => handleServiceGallery(service.id)}
+                                className="ml-2 text-xs text-femfuel-rose hover:text-femfuel-dark underline"
+                              >
+                                Ver proceso
+                              </button>
+                            )}
                           </div>
                           <Button
                             size="sm"
@@ -332,6 +353,19 @@ export default function VendorPage() {
             image: selectedService.image
           }}
           onBookingComplete={handleBookingComplete}
+        />
+      )}
+
+      {/* Service Detail Gallery */}
+      {galleryService && (
+        <ServiceDetailGallery
+          isOpen={showServiceGallery}
+          onClose={() => {
+            setShowServiceGallery(false)
+            setGalleryService(null)
+          }}
+          serviceName={galleryService.name}
+          images={getServiceDetailImages(galleryService.name)}
         />
       )}
     </div>

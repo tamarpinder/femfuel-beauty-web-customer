@@ -78,7 +78,7 @@ export default function BookingsPage() {
           address: "Plaza Central, Local 15, Naco",
           phone: "+1 809-555-0126",
           professionalName: "Patricia López",
-          professionalImage: "/placeholder-user.jpg",
+          professionalImage: "/professionals/portraits/nail-artist-patricia.png",
           isOnline: true,
           responseTime: "Responde en 15 min"
         },
@@ -105,7 +105,7 @@ export default function BookingsPage() {
           address: "Av. Máximo Gómez 67, Bella Vista",
           phone: "+1 809-555-0125",
           professionalName: "Gabriela Méndez",
-          professionalImage: "/placeholder-user.jpg",
+          professionalImage: "/professionals/portraits/spa-therapist-gabriela.png",
           isOnline: false,
           responseTime: "Responde en 2 horas"
         },
@@ -130,7 +130,7 @@ export default function BookingsPage() {
           address: "Calle José Reyes 45, Zona Colonial",
           phone: "+1 809-555-0124",
           professionalName: "Alejandra Santos",
-          professionalImage: "/placeholder-user.jpg",
+          professionalImage: "/professionals/portraits/makeup-artist-alejandra.png",
           isOnline: true,
           responseTime: "Responde al instante"
         },

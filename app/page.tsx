@@ -65,23 +65,53 @@ export default function HomePage() {
   }, [])
 
   const categories: Category[] = [
-    { name: "Uñas", icon: Hand, count: "45+" },
-    { name: "Maquillaje", icon: Palette, count: "32+" },
-    { name: "Cuerpo", icon: User, count: "28+" },
-    { name: "Spa", icon: Flower2, count: "35+" },
-    { name: "Peinados", icon: Scissors, count: "40+" },
-    { name: "Pestañas", icon: Eye, count: "25+" },
+    { 
+      name: "Uñas", 
+      icon: Hand, 
+      count: "45+",
+      bannerImage: "/categories/nails-category-banner.png"
+    },
+    { 
+      name: "Maquillaje", 
+      icon: Palette, 
+      count: "32+",
+      bannerImage: "/categories/makeup-category-banner.png"
+    },
+    { 
+      name: "Cuerpo", 
+      icon: User, 
+      count: "28+",
+      bannerImage: "/categories/body-category-banner.png"
+    },
+    { 
+      name: "Spa", 
+      icon: Flower2, 
+      count: "35+",
+      bannerImage: "/categories/spa-category-banner.png"
+    },
+    { 
+      name: "Peinados", 
+      icon: Scissors, 
+      count: "40+",
+      bannerImage: "/categories/hair-category-banner.png"
+    },
+    { 
+      name: "Pestañas", 
+      icon: Eye, 
+      count: "25+",
+      bannerImage: "/categories/lashes-category-banner.png"
+    },
   ]
 
-  // Generate transformations from real mock data
+  // Generate transformations from real mock data - ALL 8 transformation sets
   const transformations = [
     {
       id: 1,
       name: "Isabella Martínez",
       service: "Balayage Dorado Caribeño",
       vendor: "Salon Elite DR",
-      beforeImage: "/transformation-before-1.jpg",
-      afterImage: "/transformation-after-1.jpg",
+      beforeImage: "/transformations/before/hair-transformation-1-before.png",
+      afterImage: "/transformations/after/hair-transformation-1-after.png",
       rating: 5.0,
       testimonial: "¡Increíble! Me siento como una nueva persona. El balayage quedó perfecto y el corte me favorece muchísimo.",
       serviceId: "service-001",
@@ -92,8 +122,8 @@ export default function HomePage() {
       name: "María José Peña",
       service: "Glamour Tropical Night",
       vendor: "Beauty Studio Elite",
-      beforeImage: "/transformation-before-2.jpg",
-      afterImage: "/transformation-after-2.jpg",
+      beforeImage: "/transformations/before/makeup-transformation-1-before.png",
+      afterImage: "/transformations/after/makeup-transformation-1-after.png",
       rating: 4.9,
       testimonial: "El maquillaje duró toda la noche. Recibí tantos cumplidos en la fiesta. Definitivamente regreso.",
       serviceId: "service-002",
@@ -102,14 +132,74 @@ export default function HomePage() {
     {
       id: 3,
       name: "Carmen Delgado",
-      service: "Piel Radiante Caribeña",
-      vendor: "Spa Bella Vista",
-      beforeImage: "/transformation-before-3.jpg",
-      afterImage: "/transformation-after-3.jpg",
+      service: "Dominican Blowout Perfecto",
+      vendor: "Hair Salon Elite",
+      beforeImage: "/transformations/before/hair-transformation-2-before.png",
+      afterImage: "/transformations/after/hair-transformation-2-after.png",
       rating: 4.8,
-      testimonial: "Mi piel se ve y se siente increíble. El tratamiento fue relajante y los resultados son visibles.",
+      testimonial: "Mi cabello nunca se había visto tan liso y brillante. El blowout dominicano es increíble!",
       serviceId: "service-003",
-      lookName: "Piel Radiante Caribeña"
+      lookName: "Dominican Silk Blowout"
+    },
+    {
+      id: 4,
+      name: "Sophia Ramírez",
+      service: "Tropical Nail Art",
+      vendor: "Nails Paradise",
+      beforeImage: "/transformations/before/nail-transformation-before.png",
+      afterImage: "/transformations/after/nail-transformation-after.png",
+      rating: 5.0,
+      testimonial: "Las uñas más hermosas que he tenido. El arte tropical es perfecto para el verano caribeño!",
+      serviceId: "service-004",
+      lookName: "Caribbean Paradise Nails"
+    },
+    {
+      id: 5,
+      name: "Alejandra Santos",
+      service: "Maquillaje Natural Día",
+      vendor: "Makeup Studio Elite",
+      beforeImage: "/transformations/before/makeup-transformation-2-before.png",
+      afterImage: "/transformations/after/makeup-transformation-2-after.png",
+      rating: 4.9,
+      testimonial: "Perfecto para el día a día. Se ve natural pero me hace lucir radiante. Exactamente lo que buscaba.",
+      serviceId: "service-005",
+      lookName: "Natural Daytime Glow"
+    },
+    {
+      id: 6,
+      name: "Valentina Cruz",
+      service: "Tratamiento Facial Renovador",
+      vendor: "Spa Paradise",
+      beforeImage: "/transformations/before/spa-transformation-1-before.png",
+      afterImage: "/transformations/after/spa-transformation-1-after.png",
+      rating: 5.0,
+      testimonial: "Mi piel se ve completamente renovada. Los resultados son visibles desde la primera sesión.",
+      serviceId: "service-006",
+      lookName: "Skin Renewal Treatment"
+    },
+    {
+      id: 7,
+      name: "Camila Herrera",
+      service: "Extensiones de Pestañas Volumen",
+      vendor: "Lash Studio Elite",
+      beforeImage: "/transformations/before/lash-transformation-1-before.png",
+      afterImage: "/transformations/after/lash-transformation-1-after.png",
+      rating: 4.8,
+      testimonial: "Mis pestañas se ven increíbles! Duran mucho tiempo y me ahorro maquillaje todos los días.",
+      serviceId: "service-007",
+      lookName: "Volume Lash Extensions"
+    },
+    {
+      id: 8,
+      name: "Daniela Morales",
+      service: "Maquillaje Elegante Premium",
+      vendor: "Belleza Natural",
+      beforeImage: "/transformations/before/makeup-transformation-3-before.png",
+      afterImage: "/transformations/after/makeup-transformation-3-after.png",
+      rating: 4.9,
+      testimonial: "Un look sofisticado y elegante. Me sentí como una modelo profesional en mi evento especial.",
+      serviceId: "service-008",
+      lookName: "Elegant Premium Look"
     }
   ]
 
@@ -124,12 +214,12 @@ export default function HomePage() {
       rating: 4.9,
       reviewCount: 156,
       yearsExperience: 8,
-      avatar: "/professional-1.jpg",
+      avatar: "/professionals/portraits/hair-colorist-lucia.png",
       portfolioImages: [
-        "/portfolio-hair-1.jpg",
-        "/portfolio-hair-2.jpg",
-        "/portfolio-hair-3.jpg",
-        "/portfolio-hair-4.jpg"
+        "/services/hair/balayage-treatment.png",
+        "/services/hair/hair-coloring-session.png",
+        "/services/hair/modern-haircut.png",
+        "/services/hair/wedding-hairstyle.png"
       ],
       specialties: ["Balayage", "Colorimetría", "Cabello Rizado"],
       availableToday: true,
@@ -146,12 +236,12 @@ export default function HomePage() {
       rating: 5.0,
       reviewCount: 89,
       yearsExperience: 6,
-      avatar: "/professional-2.jpg",
+      avatar: "/professionals/portraits/bridal-makeup-artist-valentina.png",
       portfolioImages: [
-        "/portfolio-makeup-1.jpg",
-        "/portfolio-makeup-2.jpg",
-        "/portfolio-makeup-3.jpg",
-        "/portfolio-makeup-4.jpg"
+        "/services/makeup/bridal-makeup-application.png",
+        "/services/makeup/glamour-evening-look.png",
+        "/services/makeup/natural-makeup.png",
+        "/services/makeup/corporate-makeup.png"
       ],
       specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
       availableToday: false,
@@ -168,12 +258,12 @@ export default function HomePage() {
       rating: 4.8,
       reviewCount: 203,
       yearsExperience: 12,
-      avatar: "/professional-3.jpg",
+      avatar: "/professionals/portraits/wellness-therapist-isabella.png",
       portfolioImages: [
-        "/portfolio-spa-1.jpg",
-        "/portfolio-spa-2.jpg",
-        "/portfolio-spa-3.jpg",
-        "/portfolio-spa-4.jpg"
+        "/services/spa/luxury-facial-treatment.png",
+        "/services/spa/hot-stone-massage.png",
+        "/services/spa/massage.png",
+        "/services/spa/massage2.png"
       ],
       specialties: ["Antiedad", "Acné", "Hidratación"],
       availableToday: true,
@@ -190,12 +280,12 @@ export default function HomePage() {
       rating: 4.7,
       reviewCount: 178,
       yearsExperience: 5,
-      avatar: "/professional-4.jpg",
+      avatar: "/professionals/portraits/nail-artist-sofia.png",
       portfolioImages: [
-        "/portfolio-nails-1.jpg",
-        "/portfolio-nails-2.jpg",
-        "/portfolio-nails-3.jpg",
-        "/portfolio-nails-4.jpg"
+        "/services/nails/tropical-nail-art.png",
+        "/services/nails/premium-gel-manicure.png",
+        "/services/nails/acrylic-extensions.png",
+        "/services/nails/luxury-manicure.png"
       ],
       specialties: ["Nail Art", "Gel X", "Decoraciones"],
       availableToday: true,
@@ -221,7 +311,7 @@ export default function HomePage() {
       openNow: true,
       closingTime: "8:00 PM",
       phone: "+1 809-555-0123",
-      image: "/professional-makeup-artist.png",
+      image: "/services/hair/hair-coloring-session.png",
       featuredService: {
         name: "Balayage Dorado Caribeño",
         price: "RD$3,500",
@@ -243,7 +333,7 @@ export default function HomePage() {
       openNow: true,
       closingTime: "9:00 PM",
       phone: "+1 809-555-0124",
-      image: "/facial-treatment-spa.png",
+      image: "/services/makeup/bridal-makeup-application.png",
       featuredService: {
         name: "Glamour Tropical Night",
         price: "RD$2,800",
@@ -265,7 +355,7 @@ export default function HomePage() {
       openNow: false,
       closingTime: "6:00 PM",
       phone: "+1 809-555-0125",
-      image: "/premium-gel-manicure.png",
+      image: "/services/spa/hot-stone-massage.png",
       featuredService: {
         name: "Piel Radiante Caribeña",
         price: "RD$4,200",
@@ -287,7 +377,7 @@ export default function HomePage() {
       openNow: true,
       closingTime: "7:30 PM",
       phone: "+1 809-555-0126",
-      image: "/professional-makeup-artist.png",
+      image: "/services/nails/tropical-nail-art.png",
       featuredService: {
         name: "Tropical Nail Art",
         price: "RD$1,800",
@@ -309,7 +399,7 @@ export default function HomePage() {
       openNow: true,
       closingTime: "8:30 PM",
       phone: "+1 809-555-0127",
-      image: "/facial-treatment-spa.png",
+      image: "/services/lashes/skilled-eyebrow-artist.png",
       featuredService: {
         name: "Microblading Natural",
         price: "RD$6,500",
@@ -331,7 +421,7 @@ export default function HomePage() {
       openNow: false,
       closingTime: "6:30 PM",
       phone: "+1 809-555-0128",
-      image: "/premium-gel-manicure.png",
+      image: "/services/hair/hair-treatment-session.png",
       featuredService: {
         name: "Definición de Rizos Naturales",
         price: "RD$2,200",

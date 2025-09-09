@@ -1,5 +1,6 @@
 // Mock data functions for demo - using shared mock data directly
 import { mockData } from '@/data/shared/mock-data'
+import { getVendorLogo, getVendorCover, getServiceImage, getProfessionalPortrait, getRandomProfessionalPortrait } from '@/lib/image-mappings'
 
 export interface VendorFilters {
   category?: string
@@ -49,8 +50,8 @@ export async function getVendors(filters: VendorFilters = {}) {
         id: vendor.id,
         name: vendor.businessName,
         slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-        logo: vendor.user.avatar,
-        coverImage: `/vendor-cover-${vendor.id}.jpg`,
+        logo: getVendorLogo(vendor.businessName),
+        coverImage: getVendorCover(vendor.businessName),
         description: vendor.description,
         rating: vendor.rating,
         reviewCount: vendor.reviewCount,
@@ -90,7 +91,7 @@ export async function getVendors(filters: VendorFilters = {}) {
           duration: service.duration,
           category: service.category,
           isPopular: service.isPopular,
-          image: service.images?.[0]?.url,
+          image: getServiceImage(service.name),
           addons: service.addons || []
         })),
         businessHours: vendor.businessHours
@@ -124,8 +125,8 @@ export async function getVendorById(id: string) {
       id: vendor.id,
       name: vendor.businessName,
       slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      logo: vendor.user.avatar,
-      coverImage: `/vendor-cover-${vendor.id}.jpg`,
+      logo: getVendorLogo(vendor.businessName),
+      coverImage: getVendorCover(vendor.businessName),
       description: vendor.description,
       rating: vendor.rating,
       reviewCount: vendor.reviewCount,
@@ -170,9 +171,9 @@ export async function getVendorById(id: string) {
       })),
       businessHours: vendor.businessHours,
       gallery: [
-        `/vendor-gallery-${vendor.id}-1.jpg`,
-        `/vendor-gallery-${vendor.id}-2.jpg`,
-        `/vendor-gallery-${vendor.id}-3.jpg`
+        `/vendors/galleries/${vendor.businessName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}-1.png`,
+        `/vendors/galleries/${vendor.businessName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}-2.png`,
+        `/vendors/galleries/${vendor.businessName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}-3.png`
       ]
     }
   } catch (error) {

@@ -69,7 +69,7 @@ export default function ChatPage() {
       rating: 4.8,
       reviewCount: 156,
       professionalName: "Patricia López",
-      professionalImage: "/placeholder-user.jpg",
+      professionalImage: "/professionals/portraits/nail-artist-patricia.png",
       isOnline: true,
       responseTime: "Responde en 15 min",
       lastSeen: new Date()
@@ -197,7 +197,7 @@ export default function ChatPage() {
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <img
-                    src={vendor.professionalImage || "/placeholder-user.jpg"}
+                    src={vendor.professionalImage || "/professionals/portraits/hair-stylist-maria.png"}
                     alt={vendor.professionalName}
                     className="w-10 h-10 rounded-full object-cover"
                   />

@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useAuth } from "@/contexts/auth-context"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AuthModalProps {
   isOpen: boolean
@@ -24,6 +25,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { signIn, signUp } = useAuth()
+  const isMobile = useIsMobile()
 
   // Demo customer credentials
   const demoCredentials = {
@@ -120,24 +122,30 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={isMobile ? "max-w-[calc(100vw-1rem)]" : "sm:max-w-md"}>
         <DialogHeader>
-          <DialogTitle className="text-center text-xl font-bold text-femfuel-dark">
+          <DialogTitle className={`text-center font-bold text-femfuel-dark ${
+            isMobile ? "text-lg" : "text-xl"
+          }`}>
             {mode === "login" ? "Iniciar Sesión" : "Crear Cuenta"}
           </DialogTitle>
-          <DialogDescription className="text-center text-femfuel-medium">
+          <DialogDescription className={`text-center text-femfuel-medium ${
+            isMobile ? "text-xs" : "text-sm"
+          }`}>
             {mode === "login"
               ? "Accede a tu cuenta para reservar servicios"
               : "Únete a FemFuel Beauty y descubre los mejores profesionales"}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className={isMobile ? "space-y-3" : "space-y-4"}>
           {/* Social Login Buttons */}
-          <div className="space-y-3">
+          <div className={isMobile ? "space-y-2" : "space-y-3"}>
             <Button
               variant="outline"
-              className="w-full h-12 border-gray-200 hover:bg-gray-50 bg-transparent"
+              className={`w-full border-gray-200 hover:bg-gray-50 bg-transparent ${
+                isMobile ? "h-10 text-xs" : "h-12"
+              }`}
               onClick={() => handleSocialLogin("google")}
               disabled={isLoading}
             >
@@ -164,7 +172,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
             <Button
               variant="outline"
-              className="w-full h-12 border-gray-200 hover:bg-gray-50 bg-transparent"
+              className={`w-full border-gray-200 hover:bg-gray-50 bg-transparent ${
+                isMobile ? "h-10 text-xs" : "h-12"
+              }`}
               onClick={() => handleSocialLogin("facebook")}
               disabled={isLoading}
             >
@@ -180,20 +190,32 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
               <Separator className="w-full" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-femfuel-medium">O continúa con email</span>
+              <span className={`bg-white px-2 text-femfuel-medium ${
+                isMobile ? "text-xs" : "text-sm"
+              }`}>O continúa con email</span>
             </div>
           </div>
 
           {/* Test Credentials Notice - Only in Login Mode */}
           {mode === "login" && (
-            <div className="space-y-3">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className={isMobile ? "space-y-2" : "space-y-3"}>
+              <div className={`bg-blue-50 border border-blue-200 rounded-lg ${
+                isMobile ? "p-3" : "p-4"
+              }`}>
                 <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <Info className={`text-blue-600 flex-shrink-0 mt-0.5 ${
+                    isMobile ? "h-4 w-4" : "h-5 w-5"
+                  }`} />
                   <div>
-                    <h4 className="font-medium text-blue-900 mb-1">Credenciales de Demostración</h4>
-                    <p className="text-sm text-blue-700 mb-2">Para pruebas, usa la cuenta de {demoCredentials.name}:</p>
-                    <div className="text-sm font-mono bg-white rounded px-2 py-1 border">
+                    <h4 className={`font-medium text-blue-900 mb-1 ${
+                      isMobile ? "text-sm" : "text-base"
+                    }`}>Credenciales de Demostración</h4>
+                    <p className={`text-blue-700 mb-2 ${
+                      isMobile ? "text-xs" : "text-sm"
+                    }`}>Para pruebas, usa la cuenta de {demoCredentials.name}:</p>
+                    <div className={`font-mono bg-white rounded px-2 py-1 border ${
+                      isMobile ? "text-xs" : "text-sm"
+                    }`}>
                       <div>📧 {demoCredentials.email}</div>
                       <div>🔒 {demoCredentials.password}</div>
                     </div>
@@ -204,27 +226,33 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
               <button
                 type="button"
                 onClick={handleFillTestCredentials}
-                className="glassmorphism-button w-full"
+                className={isMobile ? "glassmorphism-button-mobile w-full" : "glassmorphism-button w-full"}
                 disabled={isLoading}
               >
-                <User className="h-4 w-4" />
-                <span>Usar Credenciales de Prueba</span>
+                <User className={isMobile ? "h-3 w-3" : "h-4 w-4"} />
+                <span>{isMobile ? "Usar Demo" : "Usar Credenciales de Prueba"}</span>
               </button>
             </div>
           )}
 
           {/* Error Display */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="text-sm text-red-700">{error}</p>
+            <div className={`bg-red-50 border border-red-200 rounded-lg ${
+              isMobile ? "p-2" : "p-3"
+            }`}>
+              <p className={`text-red-700 ${
+                isMobile ? "text-xs" : "text-sm"
+              }`}>{error}</p>
             </div>
           )}
 
           {/* Email/Password Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className={isMobile ? "space-y-3" : "space-y-4"}>
             {mode === "signup" && (
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-femfuel-dark">
+              <div className={isMobile ? "space-y-1" : "space-y-2"}>
+                <Label htmlFor="name" className={`text-femfuel-dark ${
+                  isMobile ? "text-sm" : "text-base"
+                }`}>
                   Nombre completo
                 </Label>
                 <div className="relative">
@@ -235,15 +263,19 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                     placeholder="Tu nombre completo"
                     value={formData.name}
                     onChange={(e) => handleInputChange("name", e.target.value)}
-                    className="pl-10 h-12 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
+                    className={`pl-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                      isMobile ? "h-10 text-sm" : "h-12"
+                    }`}
                     required
                   />
                 </div>
               </div>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-femfuel-dark">
+            <div className={isMobile ? "space-y-1" : "space-y-2"}>
+              <Label htmlFor="email" className={`text-femfuel-dark ${
+                isMobile ? "text-sm" : "text-base"
+              }`}>
                 Email
               </Label>
               <div className="relative">
@@ -254,15 +286,19 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                   placeholder="tu@email.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className="pl-10 h-12 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
+                  className={`pl-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                    isMobile ? "h-10 text-sm" : "h-12"
+                  }`}
                   required
                 />
               </div>
             </div>
 
             {mode === "signup" && (
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-femfuel-dark">
+              <div className={isMobile ? "space-y-1" : "space-y-2"}>
+                <Label htmlFor="phone" className={`text-femfuel-dark ${
+                  isMobile ? "text-sm" : "text-base"
+                }`}>
                   Teléfono
                 </Label>
                 <div className="relative">
@@ -273,15 +309,19 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                     placeholder="+1 809 555 0123"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
-                    className="pl-10 h-12 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
+                    className={`pl-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                      isMobile ? "h-10 text-sm" : "h-12"
+                    }`}
                     required
                   />
                 </div>
               </div>
             )}
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-femfuel-dark">
+            <div className={isMobile ? "space-y-1" : "space-y-2"}>
+              <Label htmlFor="password" className={`text-femfuel-dark ${
+                isMobile ? "text-sm" : "text-base"
+              }`}>
                 Contraseña
               </Label>
               <div className="relative">
@@ -292,7 +332,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
-                  className="pl-10 pr-10 h-12 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
+                  className={`pl-10 pr-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                    isMobile ? "h-10 text-sm" : "h-12"
+                  }`}
                   required
                 />
                 <button
@@ -307,7 +349,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
             <Button
               type="submit"
-              className="w-full h-12 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+              className={`w-full bg-femfuel-rose hover:bg-[#9f1853] text-white ${
+                isMobile ? "h-10 text-sm" : "h-12"
+              }`}
               disabled={isLoading}
             >
               {isLoading ? "Cargando..." : mode === "login" ? "Iniciar Sesión" : "Crear Cuenta"}
@@ -315,7 +359,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
           </form>
 
           {/* Switch Mode */}
-          <div className="text-center text-sm">
+          <div className={`text-center ${
+            isMobile ? "text-xs" : "text-sm"
+          }`}>
             <span className="text-femfuel-medium">
               {mode === "login" ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}
             </span>
@@ -330,7 +376,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
           {mode === "login" && (
             <div className="text-center">
-              <button type="button" className="text-sm text-femfuel-rose hover:underline">
+              <button type="button" className={`text-femfuel-rose hover:underline ${
+                isMobile ? "text-xs" : "text-sm"
+              }`}>
                 ¿Olvidaste tu contraseña?
               </button>
             </div>

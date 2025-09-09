@@ -14,6 +14,7 @@ import { ServiceDetailGallery } from "@/components/service-detail-gallery"
 import { ChatButton } from "@/components/ui/chat-button"
 import { getVendorBySlug } from "@/lib/vendors-api"
 import { getServiceDetailImages } from "@/lib/service-detail-mappings"
+import { getServiceImage } from "@/lib/image-mappings"
 import { Vendor, VendorService } from "@/types/vendor"
 
 export default function VendorPage() {
@@ -343,7 +344,7 @@ export default function VendorPage() {
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
                       <img
-                        src={service.image || "/placeholder.svg?height=60&width=60&query=beauty service"}
+                        src={getServiceImage(service.name)}
                         alt={service.name}
                         className="w-15 h-15 rounded-lg object-cover flex-shrink-0"
                       />

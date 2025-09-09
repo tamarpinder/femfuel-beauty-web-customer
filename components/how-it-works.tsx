@@ -1,8 +1,17 @@
 "use client"
 
-import { Search, Calendar, Star, Heart } from "lucide-react"
+import { useState } from "react"
+import { Search, Calendar, Star, Heart, UserPlus } from "lucide-react"
+import { AuthModal } from "@/components/auth-modal"
 
 export function HowItWorks() {
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authMode, setAuthMode] = useState<"login" | "signup">("signup")
+
+  const handleAuthClick = (mode: "login" | "signup") => {
+    setAuthMode(mode)
+    setShowAuthModal(true)
+  }
   const steps = [
     {
       icon: Search,
@@ -71,11 +80,22 @@ export function HowItWorks() {
 
         {/* CTA */}
         <div className="text-center mt-12">
-          <button className="bg-femfuel-rose text-white px-8 py-3 rounded-xl font-semibold hover:bg-femfuel-rose/90 transition-colors">
-            Empezar Ahora
+          <button 
+            onClick={() => handleAuthClick("signup")}
+            className="femfuel-button-lg"
+          >
+            <UserPlus className="h-4 w-4" />
+            <span>Comenzar</span>
           </button>
         </div>
       </div>
+
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+        onAuthSuccess={() => setShowAuthModal(false)}
+        initialMode={authMode}
+      />
     </section>
   )
 }

@@ -34,7 +34,7 @@ export const vendorCoverMap: Record<string, string> = {
   'Makeup Artistry RD': '/vendors/covers/makeup-studio-workspace.png',
   'Curly Hair Haven': '/vendors/covers/trendy-hair-salon.png',
   'Zen Wellness Spa': '/vendors/covers/royal-spa-interior.png',
-  'Brow & Lash Bar': '/vendors/covers/lashes--brows-studio.png',
+  'Brow & Lash Bar': '/vendors/covers/lashes-brows-studio.png',
   'Tropical Beauty': '/vendors/covers/belleza-natural-spa.png',
   'Elite Beauty Salon': '/vendors/covers/bella-mirada-eye-studio.png',
   'Caribbean Glow': '/vendors/covers/belleza-dominicana-salon.png',

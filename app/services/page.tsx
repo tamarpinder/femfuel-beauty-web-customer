@@ -246,9 +246,10 @@ export default function ServicesPage() {
                     {/* Service Image */}
                     <div className="aspect-[4/3] relative overflow-hidden">
                       <OptimizedImage
-                        src={service.image || `/services/${service.category}/${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}.png`}
+                        src={service.image}
                         alt={service.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        context={service.category}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       
@@ -295,9 +296,10 @@ export default function ServicesPage() {
                       {/* Vendor Info */}
                       <div className="flex items-center gap-2 mb-3">
                         <OptimizedImage
-                          src={service.vendor.logo || "/vendor-placeholder.png"}
+                          src={service.vendor.logo}
                           alt={service.vendor.name}
                           className="w-6 h-6 rounded-full object-cover"
+                          context="vendor-logo"
                         />
                         <span className="text-sm text-femfuel-medium truncate">
                           {service.vendor.name}

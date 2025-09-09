@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingSkeletonList } from "@/components/booking-skeleton"
+import { ChatButton } from "@/components/ui/chat-button"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 
@@ -661,6 +662,12 @@ export default function BookingsPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Floating Chat Widget */}
+      <ChatButton
+        variant="floating"
+        className="shadow-lg hover:shadow-xl"
+      />
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="bookings" />

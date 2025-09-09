@@ -11,6 +11,7 @@ import { ServiceCard } from "@/components/service-card"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingModal } from "@/components/booking-modal"
 import { ServiceDetailGallery } from "@/components/service-detail-gallery"
+import { ChatButton } from "@/components/ui/chat-button"
 import { getVendorBySlug } from "@/lib/vendors-api"
 import { getServiceDetailImages } from "@/lib/service-detail-mappings"
 import { Vendor, VendorService } from "@/types/vendor"
@@ -182,8 +183,17 @@ export default function VendorPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         
-        {/* Floating Action */}
-        <div className="absolute bottom-4 right-4">
+        {/* Floating Actions */}
+        <div className="absolute bottom-4 right-4 flex gap-2">
+          <ChatButton
+            vendorId={vendor.id}
+            vendorName={vendor.name}
+            variant="inline"
+            size="sm"
+            className="bg-green-500 hover:bg-green-600 text-white shadow-lg"
+          >
+            💬 Chat
+          </ChatButton>
           <Button size="sm" className="bg-femfuel-rose hover:bg-[#9f1853] text-white shadow-lg">
             <Phone className="h-4 w-4 mr-2" />
             Llamar
@@ -271,12 +281,24 @@ export default function VendorPage() {
                     </p>
                   </div>
                 </div>
-                <Button
-                  onClick={() => handleServiceBook(contextService.id)}
-                  className="bg-white text-femfuel-rose hover:bg-white/90"
-                >
-                  Reservar Ahora
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => handleServiceBook(contextService.id)}
+                    className="bg-white text-femfuel-rose hover:bg-white/90"
+                  >
+                    Reservar Ahora
+                  </Button>
+                  <ChatButton
+                    vendorId={vendor.id}
+                    vendorName={vendor.name}
+                    serviceContext={contextService.name}
+                    variant="inline"
+                    size="sm"
+                    className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                  >
+                    💬 Preguntar
+                  </ChatButton>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -342,7 +364,7 @@ export default function VendorPage() {
                           {service.description}
                         </p>
                         
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-1 text-sm text-femfuel-medium">
                             <Clock className="h-4 w-4" />
                             <span>{service.duration} min</span>
@@ -355,13 +377,26 @@ export default function VendorPage() {
                               </button>
                             )}
                           </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
                           <Button
                             size="sm"
-                            className="bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                            className="flex-1 bg-femfuel-rose hover:bg-[#9f1853] text-white"
                             onClick={() => handleServiceBook(service.id)}
                           >
                             Reservar
                           </Button>
+                          <ChatButton
+                            vendorId={vendor.id}
+                            vendorName={vendor.name}
+                            serviceContext={service.name}
+                            variant="inline"
+                            size="sm"
+                            className="bg-green-500 hover:bg-green-600 text-white"
+                          >
+                            💬
+                          </ChatButton>
                         </div>
                       </div>
                     </div>

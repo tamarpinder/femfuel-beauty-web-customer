@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
+import { ChatButton } from "@/components/ui/chat-button"
 import { categories } from "@/data/shared/mock-data"
 import { getAllServices } from "@/lib/vendors-api"
 
@@ -313,7 +314,7 @@ export default function ServicesPage() {
                       </div>
 
                       {/* Service Details */}
-                      <div className="flex items-center justify-between text-xs text-femfuel-medium">
+                      <div className="flex items-center justify-between text-xs text-femfuel-medium mb-3">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           <span>{service.duration} min</span>
@@ -325,6 +326,32 @@ export default function ServicesPage() {
                         <div className="flex items-center gap-1">
                           <MapPin className="h-3 w-3" />
                           <span>{service.vendor.location.district}</span>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          className="flex-1 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleServiceClick(service)
+                          }}
+                        >
+                          Ver Detalles
+                        </Button>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <ChatButton
+                            vendorId={service.vendor.id}
+                            vendorName={service.vendor.name}
+                            serviceContext={service.name}
+                            variant="inline"
+                            size="sm"
+                            className="bg-green-500 hover:bg-green-600"
+                          >
+                            💬
+                          </ChatButton>
                         </div>
                       </div>
                     </div>
@@ -360,6 +387,12 @@ export default function ServicesPage() {
         )}
         </div>
       </div>
+
+      {/* Floating Chat Widget */}
+      <ChatButton
+        variant="floating"
+        className="shadow-lg hover:shadow-xl"
+      />
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="search" />

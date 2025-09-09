@@ -15,6 +15,7 @@ import { TransformationsShowcase } from "@/components/transformations-showcase"
 import { StarProfessionals } from "@/components/star-professionals"
 import { NearbyBeauty } from "@/components/nearby-beauty"
 import { CustomerFooter } from "@/components/customer-footer"
+import { ChatButton } from "@/components/ui/chat-button"
 
 export default function HomePage() {
   const router = useRouter()
@@ -581,6 +582,12 @@ export default function HomePage() {
 
       {/* Desktop Footer */}
       <CustomerFooter />
+
+      {/* Floating Chat Widget */}
+      <ChatButton
+        variant="floating"
+        className="shadow-lg hover:shadow-xl"
+      />
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="home" onTabChange={handleTabChange} />

@@ -18,7 +18,17 @@ export const vendorLogoMap: Record<string, string> = {
   'Tropical Beauty': '/vendors/logos/belleza-natural-logo.png',
   'Elite Beauty Salon': '/vendors/logos/bella-mirada-logo.png',
   'Caribbean Glow': '/vendors/logos/belleza-dominicana-logo.png',
-  // Add more mappings as needed
+  // Missing vendors - to be created
+  'Hair Revolution': '/vendors/logos/hair-revolution-logo.png',
+  'Luxury Nails Studio': '/vendors/logos/luxury-nails-studio-logo.png',
+  'Glow Spa & Beauty': '/vendors/logos/glow-spa-beauty-logo.png',
+  'Modern Hair Co.': '/vendors/logos/modern-hair-co-logo.png',
+  'Blissful Beauty': '/vendors/logos/blissful-beauty-logo.png',
+  'Chic Makeup Studio': '/vendors/logos/chic-makeup-studio-logo.png',
+  'Hair & Soul': '/vendors/logos/hair-soul-logo.png',
+  'Crystal Clear Spa': '/vendors/logos/crystal-clear-spa-logo.png',
+  'Lash Extensions Pro': '/vendors/logos/lash-extensions-pro-logo.png',
+  'Dominican Beauty House': '/vendors/logos/dominican-beauty-house-logo.png',
 }
 
 export const vendorCoverMap: Record<string, string> = {
@@ -38,7 +48,17 @@ export const vendorCoverMap: Record<string, string> = {
   'Tropical Beauty': '/vendors/covers/belleza-natural-spa.png',
   'Elite Beauty Salon': '/vendors/covers/bella-mirada-eye-studio.png',
   'Caribbean Glow': '/vendors/covers/belleza-dominicana-salon.png',
-  // Add more mappings as needed
+  // New vendor covers
+  'Hair Revolution': '/vendors/covers/hair-revolution-cover.png',
+  'Luxury Nails Studio': '/vendors/covers/luxury-nails-studio-cover.png',
+  'Glow Spa & Beauty': '/vendors/covers/glow-spa-beauty-cover.png',
+  'Modern Hair Co.': '/vendors/covers/modern-hair-co-cover.png',
+  'Blissful Beauty': '/vendors/covers/blissful-beauty-cover.png',
+  'Chic Makeup Studio': '/vendors/covers/chic-makeup-studio-cover.png',
+  'Hair & Soul': '/vendors/covers/hair-soul-cover.png',
+  'Crystal Clear Spa': '/vendors/covers/crystal-clear-spa-cover.png',
+  'Lash Extensions Pro': '/vendors/covers/lash-extensions-pro-cover.png',
+  'Dominican Beauty House': '/vendors/covers/dominican-beauty-house-cover.png',
 }
 
 // Service image mappings for 45 curated services

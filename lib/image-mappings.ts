@@ -44,7 +44,7 @@ export const vendorCoverMap: Record<string, string> = {
 // Service image mappings for 45 curated services
 export const serviceImageMap: Record<string, string> = {
   // Hair services (12 services) - Spanish names
-  'alisado dominicano': '/services/hair/stylist-with-blower.png',
+  'alisado dominicano': '/services/hair/alisado-dominicano-premium.png',
   'balayage': '/services/hair/balayage-treatment.png',
   'tratamiento de keratina': '/services/hair/keratin-treatment-service-after.png',
   'corte de cabello': '/services/hair/modern-haircut.png',

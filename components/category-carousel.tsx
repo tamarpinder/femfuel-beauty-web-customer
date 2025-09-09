@@ -122,8 +122,7 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
-          WebkitScrollbar: { display: 'none' }
-        }}
+        } as React.CSSProperties & { WebkitScrollbar?: { display: string } }}
       >
         {categories.map((category) => {
           const isSelected = selectedCategory === category.id

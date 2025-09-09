@@ -36,7 +36,7 @@ export function SwipeableGallery({
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
   const galleryRef = useRef<HTMLDivElement>(null)
-  const autoPlayRef = useRef<NodeJS.Timeout>()
+  const autoPlayRef = useRef<NodeJS.Timeout | null>(null)
 
   const itemsPerView = items.length <= 3 ? items.length : 3
 

@@ -16,7 +16,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { AuthModal } from "@/components/auth-modal"
 
 export function UserMenu() {
-  const { user, isAuthenticated, login, logout } = useAuth()
+  const { user, isAuthenticated, signOut } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
 
@@ -64,7 +64,7 @@ export function UserMenu() {
           </button>
         </div>
 
-        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onAuthSuccess={login} initialMode={authMode} />
+        <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onAuthSuccess={() => setShowAuthModal(false)} initialMode={authMode} />
       </>
     )
   }
@@ -108,7 +108,7 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
-          onClick={logout}
+          onClick={signOut}
         >
           <LogOut className="h-4 w-4" />
           <span>Cerrar Sesión</span>

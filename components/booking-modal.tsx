@@ -138,7 +138,8 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
     startDate.setHours(hours, minutes)
 
     const endDate = new Date(startDate)
-    endDate.setMinutes(endDate.getMinutes() + service.duration)
+    const durationMinutes = typeof service.duration === 'string' ? parseInt(service.duration) : service.duration
+    endDate.setMinutes(endDate.getMinutes() + durationMinutes)
 
     const event = {
       title: `${service.name} - ${service.vendor}`,

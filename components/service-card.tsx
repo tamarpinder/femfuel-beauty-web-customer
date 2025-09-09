@@ -28,7 +28,7 @@ export interface Service {
 interface ServiceCardProps {
   service: Service
   layout?: "horizontal" | "vertical"
-  onBook?: (serviceId: number) => void
+  onBook?: (serviceId: string) => void
 }
 
 export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCardProps) {

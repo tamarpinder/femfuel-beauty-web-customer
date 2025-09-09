@@ -96,7 +96,7 @@ export default function SearchPage() {
     loadServices()
   }, [searchQuery, filters])
 
-  const handleBookService = (serviceId: number) => {
+  const handleBookService = (serviceId: string) => {
     console.log("Book service:", serviceId)
     // TODO: Implement booking flow
   }

@@ -439,7 +439,7 @@ export default function HomePage() {
     }
   }
 
-  const handleBookService = (serviceId: number) => {
+  const handleBookService = (serviceId: string) => {
     console.log("Book service:", serviceId)
   }
 

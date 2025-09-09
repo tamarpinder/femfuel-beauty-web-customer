@@ -13,7 +13,7 @@ interface AuthGuardProps {
 }
 
 export function AuthGuard({ children, fallback, requireAuth = true }: AuthGuardProps) {
-  const { isAuthenticated, login } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
 
   if (!requireAuth || isAuthenticated) {
@@ -24,8 +24,7 @@ export function AuthGuard({ children, fallback, requireAuth = true }: AuthGuardP
     setShowAuthModal(true)
   }
 
-  const handleAuthSuccess = (user: any) => {
-    login(user)
+  const handleAuthSuccess = () => {
     setShowAuthModal(false)
   }
 

@@ -611,7 +611,7 @@ export function getProductsOnSale(): Product[] {
   return mockProducts
     .filter(product => product.isOnSale && product.availability.inStock)
     .sort((a, b) => {
-      const discountA = product.originalPrice ? ((product.originalPrice - product.price) / product.originalPrice) : 0
+      const discountA = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) : 0
       const discountB = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) : 0
       return discountB - discountA
     })

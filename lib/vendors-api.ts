@@ -92,7 +92,7 @@ export async function getVendors(filters: VendorFilters = {}) {
           category: service.category,
           isPopular: service.isPopular,
           image: getServiceImage(service.name),
-          addons: service.addons || []
+          addons: (service as any).addons || []
         })),
         businessHours: vendor.businessHours
       }
@@ -167,7 +167,7 @@ export async function getVendorById(id: string) {
         category: service.category,
         isPopular: service.isPopular,
         image: service.images?.[0]?.url,
-        addons: service.addons || []
+        addons: (service as any).addons || []
       })),
       businessHours: vendor.businessHours,
       gallery: [

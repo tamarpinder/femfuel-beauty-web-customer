@@ -13,7 +13,7 @@ interface MobileHeaderProps {
 }
 
 export function MobileHeader({ onSearch }: MobileHeaderProps) {
-  const { user, isAuthenticated, login } = useAuth()
+  const { user, isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
   const [showSearch, setShowSearch] = useState(false)
@@ -110,7 +110,7 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
       <AuthModal 
         isOpen={showAuthModal} 
         onClose={() => setShowAuthModal(false)} 
-        onAuthSuccess={login}
+        onAuthSuccess={() => setShowAuthModal(false)}
         initialMode={authMode}
       />
     </>

@@ -52,6 +52,39 @@ export default function ServiceProvidersPage() {
   const [providers, setProviders] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
+  const [imageLoading, setImageLoading] = useState(true)
+  const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set())
+
+  // Preload critical images as soon as we have the serviceId
+  useEffect(() => {
+    const preloadCriticalImages = async () => {
+      // Preload common category covers immediately
+      const commonCovers = [
+        '/services/covers/hair-services-hero.png',
+        '/services/covers/nail-services-hero.png',
+        '/services/covers/makeup-services-hero.png',
+        '/services/covers/spa-services-hero.png',
+        '/services/covers/lash-services-hero.png',
+        '/services/covers/beauty-services-hero.png'
+      ]
+      
+      const preloadPromises = commonCovers.map(src => {
+        return new Promise((resolve) => {
+          const img = new Image()
+          img.onload = () => {
+            setPreloadedImages(prev => new Set([...prev, src]))
+            resolve(src)
+          }
+          img.onerror = () => resolve(src) // Still resolve to continue
+          img.src = src
+        })
+      })
+      
+      await Promise.allSettled(preloadPromises)
+    }
+    
+    preloadCriticalImages()
+  }, [])
 
   useEffect(() => {
     async function loadServiceAndProviders() {
@@ -69,8 +102,22 @@ export default function ServiceProvidersPage() {
         
         setService(targetService)
         
-        // Get all vendors that offer this service category
-        const categoryProviders = await getVendorsByCategory(targetService.category)
+        // Start loading vendors in parallel
+        const vendorPromise = getVendorsByCategory(targetService.category)
+        
+        // Preload the specific service cover image
+        const serviceCoverSrc = getServiceCategoryCover(targetService.category)
+        if (!preloadedImages.has(serviceCoverSrc)) {
+          const img = new Image()
+          img.onload = () => setImageLoading(false)
+          img.onerror = () => setImageLoading(false)
+          img.src = serviceCoverSrc
+        } else {
+          setImageLoading(false)
+        }
+        
+        // Wait for vendors
+        const categoryProviders = await vendorPromise
         
         // Filter vendors that actually offer this specific service
         const serviceProviders = categoryProviders.filter(vendor =>
@@ -78,6 +125,19 @@ export default function ServiceProvidersPage() {
         )
         
         setProviders(serviceProviders)
+        
+        // Preload vendor images in background
+        serviceProviders.forEach(vendor => {
+          if (vendor.coverImage) {
+            const img = new Image()
+            img.src = vendor.coverImage
+          }
+          if (vendor.logo) {
+            const logoImg = new Image()
+            logoImg.src = vendor.logo
+          }
+        })
+        
       } catch (error) {
         console.error('Error loading service and providers:', error)
       } finally {
@@ -86,7 +146,7 @@ export default function ServiceProvidersPage() {
     }
     
     loadServiceAndProviders()
-  }, [serviceId, router])
+  }, [serviceId, router, preloadedImages])
 
   const handleBack = () => {
     router.back()
@@ -167,11 +227,19 @@ export default function ServiceProvidersPage() {
 
       {/* Service Hero Section */}
       <div className="relative h-80 md:h-[500px] lg:h-[600px] overflow-hidden">
+        {/* Show loading skeleton while image loads */}
+        {imageLoading && (
+          <div className="absolute inset-0 bg-gradient-to-br from-femfuel-purple/20 to-femfuel-rose/20 animate-pulse" />
+        )}
         <OptimizedImage
           src={getServiceCategoryCover(service.category)}
           alt={`${service.name} - ${service.category}`}
           fill
+          priority
+          sizes="100vw"
           className="object-cover"
+          onLoad={() => setImageLoading(false)}
+          onError={() => setImageLoading(false)}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20"></div>
         <div className="absolute inset-0 bg-gradient-to-br from-femfuel-rose/30 via-transparent to-femfuel-purple/20"></div>
@@ -294,19 +362,27 @@ export default function ServiceProvidersPage() {
                       <div className="space-y-4">
                         {/* Vendor Image & Logo */}
                         <div className="relative">
-                          <div className="w-full h-56 rounded-xl overflow-hidden">
+                          <div className="w-full h-56 rounded-xl overflow-hidden bg-gray-100">
                             <OptimizedImage
                               src={vendor.coverImage || "/vendor-cover-placeholder.png"}
                               alt={vendor.name}
+                              width={400}
+                              height={224}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                              loading="lazy"
                             />
                           </div>
                           <div className="absolute -bottom-4 left-6">
-                            <OptimizedImage
-                              src={vendor.logo || "/vendor-logo-placeholder.png"}
-                              alt={`${vendor.name} logo`}
-                              className="w-16 h-16 rounded-full border-4 border-white shadow-xl object-cover"
-                            />
+                            <div className="w-16 h-16 bg-white rounded-full border-4 border-white shadow-xl overflow-hidden">
+                              <OptimizedImage
+                                src={vendor.logo || "/vendor-logo-placeholder.png"}
+                                alt={`${vendor.name} logo`}
+                                width={64}
+                                height={64}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
                           </div>
                         </div>
 

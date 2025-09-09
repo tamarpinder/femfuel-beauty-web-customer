@@ -20,6 +20,7 @@ interface OptimizedImageProps {
   onError?: () => void
   onLoad?: () => void
   instant?: boolean // For carousel images that need instant transitions
+  loading?: 'lazy' | 'eager'
 }
 
 export function OptimizedImage({
@@ -37,19 +38,20 @@ export function OptimizedImage({
   onError,
   onLoad,
   instant = false,
+  loading = 'lazy',
   ...props
 }: OptimizedImageProps) {
   const [imageSrc, setImageSrc] = useState(src)
-  const [isLoading, setIsLoading] = useState(!instant) // Skip loading state for instant images
+  const [isLoading, setIsLoading] = useState(!instant && !priority) // Skip loading state for instant/priority images
   const [hasError, setHasError] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
 
   // Reset state when src changes
   useEffect(() => {
     setImageSrc(src)
-    setIsLoading(!instant) // Skip loading state for instant images
+    setIsLoading(!instant && !priority) // Skip loading state for instant/priority images
     setHasError(false)
-  }, [src, instant])
+  }, [src, instant, priority])
 
   const handleError = () => {
     const fallback = getDefaultImage(context)
@@ -69,7 +71,7 @@ export function OptimizedImage({
 
   return (
     <div className={cn('relative overflow-hidden', fill && 'w-full h-full', className)}>
-      {isLoading && !instant && (
+      {isLoading && !instant && !priority && (
         <div className="absolute inset-0 bg-gray-100 animate-pulse pointer-events-none" />
       )}
       <Image
@@ -79,10 +81,11 @@ export function OptimizedImage({
         {...imageProps}
         quality={quality}
         priority={priority || instant}
+        loading={priority || instant ? 'eager' : loading}
         style={style}
         className={cn(
           instant ? 'transition-none' : 'transition-opacity duration-300',
-          isLoading && !instant ? 'opacity-0' : 'opacity-100',
+          isLoading && !instant && !priority ? 'opacity-0' : 'opacity-100',
           fill && 'object-cover',
           hasError && 'filter grayscale opacity-80'
         )}

@@ -122,7 +122,7 @@ export default function HomePage() {
       name: "María José Peña",
       service: "Glamour Tropical Night",
       vendor: "Beauty Studio Elite",
-      beforeImage: "/transformations/before/makeup-transformation-1-before.png",
+      beforeImage: "/transformations/before/makeup-transformation-3-before.png",
       afterImage: "/transformations/after/makeup-transformation-1-after.png",
       rating: 4.9,
       testimonial: "El maquillaje duró toda la noche. Recibí tantos cumplidos en la fiesta. Definitivamente regreso.",

@@ -246,7 +246,7 @@ export default function ServicesPage() {
                     {/* Service Image */}
                     <div className="aspect-[4/3] relative overflow-hidden">
                       <OptimizedImage
-                        src={service.image}
+                        src={service.image || "/services/hair/modern-haircut.png"}
                         alt={service.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         context={service.category}
@@ -296,7 +296,7 @@ export default function ServicesPage() {
                       {/* Vendor Info */}
                       <div className="flex items-center gap-2 mb-3">
                         <OptimizedImage
-                          src={service.vendor.logo}
+                          src={service.vendor.logo || "/vendors/logos/beauty-studio-logo.png"}
                           alt={service.vendor.name}
                           className="w-6 h-6 rounded-full object-cover"
                           context="vendor-logo"

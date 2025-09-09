@@ -2,6 +2,7 @@
 
 import type { LucideIcon } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 
 export interface Category {
   name: string
@@ -28,10 +29,14 @@ export function CategoryCard({ category, onClick }: CategoryCardProps) {
       <CardContent className="p-0">
         {category.bannerImage ? (
           <div className="relative h-24 w-full">
-            <img
+            <OptimizedImage
               src={category.bannerImage}
               alt={`${category.name} category`}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover"
+              context={category.name.toLowerCase()}
+              quality={80}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div className="absolute bottom-2 left-0 right-0 text-center">

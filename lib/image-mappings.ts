@@ -41,49 +41,62 @@ export const vendorCoverMap: Record<string, string> = {
   // Add more mappings as needed
 }
 
-// Service image mappings
+// Service image mappings for 45 curated services
 export const serviceImageMap: Record<string, string> = {
-  // Hair services
-  'balayage': '/services/hair/balayage-treatment.png',
+  // Hair services (12 services)
   'dominican blowout': '/services/hair/stylist-with-blower.png',
-  'hair color': '/services/hair/hair-coloring-session.png',
+  'balayage': '/services/hair/balayage-treatment.png',
+  'keratin treatment': '/services/hair/keratin-treatment-service-after.png',
   'haircut': '/services/hair/modern-haircut.png',
+  'hair color': '/services/hair/hair-coloring-session.png',
+  'wedding hairstyle': '/services/hair/wedding-hairstyle-service.png',
+  'curly hair cut': '/services/hair/curly-hair-cut-service.png',
   'hair treatment': '/services/hair/hair-treatment-session.png',
-  'event hairstyle': '/services/hair/event-hairstyling.png',
-  'wedding hairstyle': '/services/hair/wedding-hairstyle.png',
-  'merengue hairstyle': '/services/hair/merengue-hairstyle.png',
+  'hair extensions': '/services/hair/hair-extensions-service.png',
+  'hair highlights': '/services/hair/hair-highlights-service.png',
+  'hair straightening': '/services/hair/hair-straightening-service.png',
+  'hair mask treatment': '/services/hair/hair-mask-treatment-service.png',
   
-  // Nail services
+  // Nail services (10 services)
   'gel manicure': '/services/nails/premium-gel-manicure.png',
   'tropical nail art': '/services/nails/tropical-nail-art.png',
-  'spa pedicure': '/services/nails/spa-pedicure-treatment.png',
-  'acrylic extensions': '/services/nails/acrylic-extensions.png',
   'classic manicure': '/services/nails/classic-manicure.png',
+  'acrylic extensions': '/services/nails/acrylic-extensions.png',
+  'spa pedicure': '/services/nails/spa-pedicure-treatment.png',
   'express manicure': '/services/nails/express-manicure.png',
   'luxury manicure': '/services/nails/luxury-manicure.png',
+  'deluxe spa pedicure': '/services/nails/deluxe-spa-pedicure-service.png',
+  'modern french manicure': '/services/nails/modern-french-manicure-service.png',
+  'nail repair': '/services/nails/nail-repair-service.png',
   
-  // Makeup services
+  // Makeup services (8 services)
   'bridal makeup': '/services/makeup/bridal-makeup-application.png',
-  'glamour evening': '/services/makeup/glamour-evening-look.png',
-  'corporate makeup': '/services/makeup/corporate-makeup.png',
-  'photography makeup': '/services/makeup/photography-makeup.png',
   'natural makeup': '/services/makeup/natural-makeup.png',
-  'makeup class': '/services/makeup/makeup-class.png',
+  'glamour evening': '/services/makeup/glamour-evening-look.png',
+  'corporate makeup': '/services/makeup/corporate-makeup-service.png',
+  'photography makeup': '/services/makeup/photography-makeup-service.png',
   'caribbean makeup': '/services/makeup/caribbean-makeup.png',
+  'airbrush makeup': '/services/makeup/airbrush-makeup-service.png',
+  'special occasion makeup': '/services/makeup/special-occasion-makeup-service.png',
   
-  // Spa services
+  // Spa services (8 services)
   'luxury facial': '/services/spa/luxury-facial-treatment.png',
   'massage': '/services/spa/massage.png',
-  'aromatherapy': '/services/spa/massage2.png',
+  'deep cleansing facial': '/services/spa/deep-cleansing-facial-service.png',
+  'aromatherapy': '/services/spa/aromatherapy-massage-service.png',
   'hot stone': '/services/spa/hot-stone-massage.png',
   'therapeutic massage': '/services/spa/massage3.png',
+  'microdermabrasion': '/services/spa/microdermabrasion-service.png',
+  'couples massage': '/services/spa/couples-massage-service.png',
   
-  // Lash services
+  // Lash & Brow services (7 services)
   'lash extensions': '/services/lashes/lash-extensions.png',
   'russian volume': '/services/lashes/russian-volume-lashes.png',
   'classic lashes': '/services/lashes/classic-lashes.png',
   'lash tint': '/services/lashes/lash-tint.png',
   'microblading': '/services/lashes/skilled-eyebrow-artist.png',
+  'lash lift': '/services/lashes/lash-extensions.png', // Reuse similar image
+  'brow design': '/services/lashes/skilled-eyebrow-artist.png', // Reuse eyebrow image
 }
 
 // Professional portrait mappings

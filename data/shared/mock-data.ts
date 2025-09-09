@@ -196,91 +196,94 @@ export const customerProfiles: CustomerProfile[] = customerUsers.map((user, i) =
   }
 })
 
-// Generate Services (100 services across 25 vendors)
-const serviceTemplates = {
-  nails: [
-    { name: 'Manicure Gel Premium', price: 1200, duration: 60 },
-    { name: 'Tropical Nail Art', price: 1800, duration: 75 },
-    { name: 'Classic Manicure', price: 800, duration: 45 },
-    { name: 'Acrylic Extensions', price: 2000, duration: 90 },
-    { name: 'Caribbean French Design', price: 1500, duration: 65 },
-    { name: 'Pedicure Spa Completo', price: 1200, duration: 60 },
-    { name: 'Uñas Esculpidas', price: 2500, duration: 120 }
-  ],
-  hair: [
-    { name: 'Dominican Blowout', price: 1500, duration: 90 },
-    { name: 'Balayage Dorado Caribeño', price: 4500, duration: 180 },
-    { name: 'Corte y Peinado', price: 1800, duration: 60 },
-    { name: 'Tratamiento de Keratina', price: 6000, duration: 180 },
-    { name: 'Mechas Californianas', price: 4000, duration: 150 },
-    { name: 'Alisado Natural', price: 3500, duration: 120 },
-    { name: 'Hidratación Profunda', price: 2200, duration: 75 },
-    { name: 'Reparación Capilar', price: 2800, duration: 90 }
-  ],
-  makeup: [
-    { name: 'Maquillaje de Novia', price: 5000, duration: 90 },
-    { name: 'Glamour Tropical Night', price: 3500, duration: 75 },
-    { name: 'Maquillaje Profesional', price: 2800, duration: 60 },
-    { name: 'Look Natural Caribeño', price: 2000, duration: 45 },
-    { name: 'Maquillaje Editorial', price: 4000, duration: 75 },
-    { name: 'Smokey Eyes Dorado', price: 2500, duration: 50 }
-  ],
-  spa: [
-    { name: 'Piel Radiante Caribeña', price: 4200, duration: 90 },
-    { name: 'Facial Antienvejecimiento', price: 4500, duration: 90 },
-    { name: 'Limpieza Facial Profunda', price: 3000, duration: 75 },
-    { name: 'Masaje Relajante', price: 3500, duration: 60 },
-    { name: 'Tratamiento Hidratante', price: 2800, duration: 60 },
-    { name: 'Exfoliación Corporal', price: 3200, duration: 75 },
-    { name: 'Ritual de Belleza Tropical', price: 5500, duration: 120 }
-  ],
-  lashes: [
-    { name: 'Extensiones de Pestañas Clásicas', price: 2800, duration: 90 },
-    { name: 'Pestañas Volumen Ruso', price: 3500, duration: 120 },
-    { name: 'Lifting de Pestañas', price: 1800, duration: 60 },
-    { name: 'Diseño de Cejas', price: 800, duration: 30 },
-    { name: 'Microblading Cejas', price: 4500, duration: 120 },
-    { name: 'Tinte de Pestañas', price: 600, duration: 25 }
-  ]
-}
+// Curated Services (45 unique services with proper vendor assignments)
+// Each service is unique and assigned to specific vendors for realistic experience
+
+const curatedServices = [
+  // Hair Services (12 services)
+  { vendorId: 'vendor-profile-001', name: 'Dominican Blowout', category: 'hair', price: 1500, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-003', name: 'Balayage', category: 'hair', price: 4500, duration: 180, isPopular: true },
+  { vendorId: 'vendor-profile-011', name: 'Keratin Treatment', category: 'hair', price: 6000, duration: 180, isPopular: true },
+  { vendorId: 'vendor-profile-001', name: 'Haircut', category: 'hair', price: 1800, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-003', name: 'Hair Color', category: 'hair', price: 4000, duration: 150, isPopular: false },
+  { vendorId: 'vendor-profile-011', name: 'Wedding Hairstyle', category: 'hair', price: 3500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-015', name: 'Curly Hair Cut', category: 'hair', price: 2200, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-015', name: 'Hair Treatment', category: 'hair', price: 2800, duration: 90, isPopular: false },
+  { vendorId: 'vendor-profile-001', name: 'Hair Extensions', category: 'hair', price: 3200, duration: 120, isPopular: false },
+  { vendorId: 'vendor-profile-003', name: 'Hair Highlights', category: 'hair', price: 3800, duration: 140, isPopular: false },
+  { vendorId: 'vendor-profile-011', name: 'Hair Straightening', category: 'hair', price: 3000, duration: 100, isPopular: false },
+  { vendorId: 'vendor-profile-015', name: 'Hair Mask Treatment', category: 'hair', price: 1800, duration: 60, isPopular: false },
+
+  // Nail Services (10 services)
+  { vendorId: 'vendor-profile-002', name: 'Gel Manicure', category: 'nails', price: 1200, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-002', name: 'Tropical Nail Art', category: 'nails', price: 1800, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Classic Manicure', category: 'nails', price: 800, duration: 45, isPopular: false },
+  { vendorId: 'vendor-profile-002', name: 'Acrylic Extensions', category: 'nails', price: 2000, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Spa Pedicure', category: 'nails', price: 1200, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-002', name: 'Express Manicure', category: 'nails', price: 600, duration: 30, isPopular: false },
+  { vendorId: 'vendor-profile-013', name: 'Luxury Manicure', category: 'nails', price: 1600, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-013', name: 'Deluxe Spa Pedicure', category: 'nails', price: 1800, duration: 90, isPopular: false },
+  { vendorId: 'vendor-profile-002', name: 'Modern French Manicure', category: 'nails', price: 1400, duration: 65, isPopular: false },
+  { vendorId: 'vendor-profile-013', name: 'Nail Repair', category: 'nails', price: 500, duration: 20, isPopular: false },
+
+  // Makeup Services (8 services)
+  { vendorId: 'vendor-profile-001', name: 'Bridal Makeup', category: 'makeup', price: 5000, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-010', name: 'Natural Makeup', category: 'makeup', price: 2000, duration: 45, isPopular: true },
+  { vendorId: 'vendor-profile-001', name: 'Glamour Evening', category: 'makeup', price: 3500, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-010', name: 'Corporate Makeup', category: 'makeup', price: 2800, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-014', name: 'Photography Makeup', category: 'makeup', price: 3200, duration: 70, isPopular: false },
+  { vendorId: 'vendor-profile-018', name: 'Caribbean Makeup', category: 'makeup', price: 2500, duration: 50, isPopular: false },
+  { vendorId: 'vendor-profile-010', name: 'Airbrush Makeup', category: 'makeup', price: 4000, duration: 80, isPopular: false },
+  { vendorId: 'vendor-profile-014', name: 'Special Occasion Makeup', category: 'makeup', price: 3000, duration: 65, isPopular: false },
+
+  // Spa Services (8 services)
+  { vendorId: 'vendor-profile-004', name: 'Luxury Facial', category: 'spa', price: 4200, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-012', name: 'Massage', category: 'spa', price: 3500, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-004', name: 'Deep Cleansing Facial', category: 'spa', price: 3000, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-012', name: 'Aromatherapy', category: 'spa', price: 2800, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-016', name: 'Hot Stone', category: 'spa', price: 4000, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-012', name: 'Therapeutic Massage', category: 'spa', price: 3800, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-004', name: 'Microdermabrasion', category: 'spa', price: 3600, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-016', name: 'Couples Massage', category: 'spa', price: 6000, duration: 90, isPopular: false },
+
+  // Lash & Brow Services (7 services)
+  { vendorId: 'vendor-profile-005', name: 'Lash Extensions', category: 'lashes', price: 2800, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Russian Volume', category: 'lashes', price: 3500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-005', name: 'Classic Lashes', category: 'lashes', price: 2200, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-005', name: 'Lash Tint', category: 'lashes', price: 600, duration: 25, isPopular: false },
+  { vendorId: 'vendor-profile-017', name: 'Microblading', category: 'lashes', price: 4500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Lash Lift', category: 'lashes', price: 1800, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-005', name: 'Brow Design', category: 'lashes', price: 800, duration: 30, isPopular: false }
+]
 
 export const services: Service[] = []
 let serviceCounter = 1
 
-vendorProfiles.forEach(vendor => {
-  vendor.categories.forEach(category => {
-    const templates = serviceTemplates[category as keyof typeof serviceTemplates] || []
-    const numServices = Math.floor(Math.random() * 3) + 2 // 2-4 services per category per vendor
-    
-    for (let i = 0; i < Math.min(numServices, templates.length); i++) {
-      const template = templates[i]
-      services.push({
-        id: `service-${String(serviceCounter).padStart(3, '0')}`,
-        vendorId: vendor.id,
-        vendor,
-        name: template.name,
-        description: `Professional ${template.name.toLowerCase()} service at ${vendor.businessName}. ${vendor.description}`,
-        category,
-        price: template.price + Math.floor((Math.random() - 0.5) * 400), // ±200 price variation
-        duration: template.duration,
-        images: Array.from({ length: 3 }, (_, j) => ({
-          id: `service-media-${serviceCounter}-${j}`,
-          url: `/services/${category}/${template.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}.png`,
-          alt: `${template.name} at ${vendor.businessName}`,
-          type: 'image' as const
-        })),
-        isPopular: Math.random() > 0.4, // 60% chance of being popular for better demo
-        isActive: true,
-        createdAt: vendor.createdAt,
-        updatedAt: vendor.updatedAt
-      })
-      serviceCounter++
-      
-      if (services.length >= 100) return
-    }
-  })
+curatedServices.forEach(serviceData => {
+  const vendor = vendorProfiles.find(v => v.id === serviceData.vendorId)
+  if (!vendor) return
   
-  if (services.length >= 100) return
+  services.push({
+    id: `service-${String(serviceCounter).padStart(3, '0')}`,
+    vendorId: serviceData.vendorId,
+    vendor,
+    name: serviceData.name,
+    description: `Professional ${serviceData.name.toLowerCase()} service at ${vendor.businessName}. Expert care with attention to detail.`,
+    category: serviceData.category,
+    price: serviceData.price,
+    duration: serviceData.duration,
+    images: Array.from({ length: 3 }, (_, j) => ({
+      id: `service-media-${serviceCounter}-${j}`,
+      url: `/services/${serviceData.category}/${serviceData.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}.png`,
+      alt: `${serviceData.name} at ${vendor.businessName}`,
+      type: 'image' as const
+    })),
+    isPopular: serviceData.isPopular,
+    isActive: true,
+    createdAt: vendor.createdAt,
+    updatedAt: vendor.updatedAt
+  })
+  serviceCounter++
 })
 
 // Generate sample bookings (200 bookings)
@@ -288,6 +291,10 @@ export const bookings: Booking[] = []
 for (let i = 0; i < 200; i++) {
   const customer = customerProfiles[Math.floor(Math.random() * customerProfiles.length)]
   const service = services[Math.floor(Math.random() * services.length)]
+  
+  // Skip if service is undefined or doesn't have a vendor
+  if (!service || !service.vendor) continue
+  
   const vendor = service.vendor
   
   const bookingDate = new Date()

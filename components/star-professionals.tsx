@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 
 interface Professional {
   id: number
@@ -149,10 +150,16 @@ export function StarProfessionals({ professionals, onBookNow, onViewPortfolio }:
                       className="aspect-square relative overflow-hidden group cursor-pointer"
                       onClick={() => onViewPortfolio?.(current.id)}
                     >
-                      <img
+                      <OptimizedImage
+                        key={`${current.id}-portfolio-${index}`}
                         src={image}
                         alt={`${current.name} portfolio ${index + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        fill
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        context="portfolio"
+                        quality={75}
+                        instant={true}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                       {index === 5 && current.portfolioImages.length > 6 && (

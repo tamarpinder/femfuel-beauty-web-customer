@@ -1,6 +1,7 @@
 "use client"
 
 import { Star } from "lucide-react"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 
 export function HeroSection() {
   return (
@@ -9,11 +10,15 @@ export function HeroSection() {
 
         {/* Logo */}
         <div className="mb-8">
-          <div className="w-40 h-40 md:w-44 md:h-44 mx-auto flex items-center justify-center mb-6">
-            <img 
-              src="/femfuel-logo.png" 
-              alt="FemFuel Beauty" 
-              className="w-full h-full object-contain"
+          <div className="w-40 h-40 md:w-44 md:h-44 mx-auto flex items-center justify-center mb-6 relative">
+            <OptimizedImage
+              src="/femfuel-logo.png"
+              alt="FemFuel Beauty"
+              width={176}
+              height={176}
+              className="object-contain"
+              priority={true}
+              context="logo"
             />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-2">

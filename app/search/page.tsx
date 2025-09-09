@@ -68,7 +68,7 @@ export default function SearchPage() {
           filtered = filtered.filter((service) => {
             return filters.serviceTypes.some((type) => 
               service.name.toLowerCase().includes(type.toLowerCase()) ||
-              service.category.toLowerCase().includes(type.toLowerCase())
+              service.category?.toLowerCase().includes(type.toLowerCase())
             )
           })
         }
@@ -143,9 +143,19 @@ export default function SearchPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-semibold text-femfuel-dark">
-                {searchQuery ? `Resultados para "${searchQuery}"` : "Todos los Servicios"}
+                {searchQuery ? `Resultados para "${searchQuery}"` : "Resultados de Búsqueda"}
               </h2>
               <p className="text-sm text-femfuel-medium">{filteredServices.length} servicios encontrados</p>
+              {!searchQuery && (
+                <p className="text-xs text-femfuel-medium mt-1">
+                  Prueba buscar por servicio o usar <button 
+                    onClick={() => window.location.href = '/services'} 
+                    className="text-femfuel-rose underline"
+                  >
+                    navegación por categorías
+                  </button>
+                </p>
+              )}
             </div>
             <Button variant="outline" size="sm" className="hidden md:flex bg-transparent">
               <SlidersHorizontal className="h-4 w-4 mr-2" />

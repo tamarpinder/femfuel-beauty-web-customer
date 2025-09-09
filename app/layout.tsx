@@ -23,9 +23,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Handle potential translation classes that might be added by browser extensions
+  const htmlClasses = `${inter.variable} antialiased`
+  
   return (
-    <html lang="es" className={`${inter.variable} antialiased`}>
-      <body className="font-sans">
+    <html lang="es" className={htmlClasses} suppressHydrationWarning>
+      <body className="font-sans" suppressHydrationWarning>
         <AuthProvider>
           <CartProvider>
             {children}

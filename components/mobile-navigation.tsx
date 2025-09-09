@@ -14,7 +14,7 @@ export function MobileNavigation({ activeTab = "home", onTabChange }: MobileNavi
 
   const tabs = [
     { id: "home" as const, icon: Home, label: "Inicio", path: "/" },
-    { id: "search" as const, icon: Search, label: "Buscar", path: "/search" },
+    { id: "search" as const, icon: Search, label: "Servicios", path: "/services" },
     { id: "bookings" as const, icon: Calendar, label: "Mis Citas", path: "/bookings" },
     { id: "shop" as const, icon: ShoppingBag, label: "Tienda", path: "/shop" },
     { id: "profile" as const, icon: User, label: "Perfil", path: "/profile" },

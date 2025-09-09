@@ -248,7 +248,7 @@ export default function ShopPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-lg border">
               <div>
                 <label className="block text-sm font-medium mb-2">Categoría</label>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <Select value={selectedCategory} onValueChange={(value: string) => setSelectedCategory(value as any)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Todas las categorías" />
                   </SelectTrigger>

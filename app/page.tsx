@@ -134,8 +134,8 @@ export default function HomePage() {
       name: "Carmen Delgado",
       service: "Dominican Blowout Perfecto",
       vendor: "Hair Salon Elite",
-      beforeImage: "/transformations/before/hair-transformation-2-before.png",
-      afterImage: "/transformations/after/hair-transformation-2-after.png",
+      beforeImage: "/transformations/before/dominican-blowout-before.png",
+      afterImage: "/transformations/after/dominican-blowout-after.png",
       rating: 4.8,
       testimonial: "Mi cabello nunca se había visto tan liso y brillante. El blowout dominicano es increíble!",
       serviceId: "service-003",
@@ -216,10 +216,10 @@ export default function HomePage() {
       yearsExperience: 8,
       avatar: "/professionals/portraits/hair-colorist-lucia.png",
       portfolioImages: [
-        "/services/hair/balayage-treatment.png",
-        "/services/hair/hair-coloring-session.png",
-        "/services/hair/modern-haircut.png",
-        "/services/hair/wedding-hairstyle.png"
+        "/professionals/portfolios/carla-rodriguez/carla-portfolio-1.png",
+        "/professionals/portfolios/carla-rodriguez/carla-portfolio-2.png",
+        "/professionals/portfolios/carla-rodriguez/carla-portfolio-3.png",
+        "/professionals/portfolios/carla-rodriguez/carla-portfolio-4.png"
       ],
       specialties: ["Balayage", "Colorimetría", "Cabello Rizado"],
       availableToday: true,
@@ -238,10 +238,10 @@ export default function HomePage() {
       yearsExperience: 6,
       avatar: "/professionals/portraits/bridal-makeup-artist-valentina.png",
       portfolioImages: [
-        "/services/makeup/bridal-makeup-application.png",
-        "/services/makeup/glamour-evening-look.png",
-        "/services/makeup/natural-makeup.png",
-        "/services/makeup/corporate-makeup.png"
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-2.png",
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-3.png",
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-4.png"
       ],
       specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
       availableToday: false,
@@ -260,10 +260,10 @@ export default function HomePage() {
       yearsExperience: 12,
       avatar: "/professionals/portraits/wellness-therapist-isabella.png",
       portfolioImages: [
-        "/services/spa/luxury-facial-treatment.png",
-        "/services/spa/hot-stone-massage.png",
-        "/services/spa/massage.png",
-        "/services/spa/massage2.png"
+        "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-1.png",
+        "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-2.png",
+        "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-3.png",
+        "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-4.png"
       ],
       specialties: ["Antiedad", "Acné", "Hidratación"],
       availableToday: true,
@@ -282,10 +282,10 @@ export default function HomePage() {
       yearsExperience: 5,
       avatar: "/professionals/portraits/nail-artist-sofia.png",
       portfolioImages: [
-        "/services/nails/tropical-nail-art.png",
-        "/services/nails/premium-gel-manicure.png",
-        "/services/nails/acrylic-extensions.png",
-        "/services/nails/luxury-manicure.png"
+        "/professionals/portfolios/patricia-lopez/patricia-portfolio-1.png",
+        "/professionals/portfolios/patricia-lopez/patricia-portfolio-2.png",
+        "/professionals/portfolios/patricia-lopez/patricia-portfolio-3.png",
+        "/professionals/portfolios/patricia-lopez/patricia-portfolio-4.png"
       ],
       specialties: ["Nail Art", "Gel X", "Decoraciones"],
       availableToday: true,
@@ -444,20 +444,20 @@ export default function HomePage() {
   }
 
   const handleCategoryClick = (categoryName: string) => {
-    // Map Spanish names to slugs
+    // Map Spanish names to category IDs for new services flow
     const categorySlugMap: { [key: string]: string } = {
-      "Uñas": "unas",
-      "Maquillaje": "maquillaje",
-      "Cuerpo": "cuerpo", 
+      "Uñas": "nails",
+      "Maquillaje": "makeup",
+      "Cuerpo": "spa", // Body treatments go to spa category
       "Spa": "spa",
-      "Peinados": "peinados",
-      "Pestañas": "pestañas"
+      "Peinados": "hair", // Hair styling
+      "Pestañas": "lashes"
     }
-    const slug = categorySlugMap[categoryName] || categoryName.toLowerCase()
-    router.push(`/category/${slug}`)
+    const categoryId = categorySlugMap[categoryName] || categoryName.toLowerCase()
+    router.push(`/services/${categoryId}`)
   }
 
-  const handleGetThisLook = (serviceId: number, lookName: string) => {
+  const handleGetThisLook = (serviceId: string, lookName: string) => {
     console.log("Get this look:", { serviceId, lookName })
     router.push(`/search?service=${serviceId}&look=${encodeURIComponent(lookName)}`)
   }
@@ -489,7 +489,7 @@ export default function HomePage() {
 
   const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile") => {
     if (tab === "search") {
-      router.push("/search")
+      router.push("/services")
     } else if (tab === "shop") {
       router.push("/shop")
     } else if (tab === "bookings") {

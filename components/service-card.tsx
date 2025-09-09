@@ -6,17 +6,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { AuthGuard } from "@/components/auth-guard"
 import { BookingModal } from "@/components/booking-modal"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 
 export interface Service {
-  id: number
+  id: string
   name: string
   vendor: string
+  vendorId?: string
   price: string
   rating: number
-  reviews: number
-  duration: number
+  reviews?: number
+  reviewCount?: number
+  duration: number | string
   image?: string
   category?: string
+  description?: string
+  isPopular?: boolean
+  addons?: any[]
 }
 
 interface ServiceCardProps {
@@ -44,11 +50,17 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
         <Card className="p-4 shadow-sm border-0 hover:shadow-md transition-shadow">
           <CardContent className="p-0">
             <div className="flex items-center gap-4">
-              <img
-                src={service.image || "/placeholder.svg?height=64&width=64&query=beauty service"}
-                alt={service.name}
-                className="w-16 h-16 rounded-xl object-cover"
-              />
+              <div className="w-16 h-16 rounded-xl overflow-hidden">
+                <OptimizedImage
+                  src={service.image || "/services/hair/modern-haircut.png"}
+                  alt={service.name}
+                  width={64}
+                  height={64}
+                  className="rounded-xl"
+                  context={service.category || "service"}
+                  quality={75}
+                />
+              </div>
               <div className="flex-1">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -97,11 +109,17 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
     <>
       <Card className="overflow-hidden shadow-sm border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105 cursor-pointer">
         <CardContent className="p-0">
-          <img
-            src={service.image || "/placeholder.svg?height=192&width=320&query=beauty service"}
-            alt={service.name}
-            className="w-full h-48 object-cover"
-          />
+          <div className="relative w-full h-48">
+            <OptimizedImage
+              src={service.image || "/services/hair/modern-haircut.png"}
+              alt={service.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover"
+              context={service.category || "service"}
+              priority={false}
+            />
+          </div>
           <div className="p-6">
             <h3 className="font-semibold text-femfuel-dark mb-1">{service.name}</h3>
             <p className="text-femfuel-medium text-sm mb-3">{service.vendor}</p>

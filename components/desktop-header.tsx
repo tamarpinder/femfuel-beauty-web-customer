@@ -36,7 +36,7 @@ export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
           </div>
           <nav className="flex items-center gap-6">
             <Link 
-              href="/search" 
+              href="/services" 
               className="relative px-2 py-1 text-sm font-medium transition-all duration-300 text-femfuel-medium hover:text-femfuel-dark hover:scale-105 group"
             >
               Servicios

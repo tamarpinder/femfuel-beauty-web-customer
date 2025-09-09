@@ -2,7 +2,7 @@ export const customerFooterSections = [
   {
     title: "Descubre",
     links: [
-      { label: "Buscar Servicios", href: "/search" },
+      { label: "Buscar Servicios", href: "/services" },
       { label: "Salones Cercanos", href: "/nearby" },
       { label: "Profesionales Top", href: "/professionals" },
       { label: "Nuevos en FemFuel", href: "#" },

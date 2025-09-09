@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, Star, MapPin, Phone, Clock, Users, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -18,12 +18,18 @@ import { Vendor, VendorService } from "@/types/vendor"
 export default function VendorPage() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const vendorSlug = params.slug as string
+  
+  // Get service context from URL params
+  const contextServiceId = searchParams.get('service')
+  const shouldShowBooking = searchParams.get('action') === 'book'
   
   const [vendor, setVendor] = useState<Vendor | null>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [showBookingModal, setShowBookingModal] = useState(false)
   const [selectedService, setSelectedService] = useState<VendorService | null>(null)
+  const [contextService, setContextService] = useState<VendorService | null>(null)
   const [showServiceGallery, setShowServiceGallery] = useState(false)
   const [galleryService, setGalleryService] = useState<VendorService | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -44,6 +50,24 @@ export default function VendorPage() {
 
     fetchVendor()
   }, [vendorSlug])
+
+  // Handle service context when vendor loads
+  useEffect(() => {
+    if (vendor && contextServiceId) {
+      // Find the service in vendor's services
+      const service = vendor.services.find(s => s.id === contextServiceId)
+      if (service) {
+        setContextService(service)
+        setSelectedCategory(service.category)
+        
+        // Auto-trigger booking modal if requested
+        if (shouldShowBooking) {
+          setSelectedService(service)
+          setShowBookingModal(true)
+        }
+      }
+    }
+  }, [vendor, contextServiceId, shouldShowBooking])
 
   const handleBack = () => {
     router.back()
@@ -231,6 +255,33 @@ export default function VendorPage() {
           </CardContent>
         </Card>
 
+        {/* Service Context Banner */}
+        {contextService && (
+          <Card className="shadow-sm mb-6 bg-gradient-to-r from-femfuel-rose to-femfuel-purple">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between text-white">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <span className="text-xl">✨</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Interesado en {contextService.name}</h3>
+                    <p className="text-white/90 text-sm">
+                      {formatPrice(contextService.price)} • {contextService.duration} min
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => handleServiceBook(contextService.id)}
+                  className="bg-white text-femfuel-rose hover:bg-white/90"
+                >
+                  Reservar Ahora
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Services Section */}
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-femfuel-dark mb-4">
@@ -343,7 +394,7 @@ export default function VendorPage() {
             setSelectedService(null)
           }}
           service={{
-            id: Math.abs(selectedService.id.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a; }, 0)),
+            id: selectedService.id,
             name: selectedService.name,
             vendor: vendor.name,
             price: formatPrice(selectedService.price),

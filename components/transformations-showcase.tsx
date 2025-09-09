@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 
 interface Transformation {
   id: number
@@ -15,18 +16,20 @@ interface Transformation {
   afterImage: string
   rating: number
   testimonial: string
-  serviceId: number
+  serviceId: string
   lookName: string
 }
 
 interface TransformationsShowcaseProps {
   transformations: Transformation[]
-  onGetThisLook?: (serviceId: number, lookName: string) => void
+  onGetThisLook?: (serviceId: string, lookName: string) => void
 }
 
 export function TransformationsShowcase({ transformations, onGetThisLook }: TransformationsShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showAfter, setShowAfter] = useState(true)
+
+  // Note: Image preloading will be added after images are generated
 
   const nextTransformation = () => {
     setCurrentIndex((prev) => (prev + 1) % transformations.length)
@@ -58,13 +61,19 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                 {/* Before/After Images */}
                 <div className="relative md:w-1/2">
                   <div className="relative aspect-square overflow-hidden">
-                    <img
+                    <OptimizedImage
+                      key={`${current.id}-${showAfter ? 'after' : 'before'}`}
                       src={showAfter ? current.afterImage : current.beforeImage}
                       alt={showAfter ? "Después" : "Antes"}
-                      className="w-full h-full object-cover transition-all duration-700 ease-in-out transform"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover transition-all duration-500 ease-out"
                       style={{
                         filter: showAfter ? 'brightness(1.05) saturate(1.1)' : 'brightness(0.95) saturate(0.9)',
                       }}
+                      priority={true}
+                      context="transformation"
+                      instant={true}
                     />
                     
                     {/* Before/After Toggle */}
@@ -188,10 +197,16 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
               }}
             >
               <div className="aspect-square relative">
-                <img
+                <OptimizedImage
+                  key={transformation.id}
                   src={transformation.afterImage}
                   alt={transformation.lookName}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover"
+                  context="transformation"
+                  quality={70}
+                  instant={true}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-2 left-2 right-2">

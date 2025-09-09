@@ -63,9 +63,9 @@ export async function getVendors(filters: VendorFilters = {}) {
           distance: "2.5km"
         },
         contact: {
-          phone: vendor.user.phone,
+          phone: vendor.user.phone || "",
           email: vendor.user.email,
-          whatsapp: vendor.user.phone
+          whatsapp: vendor.user.phone || ""
         },
         categories: vendor.categories,
         popularServices: vendorServices
@@ -138,9 +138,9 @@ export async function getVendorById(id: string) {
         distance: "2.5km"
       },
       contact: {
-        phone: vendor.user.phone,
+        phone: vendor.user.phone || "",
         email: vendor.user.email,
-        whatsapp: vendor.user.phone
+        whatsapp: vendor.user.phone || ""
       },
       categories: vendor.categories,
       popularServices: vendorServices
@@ -205,4 +205,44 @@ export async function getFeaturedVendors(limit = 6) {
     .filter(v => v.services.some(s => s.isPopular))
     .sort((a, b) => b.rating - a.rating)
     .slice(0, limit)
+}
+
+// Get all services across all vendors
+export async function getAllServices() {
+  await simulateDelay()
+  
+  try {
+    const allVendors = await getVendors()
+    const allServices: any[] = []
+    
+    // Collect all services from all vendors
+    allVendors.forEach(vendor => {
+      vendor.services.forEach(service => {
+        allServices.push({
+          ...service,
+          vendor: {
+            id: vendor.id,
+            name: vendor.name,
+            slug: vendor.slug,
+            logo: vendor.logo,
+            rating: vendor.rating,
+            reviewCount: vendor.reviewCount,
+            location: vendor.location,
+            priceRange: vendor.priceRange
+          }
+        })
+      })
+    })
+    
+    return allServices
+  } catch (error) {
+    console.error('Error getting all services:', error)
+    return []
+  }
+}
+
+// Get services by category
+export async function getServicesByCategory(category: string) {
+  const allServices = await getAllServices()
+  return allServices.filter(service => service.category === category)
 }

@@ -184,6 +184,20 @@ export function getServiceImage(serviceName: string): string {
   return '/services/hair/modern-haircut.png' // Default fallback
 }
 
+// Service category cover images for hero sections
+export const serviceCategoryCovers: Record<string, string> = {
+  'hair': '/services/covers/hair-services-hero.png',
+  'nails': '/services/covers/nail-services-hero.png',
+  'makeup': '/services/covers/makeup-services-hero.png',
+  'spa': '/services/covers/spa-services-hero.png',
+  'lashes': '/services/covers/lash-services-hero.png',
+}
+
+// Get service category cover image
+export function getServiceCategoryCover(category: string): string {
+  return serviceCategoryCovers[category.toLowerCase()] || '/services/covers/beauty-services-hero.png'
+}
+
 // Array of all available professional portraits for variety
 const allProfessionalPortraits = [
   '/professionals/portraits/hair-stylist-carla.png',

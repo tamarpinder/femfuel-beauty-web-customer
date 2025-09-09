@@ -2,17 +2,20 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, Star, MapPin, Clock, Heart, Users, Calendar, ChevronRight } from "lucide-react"
+import { ArrowLeft, Star, MapPin, Clock, Heart, Users, Calendar, ChevronRight, Sparkles, Shield, TrendingUp, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { MobileNavigation } from "@/components/mobile-navigation"
+import { ChatButton } from "@/components/ui/chat-button"
 import { getAllServices, getVendorsByCategory } from "@/lib/vendors-api"
+import { getServiceImage, getServiceCategoryCover } from "@/lib/image-mappings"
 import type { Vendor } from "@/types/vendor"
 
 interface ServiceWithVendor {
   id: string
+  slug?: string
   name: string
   description: string
   price: number
@@ -55,9 +58,9 @@ export default function ServiceProvidersPage() {
       try {
         setLoading(true)
         
-        // Get all services to find the specific service
+        // Get all services to find the specific service by slug or ID
         const allServices = await getAllServices()
-        const targetService = allServices.find(s => s.id === serviceId)
+        const targetService = allServices.find(s => s.slug === serviceId || s.id === serviceId)
         
         if (!targetService) {
           router.push('/services')
@@ -90,12 +93,12 @@ export default function ServiceProvidersPage() {
   }
 
   const handleProviderSelect = (vendor: Vendor) => {
-    router.push(`/vendor/${vendor.slug}?service=${serviceId}`)
+    router.push(`/vendor/${vendor.slug}?service=${service?.slug || serviceId}`)
   }
 
   const handleBookNow = (vendor: Vendor) => {
     // Pre-select the service and go to booking
-    router.push(`/vendor/${vendor.slug}?service=${serviceId}&action=book`)
+    router.push(`/vendor/${vendor.slug}?service=${service?.slug || serviceId}&action=book`)
   }
 
   const formatPrice = (price: number) => {
@@ -146,7 +149,7 @@ export default function ServiceProvidersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-white via-femfuel-purple to-white">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
         <div className="px-4 py-3">
@@ -163,115 +166,175 @@ export default function ServiceProvidersPage() {
       </header>
 
       {/* Service Hero Section */}
-      <div className="relative h-64 md:h-80">
+      <div className="relative h-80 md:h-[500px] lg:h-[600px] overflow-hidden">
         <OptimizedImage
-          src={service.image || getServiceImages(service.name, service.category)[0]}
-          alt={service.name}
-          className="w-full h-full object-cover"
+          src={getServiceCategoryCover(service.category)}
+          alt={`${service.name} - ${service.category}`}
+          fill
+          className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-femfuel-rose/30 via-transparent to-femfuel-purple/20"></div>
         
-        <div className="absolute bottom-0 left-0 right-0 p-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center gap-2 mb-3">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
               {service.isPopular && (
-                <Badge className="bg-femfuel-rose text-white">Popular</Badge>
+                <Badge className="bg-femfuel-rose text-white px-3 py-1">
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Más Solicitado
+                </Badge>
               )}
-              <Badge variant="secondary" className="bg-white/20 text-white">
+              <Badge variant="secondary" className="bg-white/20 text-white px-3 py-1 backdrop-blur-sm">
                 {service.category.charAt(0).toUpperCase() + service.category.slice(1)}
               </Badge>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{service.name}</h1>
-            <div className="flex items-center gap-4 text-white/90">
-              <div className="flex items-center gap-1">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 drop-shadow-2xl leading-tight">{service.name}</h1>
+            <p className="text-xl md:text-2xl text-white/90 mb-6 max-w-3xl mx-auto font-light">{service.description}</p>
+            <div className="flex items-center justify-center gap-8 text-white/90">
+              <div className="flex items-center gap-2 bg-black/30 rounded-full px-4 py-2 backdrop-blur-sm">
                 <Clock className="h-5 w-5" />
-                <span>{service.duration} min</span>
+                <span className="text-lg font-medium">{service.duration} min</span>
               </div>
-              <div className="flex items-center gap-1">
-                <span className="text-xl font-bold">{formatPrice(service.price)}</span>
+              <div className="flex items-center gap-2 bg-black/30 rounded-full px-4 py-2 backdrop-blur-sm">
+                <span className="text-2xl font-bold">{formatPrice(service.price)}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto p-4 space-y-8">
-        {/* Service Description */}
-        <Card>
-          <CardContent className="p-6">
-            <h2 className="text-xl font-semibold text-femfuel-dark mb-4">Sobre este servicio</h2>
-            <p className="text-femfuel-medium leading-relaxed">{service.description}</p>
-          </CardContent>
-        </Card>
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-12">
+        {/* Service Details */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3">
+            <Card className="shadow-xl">
+              <CardContent className="p-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-6">¿Qué incluye este servicio?</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br from-femfuel-purple to-white">
+                    <div className="w-12 h-12 bg-femfuel-rose rounded-full flex items-center justify-center flex-shrink-0">
+                      <Clock className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-femfuel-medium mb-1">Duración</p>
+                      <p className="text-lg font-bold text-femfuel-dark">{service.duration} minutos</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br from-femfuel-purple to-white">
+                    <div className="w-12 h-12 bg-femfuel-rose rounded-full flex items-center justify-center flex-shrink-0">
+                      <Shield className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-femfuel-medium mb-1">Garantía</p>
+                      <p className="text-lg font-bold text-femfuel-dark">100% Satisfacción</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4 p-4 rounded-lg bg-gradient-to-br from-femfuel-purple to-white">
+                    <div className="w-12 h-12 bg-femfuel-rose rounded-full flex items-center justify-center flex-shrink-0">
+                      <TrendingUp className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-femfuel-medium mb-1">Demanda</p>
+                      <p className="text-lg font-bold text-femfuel-dark">Alta</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="lg:col-span-1">
+            <Card className="shadow-xl sticky top-24">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-femfuel-rose to-femfuel-purple rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-femfuel-dark mb-2">Precio desde</h3>
+                  <p className="text-3xl font-bold text-femfuel-rose mb-4">{formatPrice(service.price)}</p>
+                  <p className="text-sm text-femfuel-medium mb-6">Los precios pueden variar según el especialista y ubicación</p>
+                  <Button 
+                    className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white py-3"
+                    onClick={() => providers.length > 0 && handleBookNow(providers[0])}
+                  >
+                    Ver Especialistas
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         {/* Providers Section */}
         <div>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-femfuel-dark">
-                Especialistas en {service.name}
-              </h2>
-              <p className="text-femfuel-medium">
-                {providers.length} {providers.length === 1 ? 'especialista encontrado' : 'especialistas encontrados'}
-              </p>
-            </div>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-femfuel-dark mb-4">
+              Especialistas en {service.name}
+            </h2>
+            <p className="text-lg text-femfuel-medium flex items-center justify-center gap-2">
+              <Users className="h-5 w-5" />
+              {providers.length} {providers.length === 1 ? 'especialista verificado' : 'especialistas verificados'} disponibles
+            </p>
           </div>
 
           {providers.length > 0 ? (
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {providers.map((vendor) => {
                 const vendorService = vendor.services.find(s => s.name === service.name)
                 return (
                   <Card 
                     key={vendor.id}
-                    className={`cursor-pointer transition-all hover:shadow-lg ${
-                      selectedProvider === vendor.id ? 'ring-2 ring-femfuel-rose' : ''
+                    className={`cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group ${
+                      selectedProvider === vendor.id ? 'ring-2 ring-femfuel-rose shadow-2xl scale-105' : 'hover:ring-1 hover:ring-femfuel-rose/30'
                     }`}
                     onClick={() => setSelectedProvider(vendor.id)}
                   >
                     <CardContent className="p-6">
-                      <div className="flex flex-col md:flex-row gap-6">
+                      <div className="space-y-4">
                         {/* Vendor Image & Logo */}
-                        <div className="relative flex-shrink-0">
-                          <div className="w-full md:w-48 h-48 rounded-xl overflow-hidden">
+                        <div className="relative">
+                          <div className="w-full h-56 rounded-xl overflow-hidden">
                             <OptimizedImage
                               src={vendor.coverImage || "/vendor-cover-placeholder.png"}
                               alt={vendor.name}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                             />
                           </div>
-                          <div className="absolute -bottom-3 -right-3">
+                          <div className="absolute -bottom-4 left-6">
                             <OptimizedImage
                               src={vendor.logo || "/vendor-logo-placeholder.png"}
                               alt={`${vendor.name} logo`}
-                              className="w-12 h-12 rounded-full border-3 border-white shadow-lg object-cover"
+                              className="w-16 h-16 rounded-full border-4 border-white shadow-xl object-cover"
                             />
                           </div>
                         </div>
 
                         {/* Vendor Info */}
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between mb-3">
+                        <div className="pt-4">
+                          <div className="flex items-start justify-between mb-4">
                             <div>
-                              <h3 className="text-xl font-semibold text-femfuel-dark mb-1">
+                              <h3 className="text-2xl font-bold text-femfuel-dark mb-2">
                                 {vendor.name}
                               </h3>
-                              <div className="flex items-center gap-4 text-sm text-femfuel-medium">
-                                <div className="flex items-center gap-1">
-                                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                  <span className="font-medium">{vendor.rating}</span>
-                                  <span>({vendor.reviewCount} reseñas)</span>
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-femfuel-medium">
+                                <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-1">
+                                    <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                                    <span className="font-bold text-lg">{vendor.rating}</span>
+                                  </div>
+                                  <span className="text-sm">({vendor.reviewCount} reseñas)</span>
                                 </div>
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-2">
                                   <MapPin className="h-4 w-4" />
-                                  <span>{vendor.location.district}</span>
+                                  <span className="font-medium">{vendor.location.district}</span>
                                 </div>
                               </div>
                             </div>
                             {vendor.badges && vendor.badges.length > 0 && (
-                              <div className="flex gap-2">
+                              <div className="flex flex-wrap gap-2">
                                 {vendor.badges.map((badge, index) => (
-                                  <Badge key={index} variant="secondary">{badge}</Badge>
+                                  <Badge key={index} variant="secondary" className="text-xs">{badge}</Badge>
                                 ))}
                               </div>
                             )}
@@ -303,7 +366,7 @@ export default function ServiceProvidersPage() {
 
                           {/* Popular Services */}
                           <div className="mb-4">
-                            <h4 className="text-sm font-medium text-femfuel-dark mb-2">Servicios populares:</h4>
+                            <h4 className="text-sm font-medium text-femfuel-dark mb-2">Otros servicios destacados:</h4>
                             <div className="flex flex-wrap gap-2">
                               {vendor.popularServices.slice(0, 3).map((service, index) => (
                                 <span
@@ -327,6 +390,16 @@ export default function ServiceProvidersPage() {
                             >
                               Reservar Ahora
                             </Button>
+                            <ChatButton
+                              vendorId={vendor.id}
+                              vendorName={vendor.name}
+                              serviceContext={service.name}
+                              variant="inline"
+                              size="sm"
+                              className="bg-green-500 hover:bg-green-600"
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                            </ChatButton>
                             <Button
                               variant="outline"
                               onClick={(e) => {
@@ -367,6 +440,12 @@ export default function ServiceProvidersPage() {
           )}
         </div>
       </div>
+
+      {/* Floating Chat Widget */}
+      <ChatButton
+        variant="floating"
+        className="shadow-lg hover:shadow-xl"
+      />
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="search" />

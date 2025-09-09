@@ -85,6 +85,7 @@ export async function getVendors(filters: VendorFilters = {}) {
         },
         services: vendorServices.map(service => ({
           id: service.id,
+          slug: `${service.category}-${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`,
           name: service.name,
           description: service.description,
           price: service.price,
@@ -160,6 +161,7 @@ export async function getVendorById(id: string) {
       },
       services: vendorServices.map(service => ({
         id: service.id,
+        slug: `${service.category}-${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`,
         name: service.name,
         description: service.description,
         price: service.price,
@@ -220,6 +222,7 @@ export async function getAllServices() {
       vendor.services.forEach(service => {
         allServices.push({
           ...service,
+          slug: `${service.category}-${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`,
           vendor: {
             id: vendor.id,
             name: vendor.name,

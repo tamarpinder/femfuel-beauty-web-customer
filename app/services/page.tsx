@@ -14,6 +14,7 @@ import { getAllServices } from "@/lib/vendors-api"
 
 interface ServiceWithVendor {
   id: string
+  slug?: string
   name: string
   description: string
   price: number
@@ -121,8 +122,8 @@ export default function ServicesPage() {
   }
 
   const handleServiceClick = (service: ServiceWithVendor) => {
-    // Navigate to service-to-vendor bridge page
-    router.push(`/service/${service.id}/providers`)
+    // Navigate to service-to-vendor bridge page using slug
+    router.push(`/service/${service.slug || service.id}/providers`)
   }
 
   const toggleFavorite = (serviceId: string, e: React.MouseEvent) => {

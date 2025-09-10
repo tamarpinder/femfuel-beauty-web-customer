@@ -78,13 +78,13 @@ export function ProviderListCompact({
                   <div className="flex items-start gap-4">
                     {/* Provider Logo */}
                     <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100">
+                      <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 relative">
                         <OptimizedImage
                           src={vendor.logo || "/vendor-logo-placeholder.png"}
                           alt={`${vendor.name} logo`}
-                          width={64}
-                          height={64}
-                          className="w-full h-full object-cover"
+                          fill
+                          sizes="64px"
+                          className="object-cover"
                           loading="lazy"
                         />
                       </div>

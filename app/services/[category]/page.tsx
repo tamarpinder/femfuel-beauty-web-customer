@@ -142,14 +142,20 @@ export default function CategoryPage() {
                         <OptimizedImage
                           src={vendor.coverImage}
                           alt={vendor.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          fill
+                          sizes="(max-width: 768px) 100vw, 288px"
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute top-3 left-3">
-                          <OptimizedImage
-                            src={vendor.logo}
-                            alt={`${vendor.name} logo`}
-                            className="w-12 h-12 rounded-full border-2 border-white shadow-sm"
-                          />
+                          <div className="w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden relative">
+                            <OptimizedImage
+                              src={vendor.logo}
+                              alt={`${vendor.name} logo`}
+                              fill
+                              sizes="48px"
+                              className="object-cover"
+                            />
+                          </div>
                         </div>
                         {vendor.availability.isOpen && (
                           <div className="absolute bottom-3 left-3">

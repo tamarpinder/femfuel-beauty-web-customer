@@ -50,13 +50,13 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
         <Card className="p-4 shadow-sm border-0 hover:shadow-md transition-shadow">
           <CardContent className="p-0">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-xl overflow-hidden">
+              <div className="w-16 h-16 rounded-xl overflow-hidden relative">
                 <OptimizedImage
                   src={service.image || "/services/hair/modern-haircut.png"}
                   alt={service.name}
-                  width={64}
-                  height={64}
-                  className="rounded-xl"
+                  fill
+                  sizes="64px"
+                  className="object-cover"
                   context={service.category || "service"}
                   quality={75}
                 />

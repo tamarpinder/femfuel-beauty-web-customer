@@ -256,7 +256,9 @@ export default function ServicesPage() {
                       <OptimizedImage
                         src={service.image || "/femfuel-logo.png"}
                         alt={service.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                         context={service.category}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -309,12 +311,16 @@ export default function ServicesPage() {
                           router.push(`/vendor/${service.vendor.slug}`)
                         }}
                       >
-                        <OptimizedImage
-                          src={service.vendor.logo || "/vendors/logos/beauty-studio-logo.png"}
-                          alt={service.vendor.name}
-                          className="w-6 h-6 rounded-full object-cover"
-                          context="vendor-logo"
-                        />
+                        <div className="w-6 h-6 rounded-full overflow-hidden relative">
+                          <OptimizedImage
+                            src={service.vendor.logo || "/vendors/logos/beauty-studio-logo.png"}
+                            alt={service.vendor.name}
+                            fill
+                            sizes="24px"
+                            className="object-cover"
+                            context="vendor-logo"
+                          />
+                        </div>
                         <span className="text-sm text-femfuel-medium truncate hover:text-femfuel-rose transition-colors">
                           {service.vendor.name}
                         </span>

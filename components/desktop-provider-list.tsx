@@ -162,13 +162,13 @@ export function DesktopProviderList({
                 <div className="flex items-start gap-4">
                   {/* Provider Logo */}
                   <div className="flex-shrink-0">
-                    <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100">
+                    <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 relative">
                       <OptimizedImage
                         src={vendor.logo || "/vendor-logo-placeholder.png"}
                         alt={`${vendor.name} logo`}
-                        width={56}
-                        height={56}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="56px"
+                        className="object-cover"
                         loading="lazy"
                       />
                     </div>

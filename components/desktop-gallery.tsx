@@ -121,13 +121,13 @@ export function DesktopGallery({ serviceName, category, images }: DesktopGallery
             <div className="grid grid-cols-2 gap-4">
               {/* Before Image */}
               <div className="relative">
-                <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 relative">
                   <OptimizedImage
                     src={currentImage.before}
                     alt={`${serviceName} - Antes`}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
                     loading="lazy"
                   />
                 </div>
@@ -138,13 +138,13 @@ export function DesktopGallery({ serviceName, category, images }: DesktopGallery
 
               {/* After Image */}
               <div className="relative">
-                <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 relative">
                   <OptimizedImage
                     src={currentImage.after}
                     alt={`${serviceName} - Después`}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
                     loading="lazy"
                   />
                 </div>
@@ -155,13 +155,13 @@ export function DesktopGallery({ serviceName, category, images }: DesktopGallery
             </div>
           ) : (
             <div className="relative">
-              <div className="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100">
+              <div className="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 relative">
                 <OptimizedImage
                   src={viewMode === 'before' ? currentImage.before : currentImage.after}
                   alt={`${serviceName} - ${viewMode === 'before' ? 'Antes' : 'Después'}`}
-                  width={600}
-                  height={450}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                   loading="lazy"
                 />
               </div>

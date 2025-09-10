@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingSkeletonList } from "@/components/booking-skeleton"
 import { ChatButton } from "@/components/ui/chat-button"
+import { UserFlowHeader } from "@/components/user-flow-header"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 
@@ -273,16 +274,10 @@ export default function BookingsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-lg font-semibold text-femfuel-dark">Mis Citas</h1>
-          </div>
-        </div>
-      </header>
+      <UserFlowHeader 
+        title="Mis Citas" 
+        onBack={handleBack}
+      />
 
       <div className="px-2 sm:px-4 py-4 max-w-4xl mx-auto overflow-hidden">
         {/* Search and Filters */}

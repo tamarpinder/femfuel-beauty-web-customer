@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { ChatButton } from "@/components/ui/chat-button"
+import { UserFlowHeader } from "@/components/user-flow-header"
 import { getAllServices, getVendorsByCategory } from "@/lib/vendors-api"
 import { getServiceImage, getServiceCategoryCover } from "@/lib/image-mappings"
 import type { Vendor } from "@/types/vendor"
@@ -211,19 +212,10 @@ export default function ServiceProvidersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-femfuel-purple to-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-lg font-semibold text-femfuel-dark">{service.name}</h1>
-              <p className="text-sm text-femfuel-medium">Encuentra tu especialista perfecto</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      <UserFlowHeader 
+        title={service.name} 
+        onBack={handleBack}
+      />
 
       {/* Service Hero Section */}
       <div className="relative h-80 md:h-[500px] lg:h-[600px] overflow-hidden">

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Search, User, UserPlus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { AuthModal } from "@/components/auth-modal"
+import { UserMenu } from "@/components/user-menu"
 import { useAuth } from "@/contexts/auth-context"
 
 interface MobileHeaderProps {
@@ -13,7 +14,7 @@ interface MobileHeaderProps {
 }
 
 export function MobileHeader({ onSearch }: MobileHeaderProps) {
-  const { user, isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
   const [showSearch, setShowSearch] = useState(false)
@@ -72,13 +73,7 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
                     </button>
                   </>
                 ) : (
-                  <button className="icon-button-mobile">
-                    <div className="w-6 h-6 bg-femfuel-rose rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-medium">
-                        {user?.name?.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  </button>
+                  <UserMenu />
                 )}
               </div>
             </div>

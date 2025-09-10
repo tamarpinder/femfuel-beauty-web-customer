@@ -9,6 +9,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
 import { ChatButton } from "@/components/ui/chat-button"
+import { UserMenu } from "@/components/user-menu"
 import { categories } from "@/data/shared/mock-data"
 import { getAllServices } from "@/lib/vendors-api"
 
@@ -147,13 +148,18 @@ export default function ServicesPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
         <div className="px-4 py-3">
-          <div className="flex items-center gap-3 mb-4">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-lg font-semibold text-femfuel-dark">Servicios de Belleza</h1>
-              <p className="text-sm text-femfuel-medium">Encuentra tu servicio perfecto</p>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3 flex-1">
+              <Button variant="ghost" size="sm" onClick={handleBack}>
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div>
+                <h1 className="text-lg font-semibold text-femfuel-dark">Servicios de Belleza</h1>
+                <p className="text-sm text-femfuel-medium">Encuentra tu servicio perfecto</p>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <UserMenu />
             </div>
           </div>
           

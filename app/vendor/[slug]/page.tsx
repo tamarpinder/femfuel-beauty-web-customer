@@ -12,6 +12,7 @@ import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingModal } from "@/components/booking-modal"
 import { ServiceDetailGallery } from "@/components/service-detail-gallery"
 import { ChatButton } from "@/components/ui/chat-button"
+import { UserFlowHeader } from "@/components/user-flow-header"
 import { getVendorBySlug } from "@/lib/vendors-api"
 import { getServiceDetailImages } from "@/lib/service-detail-mappings"
 import { getServiceImage } from "@/lib/image-mappings"
@@ -164,16 +165,10 @@ export default function VendorPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-lg font-semibold text-femfuel-dark truncate">{vendor.name}</h1>
-          </div>
-        </div>
-      </header>
+      <UserFlowHeader 
+        title={vendor.name} 
+        onBack={handleBack}
+      />
 
       {/* Cover Image */}
       <div className="relative h-64 md:h-80">

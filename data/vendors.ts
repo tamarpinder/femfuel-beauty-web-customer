@@ -8,9 +8,9 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/beauty-studio-logo.png",
     coverImage: "/vendors/beauty-studio-cover.jpg",
     description: "Especialistas en uñas y cuidado de manos con más de 8 años de experiencia. Ofrecemos los mejores tratamientos con productos premium.",
-    rating: 4.8,
+    rating: 4.6,
     reviewCount: 124,
-    serviceCount: 12,
+    serviceCount: 6,
     location: {
       address: "Av. Winston Churchill 1234",
       district: "Piantini", 
@@ -23,7 +23,7 @@ export const mockVendors: Vendor[] = [
       whatsapp: "+1 809-555-0123"
     },
     categories: ["unas"],
-    popularServices: ["Manicure Gel Premium", "Pedicure Spa", "Nail Art"],
+    popularServices: ["Manicure Gel Premium", "Combo Manicure + Pedicure", "Manicure Express"],
     badges: ["Premium Partner", "Respuesta Rápida"],
     availability: {
       isOpen: true,
@@ -32,8 +32,8 @@ export const mockVendors: Vendor[] = [
     },
     professionalCount: 3,
     priceRange: {
-      min: 800,
-      max: 2500
+      min: 600,
+      max: 2400
     },
     services: [
       {
@@ -47,7 +47,10 @@ export const mockVendors: Vendor[] = [
         image: "/services/manicure-gel.jpg",
         addons: [
           { id: "nail-art", name: "Nail Art Básico", price: 300, duration: 15 },
-          { id: "french-tip", name: "French Tips", price: 200, duration: 10 }
+          { id: "french-tip", name: "French Tips", price: 200, duration: 10 },
+          { id: "cuticle-treatment", name: "Tratamiento Cutículas", price: 150, duration: 10 },
+          { id: "hand-massage", name: "Masaje de Manos", price: 250, duration: 15 },
+          { id: "premium-products", name: "Productos Premium", price: 400, duration: 5 }
         ]
       },
       {
@@ -58,7 +61,12 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "unas",
         isPopular: true,
-        image: "/services/pedicure-spa.jpg"
+        image: "/services/pedicure-spa.jpg",
+        addons: [
+          { id: "foot-massage-extended", name: "Masaje de Pies Extendido", price: 400, duration: 20 },
+          { id: "nail-art-feet", name: "Nail Art para Pies", price: 350, duration: 20 },
+          { id: "callus-treatment", name: "Tratamiento Callos", price: 300, duration: 15 }
+        ]
       },
       {
         id: "manicure-clasico",
@@ -67,7 +75,53 @@ export const mockVendors: Vendor[] = [
         price: 800,
         duration: 45,
         category: "unas",
-        image: "/services/manicure-clasico.jpg"
+        image: "/services/manicure-clasico.jpg",
+        addons: [
+          { id: "quick-nail-art", name: "Nail Art Rápido", price: 200, duration: 10 },
+          { id: "hand-cream", name: "Crema de Manos Premium", price: 100, duration: 5 }
+        ]
+      },
+      {
+        id: "manicure-express",
+        name: "Manicure Express",
+        description: "Manicure rápido en 30 minutos, perfecto para tu rutina ocupada",
+        price: 600,
+        duration: 30,
+        category: "unas",
+        isPopular: false,
+        image: "/services/manicure-express.jpg",
+        addons: [
+          { id: "quick-dry", name: "Secado Rápido", price: 100, duration: 5 },
+          { id: "basic-nail-art", name: "Decoración Básica", price: 150, duration: 10 }
+        ]
+      },
+      {
+        id: "combo-mani-pedi",
+        name: "Combo Manicure + Pedicure",
+        description: "Combo completo de manicure y pedicure con descuento especial",
+        price: 2400,
+        duration: 120,
+        category: "unas",
+        isPopular: true,
+        image: "/services/combo-mani-pedi.jpg",
+        addons: [
+          { id: "full-nail-art", name: "Nail Art Completo", price: 500, duration: 30 },
+          { id: "luxury-treatment", name: "Tratamiento de Lujo", price: 600, duration: 20 }
+        ]
+      },
+      {
+        id: "relleno-unas",
+        name: "Relleno de Uñas",
+        description: "Mantenimiento para uñas de gel o acrílico",
+        price: 900,
+        duration: 45,
+        category: "unas",
+        isPopular: false,
+        image: "/services/nail-fill.jpg",
+        addons: [
+          { id: "color-change", name: "Cambio de Color", price: 200, duration: 15 },
+          { id: "design-refresh", name: "Renovar Diseño", price: 300, duration: 20 }
+        ]
       }
     ],
     businessHours: {
@@ -92,9 +146,9 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/glamour-house-logo.png",
     coverImage: "/vendors/glamour-house-cover.jpg",
     description: "Estudio de maquillaje profesional especializado en novias, eventos y sesiones fotográficas. Maquilladores certificados internacionalmente.",
-    rating: 4.9,
+    rating: 4.8,
     reviewCount: 89,
-    serviceCount: 8,
+    serviceCount: 6,
     location: {
       address: "Calle José Amado Soler 567",
       district: "Gazcue",
@@ -106,7 +160,7 @@ export const mockVendors: Vendor[] = [
       whatsapp: "+1 809-555-0456"
     },
     categories: ["maquillaje"],
-    popularServices: ["Maquillaje de Novia", "Maquillaje Profesional", "Maquillaje de Noche"],
+    popularServices: ["Paquete de Novia Completo", "Maquillaje Ejecutivo", "Maquillaje Profesional"],
     badges: ["Nuevo", "Top Rated"],
     availability: {
       isOpen: false,
@@ -115,8 +169,8 @@ export const mockVendors: Vendor[] = [
     },
     professionalCount: 2,
     priceRange: {
-      min: 1500,
-      max: 4500
+      min: 800,
+      max: 6500
     },
     services: [
       {
@@ -130,7 +184,10 @@ export const mockVendors: Vendor[] = [
         image: "/services/bridal-makeup.jpg",
         addons: [
           { id: "hair-styling", name: "Peinado Incluido", price: 1500, duration: 60 },
-          { id: "makeup-trial", name: "Prueba Extra", price: 1000, duration: 90 }
+          { id: "makeup-trial", name: "Prueba Extra", price: 1000, duration: 90 },
+          { id: "false-lashes", name: "Pestañas Postizas Premium", price: 800, duration: 30 },
+          { id: "touch-up-kit", name: "Kit de Retoques", price: 600, duration: 15 },
+          { id: "photo-session", name: "Sesión de Fotos", price: 1200, duration: 45 }
         ]
       },
       {
@@ -141,7 +198,69 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "maquillaje",
         isPopular: true,
-        image: "/services/professional-makeup.jpg"
+        image: "/services/professional-makeup.jpg",
+        addons: [
+          { id: "lashes-basic", name: "Pestañas Postizas", price: 400, duration: 20 },
+          { id: "contour-highlighting", name: "Contorno y Destacado", price: 300, duration: 15 },
+          { id: "makeup-products", name: "Productos para Llevar", price: 500, duration: 10 }
+        ]
+      },
+      {
+        id: "maquillaje-express",
+        name: "Maquillaje Express",
+        description: "Maquillaje rápido para reuniones o eventos improvisados",
+        price: 1500,
+        duration: 45,
+        category: "maquillaje",
+        isPopular: false,
+        image: "/services/express-makeup.jpg",
+        addons: [
+          { id: "quick-lashes", name: "Pestañas Rápidas", price: 200, duration: 10 },
+          { id: "lip-upgrade", name: "Upgrade de Labios", price: 150, duration: 5 }
+        ]
+      },
+      {
+        id: "maquillaje-ejecutivo",
+        name: "Maquillaje Ejecutivo",
+        description: "Look profesional para reuniones de trabajo y presentaciones",
+        price: 2000,
+        duration: 60,
+        category: "maquillaje",
+        isPopular: true,
+        image: "/services/executive-makeup.jpg",
+        addons: [
+          { id: "long-lasting", name: "Fijación Extra Larga", price: 250, duration: 10 },
+          { id: "subtle-glow", name: "Brillo Sutil", price: 200, duration: 10 }
+        ]
+      },
+      {
+        id: "paquete-novia-completo",
+        name: "Paquete de Novia Completo",
+        description: "Maquillaje + peinado + prueba para novias, todo incluido",
+        price: 6500,
+        duration: 240,
+        category: "maquillaje",
+        isPopular: true,
+        image: "/services/bridal-package.jpg",
+        addons: [
+          { id: "mom-makeup", name: "Maquillaje para Madre", price: 2000, duration: 90 },
+          { id: "bridesmaid-makeup", name: "Maquillaje Dama de Honor", price: 1800, duration: 75 },
+          { id: "venue-service", name: "Servicio en Locación", price: 1000, duration: 0 }
+        ]
+      },
+      {
+        id: "retoque-maquillaje",
+        name: "Retoque de Maquillaje",
+        description: "Servicio de retoque para eventos largos o fotos adicionales",
+        price: 800,
+        duration: 30,
+        category: "maquillaje",
+        isPopular: false,
+        image: "/services/makeup-touchup.jpg",
+        addons: [
+          { id: "lip-refresh", name: "Renovar Labios", price: 100, duration: 5 },
+          { id: "powder-touch", name: "Retoque Polvo", price: 150, duration: 10 }
+        ]
       }
     ],
     businessHours: {
@@ -161,7 +280,7 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/spa-paradise-logo.png", 
     coverImage: "/vendors/spa-paradise-cover.jpg",
     description: "Oasis de relajación y bienestar. Tratamientos faciales y corporales con productos naturales y orgánicos.",
-    rating: 4.7,
+    rating: 4.2,
     reviewCount: 156,
     serviceCount: 15,
     location: {
@@ -226,9 +345,9 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/hair-salon-logo.png",
     coverImage: "/vendors/hair-salon-cover.jpg", 
     description: "Salón especializado en cortes, coloración y peinados modernos. Estilistas con formación internacional.",
-    rating: 4.5,
+    rating: 4.3,
     reviewCount: 203,
-    serviceCount: 18,
+    serviceCount: 7,
     location: {
       address: "Plaza Central, Local 15",
       district: "Naco",
@@ -240,7 +359,7 @@ export const mockVendors: Vendor[] = [
       whatsapp: "+1 809-555-0321"
     },
     categories: ["peinados"],
-    popularServices: ["Corte y Peinado", "Coloración", "Tratamiento Capilar"],
+    popularServices: ["Combo Corte + Color", "Tratamiento de Keratina", "Peinado para Evento"],
     badges: ["Premium Partner"],
     availability: {
       isOpen: true,
@@ -249,8 +368,8 @@ export const mockVendors: Vendor[] = [
     },
     professionalCount: 4,
     priceRange: {
-      min: 1200,
-      max: 3500
+      min: 800,
+      max: 4500
     },
     services: [
       {
@@ -261,7 +380,12 @@ export const mockVendors: Vendor[] = [
         duration: 60,
         category: "peinados",
         isPopular: true,
-        image: "/services/haircut-styling.jpg"
+        image: "/services/haircut-styling.jpg",
+        addons: [
+          { id: "deep-treatment", name: "Tratamiento Profundo", price: 500, duration: 30 },
+          { id: "special-styling", name: "Peinado Especial", price: 400, duration: 30 },
+          { id: "premium-products", name: "Productos Premium", price: 300, duration: 10 }
+        ]
       },
       {
         id: "coloracion-completa",
@@ -271,7 +395,83 @@ export const mockVendors: Vendor[] = [
         duration: 180,
         category: "peinados",
         isPopular: true,
-        image: "/services/hair-coloring.jpg"
+        image: "/services/hair-coloring.jpg",
+        addons: [
+          { id: "toning-treatment", name: "Tratamiento Tonificante", price: 600, duration: 45 },
+          { id: "color-protection", name: "Protección de Color", price: 400, duration: 20 },
+          { id: "glossing", name: "Brillo Profesional", price: 350, duration: 30 }
+        ]
+      },
+      {
+        id: "corte-express",
+        name: "Corte Express",
+        description: "Corte rápido sin lavado, perfecto para mantenimiento",
+        price: 800,
+        duration: 30,
+        category: "peinados",
+        isPopular: false,
+        image: "/services/express-haircut.jpg",
+        addons: [
+          { id: "quick-wash", name: "Lavado Rápido", price: 200, duration: 15 },
+          { id: "styling-cream", name: "Crema de Peinado", price: 150, duration: 5 }
+        ]
+      },
+      {
+        id: "tratamiento-keratina",
+        name: "Tratamiento de Keratina",
+        description: "Alisado y nutrición con keratina profesional",
+        price: 4500,
+        duration: 240,
+        category: "peinados",
+        isPopular: true,
+        image: "/services/keratin-treatment.jpg",
+        addons: [
+          { id: "home-care-kit", name: "Kit de Cuidado en Casa", price: 800, duration: 15 },
+          { id: "extended-styling", name: "Peinado Extra", price: 500, duration: 45 }
+        ]
+      },
+      {
+        id: "retoque-raices",
+        name: "Retoque de Raíces",
+        description: "Mantenimiento de color solo en raíces",
+        price: 1800,
+        duration: 90,
+        category: "peinados",
+        isPopular: true,
+        image: "/services/root-touch-up.jpg",
+        addons: [
+          { id: "toner-refresh", name: "Renovar Tonalizador", price: 300, duration: 20 },
+          { id: "scalp-treatment", name: "Tratamiento Cuero Cabelludo", price: 400, duration: 25 }
+        ]
+      },
+      {
+        id: "combo-corte-color",
+        name: "Combo Corte + Color",
+        description: "Servicio completo de corte y coloración con descuento",
+        price: 4200,
+        duration: 210,
+        category: "peinados",
+        isPopular: true,
+        image: "/services/cut-color-combo.jpg",
+        addons: [
+          { id: "hair-mask", name: "Mascarilla Reparadora", price: 450, duration: 20 },
+          { id: "event-styling", name: "Peinado para Evento", price: 600, duration: 45 }
+        ]
+      },
+      {
+        id: "peinado-evento",
+        name: "Peinado para Evento",
+        description: "Peinado elegante para bodas, graduaciones y ocasiones especiales",
+        price: 2200,
+        duration: 90,
+        category: "peinados",
+        isPopular: true,
+        image: "/services/event-hairstyle.jpg",
+        addons: [
+          { id: "hair-accessories", name: "Accesorios para Cabello", price: 300, duration: 15 },
+          { id: "touch-up-service", name: "Servicio de Retoque", price: 400, duration: 30 },
+          { id: "trial-run", name: "Prueba Previa", price: 800, duration: 60 }
+        ]
       }
     ],
     businessHours: {
@@ -347,7 +547,7 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/nails-express-logo.png",
     coverImage: "/vendors/nails-express-cover.jpg",
     description: "Servicio rápido de uñas sin cita previa. Especialistas en diseños modernos y técnicas express.",
-    rating: 4.6,
+    rating: 4.1,
     reviewCount: 98,
     serviceCount: 8,
     location: {
@@ -675,10 +875,10 @@ export const mockVendors: Vendor[] = [
     slug: "royal-spa-dominicano",
     logo: "/vendors/royal-spa-logo.png",
     coverImage: "/vendors/royal-spa-cover.jpg",
-    description: "Spa de lujo con tratamientos exclusivos y productos importados. Experiencia VIP garantizada.",
+    description: "Centro de belleza de lujo con servicios completos: spa, maquillaje profesional y manicure premium. Experiencia VIP garantizada.",
     rating: 4.9,
     reviewCount: 87,
-    serviceCount: 25,
+    serviceCount: 6,
     location: {
       address: "Torre Empresarial, Piso 15",
       district: "Piantini",
@@ -689,8 +889,8 @@ export const mockVendors: Vendor[] = [
       phone: "+1 809-555-0789",
       email: "vip@royalspadr.com"
     },
-    categories: ["spa", "cuerpo"],
-    popularServices: ["Tratamiento VIP", "Masaje con Piedras Calientes", "Facial de Oro"],
+    categories: ["spa", "cuerpo", "maquillaje", "unas"],
+    popularServices: ["Tratamiento VIP", "Maquillaje de Lujo", "Manicure Premium"],
     badges: ["VIP", "Luxury", "Premium Partner"],
     availability: {
       isOpen: false,
@@ -699,8 +899,8 @@ export const mockVendors: Vendor[] = [
     },
     professionalCount: 8,
     priceRange: {
-      min: 3500,
-      max: 8000
+      min: 3200,
+      max: 12000
     },
     services: [
       {
@@ -711,7 +911,11 @@ export const mockVendors: Vendor[] = [
         duration: 180,
         category: "spa",
         isPopular: true,
-        image: "/services/vip-treatment.jpg"
+        image: "/services/vip-treatment.jpg",
+        addons: [
+          { id: "champagne-service", name: "Servicio con Champagne", price: 1200, duration: 30 },
+          { id: "luxury-products", name: "Productos de Lujo para Llevar", price: 2000, duration: 15 }
+        ]
       },
       {
         id: "masaje-piedras-calientes",
@@ -721,7 +925,70 @@ export const mockVendors: Vendor[] = [
         duration: 120,
         category: "cuerpo",
         isPopular: true,
-        image: "/services/hot-stone-massage.jpg"
+        image: "/services/hot-stone-massage.jpg",
+        addons: [
+          { id: "aromatherapy-upgrade", name: "Upgrade Aromaterapia", price: 500, duration: 20 },
+          { id: "extended-massage", name: "Masaje Extendido", price: 800, duration: 30 }
+        ]
+      },
+      {
+        id: "maquillaje-lujo",
+        name: "Maquillaje de Lujo",
+        description: "Maquillaje profesional con productos de alta gama y técnicas exclusivas",
+        price: 4500,
+        duration: 90,
+        category: "maquillaje",
+        isPopular: true,
+        image: "/services/luxury-makeup.jpg",
+        addons: [
+          { id: "diamond-lashes", name: "Pestañas con Diamantes", price: 1500, duration: 45 },
+          { id: "gold-highlight", name: "Destacado con Oro", price: 800, duration: 20 },
+          { id: "makeup-artist-touch", name: "Retoque del Artista", price: 600, duration: 30 }
+        ]
+      },
+      {
+        id: "manicure-premium",
+        name: "Manicure Premium",
+        description: "Manicure de lujo con productos exclusivos y técnicas VIP",
+        price: 3200,
+        duration: 90,
+        category: "unas",
+        isPopular: true,
+        image: "/services/premium-manicure.jpg",
+        addons: [
+          { id: "swarovski-crystals", name: "Cristales Swarovski", price: 1000, duration: 30 },
+          { id: "gold-leaf-art", name: "Arte con Hoja de Oro", price: 800, duration: 25 },
+          { id: "hand-spa-treatment", name: "Tratamiento Spa de Manos", price: 600, duration: 20 }
+        ]
+      },
+      {
+        id: "facial-oro",
+        name: "Facial de Oro 24K",
+        description: "Tratamiento facial exclusivo con oro de 24 quilates para rejuvenecer la piel",
+        price: 5500,
+        duration: 120,
+        category: "spa",
+        isPopular: true,
+        image: "/services/gold-facial.jpg",
+        addons: [
+          { id: "gold-eye-treatment", name: "Tratamiento de Ojos con Oro", price: 1200, duration: 30 },
+          { id: "collagen-mask", name: "Mascarilla de Colágeno", price: 800, duration: 20 }
+        ]
+      },
+      {
+        id: "paquete-belleza-total",
+        name: "Paquete Belleza Total VIP",
+        description: "Experiencia completa: spa, maquillaje y manicure en sesión de día completo",
+        price: 12000,
+        duration: 360,
+        category: "spa",
+        isPopular: true,
+        image: "/services/total-beauty-package.jpg",
+        addons: [
+          { id: "personal-butler", name: "Servicio de Mayordomo Personal", price: 2500, duration: 360 },
+          { id: "luxury-lunch", name: "Almuerzo de Lujo", price: 1800, duration: 60 },
+          { id: "photographer", name: "Sesión con Fotógrafo", price: 3000, duration: 90 }
+        ]
       }
     ],
     businessHours: {
@@ -742,7 +1009,7 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/trendy-hair-logo.png",
     coverImage: "/vendors/trendy-hair-cover.jpg",
     description: "Salón moderno especializado en cortes actuales y coloración de tendencia para todas las edades.",
-    rating: 4.5,
+    rating: 4.0,
     reviewCount: 156,
     serviceCount: 12,
     location: {
@@ -807,7 +1074,7 @@ export const mockVendors: Vendor[] = [
     logo: "/vendors/cabello-estilo-logo.png",
     coverImage: "/vendors/cabello-estilo-cover.jpg",
     description: "Salón familiar con más de 15 años de experiencia. Especialistas en tratamientos capilares.",
-    rating: 4.4,
+    rating: 3.9,
     reviewCount: 189,
     serviceCount: 18,
     location: {

@@ -52,8 +52,8 @@ export const users: User[] = [
   }
 ]
 
-// Vendor Users (25 vendors)
-const vendorUsers: User[] = Array.from({ length: 25 }, (_, i) => ({
+// Vendor Users (24 vendors)
+const vendorUsers: User[] = Array.from({ length: 24 }, (_, i) => ({
   id: `vendor-${String(i + 1).padStart(3, '0')}`,
   email: `vendor${i + 1}@femfuel.com`,
   name: `Vendor User ${i + 1}`,
@@ -116,12 +116,11 @@ const vendorBusinessData = [
   { name: 'Hair & Soul', categories: ['hair'], specialties: ['Spiritual Hair Care', 'Natural Products'] },
   { name: 'Crystal Clear Spa', categories: ['spa'], specialties: ['Crystal Healing', 'Clear Skin Facials'] },
   { name: 'Lash Extensions Pro', categories: ['lashes'], specialties: ['Mega Volume', 'Colored Lashes'] },
-  { name: 'Dominican Beauty House', categories: ['hair', 'makeup', 'nails'], specialties: ['Full Service', 'Dominican Techniques'] },
-  { name: 'Serene Beauty Spa', categories: ['spa', 'lashes'], specialties: ['Peaceful Treatments', 'Natural Lashes'] }
+  { name: 'Dominican Beauty House', categories: ['hair', 'makeup', 'nails'], specialties: ['Full Service', 'Dominican Techniques'] }
 ]
 
-// Generate Vendor Profiles (25 vendors)
-export const vendorProfiles: VendorProfile[] = vendorUsers.map((user, i) => ({
+// Generate Vendor Profiles (24 vendors)
+export const vendorProfiles: VendorProfile[] = vendorUsers.slice(0, 24).map((user, i) => ({
   id: `vendor-profile-${String(i + 1).padStart(3, '0')}`,
   userId: user.id,
   user,
@@ -197,63 +196,160 @@ export const customerProfiles: CustomerProfile[] = customerUsers.map((user, i) =
 })
 
 // Curated Services (45 unique services with proper vendor assignments)
-// Each service is unique and assigned to specific vendors for realistic experience
+// Realistic marketplace services - Multiple vendors offering same services with price competition
 
 const curatedServices = [
-  // Hair Services (12 services)
+  // HAIR SERVICES - 8 hair vendors: 001, 003, 007, 011, 015, 018, 021, 024
+  
+  // Corte de Cabello (offered by all hair vendors - most basic service)
+  { vendorId: 'vendor-profile-001', name: 'Corte de Cabello', category: 'hair', price: 1800, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-003', name: 'Corte de Cabello', category: 'hair', price: 2500, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-007', name: 'Corte de Cabello', category: 'hair', price: 1500, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-011', name: 'Corte de Cabello', category: 'hair', price: 2200, duration: 65, isPopular: true },
+  { vendorId: 'vendor-profile-015', name: 'Corte de Cabello', category: 'hair', price: 1400, duration: 55, isPopular: true },
+  { vendorId: 'vendor-profile-018', name: 'Corte de Cabello', category: 'hair', price: 2000, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-021', name: 'Corte de Cabello', category: 'hair', price: 1600, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Corte de Cabello', category: 'hair', price: 2800, duration: 75, isPopular: true },
+
+  // Tinte de Cabello (offered by 6 vendors)
+  { vendorId: 'vendor-profile-001', name: 'Tinte de Cabello', category: 'hair', price: 3000, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-003', name: 'Tinte de Cabello', category: 'hair', price: 4000, duration: 150, isPopular: true },
+  { vendorId: 'vendor-profile-011', name: 'Tinte de Cabello', category: 'hair', price: 3500, duration: 130, isPopular: true },
+  { vendorId: 'vendor-profile-015', name: 'Tinte de Cabello', category: 'hair', price: 2800, duration: 110, isPopular: true },
+  { vendorId: 'vendor-profile-018', name: 'Tinte de Cabello', category: 'hair', price: 3200, duration: 125, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Tinte de Cabello', category: 'hair', price: 4200, duration: 160, isPopular: true },
+
+  // Alisado Dominicano (premium service - 4 vendors)
   { vendorId: 'vendor-profile-001', name: 'Alisado Dominicano', category: 'hair', price: 1500, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-007', name: 'Alisado Dominicano', category: 'hair', price: 1800, duration: 100, isPopular: true },
+  { vendorId: 'vendor-profile-015', name: 'Alisado Dominicano', category: 'hair', price: 1400, duration: 85, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Alisado Dominicano', category: 'hair', price: 2200, duration: 120, isPopular: true },
+
+  // Balayage (premium service - 3 vendors)
   { vendorId: 'vendor-profile-003', name: 'Balayage', category: 'hair', price: 4500, duration: 180, isPopular: true },
+  { vendorId: 'vendor-profile-011', name: 'Balayage', category: 'hair', price: 5200, duration: 200, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Balayage', category: 'hair', price: 5800, duration: 220, isPopular: true },
+
+  // Tratamiento de Keratina (premium - 3 vendors)
+  { vendorId: 'vendor-profile-003', name: 'Tratamiento de Keratina', category: 'hair', price: 5500, duration: 180, isPopular: true },
   { vendorId: 'vendor-profile-011', name: 'Tratamiento de Keratina', category: 'hair', price: 6000, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-001', name: 'Corte de Cabello', category: 'hair', price: 1800, duration: 60, isPopular: false },
-  { vendorId: 'vendor-profile-003', name: 'Tinte de Cabello', category: 'hair', price: 4000, duration: 150, isPopular: false },
-  { vendorId: 'vendor-profile-011', name: 'Peinado de Boda', category: 'hair', price: 3500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-018', name: 'Tratamiento de Keratina', category: 'hair', price: 4800, duration: 160, isPopular: true },
+
+  // Additional Hair Services
   { vendorId: 'vendor-profile-015', name: 'Corte de Cabello Rizado', category: 'hair', price: 2200, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-021', name: 'Corte de Cabello Rizado', category: 'hair', price: 1900, duration: 70, isPopular: false },
   { vendorId: 'vendor-profile-015', name: 'Tratamiento Capilar', category: 'hair', price: 2800, duration: 90, isPopular: false },
-  { vendorId: 'vendor-profile-001', name: 'Extensiones de Cabello', category: 'hair', price: 3200, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-003', name: 'Mechas Californianas', category: 'hair', price: 3800, duration: 140, isPopular: false },
-  { vendorId: 'vendor-profile-011', name: 'Alisado Químico', category: 'hair', price: 3000, duration: 100, isPopular: false },
-  { vendorId: 'vendor-profile-015', name: 'Mascarilla Capilar', category: 'hair', price: 1800, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-018', name: 'Tratamiento Capilar', category: 'hair', price: 3200, duration: 100, isPopular: false },
+  { vendorId: 'vendor-profile-021', name: 'Tratamiento Capilar', category: 'hair', price: 2500, duration: 85, isPopular: false },
 
-  // Nail Services (10 services)
+  // NAIL SERVICES - 6 nail vendors: 002, 006, 009, 014, 016, 019, 024
+  
+  // Manicure de Gel (offered by all nail vendors)
   { vendorId: 'vendor-profile-002', name: 'Manicure de Gel', category: 'nails', price: 1200, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-006', name: 'Manicure de Gel', category: 'nails', price: 1400, duration: 65, isPopular: true },
+  { vendorId: 'vendor-profile-009', name: 'Manicure de Gel', category: 'nails', price: 1100, duration: 55, isPopular: true },
+  { vendorId: 'vendor-profile-014', name: 'Manicure de Gel', category: 'nails', price: 1600, duration: 70, isPopular: true },
+  { vendorId: 'vendor-profile-016', name: 'Manicure de Gel', category: 'nails', price: 1300, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Manicure de Gel', category: 'nails', price: 1800, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Manicure de Gel', category: 'nails', price: 1500, duration: 65, isPopular: true },
+
+  // Manicure Clásico (offered by 5 vendors)
+  { vendorId: 'vendor-profile-002', name: 'Manicure Clásico', category: 'nails', price: 800, duration: 45, isPopular: true },
+  { vendorId: 'vendor-profile-006', name: 'Manicure Clásico', category: 'nails', price: 900, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-009', name: 'Manicure Clásico', category: 'nails', price: 700, duration: 40, isPopular: true },
+  { vendorId: 'vendor-profile-014', name: 'Manicure Clásico', category: 'nails', price: 1000, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Manicure Clásico', category: 'nails', price: 1100, duration: 55, isPopular: true },
+
+  // Pedicure Spa (offered by 4 vendors)
+  { vendorId: 'vendor-profile-006', name: 'Pedicure Spa', category: 'nails', price: 1200, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-009', name: 'Pedicure Spa', category: 'nails', price: 1400, duration: 70, isPopular: true },
+  { vendorId: 'vendor-profile-016', name: 'Pedicure Spa', category: 'nails', price: 1600, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Pedicure Spa', category: 'nails', price: 1800, duration: 80, isPopular: true },
+
+  // Premium Nail Services
   { vendorId: 'vendor-profile-002', name: 'Arte de Uñas Tropical', category: 'nails', price: 1800, duration: 75, isPopular: true },
-  { vendorId: 'vendor-profile-013', name: 'Manicure Clásico', category: 'nails', price: 800, duration: 45, isPopular: false },
+  { vendorId: 'vendor-profile-014', name: 'Arte de Uñas Tropical', category: 'nails', price: 2200, duration: 90, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Arte de Uñas Tropical', category: 'nails', price: 2500, duration: 95, isPopular: true },
   { vendorId: 'vendor-profile-002', name: 'Extensiones de Acrílico', category: 'nails', price: 2000, duration: 90, isPopular: true },
-  { vendorId: 'vendor-profile-013', name: 'Pedicure Spa', category: 'nails', price: 1200, duration: 60, isPopular: false },
-  { vendorId: 'vendor-profile-002', name: 'Manicure Exprés', category: 'nails', price: 600, duration: 30, isPopular: false },
-  { vendorId: 'vendor-profile-013', name: 'Manicure de Lujo', category: 'nails', price: 1600, duration: 75, isPopular: false },
-  { vendorId: 'vendor-profile-013', name: 'Pedicure Spa Deluxe', category: 'nails', price: 1800, duration: 90, isPopular: false },
-  { vendorId: 'vendor-profile-002', name: 'Manicure Francés Moderno', category: 'nails', price: 1400, duration: 65, isPopular: false },
-  { vendorId: 'vendor-profile-013', name: 'Reparación de Uñas', category: 'nails', price: 500, duration: 20, isPopular: false },
+  { vendorId: 'vendor-profile-016', name: 'Extensiones de Acrílico', category: 'nails', price: 2400, duration: 100, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Extensiones de Acrílico', category: 'nails', price: 2800, duration: 110, isPopular: true },
 
-  // Makeup Services (8 services)
+  // MAKEUP SERVICES - 5 makeup vendors: 001, 006, 010, 014, 017, 020, 024
+  
+  // Maquillaje Natural (offered by all makeup vendors)
+  { vendorId: 'vendor-profile-001', name: 'Maquillaje Natural', category: 'makeup', price: 2500, duration: 45, isPopular: true },
+  { vendorId: 'vendor-profile-006', name: 'Maquillaje Natural', category: 'makeup', price: 2000, duration: 40, isPopular: true },
+  { vendorId: 'vendor-profile-010', name: 'Maquillaje Natural', category: 'makeup', price: 2200, duration: 45, isPopular: true },
+  { vendorId: 'vendor-profile-014', name: 'Maquillaje Natural', category: 'makeup', price: 2800, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Maquillaje Natural', category: 'makeup', price: 3000, duration: 55, isPopular: true },
+  { vendorId: 'vendor-profile-020', name: 'Maquillaje Natural', category: 'makeup', price: 1800, duration: 40, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Maquillaje Natural', category: 'makeup', price: 3200, duration: 60, isPopular: true },
+
+  // Maquillaje Ejecutivo (offered by 5 vendors)
+  { vendorId: 'vendor-profile-001', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3000, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-010', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 2800, duration: 55, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3500, duration: 65, isPopular: true },
+  { vendorId: 'vendor-profile-020', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 2600, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3800, duration: 70, isPopular: true },
+
+  // Premium Makeup Services
   { vendorId: 'vendor-profile-001', name: 'Maquillaje de Novia', category: 'makeup', price: 5000, duration: 90, isPopular: true },
-  { vendorId: 'vendor-profile-010', name: 'Maquillaje Natural', category: 'makeup', price: 2000, duration: 45, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Maquillaje de Novia', category: 'makeup', price: 6500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-024', name: 'Maquillaje de Novia', category: 'makeup', price: 7000, duration: 130, isPopular: true },
   { vendorId: 'vendor-profile-001', name: 'Maquillaje de Gala', category: 'makeup', price: 3500, duration: 75, isPopular: true },
-  { vendorId: 'vendor-profile-010', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 2800, duration: 60, isPopular: false },
-  { vendorId: 'vendor-profile-014', name: 'Maquillaje para Fotografía', category: 'makeup', price: 3200, duration: 70, isPopular: false },
-  { vendorId: 'vendor-profile-018', name: 'Maquillaje Caribeño', category: 'makeup', price: 2500, duration: 50, isPopular: false },
-  { vendorId: 'vendor-profile-010', name: 'Maquillaje con Aerógrafo', category: 'makeup', price: 4000, duration: 80, isPopular: false },
-  { vendorId: 'vendor-profile-014', name: 'Maquillaje de Ocasión Especial', category: 'makeup', price: 3000, duration: 65, isPopular: false },
+  { vendorId: 'vendor-profile-014', name: 'Maquillaje de Gala', category: 'makeup', price: 4200, duration: 85, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Maquillaje de Gala', category: 'makeup', price: 4800, duration: 90, isPopular: true },
 
-  // Spa Services (8 services)
+  // SPA SERVICES - 5 spa vendors: 004, 008, 012, 017, 019, 022
+  
+  // Masaje Relajante (offered by all spa vendors)
+  { vendorId: 'vendor-profile-004', name: 'Masaje Relajante', category: 'spa', price: 3500, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-008', name: 'Masaje Relajante', category: 'spa', price: 3200, duration: 55, isPopular: true },
+  { vendorId: 'vendor-profile-012', name: 'Masaje Relajante', category: 'spa', price: 3800, duration: 65, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Masaje Relajante', category: 'spa', price: 4000, duration: 70, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Masaje Relajante', category: 'spa', price: 2900, duration: 50, isPopular: true },
+  { vendorId: 'vendor-profile-022', name: 'Masaje Relajante', category: 'spa', price: 3600, duration: 60, isPopular: true },
+
+  // Limpieza Facial Profunda (offered by 4 vendors)
+  { vendorId: 'vendor-profile-004', name: 'Limpieza Facial Profunda', category: 'spa', price: 3000, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-008', name: 'Limpieza Facial Profunda', category: 'spa', price: 2800, duration: 70, isPopular: true },
+  { vendorId: 'vendor-profile-017', name: 'Limpieza Facial Profunda', category: 'spa', price: 3500, duration: 80, isPopular: true },
+  { vendorId: 'vendor-profile-022', name: 'Limpieza Facial Profunda', category: 'spa', price: 3200, duration: 75, isPopular: true },
+
+  // Premium Spa Services
   { vendorId: 'vendor-profile-004', name: 'Facial de Lujo', category: 'spa', price: 4200, duration: 90, isPopular: true },
-  { vendorId: 'vendor-profile-012', name: 'Masaje Relajante', category: 'spa', price: 3500, duration: 60, isPopular: true },
-  { vendorId: 'vendor-profile-004', name: 'Limpieza Facial Profunda', category: 'spa', price: 3000, duration: 75, isPopular: false },
-  { vendorId: 'vendor-profile-012', name: 'Aromaterapia', category: 'spa', price: 2800, duration: 60, isPopular: false },
-  { vendorId: 'vendor-profile-016', name: 'Masaje con Piedras Calientes', category: 'spa', price: 4000, duration: 75, isPopular: false },
-  { vendorId: 'vendor-profile-012', name: 'Masaje Terapéutico', category: 'spa', price: 3800, duration: 75, isPopular: false },
-  { vendorId: 'vendor-profile-004', name: 'Microdermoabrasión', category: 'spa', price: 3600, duration: 60, isPopular: false },
-  { vendorId: 'vendor-profile-016', name: 'Masaje de Pareja', category: 'spa', price: 6000, duration: 90, isPopular: false },
+  { vendorId: 'vendor-profile-017', name: 'Facial de Lujo', category: 'spa', price: 5000, duration: 100, isPopular: true },
+  { vendorId: 'vendor-profile-022', name: 'Facial de Lujo', category: 'spa', price: 4800, duration: 95, isPopular: true },
+  { vendorId: 'vendor-profile-012', name: 'Masaje con Piedras Calientes', category: 'spa', price: 4000, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-017', name: 'Masaje con Piedras Calientes', category: 'spa', price: 4500, duration: 80, isPopular: false },
+  { vendorId: 'vendor-profile-022', name: 'Masaje con Piedras Calientes', category: 'spa', price: 4200, duration: 75, isPopular: false },
 
-  // Lash & Brow Services (7 services)
+  // LASH & BROW SERVICES - 3 lash vendors: 005, 013, 023
+  
+  // Extensiones de Pestañas (offered by all lash vendors)
   { vendorId: 'vendor-profile-005', name: 'Extensiones de Pestañas', category: 'lashes', price: 2800, duration: 90, isPopular: true },
-  { vendorId: 'vendor-profile-017', name: 'Volumen Ruso', category: 'lashes', price: 3500, duration: 120, isPopular: true },
-  { vendorId: 'vendor-profile-005', name: 'Pestañas Clásicas', category: 'lashes', price: 2200, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-013', name: 'Extensiones de Pestañas', category: 'lashes', price: 3200, duration: 100, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Extensiones de Pestañas', category: 'lashes', price: 3600, duration: 110, isPopular: true },
+
+  // Pestañas Clásicas (offered by all lash vendors)
+  { vendorId: 'vendor-profile-005', name: 'Pestañas Clásicas', category: 'lashes', price: 2200, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Pestañas Clásicas', category: 'lashes', price: 2600, duration: 80, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Pestañas Clásicas', category: 'lashes', price: 3000, duration: 85, isPopular: true },
+
+  // Diseño de Cejas (offered by all lash vendors)
+  { vendorId: 'vendor-profile-005', name: 'Diseño de Cejas', category: 'lashes', price: 800, duration: 30, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Diseño de Cejas', category: 'lashes', price: 1000, duration: 35, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Diseño de Cejas', category: 'lashes', price: 1200, duration: 40, isPopular: true },
+
+  // Premium Lash Services
+  { vendorId: 'vendor-profile-013', name: 'Volumen Ruso', category: 'lashes', price: 3500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Volumen Ruso', category: 'lashes', price: 4200, duration: 140, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Microblading de Cejas', category: 'lashes', price: 4500, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Microblading de Cejas', category: 'lashes', price: 5200, duration: 140, isPopular: true },
   { vendorId: 'vendor-profile-005', name: 'Tinte de Pestañas', category: 'lashes', price: 600, duration: 25, isPopular: false },
-  { vendorId: 'vendor-profile-017', name: 'Microblading de Cejas', category: 'lashes', price: 4500, duration: 120, isPopular: true },
-  { vendorId: 'vendor-profile-017', name: 'Lifting de Pestañas', category: 'lashes', price: 1800, duration: 60, isPopular: false },
-  { vendorId: 'vendor-profile-005', name: 'Diseño de Cejas', category: 'lashes', price: 800, duration: 30, isPopular: false }
+  { vendorId: 'vendor-profile-013', name: 'Tinte de Pestañas', category: 'lashes', price: 800, duration: 30, isPopular: false },
+  { vendorId: 'vendor-profile-005', name: 'Lifting de Pestañas', category: 'lashes', price: 1800, duration: 60, isPopular: false },
+  { vendorId: 'vendor-profile-013', name: 'Lifting de Pestañas', category: 'lashes', price: 2200, duration: 70, isPopular: false }
 ]
 
 export const services: Service[] = []

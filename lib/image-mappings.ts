@@ -28,7 +28,7 @@ export const vendorLogoMap: Record<string, string> = {
   'Hair & Soul': '/vendors/logos/hair-soul-logo.png',
   'Crystal Clear Spa': '/vendors/logos/crystal-clear-spa-logo.png',
   'Lash Extensions Pro': '/vendors/logos/lash-extensions-pro-logo.png',
-  'Dominican Beauty House': '/vendors/logos/dominican-beauty-house-logo.png',
+  'Dominican Beauty House': '/vendors/logos/dominican-beauty-house-logo.png'
 }
 
 export const vendorCoverMap: Record<string, string> = {
@@ -58,7 +58,7 @@ export const vendorCoverMap: Record<string, string> = {
   'Hair & Soul': '/vendors/covers/hair-soul-cover.png',
   'Crystal Clear Spa': '/vendors/covers/crystal-clear-spa-cover.png',
   'Lash Extensions Pro': '/vendors/covers/lash-extensions-pro-cover.png',
-  'Dominican Beauty House': '/vendors/covers/dominican-beauty-house-cover.png',
+  'Dominican Beauty House': '/vendors/covers/dominican-beauty-house-cover.png'
 }
 
 // Service image mappings for 45 curated services

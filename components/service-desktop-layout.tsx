@@ -56,6 +56,12 @@ export function ServiceDesktopLayout({
           {/* Left Panel - Service Information */}
           <div className="col-span-2 bg-white border-r border-gray-200 overflow-y-auto">
             <div className="p-6 space-y-6">
+              {/* Gallery */}
+              <DesktopGallery
+                serviceName={service.name}
+                category={service.category}
+              />
+
               {/* Service Info */}
               <DesktopServiceInfo
                 serviceName={service.name}
@@ -64,12 +70,6 @@ export function ServiceDesktopLayout({
                 duration={service.duration}
                 description={service.description}
                 isPopular={service.isPopular}
-              />
-
-              {/* Gallery */}
-              <DesktopGallery
-                serviceName={service.name}
-                category={service.category}
               />
             </div>
           </div>

@@ -344,16 +344,15 @@ export default function ServicesPage() {
 
                       {/* Action Buttons */}
                       <div className="flex items-center gap-2">
-                        <Button
-                          size="sm"
-                          className="flex-1 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                        <button
+                          className="flex-1 glassmorphism-button"
                           onClick={(e) => {
                             e.stopPropagation()
                             handleServiceClick(service)
                           }}
                         >
                           Ver Detalles
-                        </Button>
+                        </button>
                         <div onClick={(e) => e.stopPropagation()}>
                           <ChatButton
                             vendorId={service.vendor.id}

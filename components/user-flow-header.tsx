@@ -10,13 +10,15 @@ interface UserFlowHeaderProps {
   showBackButton?: boolean
   onBack?: () => void
   className?: string
+  rightElement?: React.ReactNode
 }
 
 export function UserFlowHeader({ 
   title, 
   showBackButton = true, 
   onBack,
-  className = ""
+  className = "",
+  rightElement
 }: UserFlowHeaderProps) {
   const router = useRouter()
 
@@ -44,9 +46,10 @@ export function UserFlowHeader({
             </h1>
           </div>
 
-          {/* Right side - User Profile */}
-          <div className="flex items-center">
-            <UserMenu />
+          {/* Right side - Custom element or User Profile */}
+          <div className="flex items-center gap-2">
+            {rightElement}
+            {!rightElement && <UserMenu />}
           </div>
         </div>
       </div>

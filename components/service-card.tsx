@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Star, Clock } from "lucide-react"
+import { Star, Clock, Crown, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { AuthGuard } from "@/components/auth-guard"
 import { BookingModal } from "@/components/booking-modal"
 import { OptimizedImage } from "@/components/ui/optimized-image"
@@ -11,8 +12,6 @@ import { OptimizedImage } from "@/components/ui/optimized-image"
 export interface Service {
   id: string
   name: string
-  vendor: string
-  vendorId?: string
   price: string
   rating: number
   reviews?: number
@@ -23,16 +22,33 @@ export interface Service {
   description?: string
   isPopular?: boolean
   addons?: any[]
+  // Marketplace-specific fields
+  featuredProvider?: {
+    id: string
+    name: string
+    isSponsored?: boolean
+    sponsorshipLevel?: 'destacado' | 'recomendado' | 'premium'
+  }
+  availableProviders?: number
+  priceRange?: {
+    min: number
+    max: number
+  }
 }
 
 interface ServiceCardProps {
   service: Service
   layout?: "horizontal" | "vertical"
+  onViewProviders?: (serviceId: string) => void
   onBook?: (serviceId: string) => void
 }
 
-export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCardProps) {
+export function ServiceCard({ service, layout = "vertical", onViewProviders, onBook }: ServiceCardProps) {
   const [showBookingModal, setShowBookingModal] = useState(false)
+
+  const handleViewProviders = () => {
+    onViewProviders?.(service.id)
+  }
 
   const handleBook = () => {
     setShowBookingModal(true)
@@ -65,7 +81,20 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="font-medium text-femfuel-dark text-sm">{service.name}</h3>
-                    <p className="text-xs text-femfuel-medium">{service.vendor}</p>
+                    <div className="flex items-center gap-2">
+                      {service.featuredProvider?.isSponsored && (
+                        <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-femfuel-gold/10 text-femfuel-rose">
+                          <Crown className="h-2 w-2 mr-1" />
+                          {service.featuredProvider.sponsorshipLevel === 'destacado' ? 'Destacado' : 'Recomendado'}
+                        </Badge>
+                      )}
+                      {service.availableProviders && (
+                        <p className="text-xs text-femfuel-medium flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          {service.availableProviders} especialistas
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <span className="font-bold text-femfuel-rose text-sm">{service.price}</span>
                 </div>
@@ -80,15 +109,13 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
                       <span>{service.duration}min</span>
                     </div>
                   </div>
-                  <AuthGuard requireAuth={true}>
-                    <Button
-                      size="sm"
-                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white h-8 px-4 text-xs"
-                      onClick={handleBook}
-                    >
-                      Reservar
-                    </Button>
-                  </AuthGuard>
+                  <Button
+                    size="sm"
+                    className="bg-femfuel-rose hover:bg-[#9f1853] text-white h-8 px-4 text-xs"
+                    onClick={handleViewProviders}
+                  >
+                    Ver Proveedores
+                  </Button>
                 </div>
               </div>
             </div>
@@ -122,7 +149,20 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
           </div>
           <div className="p-6">
             <h3 className="font-semibold text-femfuel-dark mb-1">{service.name}</h3>
-            <p className="text-femfuel-medium text-sm mb-3">{service.vendor}</p>
+            <div className="flex items-center gap-2 mb-3">
+              {service.featuredProvider?.isSponsored && (
+                <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-femfuel-gold/10 text-femfuel-rose">
+                  <Crown className="h-3 w-3 mr-1" />
+                  {service.featuredProvider.sponsorshipLevel === 'destacado' ? 'Destacado' : 'Recomendado'}
+                </Badge>
+              )}
+              {service.availableProviders && (
+                <p className="text-femfuel-medium text-sm flex items-center gap-1">
+                  <Users className="h-4 w-4" />
+                  {service.availableProviders} especialistas disponibles
+                </p>
+              )}
+            </div>
             <div className="flex items-center gap-4 text-sm text-femfuel-medium mb-4">
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -136,11 +176,9 @@ export function ServiceCard({ service, layout = "vertical", onBook }: ServiceCar
             </div>
             <div className="flex items-center justify-between">
               <span className="text-xl font-bold text-femfuel-rose">{service.price}</span>
-              <AuthGuard requireAuth={true}>
-                <Button className="bg-femfuel-rose hover:bg-[#9f1853] text-white h-12 px-6" onClick={handleBook}>
-                  Reservar
-                </Button>
-              </AuthGuard>
+              <Button className="bg-femfuel-rose hover:bg-[#9f1653] text-white h-12 px-6" onClick={handleViewProviders}>
+                Ver Proveedores
+              </Button>
             </div>
           </div>
         </CardContent>

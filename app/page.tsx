@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { getFeaturedVendors } from "@/lib/vendors-api"
+import { getMarketplaceServices } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type Service } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
@@ -22,40 +22,36 @@ export default function HomePage() {
   const [featuredServices, setFeaturedServices] = useState<Service[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Load real vendor data on component mount
+  // Load marketplace services on component mount
   useEffect(() => {
     async function loadFeaturedServices() {
       try {
-        const vendors = await getFeaturedVendors(6)
+        // Get marketplace services with popular ones prioritized
+        const marketplaceServices = await getMarketplaceServices({ limit: 6 })
         
-        // Transform vendor services into featured services - get more than 3 for variety
-        const allPopularServices: Service[] = []
-        vendors.forEach((vendor: any) => {
-          vendor.services?.forEach((service: any) => {
-            if (service.isPopular) {
-              allPopularServices.push({
-                id: service.id,
-                name: service.name,
-                vendor: vendor.name,
-                price: `RD$${service.price?.toLocaleString()}`,
-                rating: vendor.rating,
-                reviews: vendor.reviewCount,
-                duration: service.duration,
-                image: service.image || "/premium-gel-manicure.png",
-              })
-            }
-          })
-        })
+        // Transform to match Service interface
+        const featuredServices: Service[] = marketplaceServices
+          .filter(service => service.isPopular)
+          .map(service => ({
+            id: service.id,
+            name: service.name,
+            price: service.price,
+            rating: service.rating,
+            reviews: service.reviewCount,
+            reviewCount: service.reviewCount,
+            duration: service.duration,
+            image: service.image || "/premium-gel-manicure.png",
+            category: service.category,
+            description: service.description,
+            isPopular: service.isPopular,
+            featuredProvider: service.featuredProvider,
+            availableProviders: service.availableProviders,
+            priceRange: service.priceRange
+          }))
 
-        // Sort by rating and take top 6 for variety
-        const topServices = allPopularServices
-          .sort((a, b) => b.rating - a.rating)
-          .slice(0, 6)
-
-        setFeaturedServices(topServices)
+        setFeaturedServices(featuredServices)
       } catch (error) {
         console.error('Error loading featured services:', error)
-        // Keep services empty to show loading state or retry
         setFeaturedServices([])
       } finally {
         setLoading(false)
@@ -444,6 +440,11 @@ export default function HomePage() {
     console.log("Book service:", serviceId)
   }
 
+  const handleViewProviders = (serviceId: string) => {
+    // Navigate to service providers page
+    router.push(`/service/${serviceId}/providers`)
+  }
+
   const handleCategoryClick = (categoryName: string) => {
     // Map Spanish names to category IDs for new services flow
     const categorySlugMap: { [key: string]: string } = {
@@ -488,7 +489,7 @@ export default function HomePage() {
     router.push(`/booking/location/${locationId}`)
   }
 
-  const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile") => {
+  const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile" | "chat") => {
     if (tab === "search") {
       router.push("/services")
     } else if (tab === "shop") {
@@ -561,14 +562,14 @@ export default function HomePage() {
               {/* Mobile Layout - Horizontal Cards */}
               <div className="md:hidden space-y-4">
                 {featuredServices.slice(0, 4).map((service) => (
-                  <ServiceCard key={service.id} service={service} layout="horizontal" onBook={handleBookService} />
+                  <ServiceCard key={service.id} service={service} layout="horizontal" onViewProviders={handleViewProviders} />
                 ))}
               </div>
 
               {/* Desktop Layout - Vertical Cards */}
               <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {featuredServices.slice(0, 8).map((service) => (
-                  <ServiceCard key={service.id} service={service} layout="vertical" onBook={handleBookService} />
+                  <ServiceCard key={service.id} service={service} layout="vertical" onViewProviders={handleViewProviders} />
                 ))}
               </div>
             </>

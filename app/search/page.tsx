@@ -45,8 +45,6 @@ export default function SearchPage() {
             allServices.push({
               id: service.id,
               name: service.name,
-              vendor: vendor.name,
-              vendorId: vendor.id,
               price: `RD$${service.price?.toLocaleString()}`,
               duration: service.duration || "30 min",
               rating: vendor.rating,
@@ -55,7 +53,14 @@ export default function SearchPage() {
               category: service.category,
               description: service.description,
               isPopular: service.isPopular,
-              addons: service.addons || []
+              addons: service.addons || [],
+              // Use the marketplace structure
+              availableProviders: 1, // We know at least this vendor offers it
+              featuredProvider: {
+                id: vendor.id,
+                name: vendor.name,
+                isSponsored: false
+              }
             })
           })
         })

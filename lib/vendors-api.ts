@@ -1,6 +1,7 @@
 // Mock data functions for demo - using shared mock data directly
 import { mockData } from '@/data/shared/mock-data'
 import { getVendorLogo, getVendorCover, getServiceImage, getProfessionalPortrait, getRandomProfessionalPortrait } from '@/lib/image-mappings'
+import { getServiceDescription } from '@/lib/service-descriptions'
 
 export interface VendorFilters {
   category?: string
@@ -248,4 +249,100 @@ export async function getAllServices() {
 export async function getServicesByCategory(category: string) {
   const allServices = await getAllServices()
   return allServices.filter(service => service.category === category)
+}
+
+// Get marketplace services with aggregated information
+export async function getMarketplaceServices(filters: VendorFilters = {}) {
+  await simulateDelay()
+  
+  try {
+    const allServices = await getAllServices()
+    const serviceMap = new Map<string, any>()
+    
+    // Group services by name to aggregate information
+    allServices.forEach(service => {
+      const serviceName = service.name
+      
+      if (!serviceMap.has(serviceName)) {
+        // Find top-rated vendor for this service (could be sponsored)
+        const vendorsForService = allServices
+          .filter(s => s.name === serviceName)
+          .sort((a, b) => b.vendor.rating - a.vendor.rating)
+        
+        const topVendor = vendorsForService[0]?.vendor
+        const allPrices = vendorsForService.map(s => s.price)
+        
+        // Simulate sponsorship (in real app, this would come from database)
+        const isSponsored = Math.random() > 0.7 // 30% chance of sponsorship
+        const sponsorshipLevel = isSponsored 
+          ? (Math.random() > 0.5 ? 'destacado' : 'recomendado')
+          : undefined
+        
+        serviceMap.set(serviceName, {
+          id: service.id,
+          name: serviceName,
+          category: service.category,
+          description: getServiceDescription(serviceName),
+          image: service.image,
+          isPopular: service.isPopular,
+          rating: topVendor?.rating || 4.5,
+          reviewCount: topVendor?.reviewCount || 0,
+          duration: service.duration,
+          price: `RD$${Math.min(...allPrices).toLocaleString()} - RD$${Math.max(...allPrices).toLocaleString()}`,
+          priceRange: {
+            min: Math.min(...allPrices),
+            max: Math.max(...allPrices)
+          },
+          availableProviders: vendorsForService.length,
+          featuredProvider: isSponsored ? {
+            id: topVendor?.id,
+            name: topVendor?.name,
+            isSponsored: true,
+            sponsorshipLevel
+          } : undefined,
+          slug: `${service.category}-${serviceName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`
+        })
+      }
+    })
+    
+    let marketplaceServices = Array.from(serviceMap.values())
+    
+    // Apply filters
+    if (filters.category) {
+      marketplaceServices = marketplaceServices.filter(service => 
+        service.category === filters.category
+      )
+    }
+    
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase()
+      marketplaceServices = marketplaceServices.filter(service =>
+        service.name.toLowerCase().includes(searchLower) ||
+        service.description.toLowerCase().includes(searchLower)
+      )
+    }
+    
+    // Sort by popularity and sponsorship
+    marketplaceServices.sort((a, b) => {
+      // Sponsored services first
+      if (a.featuredProvider?.isSponsored && !b.featuredProvider?.isSponsored) return -1
+      if (!a.featuredProvider?.isSponsored && b.featuredProvider?.isSponsored) return 1
+      
+      // Then by popularity
+      if (a.isPopular && !b.isPopular) return -1
+      if (!a.isPopular && b.isPopular) return 1
+      
+      // Finally by rating
+      return b.rating - a.rating
+    })
+    
+    if (filters.limit) {
+      marketplaceServices = marketplaceServices.slice(0, filters.limit)
+    }
+    
+    return marketplaceServices
+  } catch (error) {
+    console.error('Error getting marketplace services:', error)
+    return []
+  }
 }

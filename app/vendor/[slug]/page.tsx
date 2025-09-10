@@ -427,12 +427,21 @@ export default function VendorPage() {
           service={{
             id: selectedService.id,
             name: selectedService.name,
-            vendor: vendor.name,
             price: formatPrice(selectedService.price),
             rating: vendor.rating,
             reviews: vendor.reviewCount,
+            reviewCount: vendor.reviewCount,
             duration: selectedService.duration,
-            image: selectedService.image
+            image: selectedService.image,
+            category: selectedService.category,
+            description: selectedService.description,
+            isPopular: selectedService.isPopular,
+            featuredProvider: {
+              id: vendor.id,
+              name: vendor.name,
+              isSponsored: false
+            },
+            availableProviders: 1
           }}
           onBookingComplete={handleBookingComplete}
         />

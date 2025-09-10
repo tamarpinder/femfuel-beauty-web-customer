@@ -14,6 +14,7 @@ interface ChatButtonProps {
   className?: string
   serviceContext?: string
   children?: React.ReactNode
+  unreadCount?: number
 }
 
 export function ChatButton({
@@ -23,17 +24,23 @@ export function ChatButton({
   size = "md",
   className,
   serviceContext,
-  children
+  children,
+  unreadCount = 0
 }: ChatButtonProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleChatClick = async () => {
-    if (!vendorId) return
-    
     setIsLoading(true)
     
-    // Build chat URL with context
+    if (!vendorId) {
+      // Floating chat button without vendor goes to messages page
+      router.push('/chat')
+      setIsLoading(false)
+      return
+    }
+    
+    // Build chat URL with context for specific vendor
     let chatUrl = `/chat/${vendorId}`
     const queryParams = []
     
@@ -84,28 +91,28 @@ export function ChatButton({
   }
 
   const getButtonStyles = () => {
-    const baseStyles = "bg-green-500 hover:bg-green-600 text-white font-medium transition-all duration-200"
+    const baseStyles = "bg-green-500 hover:bg-green-600 text-white font-medium transition-all duration-200 hover:scale-105 hover:shadow-md"
     
     switch (variant) {
       case "floating":
         return cn(
           baseStyles,
-          "fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full shadow-lg hover:shadow-xl",
-          "flex items-center justify-center",
+          "fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full shadow-lg hover:shadow-xl hover:scale-110",
+          "flex items-center justify-center transform",
           "md:bottom-6 md:right-6",
           className
         )
       case "card":
         return cn(
           baseStyles,
-          "w-full justify-center gap-2",
+          "w-full justify-center gap-2 hover:shadow-lg",
           getButtonSize(),
           className
         )
       default:
         return cn(
           baseStyles,
-          "rounded-lg gap-2",
+          "rounded-lg gap-2 hover:shadow-lg transform",
           getButtonSize(),
           className
         )
@@ -113,13 +120,22 @@ export function ChatButton({
   }
 
   return (
-    <Button
-      onClick={handleChatClick}
-      disabled={!vendorId || isLoading}
-      className={getButtonStyles()}
-      variant="ghost"
-    >
-      {getButtonContent()}
-    </Button>
+    <div className="relative">
+      <Button
+        onClick={handleChatClick}
+        disabled={isLoading}
+        className={getButtonStyles()}
+        variant="ghost"
+      >
+        {getButtonContent()}
+      </Button>
+      
+      {/* Notification Badge for Floating Variant */}
+      {variant === "floating" && unreadCount > 0 && (
+        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center font-bold border-2 border-white">
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </div>
+      )}
+    </div>
   )
 }

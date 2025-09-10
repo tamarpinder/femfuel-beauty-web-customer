@@ -5,8 +5,8 @@ import { Home, Search, Calendar, ShoppingBag, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 interface MobileNavigationProps {
-  activeTab?: "home" | "search" | "bookings" | "shop" | "profile"
-  onTabChange?: (tab: "home" | "search" | "bookings" | "shop" | "profile") => void
+  activeTab?: "home" | "search" | "bookings" | "shop" | "profile" | "chat"
+  onTabChange?: (tab: "home" | "search" | "bookings" | "shop" | "profile" | "chat") => void
 }
 
 export function MobileNavigation({ activeTab = "home", onTabChange }: MobileNavigationProps) {

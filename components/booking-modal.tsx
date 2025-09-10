@@ -125,7 +125,7 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
   const handleWhatsAppConfirmation = () => {
     if (!service || !bookingData.date || !bookingData.time) return
 
-    const message = `Hola! He reservado el servicio "${service.name}" en ${service.vendor} para el ${bookingData.date.toLocaleDateString("es-DO")} a las ${bookingData.time}. ¡Gracias!`
+    const message = `Hola! He reservado el servicio "${service.name}" ${service.featuredProvider ? `con ${service.featuredProvider.name}` : ''} para el ${bookingData.date.toLocaleDateString("es-DO")} a las ${bookingData.time}. ¡Gracias!`
     const whatsappUrl = `https://wa.me/18095550123?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
   }
@@ -142,7 +142,7 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
     endDate.setMinutes(endDate.getMinutes() + durationMinutes)
 
     const event = {
-      title: `${service.name} - ${service.vendor}`,
+      title: `${service.name}${service.featuredProvider ? ` - ${service.featuredProvider.name}` : ''}`,
       start: startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
       end: endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
       description: `Servicio de belleza reservado a través de FemFuel Beauty`,
@@ -189,7 +189,9 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
               />
               <div className="flex-1">
                 <h3 className="font-semibold text-femfuel-dark">{service.name}</h3>
-                <p className="text-sm text-femfuel-medium">{service.vendor}</p>
+                {service.featuredProvider && (
+                  <p className="text-sm text-femfuel-medium">{service.featuredProvider.name}</p>
+                )}
                 <div className="flex items-center gap-4 mt-2">
                   <Badge variant="secondary" className="bg-femfuel-purple">
                     <Clock className="h-3 w-3 mr-1" />
@@ -268,7 +270,7 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-dark">{service.vendor}</span>
+                    <span className="text-femfuel-dark">{service.featuredProvider?.name || 'Proveedor'}</span>
                   </div>
                 </div>
               </CardContent>
@@ -391,7 +393,7 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
                   </div>
                   <div className="flex justify-between">
                     <span className="text-femfuel-medium">Salón:</span>
-                    <span className="text-femfuel-dark">{service.vendor}</span>
+                    <span className="text-femfuel-dark">{service.featuredProvider?.name || 'Proveedor'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-femfuel-medium">Fecha:</span>

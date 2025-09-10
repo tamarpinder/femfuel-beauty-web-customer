@@ -130,7 +130,7 @@ export function ProviderListCompact({
                           </div>
                           <div className="text-right">
                             <div className="text-sm text-green-600 font-medium">
-                              Next: {getNextSlot(vendor)}
+                              Próximo: {getNextSlot(vendor)}
                             </div>
                           </div>
                         </div>
@@ -146,7 +146,7 @@ export function ProviderListCompact({
                           className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1"
                           size="sm"
                         >
-                          Book Now
+                          Reservar Ahora
                         </Button>
                         
                         <ChatButton
@@ -169,7 +169,7 @@ export function ProviderListCompact({
                           }}
                           className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white"
                         >
-                          View
+                          Ver
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </Button>
                       </div>

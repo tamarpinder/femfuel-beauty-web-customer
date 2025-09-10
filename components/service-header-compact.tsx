@@ -49,7 +49,7 @@ export function ServiceHeaderCompact({
             <span className="font-medium">{duration} min</span>
           </div>
           <div className="hidden sm:block">
-            <span className="text-sm">Starting price</span>
+            <span className="text-sm">precio inicial</span>
           </div>
         </div>
       </div>

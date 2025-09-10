@@ -102,7 +102,7 @@ export function DesktopProviderList({
           <div className="flex items-center gap-2">
             <Crown className="h-5 w-5 text-femfuel-rose" />
             <h2 className="text-xl font-bold text-femfuel-dark">
-              Elige tu Especialista
+              Elegí tu Especialista
             </h2>
             <span className="text-sm text-femfuel-medium">
               ({sortedProviders.length} disponibles)
@@ -214,7 +214,7 @@ export function DesktopProviderList({
                         </div>
                         <div className="text-right">
                           <div className="text-sm text-green-600 font-medium">
-                            Next: {getNextSlot(vendor)}
+                            Próximo: {getNextSlot(vendor)}
                           </div>
                         </div>
                       </div>
@@ -230,7 +230,7 @@ export function DesktopProviderList({
                         className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1"
                         size="sm"
                       >
-                        Book Now
+                        Reservar Ahora
                       </Button>
                       
                       <ChatButton
@@ -253,7 +253,7 @@ export function DesktopProviderList({
                         }}
                         className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-3"
                       >
-                        View
+                        Ver
                       </Button>
                     </div>
                   </div>

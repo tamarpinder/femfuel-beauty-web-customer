@@ -31,57 +31,57 @@ export function DesktopServiceInfo({
     switch (category.toLowerCase()) {
       case 'nails':
         return [
-          'Gel coating & nail art',
-          'Professional cuticle care',
-          'Hand massage & moisturizing',
+          'Gel coating y nail art',
+          'Cuidado profesional de cutículas',
+          'Masaje de manos e hidratación',
           'Base + color + top coat',
-          'Nail shaping & buffing',
-          'Sanitized tools & workspace'
+          'Modelado y pulido de uñas',
+          'Herramientas y espacio sanitizado'
         ]
       case 'hair':
         return [
-          'Professional wash & conditioning',
-          'Expert cut & styling',
-          'Hair treatment application',
-          'Blow dry & finishing',
-          'Style consultation',
-          'Premium hair products'
+          'Lavado y acondicionamiento profesional',
+          'Corte y peinado experto',
+          'Aplicación de tratamiento capilar',
+          'Secado y acabado',
+          'Consulta de estilo',
+          'Productos capilares premium'
         ]
       case 'makeup':
         return [
-          'Skin prep & primer',
-          'Foundation & concealer',
-          'Eye makeup & lashes',
-          'Lip color & finishing',
-          'Setting spray application',
-          'Professional makeup tools'
+          'Preparación de piel y primer',
+          'Base y corrector',
+          'Maquillaje de ojos y pestañas',
+          'Color de labios y acabado',
+          'Aplicación de spray fijador',
+          'Herramientas de maquillaje profesional'
         ]
       case 'spa':
         return [
-          'Relaxing massage therapy',
-          'Facial cleansing & treatment',
-          'Aromatherapy experience',
-          'Hydrating skin care',
-          'Stress relief techniques',
-          'Premium spa products'
+          'Terapia de masaje relajante',
+          'Limpieza y tratamiento facial',
+          'Experiencia de aromaterapia',
+          'Cuidado hidratante de la piel',
+          'Técnicas de alivio del estrés',
+          'Productos premium de spa'
         ]
       case 'lashes':
         return [
-          'Individual lash extensions',
-          'Professional curl & volume',
-          'Lash strengthening treatment',
-          'Precision application',
-          'Aftercare instructions',
-          'Touch-up recommendations'
+          'Extensiones de pestañas individuales',
+          'Curvatura y volumen profesional',
+          'Tratamiento fortalecedor de pestañas',
+          'Aplicación de precisión',
+          'Instrucciones de cuidado posterior',
+          'Recomendaciones de retoque'
         ]
       default:
         return [
-          'Professional service',
-          'Quality guarantee',
-          'Expert care',
-          'Premium products',
-          'Sanitized environment',
-          'Aftercare support'
+          'Servicio profesional',
+          'Garantía de calidad',
+          'Cuidado experto',
+          'Productos premium',
+          'Ambiente sanitizado',
+          'Soporte post-cuidado'
         ]
     }
   }

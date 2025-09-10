@@ -61,7 +61,7 @@ export function DesktopGallery({ serviceName, category, images }: DesktopGallery
               Resultados Reales
             </h3>
             <p className="text-sm text-femfuel-medium">
-              Ve los increíbles resultados que logran nuestros especialistas
+              Mirá los increíbles resultados que logran nuestros especialistas
             </p>
           </div>
           <div className="flex items-center gap-2">

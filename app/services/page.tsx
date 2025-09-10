@@ -11,42 +11,37 @@ import { SearchFiltersComponent, type SearchFilters } from "@/components/search-
 import { ChatButton } from "@/components/ui/chat-button"
 import { UserMenu } from "@/components/user-menu"
 import { categories } from "@/data/shared/mock-data"
-import { getAllServices } from "@/lib/vendors-api"
+import { getMarketplaceServices } from "@/lib/vendors-api"
 
-interface ServiceWithVendor {
+interface MarketplaceService {
   id: string
   slug?: string
   name: string
   description: string
-  price: number
+  price: string
+  priceRange: {
+    min: number
+    max: number
+  }
   duration: number
   category: string
   isPopular?: boolean
   image?: string
-  vendor: {
+  rating: number
+  reviewCount: number
+  availableProviders: number
+  featuredProvider?: {
     id: string
     name: string
-    slug: string
-    logo?: string
-    rating: number
-    reviewCount: number
-    location: {
-      address: string
-      district: string
-      city: string
-      distance?: string
-    }
-    priceRange: {
-      min: number
-      max: number
-    }
+    isSponsored?: boolean
+    sponsorshipLevel?: 'destacado' | 'recomendado' | 'premium'
   }
 }
 
 export default function ServicesPage() {
   const router = useRouter()
-  const [services, setServices] = useState<ServiceWithVendor[]>([])
-  const [filteredServices, setFilteredServices] = useState<ServiceWithVendor[]>([])
+  const [services, setServices] = useState<MarketplaceService[]>([])
+  const [filteredServices, setFilteredServices] = useState<MarketplaceService[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState("")
   const [loading, setLoading] = useState(true)
@@ -64,9 +59,9 @@ export default function ServicesPage() {
     async function loadServices() {
       try {
         setLoading(true)
-        const allServices = await getAllServices()
-        setServices(allServices)
-        setFilteredServices(allServices)
+        const marketplaceServices = await getMarketplaceServices()
+        setServices(marketplaceServices)
+        setFilteredServices(marketplaceServices)
       } catch (error) {
         console.error('Error loading services:', error)
       } finally {
@@ -91,7 +86,7 @@ export default function ServicesPage() {
       filtered = filtered.filter(service =>
         service.name.toLowerCase().includes(query) ||
         service.description.toLowerCase().includes(query) ||
-        service.vendor.name.toLowerCase().includes(query)
+        service.featuredProvider?.name?.toLowerCase().includes(query)
       )
     }
 
@@ -107,12 +102,12 @@ export default function ServicesPage() {
 
     // Apply price range filter
     filtered = filtered.filter(service =>
-      service.price >= filters.priceRange[0] && service.price <= filters.priceRange[1]
+      service.priceRange.min >= filters.priceRange[0] && service.priceRange.max <= filters.priceRange[1]
     )
 
     // Apply rating filter
     if (filters.rating > 0) {
-      filtered = filtered.filter(service => service.vendor.rating >= filters.rating)
+      filtered = filtered.filter(service => service.rating >= filters.rating)
     }
 
     setFilteredServices(filtered)
@@ -122,8 +117,8 @@ export default function ServicesPage() {
     router.push('/')
   }
 
-  const handleServiceClick = (service: ServiceWithVendor) => {
-    // Navigate to service-to-vendor bridge page using slug
+  const handleServiceClick = (service: MarketplaceService) => {
+    // Navigate to service providers page using slug or id
     router.push(`/service/${service.slug || service.id}/providers`)
   }
 
@@ -289,7 +284,7 @@ export default function ServicesPage() {
                       {/* Price Badge */}
                       <div className="absolute bottom-3 left-3">
                         <div className="bg-white/90 backdrop-blur-sm text-femfuel-dark px-3 py-1 rounded-full text-sm font-semibold">
-                          {formatPrice(service.price)}
+                          {service.price}
                         </div>
                       </div>
                     </div>
@@ -303,27 +298,16 @@ export default function ServicesPage() {
                         {service.description}
                       </p>
 
-                      {/* Vendor Info */}
-                      <div 
-                        className="flex items-center gap-2 mb-3 cursor-pointer hover:text-femfuel-rose transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation() // Prevent service click
-                          router.push(`/vendor/${service.vendor.slug}`)
-                        }}
-                      >
-                        <div className="w-6 h-6 rounded-full overflow-hidden relative">
-                          <OptimizedImage
-                            src={service.vendor.logo || "/vendors/logos/beauty-studio-logo.png"}
-                            alt={service.vendor.name}
-                            fill
-                            sizes="24px"
-                            className="object-cover"
-                            context="vendor-logo"
-                          />
+                      {/* Marketplace Info */}
+                      <div className="flex items-center gap-2 mb-3">
+                        {service.featuredProvider?.isSponsored && (
+                          <div className="flex items-center gap-1 bg-femfuel-gold/10 text-femfuel-rose px-2 py-0.5 rounded-full text-xs font-medium">
+                            👑 {service.featuredProvider.sponsorshipLevel === 'destacado' ? 'Destacado' : 'Recomendado'}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1 text-sm text-femfuel-medium">
+                          👥 {service.availableProviders} especialistas disponibles
                         </div>
-                        <span className="text-sm text-femfuel-medium truncate hover:text-femfuel-rose transition-colors">
-                          {service.vendor.name}
-                        </span>
                       </div>
 
                       {/* Service Details */}
@@ -334,37 +318,24 @@ export default function ServicesPage() {
                         </div>
                         <div className="flex items-center gap-1">
                           <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span>{service.vendor.rating}</span>
+                          <span>{service.rating}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          <span>{service.vendor.location.district}</span>
+                        <div className="font-semibold text-femfuel-rose">
+                          {service.price}
                         </div>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex items-center gap-2">
+                      {/* Action Button */}
+                      <div className="flex items-center">
                         <button
-                          className="flex-1 glassmorphism-button"
+                          className="w-full glassmorphism-button"
                           onClick={(e) => {
                             e.stopPropagation()
                             handleServiceClick(service)
                           }}
                         >
-                          Ver Detalles
+                          Ver Proveedores
                         </button>
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <ChatButton
-                            vendorId={service.vendor.id}
-                            vendorName={service.vendor.name}
-                            serviceContext={service.name}
-                            variant="inline"
-                            size="sm"
-                            className="bg-green-500 hover:bg-green-600"
-                          >
-                            💬
-                          </ChatButton>
-                        </div>
                       </div>
                     </div>
                   </div>

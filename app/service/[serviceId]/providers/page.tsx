@@ -14,6 +14,7 @@ import { ServiceHeaderCompact } from "@/components/service-header-compact"
 import { BeforeAfterCarousel } from "@/components/before-after-carousel"
 import { ServiceInfoCards } from "@/components/service-info-cards"
 import { ProviderListCompact } from "@/components/provider-list-compact"
+import { ServiceDesktopLayout } from "@/components/service-desktop-layout"
 import { getAllServices, getVendorsByCategory } from "@/lib/vendors-api"
 import { getServiceImage, getServiceCategoryCover } from "@/lib/image-mappings"
 import type { Vendor } from "@/types/vendor"
@@ -144,50 +145,76 @@ export default function ServiceProvidersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <UserFlowHeader 
-        title={service.name} 
-        onBack={handleBack}
-      />
+    <>
+      {/* Mobile Layout (< md screens) */}
+      <div className="md:hidden min-h-screen bg-white">
+        {/* Header */}
+        <UserFlowHeader 
+          title={service.name} 
+          onBack={handleBack}
+        />
 
-      {/* Compact Service Header */}
-      <ServiceHeaderCompact
-        serviceName={service.name}
-        category={service.category}
-        price={service.price}
-        duration={service.duration}
-        isPopular={service.isPopular}
-      />
+        {/* Compact Service Header */}
+        <ServiceHeaderCompact
+          serviceName={service.name}
+          category={service.category}
+          price={service.price}
+          duration={service.duration}
+          isPopular={service.isPopular}
+        />
 
-      {/* Before/After Photo Carousel */}
-      <BeforeAfterCarousel
-        serviceName={service.name}
-        category={service.category}
-      />
+        {/* Before/After Photo Carousel */}
+        <BeforeAfterCarousel
+          serviceName={service.name}
+          category={service.category}
+        />
 
-      {/* Quick Info Cards */}
-      <ServiceInfoCards
-        duration={service.duration}
-        category={service.category}
-      />
+        {/* Quick Info Cards */}
+        <ServiceInfoCards
+          duration={service.duration}
+          category={service.category}
+        />
 
-      {/* Provider List */}
-      <ProviderListCompact
-        providers={providers}
-        serviceName={service.name}
-        onProviderSelect={handleProviderSelect}
-        onBookNow={handleBookNow}
-      />
+        {/* Provider List */}
+        <ProviderListCompact
+          providers={providers}
+          serviceName={service.name}
+          onProviderSelect={handleProviderSelect}
+          onBookNow={handleBookNow}
+        />
 
-      {/* Floating Chat Widget */}
-      <ChatButton
-        variant="floating"
-        className="shadow-lg hover:shadow-xl"
-      />
+        {/* Floating Chat Widget */}
+        <ChatButton
+          variant="floating"
+          className="shadow-lg hover:shadow-xl"
+        />
 
-      {/* Mobile Navigation */}
-      <MobileNavigation activeTab="search" />
-    </div>
+        {/* Mobile Navigation */}
+        <MobileNavigation activeTab="search" />
+      </div>
+
+      {/* Desktop Layout (md+ screens) */}
+      <div className="hidden md:block">
+        {/* Header */}
+        <UserFlowHeader 
+          title={service.name} 
+          onBack={handleBack}
+        />
+
+        {/* Desktop Split-Screen Layout */}
+        <ServiceDesktopLayout
+          service={service}
+          providers={providers}
+          onProviderSelect={handleProviderSelect}
+          onBookNow={handleBookNow}
+        />
+
+        {/* Floating Chat Widget */}
+        <ChatButton
+          variant="floating"
+          className="shadow-lg hover:shadow-xl"
+        />
+      </div>
+    </>
   )
 }

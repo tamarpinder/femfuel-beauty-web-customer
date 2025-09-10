@@ -268,7 +268,9 @@ curatedServices.forEach(serviceData => {
     vendorId: serviceData.vendorId,
     vendor,
     name: serviceData.name,
-    description: `Professional ${serviceData.name.toLowerCase()} service at ${vendor.businessName}. Expert care with attention to detail.`,
+    description: serviceData.name === 'Alisado Dominicano' 
+      ? `Servicio profesional de alisado dominicano en ${vendor.businessName}. Cuidado experto con atención al detalle.`
+      : `Professional ${serviceData.name.toLowerCase()} service at ${vendor.businessName}. Expert care with attention to detail.`,
     category: serviceData.category,
     price: serviceData.price,
     duration: serviceData.duration,

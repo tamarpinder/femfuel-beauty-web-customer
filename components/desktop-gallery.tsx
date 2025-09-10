@@ -22,23 +22,44 @@ export function DesktopGallery({ serviceName, category, images }: DesktopGallery
   const [viewMode, setViewMode] = useState<'split' | 'before' | 'after'>('split')
 
   // Default images if none provided
-  const defaultImages: BeforeAfterImage[] = [
-    {
-      before: `/services/${category}/before-1.png`,
-      after: `/services/${category}/after-1.png`,
-      title: "Resultado 1"
-    },
-    {
-      before: `/services/${category}/before-2.png`,
-      after: `/services/${category}/after-2.png`,
-      title: "Resultado 2"
-    },
-    {
-      before: `/services/${category}/before-3.png`,
-      after: `/services/${category}/after-3.png`,
-      title: "Resultado 3"
+  const getDefaultImages = (): BeforeAfterImage[] => {
+    // Use real transformation photos for Alisado Dominicano
+    if (serviceName.toLowerCase().includes('alisado dominicano')) {
+      return [
+        {
+          before: `/transformations/before/dominican-blowout-before.png`,
+          after: `/transformations/after/dominican-blowout-after.png`,
+          title: "Transformación Alisado Dominicano 1"
+        },
+        {
+          before: `/transformations/before/dominican-blowout-before-1.png`,
+          after: `/transformations/after/dominican-blowout-after-1.png`,
+          title: "Transformación Alisado Dominicano 2"
+        }
+      ]
     }
-  ]
+    
+    // Default generic images for other services
+    return [
+      {
+        before: `/services/${category}/before-1.png`,
+        after: `/services/${category}/after-1.png`,
+        title: "Resultado 1"
+      },
+      {
+        before: `/services/${category}/before-2.png`,
+        after: `/services/${category}/after-2.png`,
+        title: "Resultado 2"
+      },
+      {
+        before: `/services/${category}/before-3.png`,
+        after: `/services/${category}/after-3.png`,
+        title: "Resultado 3"
+      }
+    ]
+  }
+
+  const defaultImages = getDefaultImages()
 
   const displayImages = images || defaultImages
   const currentImage = displayImages[currentIndex]

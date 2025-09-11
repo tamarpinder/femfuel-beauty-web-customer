@@ -43,6 +43,9 @@ export async function getVendors(filters: VendorFilters = {}) {
       filteredVendors = filteredVendors.slice(0, filters.limit)
     }
 
+    // Sort vendors alphabetically by business name (using Spanish locale for proper ordering)
+    filteredVendors.sort((a, b) => a.businessName.localeCompare(b.businessName, 'es-ES'))
+
     // Transform data to match frontend format
     const transformedVendors = filteredVendors.map(vendor => {
       const vendorServices = mockData.services.filter(s => s.vendorId === vendor.id)
@@ -322,19 +325,8 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
       )
     }
     
-    // Sort by popularity and sponsorship
-    marketplaceServices.sort((a, b) => {
-      // Sponsored services first
-      if (a.featuredProvider?.isSponsored && !b.featuredProvider?.isSponsored) return -1
-      if (!a.featuredProvider?.isSponsored && b.featuredProvider?.isSponsored) return 1
-      
-      // Then by popularity
-      if (a.isPopular && !b.isPopular) return -1
-      if (!a.isPopular && b.isPopular) return 1
-      
-      // Finally by rating
-      return b.rating - a.rating
-    })
+    // Sort alphabetically by service name (using Spanish locale for proper ordering)
+    marketplaceServices.sort((a, b) => a.name.localeCompare(b.name, 'es-ES'))
     
     if (filters.limit) {
       marketplaceServices = marketplaceServices.slice(0, filters.limit)

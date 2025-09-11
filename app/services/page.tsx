@@ -110,6 +110,9 @@ export default function ServicesPage() {
       filtered = filtered.filter(service => service.rating >= filters.rating)
     }
 
+    // Sort alphabetically by service name (using Spanish locale for proper ordering)
+    filtered.sort((a, b) => a.name.localeCompare(b.name, 'es-ES'))
+
     setFilteredServices(filtered)
   }, [services, selectedCategory, searchQuery, filters])
 

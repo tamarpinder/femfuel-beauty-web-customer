@@ -49,6 +49,8 @@ export default function CategoryPage() {
       try {
         setLoading(true)
         const vendorData = await getVendorsByCategory(categoryId)
+        // Sort vendors alphabetically by name (using Spanish locale for proper ordering)
+        vendorData.sort((a, b) => a.name.localeCompare(b.name, 'es-ES'))
         setVendors(vendorData)
       } catch (error) {
         console.error('Error loading vendors:', error)

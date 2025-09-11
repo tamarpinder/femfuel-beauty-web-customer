@@ -111,7 +111,6 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
                   <div className="space-y-2">
                     <p className="font-bold text-femfuel-rose text-base">{service.price}</p>
                     <div className="flex items-center gap-1 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100 rounded px-2 py-1">
-                      <span className="text-orange-500 text-sm">🔥</span>
                       <span className="font-semibold text-orange-700 text-xs">{service.availableProviders} especialistas disponibles</span>
                     </div>
                   </div>
@@ -182,7 +181,6 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
               <div className="space-y-3">
                 <p className="text-lg font-bold text-femfuel-rose">{service.price}</p>
                 <div className="flex items-center gap-2 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100 rounded-lg px-3 py-2">
-                  <span className="text-orange-500">🔥</span>
                   <span className="font-semibold text-orange-700">{service.availableProviders} especialistas disponibles</span>
                 </div>
               </div>

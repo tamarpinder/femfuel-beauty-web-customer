@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Search, Filter, MapPin, Star, Clock, Heart } from "lucide-react"
+import { ArrowLeft, Search, Filter, MapPin, Clock, Heart, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { OptimizedImage } from "@/components/ui/optimized-image"
@@ -23,19 +23,11 @@ interface MarketplaceService {
     min: number
     max: number
   }
-  duration: number
+  avgDuration: number
   category: string
   isPopular?: boolean
   image?: string
-  rating: number
-  reviewCount: number
   availableProviders: number
-  featuredProvider?: {
-    id: string
-    name: string
-    isSponsored?: boolean
-    sponsorshipLevel?: 'destacado' | 'recomendado' | 'premium'
-  }
 }
 
 export default function ServicesPage() {
@@ -85,8 +77,7 @@ export default function ServicesPage() {
       const query = searchQuery.toLowerCase()
       filtered = filtered.filter(service =>
         service.name.toLowerCase().includes(query) ||
-        service.description.toLowerCase().includes(query) ||
-        service.featuredProvider?.name?.toLowerCase().includes(query)
+        service.description.toLowerCase().includes(query)
       )
     }
 
@@ -105,10 +96,7 @@ export default function ServicesPage() {
       service.priceRange.min >= filters.priceRange[0] && service.priceRange.max <= filters.priceRange[1]
     )
 
-    // Apply rating filter
-    if (filters.rating > 0) {
-      filtered = filtered.filter(service => service.rating >= filters.rating)
-    }
+    // Rating filter removed since ratings are vendor-specific, not service-specific
 
     // Sort alphabetically by service name (using Spanish locale for proper ordering)
     filtered.sort((a, b) => a.name.localeCompare(b.name, 'es-ES'))
@@ -247,10 +235,10 @@ export default function ServicesPage() {
                   <div
                     key={service.id}
                     onClick={() => handleServiceClick(service)}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02]"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] flex flex-col h-[420px]"
                   >
                     {/* Service Image */}
-                    <div className="aspect-[4/3] relative overflow-hidden">
+                    <div className="aspect-[3/2] relative overflow-hidden flex-shrink-0">
                       <OptimizedImage
                         src={service.image || "/femfuel-logo.png"}
                         alt={service.name}
@@ -293,7 +281,7 @@ export default function ServicesPage() {
                     </div>
 
                     {/* Service Info */}
-                    <div className="p-4">
+                    <div className="p-4 flex flex-col flex-1">
                       <h3 className="font-semibold text-femfuel-dark mb-1 group-hover:text-femfuel-rose transition-colors">
                         {service.name}
                       </h3>
@@ -303,13 +291,9 @@ export default function ServicesPage() {
 
                       {/* Marketplace Info */}
                       <div className="flex items-center gap-2 mb-3">
-                        {service.featuredProvider?.isSponsored && (
-                          <div className="flex items-center gap-1 bg-femfuel-gold/10 text-femfuel-rose px-2 py-0.5 rounded-full text-xs font-medium">
-                            👑 {service.featuredProvider.sponsorshipLevel === 'destacado' ? 'Destacado' : 'Recomendado'}
-                          </div>
-                        )}
                         <div className="flex items-center gap-1 text-sm text-femfuel-medium">
-                          👥 {service.availableProviders} especialistas disponibles
+                          <Users className="h-4 w-4" />
+                          <span>{service.availableProviders} especialistas disponibles</span>
                         </div>
                       </div>
 
@@ -317,11 +301,7 @@ export default function ServicesPage() {
                       <div className="flex items-center justify-between text-xs text-femfuel-medium mb-3">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
-                          <span>{service.duration} min</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span>{service.rating}</span>
+                          <span>{service.avgDuration} min promedio</span>
                         </div>
                         <div className="font-semibold text-femfuel-rose">
                           {service.price}
@@ -329,7 +309,7 @@ export default function ServicesPage() {
                       </div>
 
                       {/* Action Button */}
-                      <div className="flex items-center">
+                      <div className="flex items-center mt-auto">
                         <button
                           className="w-full glassmorphism-button"
                           onClick={(e) => {

@@ -274,12 +274,10 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
         
         const topVendor = vendorsForService[0]?.vendor
         const allPrices = vendorsForService.map(s => s.price)
+        const allDurations = vendorsForService.map(s => s.duration)
         
-        // Simulate sponsorship (in real app, this would come from database)
-        const isSponsored = Math.random() > 0.7 // 30% chance of sponsorship
-        const sponsorshipLevel = isSponsored 
-          ? (Math.random() > 0.5 ? 'destacado' : 'recomendado')
-          : undefined
+        // Calculate average duration across all vendors offering this service
+        const avgDuration = Math.round(allDurations.reduce((sum, duration) => sum + duration, 0) / allDurations.length)
         
         serviceMap.set(serviceName, {
           id: service.id,
@@ -288,21 +286,13 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
           description: getServiceDescription(serviceName),
           image: service.image,
           isPopular: service.isPopular,
-          rating: topVendor?.rating || 4.5,
-          reviewCount: topVendor?.reviewCount || 0,
-          duration: service.duration,
+          avgDuration: avgDuration,
           price: `RD$${Math.min(...allPrices).toLocaleString()} - RD$${Math.max(...allPrices).toLocaleString()}`,
           priceRange: {
             min: Math.min(...allPrices),
             max: Math.max(...allPrices)
           },
           availableProviders: vendorsForService.length,
-          featuredProvider: isSponsored ? {
-            id: topVendor?.id,
-            name: topVendor?.name,
-            isSponsored: true,
-            sponsorshipLevel
-          } : undefined,
           slug: `${service.category}-${serviceName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`
         })
       }

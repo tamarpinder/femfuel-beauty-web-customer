@@ -589,35 +589,12 @@ curatedServices.forEach(serviceData => {
   const vendor = vendorProfiles.find(v => v.id === serviceData.vendorId)
   if (!vendor) return
   
-  // Check if service has transformation data (single or multiple)
-  const multipleTransformations = multipleTransformationServices[serviceData.name]
+  // Check if service has transformation data
   const singleTransformation = serviceTransformations[serviceData.name]
   
   let beforeAfter = undefined
-  let transformationGallery = undefined
   
-  if (multipleTransformations && multipleTransformations.length > 0) {
-    // Use first image as primary beforeAfter
-    const primaryTransformation = multipleTransformations[0]
-    beforeAfter = {
-      before: `/transformations/before/${primaryTransformation.imageKey}-before.png`,
-      after: `/transformations/after/${primaryTransformation.imageKey}-after.png`,
-      title: serviceData.name,
-      testimonial: primaryTransformation.testimonial,
-      customerName: primaryTransformation.customerName,
-      rating: primaryTransformation.rating
-    }
-    
-    // Create gallery with all transformations
-    transformationGallery = multipleTransformations.map(transform => ({
-      before: `/transformations/before/${transform.imageKey}-before.png`,
-      after: `/transformations/after/${transform.imageKey}-after.png`,
-      title: serviceData.name,
-      testimonial: transform.testimonial,
-      customerName: transform.customerName,
-      rating: transform.rating
-    }))
-  } else if (singleTransformation) {
+  if (singleTransformation) {
     beforeAfter = {
       before: `/transformations/before/${singleTransformation.imageKey}-before.png`,
       after: `/transformations/after/${singleTransformation.imageKey}-after.png`,
@@ -646,7 +623,6 @@ curatedServices.forEach(serviceData => {
       type: 'image' as const
     })),
     beforeAfter,
-    transformationGallery,
     isPopular: serviceData.isPopular,
     isActive: true,
     createdAt: vendor.createdAt,

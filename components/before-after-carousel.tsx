@@ -22,8 +22,10 @@ export function BeforeAfterCarousel({ serviceName, category, images }: BeforeAft
 
   // Default images if none provided
   const getDefaultImages = (): BeforeAfterImage[] => {
-    // Use real transformation photos for Alisado Dominicano
-    if (serviceName.toLowerCase().includes('alisado dominicano')) {
+    const serviceLower = serviceName.toLowerCase()
+    
+    // Hair Services
+    if (serviceLower.includes('alisado dominicano')) {
       return [
         {
           before: `/transformations/before/dominican-blowout-before.png`,
@@ -34,6 +36,285 @@ export function BeforeAfterCarousel({ serviceName, category, images }: BeforeAft
           before: `/transformations/before/dominican-blowout-before-1.png`,
           after: `/transformations/after/dominican-blowout-after-1.png`,
           title: "Transformación Alisado Dominicano 2"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('keratin') || serviceLower.includes('keratina')) {
+      return [
+        {
+          before: `/transformations/before/keratin-treatment-service-before.png`,
+          after: `/transformations/after/keratin-treatment-service-after.png`,
+          title: "Transformación Keratina"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('balayage')) {
+      return [
+        {
+          before: `/transformations/before/balayage-before.png`,
+          after: `/transformations/after/balayage-after.png`,
+          title: "Transformación Balayage"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('corte') && serviceLower.includes('rizado')) {
+      return [
+        {
+          before: `/transformations/before/corte-rizado-before.png`,
+          after: `/transformations/after/corte-rizado-after.png`,
+          title: "Corte de Cabello Rizado"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('corte de cabello') || serviceLower.includes('corte y estilo')) {
+      return [
+        {
+          before: `/transformations/before/corte-cabello-before.png`,
+          after: `/transformations/after/corte-cabello-after.png`,
+          title: "Corte de Cabello"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('tinte') || serviceLower.includes('coloración')) {
+      return [
+        {
+          before: `/transformations/before/tinte-cabello-before.png`,
+          after: `/transformations/after/tinte-cabello-after.png`,
+          title: "Tinte de Cabello"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('peinado') && (serviceLower.includes('evento') || serviceLower.includes('especial'))) {
+      return [
+        {
+          before: `/transformations/before/peinado-evento-before.png`,
+          after: `/transformations/after/peinado-evento-after.png`,
+          title: "Peinado para Evento"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('transformación') && category === 'cabello') {
+      return [
+        {
+          before: `/transformations/before/hair-transformation-1-before.png`,
+          after: `/transformations/after/hair-transformation-1-after.png`,
+          title: "Transformación Cabello 1"
+        },
+        {
+          before: `/transformations/before/hair-transformation-2-before.png`,
+          after: `/transformations/after/hair-transformation-2-after.png`,
+          title: "Transformación Cabello 2"
+        }
+      ]
+    }
+    
+    // Makeup Services
+    if (serviceLower.includes('novia') || serviceLower.includes('bridal')) {
+      return [
+        {
+          before: `/transformations/before/maquillaje-novia-before.png`,
+          after: `/transformations/after/maquillaje-novia-after.png`,
+          title: "Maquillaje de Novia"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('ejecutivo') || serviceLower.includes('profesional')) {
+      return [
+        {
+          before: `/transformations/before/maquillaje-ejecutivo-before.png`,
+          after: `/transformations/after/maquillaje-ejecutivo-after.png`,
+          title: "Maquillaje Ejecutivo"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('gala') || serviceLower.includes('evento')) {
+      return [
+        {
+          before: `/transformations/before/maquillaje-gala-before.png`,
+          after: `/transformations/after/maquillaje-gala-after.png`,
+          title: "Maquillaje de Gala"
+        }
+      ]
+    }
+    
+    if (category === 'maquillaje' || serviceLower.includes('maquillaje')) {
+      return [
+        {
+          before: `/transformations/before/makeup-transformation-1-before.png`,
+          after: `/transformations/after/makeup-transformation-1-after.png`,
+          title: "Transformación Maquillaje 1"
+        },
+        {
+          before: `/transformations/before/makeup-transformation-2-before.png`,
+          after: `/transformations/after/makeup-transformation-2-after.png`,
+          title: "Transformación Maquillaje 2"
+        },
+        {
+          before: `/transformations/before/makeup-transformation-3-before.png`,
+          after: `/transformations/after/makeup-transformation-3-after.png`,
+          title: "Transformación Maquillaje 3"
+        }
+      ]
+    }
+    
+    // Nail Services
+    if (serviceLower.includes('gel')) {
+      return [
+        {
+          before: `/transformations/before/manicure-gel-before.png`,
+          after: `/transformations/after/manicure-gel-after.png`,
+          title: "Manicure de Gel"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('clásico') || serviceLower.includes('clasico')) {
+      return [
+        {
+          before: `/transformations/before/manicure-clasico-before.png`,
+          after: `/transformations/after/manicure-clasico-after.png`,
+          title: "Manicure Clásico"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('tropical') || serviceLower.includes('nail art') || serviceLower.includes('arte')) {
+      return [
+        {
+          before: `/transformations/before/arte-unas-tropical-before.png`,
+          after: `/transformations/after/arte-unas-tropical-after.png`,
+          title: "Arte de Uñas Tropical"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('extensiones') || serviceLower.includes('acrílico') || serviceLower.includes('acrilico')) {
+      return [
+        {
+          before: `/transformations/before/extensiones-acrilico-before.png`,
+          after: `/transformations/after/extensiones-acrilico-after.png`,
+          title: "Extensiones de Acrílico"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('pedicure')) {
+      return [
+        {
+          before: `/transformations/before/pedicure-spa-before.png`,
+          after: `/transformations/after/pedicure-spa-after.png`,
+          title: "Pedicure Spa"
+        }
+      ]
+    }
+    
+    if (category === 'unas' || serviceLower.includes('manicure') || serviceLower.includes('uña')) {
+      return [
+        {
+          before: `/transformations/before/nail-transformation-before.png`,
+          after: `/transformations/after/nail-transformation-after.png`,
+          title: "Transformación Uñas"
+        }
+      ]
+    }
+    
+    // Lash & Brow Services
+    if (serviceLower.includes('volumen ruso') || serviceLower.includes('russian')) {
+      return [
+        {
+          before: `/transformations/before/volumen-ruso-before.png`,
+          after: `/transformations/after/volumen-ruso-after.png`,
+          title: "Volumen Ruso"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('microblading')) {
+      return [
+        {
+          before: `/transformations/before/microblading-before.png`,
+          after: `/transformations/after/microblading-after.png`,
+          title: "Microblading de Cejas"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('diseño de cejas') || serviceLower.includes('cejas')) {
+      return [
+        {
+          before: `/transformations/before/diseno-cejas-before.png`,
+          after: `/transformations/after/diseno-cejas-after.png`,
+          title: "Diseño de Cejas"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('extensiones de pestañas') || serviceLower.includes('pestaña')) {
+      return [
+        {
+          before: `/transformations/before/extensiones-pestanas-before.png`,
+          after: `/transformations/after/extensiones-pestanas-after.png`,
+          title: "Extensiones de Pestañas"
+        }
+      ]
+    }
+    
+    if (category === 'pestanas') {
+      return [
+        {
+          before: `/transformations/before/lash-transformation-1-before.png`,
+          after: `/transformations/after/lash-transformation-1-after.png`,
+          title: "Transformación Pestañas"
+        }
+      ]
+    }
+    
+    // Spa Services
+    if (serviceLower.includes('masaje')) {
+      return [
+        {
+          before: `/transformations/before/masaje-relajante-before.png`,
+          after: `/transformations/after/masaje-relajante-after.png`,
+          title: "Masaje Relajante"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('limpieza facial')) {
+      return [
+        {
+          before: `/transformations/before/limpieza-facial-before.png`,
+          after: `/transformations/after/limpieza-facial-after.png`,
+          title: "Limpieza Facial Profunda"
+        }
+      ]
+    }
+    
+    if (serviceLower.includes('oro') || serviceLower.includes('gold')) {
+      return [
+        {
+          before: `/transformations/before/facial-oro-before.png`,
+          after: `/transformations/after/facial-oro-after.png`,
+          title: "Facial de Oro 24K"
+        }
+      ]
+    }
+    
+    if (category === 'spa' || serviceLower.includes('spa') || serviceLower.includes('facial')) {
+      return [
+        {
+          before: `/transformations/before/spa-transformation-1-before.png`,
+          after: `/transformations/after/spa-transformation-1-after.png`,
+          title: "Transformación Spa"
         }
       ]
     }

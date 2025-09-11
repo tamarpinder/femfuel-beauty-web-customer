@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 
 interface BeforeAfterImage {
@@ -23,6 +24,7 @@ interface BeforeAfterCarouselProps {
 }
 
 export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter }: BeforeAfterCarouselProps) {
+  const [showBefore, setShowBefore] = useState(true)
 
   // Get transformation images - data-driven approach
   const getTransformationImages = (): BeforeAfterImage[] => {
@@ -80,11 +82,15 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
   const displayImages = getTransformationImages()
   const currentImage = displayImages[0]
 
-
   return (
     <div className="px-4 py-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-4">
+        <h3 className="text-lg font-semibold text-femfuel-dark mb-4 text-center">
+          Resultados Reales
+        </h3>
+
+        {/* Desktop Layout - Side by Side */}
+        <div className="hidden md:flex items-center gap-4">
           {/* Before/After Images */}
           <div className="flex-1 grid grid-cols-2 gap-4 max-w-md">
             {/* Before Image */}
@@ -94,7 +100,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
                   src={currentImage.before}
                   alt={`${serviceName} - Antes`}
                   fill
-                  sizes="(max-width: 640px) 50vw, 200px"
+                  sizes="200px"
                   className="object-cover"
                   loading="lazy"
                 />
@@ -111,7 +117,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
                   src={currentImage.after}
                   alt={`${serviceName} - Después`}
                   fill
-                  sizes="(max-width: 640px) 50vw, 200px"
+                  sizes="200px"
                   className="object-cover"
                   loading="lazy"
                 />
@@ -124,10 +130,6 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
 
           {/* Navigation and Info */}
           <div className="flex-1 min-w-0 pl-4">
-            <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
-              Resultados Reales
-            </h3>
-            
             {/* Customer testimonial */}
             {beforeAfter?.testimonial && beforeAfter?.customerName ? (
               <div className="mb-4">
@@ -149,8 +151,75 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
                 Ve los increíbles resultados que nuestros especialistas logran
               </p>
             )}
-
           </div>
+        </div>
+
+        {/* Mobile Layout - Full Screen Carousel */}
+        <div className="md:hidden">
+          {/* Full Width Image Display */}
+          <div className="relative mb-4">
+            <div className="aspect-[4/3] rounded-xl overflow-hidden bg-white shadow-lg relative">
+              <OptimizedImage
+                src={showBefore ? currentImage.before : currentImage.after}
+                alt={`${serviceName} - ${showBefore ? 'Antes' : 'Después'}`}
+                fill
+                sizes="(max-width: 640px) 100vw"
+                className="object-cover transition-opacity duration-300"
+                loading="lazy"
+              />
+              <div className="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1.5 rounded-full font-medium">
+                {showBefore ? 'Antes' : 'Después'}
+              </div>
+            </div>
+          </div>
+
+          {/* Toggle Buttons */}
+          <div className="flex gap-3 mb-4">
+            <button
+              onClick={() => setShowBefore(true)}
+              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 ${
+                showBefore 
+                  ? 'bg-femfuel-rose text-white shadow-lg' 
+                  : 'bg-white text-femfuel-dark border border-gray-200 hover:border-femfuel-rose/30'
+              }`}
+            >
+              Ver Antes
+            </button>
+            <button
+              onClick={() => setShowBefore(false)}
+              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 ${
+                !showBefore 
+                  ? 'bg-femfuel-rose text-white shadow-lg' 
+                  : 'bg-white text-femfuel-dark border border-gray-200 hover:border-femfuel-rose/30'
+              }`}
+            >
+              Ver Después
+            </button>
+          </div>
+
+          {/* Customer Testimonial - Mobile */}
+          {beforeAfter?.testimonial && beforeAfter?.customerName ? (
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+              <p className="text-sm text-femfuel-dark mb-2 italic leading-relaxed">
+                "{beforeAfter.testimonial}"
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium text-femfuel-medium">- {beforeAfter.customerName}</span>
+                {beforeAfter.rating && (
+                  <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-full">
+                    <span className="text-sm text-yellow-500">★</span>
+                    <span className="text-sm text-femfuel-dark ml-1 font-medium">{beforeAfter.rating}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+              <p className="text-sm text-femfuel-medium">
+                Ve los increíbles resultados que nuestros especialistas logran
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

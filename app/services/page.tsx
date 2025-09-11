@@ -311,7 +311,7 @@ export default function ServicesPage() {
                       {/* Action Button */}
                       <div className="flex items-center mt-auto">
                         <button
-                          className="w-full glassmorphism-button"
+                          className="w-full glassmorphism-button-perfect"
                           onClick={(e) => {
                             e.stopPropagation()
                             handleServiceClick(service)

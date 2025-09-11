@@ -605,7 +605,7 @@ curatedServices.forEach(serviceData => {
     }
   }
   
-  services.push({
+  const serviceObject: Service = {
     id: `service-${String(serviceCounter).padStart(3, '0')}`,
     vendorId: serviceData.vendorId,
     vendor,
@@ -627,7 +627,9 @@ curatedServices.forEach(serviceData => {
     isActive: true,
     createdAt: vendor.createdAt,
     updatedAt: vendor.updatedAt
-  })
+  }
+  
+  services.push(serviceObject)
   serviceCounter++
 })
 

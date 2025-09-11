@@ -291,7 +291,7 @@ export default function ServicesPage() {
 
                       {/* Marketplace Info */}
                       <div className="flex items-center gap-2 mb-3">
-                        <div className="flex items-center gap-1 text-sm text-femfuel-medium">
+                        <div className="inline-flex items-center gap-1 bg-femfuel-rose/10 text-femfuel-rose px-3 py-1 rounded-full text-sm font-medium">
                           <Users className="h-4 w-4" />
                           <span>{service.availableProviders} especialistas disponibles</span>
                         </div>

@@ -97,6 +97,7 @@ export async function getVendors(filters: VendorFilters = {}) {
           category: service.category,
           isPopular: service.isPopular,
           image: getServiceImage(service.name),
+          beforeAfter: (service as any).beforeAfter,
           addons: (service as any).addons || []
         })),
         businessHours: vendor.businessHours
@@ -172,7 +173,8 @@ export async function getVendorById(id: string) {
         duration: service.duration,
         category: service.category,
         isPopular: service.isPopular,
-        image: service.images?.[0]?.url,
+        image: getServiceImage(service.name),
+        beforeAfter: (service as any).beforeAfter,
         addons: (service as any).addons || []
       })),
       businessHours: vendor.businessHours,
@@ -227,6 +229,8 @@ export async function getAllServices() {
         allServices.push({
           ...service,
           slug: `${service.category}-${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`,
+          beforeAfter: (service as any).beforeAfter, // Explicitly pass through from mock data
+          transformationGallery: (service as any).transformationGallery, // Pass through transformation gallery
           vendor: {
             id: vendor.id,
             name: vendor.name,

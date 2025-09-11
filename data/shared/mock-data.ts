@@ -352,12 +352,281 @@ const curatedServices = [
   { vendorId: 'vendor-profile-013', name: 'Lifting de Pestañas', category: 'lashes', price: 2200, duration: 70, isPopular: false }
 ]
 
+// Comprehensive transformation data with customer testimonials
+const serviceTransformations: Record<string, {
+  imageKey: string
+  testimonial: string
+  customerName: string
+  rating: number
+}> = {
+  'Alisado Dominicano': {
+    imageKey: 'dominican-blowout',
+    testimonial: 'Mi cabello nunca se había visto tan liso y brillante. El alisado dominicano es increíble!',
+    customerName: 'Carmen Delgado',
+    rating: 4.8
+  },
+  'Balayage': {
+    imageKey: 'balayage',
+    testimonial: '¡Increíble! Me siento como una nueva persona. El balayage quedó perfecto y el corte me favorece muchísimo.',
+    customerName: 'Isabella Martínez',
+    rating: 5.0
+  },
+  'Tratamiento de Keratina': {
+    imageKey: 'tratamiento-de-keratina',
+    testimonial: 'Mi cabello está súper suave y manejable. La keratina ha cambiado completamente mi rutina diaria.',
+    customerName: 'Sofía Ramírez',
+    rating: 4.9
+  },
+  'Corte de Cabello': {
+    imageKey: 'corte-cabello',
+    testimonial: 'Exactamente el corte que quería. La estilista entendió perfectamente mi estilo.',
+    customerName: 'Andrea Morales',
+    rating: 4.7
+  },
+  'Tinte de Cabello': {
+    imageKey: 'tinte-cabello',
+    testimonial: 'El color quedó hermoso y natural. Duró mucho más tiempo de lo esperado.',
+    customerName: 'Valentina Cruz',
+    rating: 4.8
+  },
+  'Corte de Cabello Rizado': {
+    imageKey: 'corte-rizado',
+    testimonial: 'Finalmente encontré a alguien que entiende mi cabello rizado. ¡Perfecto!',
+    customerName: 'Camila Herrera',
+    rating: 5.0
+  },
+  'Manicure de Gel': {
+    imageKey: 'manicure-gel',
+    testimonial: 'Duró más de 3 semanas sin descascararse. La mejor manicura que me he hecho.',
+    customerName: 'María José Peña',
+    rating: 4.9
+  },
+  'Manicure Clásico': {
+    imageKey: 'manicure-clasico',
+    testimonial: 'Clásico pero perfecto. Mis manos se ven elegantes y cuidadas.',
+    customerName: 'Patricia López',
+    rating: 4.6
+  },
+  'Pedicure Spa': {
+    imageKey: 'pedicure-spa',
+    testimonial: 'Una experiencia súper relajante. Mis pies quedaron como nuevos.',
+    customerName: 'Alejandra Santos',
+    rating: 4.8
+  },
+  'Arte de Uñas Tropical': {
+    imageKey: 'arte-unas-tropical',
+    testimonial: 'Las uñas más hermosas que he tenido. El arte tropical es perfecto para el verano caribeño!',
+    customerName: 'Sophia Ramírez',
+    rating: 5.0
+  },
+  'Extensiones de Acrílico': {
+    imageKey: 'extensiones-acrilico',
+    testimonial: 'Mis uñas se ven largas y naturales. La técnica es impecable.',
+    customerName: 'Daniela Morales',
+    rating: 4.7
+  },
+  'Maquillaje Natural': {
+    imageKey: 'makeup-transformation-3',
+    testimonial: 'Perfecto para el día a día. Se ve natural pero me hace lucir radiante. Exactamente lo que buscaba.',
+    customerName: 'Alejandra Santos',
+    rating: 4.9
+  },
+  'Maquillaje Ejecutivo': {
+    imageKey: 'maquillaje-ejecutivo',
+    testimonial: 'Perfecto para mis reuniones de trabajo. Se ve profesional pero elegante.',
+    customerName: 'Carmen Jiménez',
+    rating: 4.8
+  },
+  'Maquillaje de Novia': {
+    imageKey: 'maquillaje-novia',
+    testimonial: 'Me sentí como una princesa en mi boda. Duró toda la celebración.',
+    customerName: 'Rosa Martínez',
+    rating: 5.0
+  },
+  'Maquillaje de Gala': {
+    imageKey: 'maquillaje-gala',
+    testimonial: 'Un look sofisticado y elegante. Me sentí como una modelo profesional en mi evento especial.',
+    customerName: 'Daniela Morales',
+    rating: 4.9
+  },
+  'Masaje Relajante': {
+    imageKey: 'masaje-relajante',
+    testimonial: 'Exactamente lo que necesitaba. Salí completamente relajada y renovada.',
+    customerName: 'Lucía González',
+    rating: 4.8
+  },
+  'Limpieza Facial Profunda': {
+    imageKey: 'limpieza-facial',
+    testimonial: 'Mi piel se ve limpia y radiante. Los resultados se notan desde el primer día.',
+    customerName: 'Mónica Flores',
+    rating: 4.7
+  },
+  'Facial de Lujo': {
+    imageKey: 'facial-oro',
+    testimonial: 'Mi piel se ve completamente renovada. Los resultados son visibles desde la primera sesión.',
+    customerName: 'Valentina Cruz',
+    rating: 5.0
+  },
+  'Extensiones de Pestañas': {
+    imageKey: 'extensiones-pestanas',
+    testimonial: 'Mis pestañas se ven increíbles! Duran mucho tiempo y me ahorro maquillaje todos los días.',
+    customerName: 'Camila Herrera',
+    rating: 4.8
+  },
+  'Pestañas Clásicas': {
+    imageKey: 'lash-transformation-1',
+    testimonial: 'Naturales pero definidas. Exactamente el look que buscaba.',
+    customerName: 'Andrea Ruiz',
+    rating: 4.6
+  },
+  'Diseño de Cejas': {
+    imageKey: 'diseno-cejas',
+    testimonial: 'Mis cejas nunca se habían visto tan definidas y naturales a la vez.',
+    customerName: 'Sofía González',
+    rating: 4.7
+  },
+  'Microblading de Cejas': {
+    imageKey: 'microblading',
+    testimonial: 'Despertar con cejas perfectas todos los días no tiene precio. ¡Increíble resultado!',
+    customerName: 'Paola Ramos',
+    rating: 5.0
+  },
+  'Volumen Ruso': {
+    imageKey: 'lash-transformation-1',
+    testimonial: 'El volumen es espectacular. Mis ojos se ven mucho más grandes y expresivos.',
+    customerName: 'Diana Silva',
+    rating: 4.9
+  },
+  'Tratamiento Capilar': {
+    imageKey: 'hair-transformation-1',
+    testimonial: 'Mi cabello está más fuerte y saludable. Se nota la diferencia inmediatamente.',
+    customerName: 'Fernanda Guerrero',
+    rating: 4.6
+  },
+  'Masaje con Piedras Calientes': {
+    imageKey: 'spa-transformation-1',
+    testimonial: 'Una experiencia única y súper relajante. Las piedras calientes fueron increíbles.',
+    customerName: 'Natalia Mendoza',
+    rating: 4.8
+  }
+}
+
+// Services with multiple transformation images
+const multipleTransformationServices: Record<string, Array<{
+  imageKey: string
+  testimonial: string
+  customerName: string
+  rating: number
+}>> = {
+  'Alisado Dominicano': [
+    {
+      imageKey: 'dominican-blowout',
+      testimonial: 'Mi cabello nunca se había visto tan liso y brillante. El alisado dominicano es increíble!',
+      customerName: 'Carmen Delgado',
+      rating: 4.8
+    },
+    {
+      imageKey: 'dominican-blowout-1',
+      testimonial: 'El resultado es espectacular. Mi cabello se ve súper natural y saludable.',
+      customerName: 'María José Guerrero',
+      rating: 5.0
+    }
+  ]
+}
+
+// Hair services can use multiple hair transformation images
+const hairCategoryServices = ['Corte y Estilo', 'Tratamiento Capilar', 'Peinado para Evento']
+hairCategoryServices.forEach(serviceName => {
+  if (!multipleTransformationServices[serviceName]) {
+    multipleTransformationServices[serviceName] = [
+      {
+        imageKey: 'hair-transformation-1',
+        testimonial: 'Mi cabello está más fuerte y saludable. Se nota la diferencia inmediatamente.',
+        customerName: 'Ana Cristina López',
+        rating: 4.7
+      },
+      {
+        imageKey: 'hair-transformation-2',
+        testimonial: 'El corte me queda perfecto y el tratamiento dejó mi cabello súper sedoso.',
+        customerName: 'Gabriela Moreno',
+        rating: 4.9
+      }
+    ]
+  }
+})
+
+// Makeup services can use multiple makeup transformation images
+const makeupCategoryServices = ['Maquillaje Natural', 'Maquillaje para Eventos']
+makeupCategoryServices.forEach(serviceName => {
+  if (!multipleTransformationServices[serviceName]) {
+    multipleTransformationServices[serviceName] = [
+      {
+        imageKey: 'makeup-transformation-3',
+        testimonial: 'El maquillaje resaltó mis mejores rasgos de forma muy natural.',
+        customerName: 'Sofía Herrera',
+        rating: 4.7
+      },
+      {
+        imageKey: 'makeup-transformation-1',
+        testimonial: 'Me veo radiante y natural. El maquillaje duró toda la noche.',
+        customerName: 'Valentina Rodríguez',
+        rating: 4.8
+      },
+      {
+        imageKey: 'makeup-transformation-2',
+        testimonial: 'Perfecta para mi evento especial. Todos me preguntaron quién me maquilló.',
+        customerName: 'Carolina Martínez',
+        rating: 5.0
+      }
+    ]
+  }
+})
+
 export const services: Service[] = []
 let serviceCounter = 1
 
 curatedServices.forEach(serviceData => {
   const vendor = vendorProfiles.find(v => v.id === serviceData.vendorId)
   if (!vendor) return
+  
+  // Check if service has transformation data (single or multiple)
+  const multipleTransformations = multipleTransformationServices[serviceData.name]
+  const singleTransformation = serviceTransformations[serviceData.name]
+  
+  let beforeAfter = undefined
+  let transformationGallery = undefined
+  
+  if (multipleTransformations && multipleTransformations.length > 0) {
+    // Use first image as primary beforeAfter
+    const primaryTransformation = multipleTransformations[0]
+    beforeAfter = {
+      before: `/transformations/before/${primaryTransformation.imageKey}-before.png`,
+      after: `/transformations/after/${primaryTransformation.imageKey}-after.png`,
+      title: serviceData.name,
+      testimonial: primaryTransformation.testimonial,
+      customerName: primaryTransformation.customerName,
+      rating: primaryTransformation.rating
+    }
+    
+    // Create gallery with all transformations
+    transformationGallery = multipleTransformations.map(transform => ({
+      before: `/transformations/before/${transform.imageKey}-before.png`,
+      after: `/transformations/after/${transform.imageKey}-after.png`,
+      title: serviceData.name,
+      testimonial: transform.testimonial,
+      customerName: transform.customerName,
+      rating: transform.rating
+    }))
+  } else if (singleTransformation) {
+    beforeAfter = {
+      before: `/transformations/before/${singleTransformation.imageKey}-before.png`,
+      after: `/transformations/after/${singleTransformation.imageKey}-after.png`,
+      title: serviceData.name,
+      testimonial: singleTransformation.testimonial,
+      customerName: singleTransformation.customerName,
+      rating: singleTransformation.rating
+    }
+  }
   
   services.push({
     id: `service-${String(serviceCounter).padStart(3, '0')}`,
@@ -376,6 +645,8 @@ curatedServices.forEach(serviceData => {
       alt: `${serviceData.name} at ${vendor.businessName}`,
       type: 'image' as const
     })),
+    beforeAfter,
+    transformationGallery,
     isPopular: serviceData.isPopular,
     isActive: true,
     createdAt: vendor.createdAt,

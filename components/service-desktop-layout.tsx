@@ -15,6 +15,22 @@ interface ServiceWithVendor {
   category: string
   isPopular?: boolean
   image?: string
+  beforeAfter?: {
+    before: string
+    after: string
+    title: string
+    testimonial?: string
+    customerName?: string
+    rating?: number
+  }
+  transformationGallery?: Array<{
+    before: string
+    after: string
+    title: string
+    testimonial?: string
+    customerName?: string
+    rating?: number
+  }>
   vendor: {
     id: string
     name: string
@@ -60,6 +76,7 @@ export function ServiceDesktopLayout({
               <DesktopGallery
                 serviceName={service.name}
                 category={service.category}
+                beforeAfter={service.beforeAfter}
               />
 
               {/* Service Info */}

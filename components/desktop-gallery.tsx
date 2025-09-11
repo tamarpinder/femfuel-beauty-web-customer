@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 
@@ -15,62 +14,74 @@ interface DesktopGalleryProps {
   serviceName: string
   category: string
   images?: BeforeAfterImage[]
+  beforeAfter?: {
+    before: string
+    after: string
+    title: string
+    testimonial?: string
+    customerName?: string
+    rating?: number
+  }
 }
 
-export function DesktopGallery({ serviceName, category, images }: DesktopGalleryProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+export function DesktopGallery({ serviceName, category, images, beforeAfter }: DesktopGalleryProps) {
   const [viewMode, setViewMode] = useState<'split' | 'before' | 'after'>('split')
 
-  // Default images if none provided
-  const getDefaultImages = (): BeforeAfterImage[] => {
-    // Use real transformation photos for Alisado Dominicano
-    if (serviceName.toLowerCase().includes('alisado dominicano')) {
-      return [
-        {
-          before: `/transformations/before/dominican-blowout-before.png`,
-          after: `/transformations/after/dominican-blowout-after.png`,
-          title: "Transformación Alisado Dominicano 1"
-        },
-        {
-          before: `/transformations/before/dominican-blowout-before-1.png`,
-          after: `/transformations/after/dominican-blowout-after-1.png`,
-          title: "Transformación Alisado Dominicano 2"
-        }
-      ]
+  // Get transformation images - data-driven approach
+  const getTransformationImages = (): BeforeAfterImage[] => {
+    // Priority 1: Use provided beforeAfter data from service (single image)
+    if (beforeAfter) {
+      return [{
+        before: beforeAfter.before,
+        after: beforeAfter.after,
+        title: beforeAfter.title
+      }]
     }
-    
-    // Default generic images for other services
-    return [
-      {
-        before: `/services/${category}/before-1.png`,
-        after: `/services/${category}/after-1.png`,
-        title: "Resultado 1"
+
+    // Priority 2: Use provided images array
+    if (images && images.length > 0) {
+      return images
+    }
+
+    // Priority 3: Generic fallback based on category
+    const categoryFallbacks = {
+      hair: {
+        before: `/transformations/before/hair-transformation-1-before.png`,
+        after: `/transformations/after/hair-transformation-1-after.png`,
+        title: `Transformación ${serviceName}`
       },
-      {
-        before: `/services/${category}/before-2.png`,
-        after: `/services/${category}/after-2.png`,
-        title: "Resultado 2"
+      nails: {
+        before: `/transformations/before/nail-transformation-before.png`,
+        after: `/transformations/after/nail-transformation-after.png`,
+        title: `Transformación ${serviceName}`
       },
-      {
-        before: `/services/${category}/before-3.png`,
-        after: `/services/${category}/after-3.png`,
-        title: "Resultado 3"
+      makeup: {
+        before: `/transformations/before/makeup-transformation-1-before.png`,
+        after: `/transformations/after/makeup-transformation-1-after.png`,
+        title: `Transformación ${serviceName}`
+      },
+      spa: {
+        before: `/transformations/before/spa-transformation-1-before.png`,
+        after: `/transformations/after/spa-transformation-1-after.png`,
+        title: `Transformación ${serviceName}`
+      },
+      lashes: {
+        before: `/transformations/before/lash-transformation-1-before.png`,
+        after: `/transformations/after/lash-transformation-1-after.png`,
+        title: `Transformación ${serviceName}`
       }
-    ]
+    }
+
+    const fallback = categoryFallbacks[category as keyof typeof categoryFallbacks]
+    return fallback ? [fallback] : [{
+      before: `/services/${category}/before-default.png`,
+      after: `/services/${category}/after-default.png`,
+      title: `Resultado ${serviceName}`
+    }]
   }
 
-  const defaultImages = getDefaultImages()
-
-  const displayImages = images || defaultImages
-  const currentImage = displayImages[currentIndex]
-
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev + 1) % displayImages.length)
-  }
-
-  const prevImage = () => {
-    setCurrentIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length)
-  }
+  const displayImages = getTransformationImages()
+  const currentImage = displayImages[0]
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -172,50 +183,6 @@ export function DesktopGallery({ serviceName, category, images }: DesktopGallery
           )}
         </div>
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between mt-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={prevImage}
-            disabled={displayImages.length <= 1}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Anterior
-          </Button>
-          
-          <div className="flex items-center gap-2">
-            {displayImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentIndex ? 'bg-femfuel-rose' : 'bg-gray-300'
-                }`}
-              />
-            ))}
-          </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={nextImage}
-            disabled={displayImages.length <= 1}
-            className="flex items-center gap-2"
-          >
-            Siguiente
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {/* View All Button */}
-        <div className="mt-4 text-center">
-          <Button variant="ghost" size="sm" className="text-femfuel-rose hover:text-femfuel-dark">
-            <Eye className="h-4 w-4 mr-2" />
-            Ver todas las fotos ({displayImages.length})
-          </Button>
-        </div>
       </div>
     </div>
   )

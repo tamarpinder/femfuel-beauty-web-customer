@@ -17,6 +17,7 @@ export interface Service {
   reviews?: number
   reviewCount?: number
   duration: number | string
+  avgDuration?: number
   image?: string
   category?: string
   description?: string
@@ -43,6 +44,7 @@ export interface Service {
     min: number
     max: number
   }
+  slug?: string
 }
 
 interface ServiceCardProps {

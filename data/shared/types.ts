@@ -88,6 +88,22 @@ export interface Service extends BaseEntity {
   isPopular: boolean
   isActive: boolean
   requirements?: string[]
+  beforeAfter?: {
+    before: string
+    after: string
+    title: string
+    testimonial?: string
+    customerName?: string
+    rating?: number
+  }
+  transformationGallery?: Array<{
+    before: string
+    after: string
+    title: string
+    testimonial?: string
+    customerName?: string
+    rating?: number
+  }>
 }
 
 export interface Booking extends BaseEntity {

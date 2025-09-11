@@ -45,6 +45,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: true,
         image: "/services/manicure-gel.jpg",
+        beforeAfter: {
+          before: "/transformations/before/manicure-gel-before.png",
+          after: "/transformations/after/manicure-gel-after.png",
+          title: "Manicure de Gel"
+        },
         addons: [
           { id: "nail-art", name: "Nail Art Básico", price: 300, duration: 15 },
           { id: "french-tip", name: "French Tips", price: 200, duration: 10 },
@@ -62,6 +67,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: true,
         image: "/services/pedicure-spa.jpg",
+        beforeAfter: {
+          before: "/transformations/before/pedicure-spa-before.png",
+          after: "/transformations/after/pedicure-spa-after.png",
+          title: "Pedicure Spa Completo"
+        },
         addons: [
           { id: "foot-massage-extended", name: "Masaje de Pies Extendido", price: 400, duration: 20 },
           { id: "nail-art-feet", name: "Nail Art para Pies", price: 350, duration: 20 },
@@ -76,6 +86,11 @@ export const mockVendors: Vendor[] = [
         duration: 45,
         category: "unas",
         image: "/services/manicure-clasico.jpg",
+        beforeAfter: {
+          before: "/transformations/before/manicure-clasico-before.png",
+          after: "/transformations/after/manicure-clasico-after.png",
+          title: "Manicure Clásico"
+        },
         addons: [
           { id: "quick-nail-art", name: "Nail Art Rápido", price: 200, duration: 10 },
           { id: "hand-cream", name: "Crema de Manos Premium", price: 100, duration: 5 }
@@ -90,6 +105,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: false,
         image: "/services/manicure-express.jpg",
+        beforeAfter: {
+          before: "/transformations/before/manicure-clasico-before.png",
+          after: "/transformations/after/manicure-clasico-after.png",
+          title: "Manicure Express"
+        },
         addons: [
           { id: "quick-dry", name: "Secado Rápido", price: 100, duration: 5 },
           { id: "basic-nail-art", name: "Decoración Básica", price: 150, duration: 10 }
@@ -104,6 +124,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: true,
         image: "/services/combo-mani-pedi.jpg",
+        beforeAfter: {
+          before: "/transformations/before/nail-transformation-before.png",
+          after: "/transformations/after/nail-transformation-after.png",
+          title: "Combo Manicure + Pedicure"
+        },
         addons: [
           { id: "full-nail-art", name: "Nail Art Completo", price: 500, duration: 30 },
           { id: "luxury-treatment", name: "Tratamiento de Lujo", price: 600, duration: 20 }
@@ -118,6 +143,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: false,
         image: "/services/nail-fill.jpg",
+        beforeAfter: {
+          before: "/transformations/before/extensiones-acrilico-before.png",
+          after: "/transformations/after/extensiones-acrilico-after.png",
+          title: "Relleno de Uñas"
+        },
         addons: [
           { id: "color-change", name: "Cambio de Color", price: 200, duration: 15 },
           { id: "design-refresh", name: "Renovar Diseño", price: 300, duration: 20 }
@@ -182,6 +212,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: true,
         image: "/services/bridal-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/maquillaje-novia-before.png",
+          after: "/transformations/after/maquillaje-novia-after.png",
+          title: "Maquillaje de Novia"
+        },
         addons: [
           { id: "hair-styling", name: "Peinado Incluido", price: 1500, duration: 60 },
           { id: "makeup-trial", name: "Prueba Extra", price: 1000, duration: 90 },
@@ -199,6 +234,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: true,
         image: "/services/professional-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-1-before.png",
+          after: "/transformations/after/makeup-transformation-1-after.png",
+          title: "Maquillaje Profesional"
+        },
         addons: [
           { id: "lashes-basic", name: "Pestañas Postizas", price: 400, duration: 20 },
           { id: "contour-highlighting", name: "Contorno y Destacado", price: 300, duration: 15 },
@@ -214,6 +254,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: false,
         image: "/services/express-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-2-before.png",
+          after: "/transformations/after/makeup-transformation-2-after.png",
+          title: "Maquillaje Express"
+        },
         addons: [
           { id: "quick-lashes", name: "Pestañas Rápidas", price: 200, duration: 10 },
           { id: "lip-upgrade", name: "Upgrade de Labios", price: 150, duration: 5 }
@@ -228,6 +273,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: true,
         image: "/services/executive-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/maquillaje-ejecutivo-before.png",
+          after: "/transformations/after/maquillaje-ejecutivo-after.png",
+          title: "Maquillaje Ejecutivo"
+        },
         addons: [
           { id: "long-lasting", name: "Fijación Extra Larga", price: 250, duration: 10 },
           { id: "subtle-glow", name: "Brillo Sutil", price: 200, duration: 10 }
@@ -242,6 +292,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: true,
         image: "/services/bridal-package.jpg",
+        beforeAfter: {
+          before: "/transformations/before/maquillaje-gala-before.png",
+          after: "/transformations/after/maquillaje-gala-after.png",
+          title: "Paquete de Novia Completo"
+        },
         addons: [
           { id: "mom-makeup", name: "Maquillaje para Madre", price: 2000, duration: 90 },
           { id: "bridesmaid-makeup", name: "Maquillaje Dama de Honor", price: 1800, duration: 75 },
@@ -257,6 +312,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: false,
         image: "/services/makeup-touchup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-3-before.png",
+          after: "/transformations/after/makeup-transformation-3-after.png",
+          title: "Retoque de Maquillaje"
+        },
         addons: [
           { id: "lip-refresh", name: "Renovar Labios", price: 100, duration: 5 },
           { id: "powder-touch", name: "Retoque Polvo", price: 150, duration: 10 }
@@ -315,7 +375,12 @@ export const mockVendors: Vendor[] = [
         duration: 75,
         category: "spa",
         isPopular: true,
-        image: "/services/facial-treatment.jpg"
+        image: "/services/facial-treatment.jpg",
+        beforeAfter: {
+          before: "/transformations/before/limpieza-facial-before.png",
+          after: "/transformations/after/limpieza-facial-after.png",
+          title: "Tratamiento Facial Hidratante"
+        }
       },
       {
         id: "masaje-relajante",
@@ -325,7 +390,12 @@ export const mockVendors: Vendor[] = [
         duration: 120,
         category: "cuerpo",
         isPopular: true,
-        image: "/services/relaxing-massage.jpg"
+        image: "/services/relaxing-massage.jpg",
+        beforeAfter: {
+          before: "/transformations/before/masaje-relajante-before.png",
+          after: "/transformations/after/masaje-relajante-after.png",
+          title: "Masaje Relajante Completo"
+        }
       }
     ],
     businessHours: {
@@ -381,6 +451,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: true,
         image: "/services/haircut-styling.jpg",
+        beforeAfter: {
+          before: "/transformations/before/corte-cabello-before.png",
+          after: "/transformations/after/corte-cabello-after.png",
+          title: "Corte y Peinado"
+        },
         addons: [
           { id: "deep-treatment", name: "Tratamiento Profundo", price: 500, duration: 30 },
           { id: "special-styling", name: "Peinado Especial", price: 400, duration: 30 },
@@ -396,6 +471,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: true,
         image: "/services/hair-coloring.jpg",
+        beforeAfter: {
+          before: "/transformations/before/tinte-cabello-before.png",
+          after: "/transformations/after/tinte-cabello-after.png",
+          title: "Coloración Completa"
+        },
         addons: [
           { id: "toning-treatment", name: "Tratamiento Tonificante", price: 600, duration: 45 },
           { id: "color-protection", name: "Protección de Color", price: 400, duration: 20 },
@@ -411,6 +491,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: false,
         image: "/services/express-haircut.jpg",
+        beforeAfter: {
+          before: "/transformations/before/corte-rizado-before.png",
+          after: "/transformations/after/corte-rizado-after.png",
+          title: "Corte Express"
+        },
         addons: [
           { id: "quick-wash", name: "Lavado Rápido", price: 200, duration: 15 },
           { id: "styling-cream", name: "Crema de Peinado", price: 150, duration: 5 }
@@ -425,6 +510,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: true,
         image: "/services/keratin-treatment.jpg",
+        beforeAfter: {
+          before: "/transformations/before/keratin-treatment-service-before.png",
+          after: "/transformations/after/keratin-treatment-service-after.png",
+          title: "Tratamiento de Keratina"
+        },
         addons: [
           { id: "home-care-kit", name: "Kit de Cuidado en Casa", price: 800, duration: 15 },
           { id: "extended-styling", name: "Peinado Extra", price: 500, duration: 45 }
@@ -439,6 +529,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: true,
         image: "/services/root-touch-up.jpg",
+        beforeAfter: {
+          before: "/transformations/before/hair-transformation-1-before.png",
+          after: "/transformations/after/hair-transformation-1-after.png",
+          title: "Retoque de Raíces"
+        },
         addons: [
           { id: "toner-refresh", name: "Renovar Tonalizador", price: 300, duration: 20 },
           { id: "scalp-treatment", name: "Tratamiento Cuero Cabelludo", price: 400, duration: 25 }
@@ -453,6 +548,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: true,
         image: "/services/cut-color-combo.jpg",
+        beforeAfter: {
+          before: "/transformations/before/hair-transformation-2-before.png",
+          after: "/transformations/after/hair-transformation-2-after.png",
+          title: "Combo Corte + Color"
+        },
         addons: [
           { id: "hair-mask", name: "Mascarilla Reparadora", price: 450, duration: 20 },
           { id: "event-styling", name: "Peinado para Evento", price: 600, duration: 45 }
@@ -467,6 +567,11 @@ export const mockVendors: Vendor[] = [
         category: "peinados",
         isPopular: true,
         image: "/services/event-hairstyle.jpg",
+        beforeAfter: {
+          before: "/transformations/before/peinado-evento-before.png",
+          after: "/transformations/after/peinado-evento-after.png",
+          title: "Peinado para Evento"
+        },
         addons: [
           { id: "hair-accessories", name: "Accesorios para Cabello", price: 300, duration: 15 },
           { id: "touch-up-service", name: "Servicio de Retoque", price: 400, duration: 30 },
@@ -526,7 +631,12 @@ export const mockVendors: Vendor[] = [
         duration: 120,
         category: "pestañas",
         isPopular: true,
-        image: "/services/lash-extensions.jpg"
+        image: "/services/lash-extensions.jpg",
+        beforeAfter: {
+          before: "/transformations/before/extensiones-pestanas-before.png",
+          after: "/transformations/after/extensiones-pestanas-after.png",
+          title: "Extensiones de Pestañas"
+        }
       }
     ],
     businessHours: {
@@ -582,7 +692,12 @@ export const mockVendors: Vendor[] = [
         duration: 30,
         category: "unas",
         isPopular: true,
-        image: "/services/express-manicure.jpg"
+        image: "/services/express-manicure.jpg",
+        beforeAfter: {
+          before: "/transformations/before/manicure-clasico-before.png",
+          after: "/transformations/after/manicure-clasico-after.png",
+          title: "Manicure Express"
+        }
       },
       {
         id: "nail-art-moderno",
@@ -592,7 +707,12 @@ export const mockVendors: Vendor[] = [
         duration: 45,
         category: "unas",
         isPopular: true,
-        image: "/services/modern-nail-art.jpg"
+        image: "/services/modern-nail-art.jpg",
+        beforeAfter: {
+          before: "/transformations/before/arte-unas-tropical-before.png",
+          after: "/transformations/after/arte-unas-tropical-after.png",
+          title: "Nail Art Moderno"
+        }
       }
     ],
     businessHours: {
@@ -648,7 +768,12 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "unas",
         isPopular: true,
-        image: "/services/luxury-manicure.jpg"
+        image: "/services/luxury-manicure.jpg",
+        beforeAfter: {
+          before: "/transformations/before/manicure-gel-before.png",
+          after: "/transformations/after/manicure-gel-after.png",
+          title: "Manicure de Lujo"
+        }
       },
       {
         id: "unas-porcelana",
@@ -658,7 +783,12 @@ export const mockVendors: Vendor[] = [
         duration: 150,
         category: "unas",
         isPopular: true,
-        image: "/services/porcelain-nails.jpg"
+        image: "/services/porcelain-nails.jpg",
+        beforeAfter: {
+          before: "/transformations/before/extensiones-acrilico-before.png",
+          after: "/transformations/after/extensiones-acrilico-after.png",
+          title: "Uñas de Porcelana"
+        }
       }
     ],
     businessHours: {
@@ -714,7 +844,12 @@ export const mockVendors: Vendor[] = [
         duration: 60,
         category: "maquillaje",
         isPopular: true,
-        image: "/services/corporate-makeup.jpg"
+        image: "/services/corporate-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/maquillaje-ejecutivo-before.png",
+          after: "/transformations/after/maquillaje-ejecutivo-after.png",
+          title: "Maquillaje Corporativo"
+        }
       },
       {
         id: "clase-makeup",
@@ -724,7 +859,12 @@ export const mockVendors: Vendor[] = [
         duration: 120,
         category: "maquillaje",
         isPopular: true,
-        image: "/services/makeup-class.jpg"
+        image: "/services/makeup-class.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-1-before.png",
+          after: "/transformations/after/makeup-transformation-1-after.png",
+          title: "Clase de Maquillaje Personal"
+        }
       }
     ],
     businessHours: {
@@ -779,7 +919,12 @@ export const mockVendors: Vendor[] = [
         duration: 75,
         category: "maquillaje",
         isPopular: true,
-        image: "/services/natural-makeup.jpg"
+        image: "/services/natural-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-2-before.png",
+          after: "/transformations/after/makeup-transformation-2-after.png",
+          title: "Maquillaje Natural"
+        }
       },
       {
         id: "maquillaje-fotografia",
@@ -789,7 +934,12 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "maquillaje",
         isPopular: true,
-        image: "/services/photography-makeup.jpg"
+        image: "/services/photography-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-3-before.png",
+          after: "/transformations/after/makeup-transformation-3-after.png",
+          title: "Maquillaje para Fotografía"
+        }
       }
     ],
     businessHours: {
@@ -846,7 +996,12 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "cuerpo",
         isPopular: true,
-        image: "/services/therapeutic-massage.jpg"
+        image: "/services/therapeutic-massage.jpg",
+        beforeAfter: {
+          before: "/transformations/before/masaje-relajante-before.png",
+          after: "/transformations/after/masaje-relajante-after.png",
+          title: "Masaje Terapéutico"
+        }
       },
       {
         id: "aromaterapia",
@@ -856,7 +1011,12 @@ export const mockVendors: Vendor[] = [
         duration: 60,
         category: "spa",
         isPopular: true,
-        image: "/services/aromatherapy.jpg"
+        image: "/services/aromatherapy.jpg",
+        beforeAfter: {
+          before: "/transformations/before/spa-transformation-1-before.png",
+          after: "/transformations/after/spa-transformation-1-after.png",
+          title: "Sesión de Aromaterapia"
+        }
       }
     ],
     businessHours: {
@@ -912,6 +1072,11 @@ export const mockVendors: Vendor[] = [
         category: "spa",
         isPopular: true,
         image: "/services/vip-treatment.jpg",
+        beforeAfter: {
+          before: "/transformations/before/spa-transformation-1-before.png",
+          after: "/transformations/after/spa-transformation-1-after.png",
+          title: "Tratamiento VIP Completo"
+        },
         addons: [
           { id: "champagne-service", name: "Servicio con Champagne", price: 1200, duration: 30 },
           { id: "luxury-products", name: "Productos de Lujo para Llevar", price: 2000, duration: 15 }
@@ -926,6 +1091,11 @@ export const mockVendors: Vendor[] = [
         category: "cuerpo",
         isPopular: true,
         image: "/services/hot-stone-massage.jpg",
+        beforeAfter: {
+          before: "/transformations/before/masaje-relajante-before.png",
+          after: "/transformations/after/masaje-relajante-after.png",
+          title: "Masaje con Piedras Calientes"
+        },
         addons: [
           { id: "aromatherapy-upgrade", name: "Upgrade Aromaterapia", price: 500, duration: 20 },
           { id: "extended-massage", name: "Masaje Extendido", price: 800, duration: 30 }
@@ -940,6 +1110,11 @@ export const mockVendors: Vendor[] = [
         category: "maquillaje",
         isPopular: true,
         image: "/services/luxury-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/maquillaje-gala-before.png",
+          after: "/transformations/after/maquillaje-gala-after.png",
+          title: "Maquillaje de Lujo"
+        },
         addons: [
           { id: "diamond-lashes", name: "Pestañas con Diamantes", price: 1500, duration: 45 },
           { id: "gold-highlight", name: "Destacado con Oro", price: 800, duration: 20 },
@@ -955,6 +1130,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: true,
         image: "/services/premium-manicure.jpg",
+        beforeAfter: {
+          before: "/transformations/before/manicure-gel-before.png",
+          after: "/transformations/after/manicure-gel-after.png",
+          title: "Manicure Premium"
+        },
         addons: [
           { id: "swarovski-crystals", name: "Cristales Swarovski", price: 1000, duration: 30 },
           { id: "gold-leaf-art", name: "Arte con Hoja de Oro", price: 800, duration: 25 },
@@ -970,6 +1150,11 @@ export const mockVendors: Vendor[] = [
         category: "spa",
         isPopular: true,
         image: "/services/gold-facial.jpg",
+        beforeAfter: {
+          before: "/transformations/before/facial-oro-before.png",
+          after: "/transformations/after/facial-oro-after.png",
+          title: "Facial de Oro 24K"
+        },
         addons: [
           { id: "gold-eye-treatment", name: "Tratamiento de Ojos con Oro", price: 1200, duration: 30 },
           { id: "collagen-mask", name: "Mascarilla de Colágeno", price: 800, duration: 20 }
@@ -984,6 +1169,11 @@ export const mockVendors: Vendor[] = [
         category: "spa",
         isPopular: true,
         image: "/services/total-beauty-package.jpg",
+        beforeAfter: {
+          before: "/transformations/before/spa-transformation-1-before.png",
+          after: "/transformations/after/spa-transformation-1-after.png",
+          title: "Paquete Belleza Total VIP"
+        },
         addons: [
           { id: "personal-butler", name: "Servicio de Mayordomo Personal", price: 2500, duration: 360 },
           { id: "luxury-lunch", name: "Almuerzo de Lujo", price: 1800, duration: 60 },
@@ -1044,7 +1234,12 @@ export const mockVendors: Vendor[] = [
         duration: 45,
         category: "peinados",
         isPopular: true,
-        image: "/services/modern-haircut.jpg"
+        image: "/services/modern-haircut.jpg",
+        beforeAfter: {
+          before: "/transformations/before/corte-cabello-before.png",
+          after: "/transformations/after/corte-cabello-after.png",
+          title: "Corte Moderno"
+        }
       },
       {
         id: "balayage-premium",
@@ -1054,7 +1249,12 @@ export const mockVendors: Vendor[] = [
         duration: 180,
         category: "peinados",
         isPopular: true,
-        image: "/services/balayage.jpg"
+        image: "/services/balayage.jpg",
+        beforeAfter: {
+          before: "/transformations/before/balayage-before.png",
+          after: "/transformations/after/balayage-after.png",
+          title: "Balayage Premium"
+        }
       }
     ],
     businessHours: {
@@ -1109,7 +1309,12 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "peinados",
         isPopular: true,
-        image: "/services/hair-treatment.jpg"
+        image: "/services/hair-treatment.jpg",
+        beforeAfter: {
+          before: "/transformations/before/hair-transformation-1-before.png",
+          after: "/transformations/after/hair-transformation-1-after.png",
+          title: "Tratamiento Capilar Intensivo"
+        }
       },
       {
         id: "peinado-eventos",
@@ -1119,7 +1324,12 @@ export const mockVendors: Vendor[] = [
         duration: 75,
         category: "peinados",
         isPopular: true,
-        image: "/services/event-hairstyle.jpg"
+        image: "/services/event-hairstyle.jpg",
+        beforeAfter: {
+          before: "/transformations/before/peinado-evento-before.png",
+          after: "/transformations/after/peinado-evento-after.png",
+          title: "Peinado para Eventos"
+        }
       }
     ],
     businessHours: {
@@ -1175,7 +1385,12 @@ export const mockVendors: Vendor[] = [
         duration: 150,
         category: "pestañas",
         isPopular: true,
-        image: "/services/russian-volume.jpg"
+        image: "/services/russian-volume.jpg",
+        beforeAfter: {
+          before: "/transformations/before/lash-transformation-1-before.png",
+          after: "/transformations/after/lash-transformation-1-after.png",
+          title: "Extensiones Volumen Ruso"
+        }
       },
       {
         id: "microblading-cejas",
@@ -1185,7 +1400,12 @@ export const mockVendors: Vendor[] = [
         duration: 120,
         category: "pestañas",
         isPopular: true,
-        image: "/services/microblading.jpg"
+        image: "/services/microblading.jpg",
+        beforeAfter: {
+          before: "/transformations/before/microblading-before.png",
+          after: "/transformations/after/microblading-after.png",
+          title: "Microblading de Cejas"
+        }
       }
     ],
     businessHours: {
@@ -1240,7 +1460,12 @@ export const mockVendors: Vendor[] = [
         duration: 120,
         category: "pestañas",
         isPopular: true,
-        image: "/services/classic-lashes.jpg"
+        image: "/services/classic-lashes.jpg",
+        beforeAfter: {
+          before: "/transformations/before/extensiones-pestanas-before.png",
+          after: "/transformations/after/extensiones-pestanas-after.png",
+          title: "Extensiones Clásicas"
+        }
       },
       {
         id: "tinte-pestanas-cejas",
@@ -1250,7 +1475,12 @@ export const mockVendors: Vendor[] = [
         duration: 45,
         category: "pestañas",
         isPopular: true,
-        image: "/services/lash-tint.jpg"
+        image: "/services/lash-tint.jpg",
+        beforeAfter: {
+          before: "/transformations/before/diseno-cejas-before.png",
+          after: "/transformations/after/diseno-cejas-after.png",
+          title: "Tinte de Pestañas y Cejas"
+        }
       }
     ],
     businessHours: {
@@ -1308,6 +1538,11 @@ export const mockVendors: Vendor[] = [
         category: "unas",
         isPopular: true,
         image: "/services/dominican-manicure.jpg",
+        beforeAfter: {
+          before: "/transformations/before/dominican-blowout-before.png",
+          after: "/transformations/after/dominican-blowout-after.png",
+          title: "Manicure Dominicana Especial"
+        },
         addons: [
           { id: "tropical-nail-art", name: "Arte Tropical", price: 350, duration: 20 },
           { id: "coconut-treatment", name: "Tratamiento de Coco", price: 250, duration: 15 }
@@ -1321,7 +1556,12 @@ export const mockVendors: Vendor[] = [
         duration: 90,
         category: "peinados",
         isPopular: true,
-        image: "/services/merengue-hairstyle.jpg"
+        image: "/services/merengue-hairstyle.jpg",
+        beforeAfter: {
+          before: "/transformations/before/dominican-blowout-before.png",
+          after: "/transformations/after/dominican-blowout-after.png",
+          title: "Peinado Merengue Style"
+        }
       },
       {
         id: "maquillaje-caribeno",
@@ -1331,7 +1571,12 @@ export const mockVendors: Vendor[] = [
         duration: 60,
         category: "maquillaje",
         isPopular: false,
-        image: "/services/caribbean-makeup.jpg"
+        image: "/services/caribbean-makeup.jpg",
+        beforeAfter: {
+          before: "/transformations/before/makeup-transformation-1-before.png",
+          after: "/transformations/after/makeup-transformation-1-after.png",
+          title: "Maquillaje Caribeño"
+        }
       },
       {
         id: "pedicure-playa-dorada",
@@ -1341,7 +1586,12 @@ export const mockVendors: Vendor[] = [
         duration: 105,
         category: "unas",
         isPopular: true,
-        image: "/services/golden-beach-pedicure.jpg"
+        image: "/services/golden-beach-pedicure.jpg",
+        beforeAfter: {
+          before: "/transformations/before/pedicure-spa-before.png",
+          after: "/transformations/after/pedicure-spa-after.png",
+          title: "Pedicure Playa Dorada"
+        }
       }
     ],
     businessHours: {

@@ -52,6 +52,11 @@ export interface VendorService {
   category: string
   isPopular?: boolean
   image?: string
+  beforeAfter?: {
+    before: string
+    after: string
+    title: string
+  }
   addons?: ServiceAddon[]
 }
 

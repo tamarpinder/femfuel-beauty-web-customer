@@ -290,6 +290,7 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
           description: getServiceDescription(serviceName),
           image: service.image,
           isPopular: service.isPopular,
+          beforeAfter: service.beforeAfter,
           avgDuration: avgDuration,
           price: `RD$${Math.min(...allPrices).toLocaleString()} - RD$${Math.max(...allPrices).toLocaleString()}`,
           priceRange: {

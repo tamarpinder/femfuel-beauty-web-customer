@@ -88,37 +88,44 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
                 />
               </div>
               <div className="flex-1 p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-femfuel-dark text-base mb-1">{service.name}</h3>
-                    {service.featuredProvider && (
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-5 h-5 rounded-full bg-femfuel-rose/10 flex items-center justify-center">
-                          <Crown className="h-2.5 w-2.5 text-femfuel-rose" />
+                <div className="mb-3">
+                  <h3 className="font-bold text-femfuel-dark text-lg mb-2">{service.name}</h3>
+                  {service.featuredProvider && (
+                    <div className="mb-2">
+                      <p className="text-sm font-semibold text-femfuel-dark mb-1">{service.featuredProvider.name}</p>
+                      <div className="flex items-center gap-2 text-xs">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">4.9</span>
                         </div>
-                        <span className="text-sm text-femfuel-medium">{service.featuredProvider.name}</span>
+                        <span className="text-femfuel-medium">•</span>
                         <Badge variant="secondary" className="text-xs px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border-emerald-200">
-                          Recomendado
+                          Top Rated
                         </Badge>
+                        <span className="text-femfuel-medium">•</span>
+                        <span className="text-femfuel-medium">Piantini</span>
                       </div>
-                    )}
+                    </div>
+                  )}
+                  
+                  <div className="space-y-2">
+                    <p className="font-bold text-femfuel-rose text-base">{service.price}</p>
+                    <div className="flex items-center gap-1 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100 rounded px-2 py-1">
+                      <span className="text-orange-500 text-sm">🔥</span>
+                      <span className="font-semibold text-orange-700 text-xs">{service.availableProviders} especialistas disponibles</span>
+                    </div>
                   </div>
-                  <span className="font-bold text-femfuel-rose text-lg whitespace-nowrap ml-3">{service.price}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-femfuel-medium">
-                    {service.availableProviders} especialistas disponibles
-                  </span>
-                  <button
-                    className="glassmorphism-button-perfect"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleViewProviders()
-                    }}
-                  >
-                    Reservar Ahora
-                  </button>
-                </div>
+                
+                <button
+                  className="glassmorphism-button-perfect w-full"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleViewProviders()
+                  }}
+                >
+                  Reservar Ahora
+                </button>
               </div>
             </div>
           </CardContent>
@@ -152,41 +159,44 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
           </div>
           <div className="p-6">
             <div className="mb-4">
-              <h3 className="font-bold text-femfuel-dark text-lg mb-2">{service.name}</h3>
+              <h3 className="font-bold text-femfuel-dark text-xl mb-3">{service.name}</h3>
+              
               {service.featuredProvider && (
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-femfuel-rose/10 flex items-center justify-center">
-                    <Crown className="h-4 w-4 text-femfuel-rose" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-femfuel-dark">{service.featuredProvider.name}</p>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-emerald-50 text-emerald-700 border-emerald-200">
-                        Top Rated
-                      </Badge>
-                      <span className="text-xs text-femfuel-medium">Piantini</span>
+                <div className="mb-4">
+                  <p className="text-base font-semibold text-femfuel-dark mb-2">{service.featuredProvider.name}</p>
+                  <div className="flex items-center gap-2 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="font-medium">4.9</span>
                     </div>
+                    <span className="text-femfuel-medium">•</span>
+                    <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-emerald-50 text-emerald-700 border-emerald-200">
+                      Top Rated
+                    </Badge>
+                    <span className="text-femfuel-medium">•</span>
+                    <span className="text-femfuel-medium">Piantini</span>
                   </div>
                 </div>
               )}
-            </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-2xl font-bold text-femfuel-rose">{service.price}</span>
-                <p className="text-sm text-femfuel-medium mt-1">
-                  {service.availableProviders} especialistas disponibles
-                </p>
+              
+              <div className="space-y-3">
+                <p className="text-lg font-bold text-femfuel-rose">{service.price}</p>
+                <div className="flex items-center gap-2 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100 rounded-lg px-3 py-2">
+                  <span className="text-orange-500">🔥</span>
+                  <span className="font-semibold text-orange-700">{service.availableProviders} especialistas disponibles</span>
+                </div>
               </div>
-              <button 
-                className="glassmorphism-button-perfect"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleViewProviders()
-                }}
-              >
-                Ver Este Servicio
-              </button>
             </div>
+            
+            <button 
+              className="glassmorphism-button-perfect w-full"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleViewProviders()
+              }}
+            >
+              Ver Este Servicio
+            </button>
           </div>
         </CardContent>
       </Card>

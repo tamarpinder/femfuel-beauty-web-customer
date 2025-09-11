@@ -22,6 +22,15 @@ export interface Service {
   description?: string
   isPopular?: boolean
   addons?: any[]
+  // Transformation images
+  beforeAfter?: {
+    before: string
+    after: string
+    title: string
+    testimonial?: string
+    customerName?: string
+    rating?: number
+  }
   // Marketplace-specific fields
   featuredProvider?: {
     id: string

@@ -68,65 +68,56 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
 
   const handleBookingComplete = (booking: any) => {
     console.log("Booking completed:", booking)
-    // TODO: Handle booking completion (update state, show success message, etc.)
   }
 
   if (layout === "horizontal") {
     return (
       <>
-        <Card className="p-4 shadow-sm border-0 hover:shadow-md transition-shadow">
+        <Card className="overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:border-femfuel-rose/20 bg-white">
           <CardContent className="p-0">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-xl overflow-hidden relative">
+            <div className="flex items-center">
+              <div className="w-24 h-20 relative flex-shrink-0">
                 <OptimizedImage
                   src={service.image || "/services/hair/modern-haircut.png"}
                   alt={service.name}
                   fill
-                  sizes="64px"
+                  sizes="96px"
                   className="object-cover"
                   context={service.category || "service"}
-                  quality={75}
+                  quality={85}
                 />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 p-4">
                 <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="font-medium text-femfuel-dark text-sm">{service.name}</h3>
-                    <div className="flex items-center gap-2">
-                      {service.featuredProvider?.isSponsored && (
-                        <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-femfuel-gold/10 text-femfuel-rose">
-                          <Crown className="h-2 w-2 mr-1" />
-                          {service.featuredProvider.sponsorshipLevel === 'destacado' ? 'Destacado' : 'Recomendado'}
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-femfuel-dark text-base mb-1">{service.name}</h3>
+                    {service.featuredProvider && (
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-5 h-5 rounded-full bg-femfuel-rose/10 flex items-center justify-center">
+                          <Crown className="h-2.5 w-2.5 text-femfuel-rose" />
+                        </div>
+                        <span className="text-sm text-femfuel-medium">{service.featuredProvider.name}</span>
+                        <Badge variant="secondary" className="text-xs px-1.5 py-0.5 bg-emerald-50 text-emerald-700 border-emerald-200">
+                          Recomendado
                         </Badge>
-                      )}
-                      {service.availableProviders && (
-                        <p className="text-xs text-femfuel-medium flex items-center gap-1">
-                          <Users className="h-3 w-3" />
-                          {service.availableProviders} especialistas
-                        </p>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                  <span className="font-bold text-femfuel-rose text-sm">{service.price}</span>
+                  <span className="font-bold text-femfuel-rose text-lg whitespace-nowrap ml-3">{service.price}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-xs text-femfuel-medium">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      <span>{service.rating}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      <span>{service.duration}min</span>
-                    </div>
-                  </div>
-                  <Button
-                    size="sm"
-                    className="bg-femfuel-rose hover:bg-[#9f1853] text-white h-8 px-4 text-xs"
-                    onClick={handleViewProviders}
+                  <span className="text-sm text-femfuel-medium">
+                    {service.availableProviders} especialistas disponibles
+                  </span>
+                  <button
+                    className="glassmorphism-button-perfect"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleViewProviders()
+                    }}
                   >
-                    Ver Proveedores
-                  </Button>
+                    Reservar Ahora
+                  </button>
                 </div>
               </div>
             </div>
@@ -145,51 +136,56 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
 
   return (
     <>
-      <Card className="overflow-hidden shadow-sm border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 hover:scale-105 cursor-pointer">
+      <Card className="overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:border-femfuel-rose/20 hover:-translate-y-1 bg-white group">
         <CardContent className="p-0">
-          <div className="relative w-full h-48">
+          <div className="relative w-full h-48 overflow-hidden">
             <OptimizedImage
               src={service.image || "/services/hair/modern-haircut.png"}
               alt={service.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
               context={service.category || "service"}
               priority={false}
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
           <div className="p-6">
-            <h3 className="font-semibold text-femfuel-dark mb-1">{service.name}</h3>
-            <div className="flex items-center gap-2 mb-3">
-              {service.featuredProvider?.isSponsored && (
-                <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-femfuel-gold/10 text-femfuel-rose">
-                  <Crown className="h-3 w-3 mr-1" />
-                  {service.featuredProvider.sponsorshipLevel === 'destacado' ? 'Destacado' : 'Recomendado'}
-                </Badge>
+            <div className="mb-4">
+              <h3 className="font-bold text-femfuel-dark text-lg mb-2">{service.name}</h3>
+              {service.featuredProvider && (
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-femfuel-rose/10 flex items-center justify-center">
+                    <Crown className="h-4 w-4 text-femfuel-rose" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-femfuel-dark">{service.featuredProvider.name}</p>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs px-2 py-0.5 bg-emerald-50 text-emerald-700 border-emerald-200">
+                        Top Rated
+                      </Badge>
+                      <span className="text-xs text-femfuel-medium">Piantini</span>
+                    </div>
+                  </div>
+                </div>
               )}
-              {service.availableProviders && (
-                <p className="text-femfuel-medium text-sm flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  {service.availableProviders} especialistas disponibles
-                </p>
-              )}
-            </div>
-            <div className="flex items-center gap-4 text-sm text-femfuel-medium mb-4">
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span>{service.rating}</span>
-                <span>({service.reviews})</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="h-4 w-4" />
-                <span>{service.duration} min</span>
-              </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xl font-bold text-femfuel-rose">{service.price}</span>
-              <Button className="bg-femfuel-rose hover:bg-[#9f1653] text-white h-12 px-6" onClick={handleViewProviders}>
-                Ver Proveedores
-              </Button>
+              <div>
+                <span className="text-2xl font-bold text-femfuel-rose">{service.price}</span>
+                <p className="text-sm text-femfuel-medium mt-1">
+                  {service.availableProviders} especialistas disponibles
+                </p>
+              </div>
+              <button 
+                className="glassmorphism-button-perfect"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleViewProviders()
+                }}
+              >
+                Ver Este Servicio
+              </button>
             </div>
           </div>
         </CardContent>

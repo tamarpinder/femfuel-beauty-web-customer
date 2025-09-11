@@ -547,35 +547,60 @@ export default function HomePage() {
         onBookLocation={handleBookLocation}
       />
 
-      {/* Featured Services */}
-      <section className="px-4 py-12 bg-gradient-to-br from-femfuel-light to-pink-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-femfuel-dark mb-8 text-center">Recomendados para ti</h2>
+      {/* Featured Services - Redesigned Premium Section */}
+      <section className="px-4 py-16 bg-gradient-to-br from-gray-50 via-white to-femfuel-light/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-4">
+              Recomendados para ti
+            </h2>
+            <p className="text-lg text-femfuel-medium max-w-2xl mx-auto">
+              Descubre los servicios más populares con nuestros mejores especialistas
+            </p>
+          </div>
 
           {loading ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-femfuel-rose mx-auto"></div>
-              <p className="text-femfuel-medium mt-2">Cargando servicios populares...</p>
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-femfuel-rose mx-auto"></div>
+              <p className="text-femfuel-medium mt-4 text-lg">Cargando servicios populares...</p>
             </div>
           ) : featuredServices.length > 0 ? (
             <>
-              {/* Mobile Layout - Horizontal Cards */}
-              <div className="md:hidden space-y-4">
+              {/* Mobile Layout - Enhanced Cards */}
+              <div className="md:hidden space-y-6">
                 {featuredServices.slice(0, 4).map((service) => (
                   <ServiceCard key={service.id} service={service} layout="horizontal" onViewProviders={handleViewProviders} />
                 ))}
+                <div className="text-center pt-6">
+                  <button className="glassmorphism-button-lg" onClick={() => router.push('/services')}>
+                    Ver Todos los Servicios
+                  </button>
+                </div>
               </div>
 
-              {/* Desktop Layout - Vertical Cards */}
-              <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {featuredServices.slice(0, 8).map((service) => (
-                  <ServiceCard key={service.id} service={service} layout="vertical" onViewProviders={handleViewProviders} />
-                ))}
+              {/* Desktop Layout - Premium Grid */}
+              <div className="hidden md:block">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {featuredServices.slice(0, 6).map((service) => (
+                    <ServiceCard key={service.id} service={service} layout="vertical" onViewProviders={handleViewProviders} />
+                  ))}
+                </div>
+                <div className="text-center mt-12">
+                  <button className="glassmorphism-button-lg" onClick={() => router.push('/services')}>
+                    Explorar Todos los Servicios
+                  </button>
+                </div>
               </div>
             </>
           ) : (
-            <div className="text-center py-8">
-              <p className="text-femfuel-medium">No hay servicios disponibles en este momento.</p>
+            <div className="text-center py-16">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 bg-femfuel-rose/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Palette className="w-8 h-8 text-femfuel-rose" />
+                </div>
+                <p className="text-lg text-femfuel-medium">No hay servicios disponibles en este momento</p>
+                <p className="text-sm text-femfuel-medium/70 mt-2">Por favor, inténtalo de nuevo más tarde</p>
+              </div>
             </div>
           )}
         </div>

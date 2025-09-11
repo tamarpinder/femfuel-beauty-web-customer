@@ -298,6 +298,12 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
             max: Math.max(...allPrices)
           },
           availableProviders: vendorsForService.length,
+          featuredProvider: topVendor ? {
+            id: topVendor.id,
+            name: topVendor.name,
+            isSponsored: true,
+            sponsorshipLevel: 'destacado' as const
+          } : undefined,
           slug: `${service.category}-${serviceName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`
         })
       }

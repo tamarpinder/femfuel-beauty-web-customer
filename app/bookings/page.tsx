@@ -404,7 +404,7 @@ export default function BookingsPage() {
                         <div className="flex gap-1.5">
                           <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative flex-1 text-xs py-1.5 px-2">
                             <MessageCircle className="h-3 w-3 mr-1" />
-                            Chat
+                            Chatear
                             {booking.vendor.isOnline && (
                               <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
                             )}
@@ -534,7 +534,7 @@ export default function BookingsPage() {
                         <div className="flex gap-1.5">
                           <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative flex-1 text-xs py-1.5 px-2">
                             <MessageCircle className="h-3 w-3 mr-1" />
-                            Chat
+                            Chatear
                             {booking.vendor.isOnline && (
                               <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
                             )}

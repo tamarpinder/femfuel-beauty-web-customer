@@ -35,7 +35,7 @@ const categories: Array<{
     id: "makeup", 
     name: "Maquillaje", 
     icon: Palette, 
-    shortName: "Makeup"
+    shortName: "Maquillaje"
   },
   { 
     id: "haircare", 
@@ -65,7 +65,7 @@ const categories: Array<{
     id: "tools", 
     name: "Herramientas", 
     icon: Wrench, 
-    shortName: "Tools"
+    shortName: "Herramientas"
   },
   { 
     id: "accessories", 

@@ -232,7 +232,7 @@ export function DesktopProviderList({
                         {isTopPerformer && (
                           <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs">
                             <Sparkles className="h-3 w-3 mr-1" />
-                            Top Choice
+                            Primera Opción
                           </Badge>
                         )}
                       </div>
@@ -253,7 +253,7 @@ export function DesktopProviderList({
                   {/* Right: Price Box */}
                   {vendorService && (
                     <div className="text-right bg-femfuel-purple rounded-lg p-3 min-w-[120px]">
-                      <div className="text-2xl font-bold text-femfuel-rose">
+                      <div className="text-xl font-bold text-femfuel-rose">
                         {formatPrice(vendorService.price)}
                       </div>
                       <div className="text-sm text-femfuel-medium">
@@ -333,7 +333,7 @@ export function DesktopProviderList({
                     className="bg-green-500 hover:bg-green-600 px-4"
                   >
                     <MessageCircle className="h-4 w-4 mr-2" />
-                    Chat
+                    Chatear
                   </ChatButton>
 
                   <Button

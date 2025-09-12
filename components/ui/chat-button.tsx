@@ -73,7 +73,7 @@ export function ChatButton({
         return (
           <>
             <MessageCircle className="h-4 w-4" />
-            <span>Chat</span>
+            <span>Chatear</span>
           </>
         )
     }

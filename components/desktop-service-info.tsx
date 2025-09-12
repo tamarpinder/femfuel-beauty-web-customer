@@ -101,20 +101,8 @@ export function DesktopServiceInfo({
             </Badge>
           )}
           <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark px-3 py-1">
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+            {category === 'nails' ? 'Uñas' : category.charAt(0).toUpperCase() + category.slice(1)}
           </Badge>
-        </div>
-
-        {/* Key Info */}
-        <div className="flex items-center gap-8 text-lg">
-          <div className="flex items-center gap-2">
-            <span className="text-3xl font-bold text-femfuel-rose">{formatPrice(price)}</span>
-            <span className="text-femfuel-medium text-base">precio inicial</span>
-          </div>
-          <div className="flex items-center gap-2 text-femfuel-medium">
-            <Clock className="h-5 w-5" />
-            <span className="font-medium">{duration} minutos</span>
-          </div>
         </div>
 
         {/* Description */}

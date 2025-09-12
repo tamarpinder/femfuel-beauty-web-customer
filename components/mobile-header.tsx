@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef, useCallback } from "react"
 import Link from "next/link"
 import { Search, User, UserPlus } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -18,10 +18,23 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
   const [showSearch, setShowSearch] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch?.(e.target.value)
-  }
+  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchValue(value)
+    
+    // Clear existing timeout
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+    
+    // Set new timeout for debounced search
+    debounceRef.current = setTimeout(() => {
+      onSearch?.(value)
+    }, 300)
+  }, [onSearch])
 
   const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode)
@@ -84,6 +97,7 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
                 <Input
                   placeholder="Buscar servicios o salones..."
                   className="pl-10 h-10 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
+                  value={searchValue}
                   onChange={handleSearch}
                   autoFocus
                 />

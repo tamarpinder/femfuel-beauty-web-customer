@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 import { ArrowLeft, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,14 +8,16 @@ import { Input } from "@/components/ui/input"
 import { ServiceCard, type Service } from "@/components/service-card"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
 import { MobileNavigation } from "@/components/mobile-navigation"
-import { getVendors, searchVendors } from "@/lib/vendors-api"
+import { getVendors, searchVendors, searchServices, getAllServices } from "@/lib/vendors-api"
 import { Vendor } from "@/types/vendor"
 
 export default function SearchPage() {
   const searchParams = useSearchParams()
   const initialQuery = searchParams.get("q") || ""
 
+  const [searchInput, setSearchInput] = useState(initialQuery)
   const [searchQuery, setSearchQuery] = useState(initialQuery)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
   const [filters, setFilters] = useState<SearchFilters>({
     serviceTypes: [],
     priceRange: [0, 10000],
@@ -25,45 +27,81 @@ export default function SearchPage() {
   })
   const [filteredServices, setFilteredServices] = useState<Service[]>([])
 
+  // Handle search input with debouncing
+  const handleSearchInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchInput(value)
+    
+    // Clear existing timeout
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+    
+    // Set new timeout for debounced search
+    debounceRef.current = setTimeout(() => {
+      setSearchQuery(value)
+    }, 300)
+  }, [])
+
   // Filter services based on search query and filters
   useEffect(() => {
     async function loadServices() {
       try {
-        let vendors: Vendor[] = []
-        
-        // Search vendors based on query
-        if (searchQuery.trim()) {
-          vendors = await searchVendors(searchQuery)
-        } else {
-          vendors = await getVendors()
-        }
-
-        // Convert vendor services to Service format
         let allServices: Service[] = []
-        vendors.forEach(vendor => {
-          vendor.services.forEach(service => {
-            allServices.push({
-              id: service.id,
-              name: service.name,
-              price: `RD$${service.price?.toLocaleString()}`,
-              duration: service.duration || "30 min",
-              rating: vendor.rating,
-              reviewCount: vendor.reviewCount,
-              image: service.image || vendor.logo,
-              category: service.category,
-              description: service.description,
-              isPopular: service.isPopular,
-              addons: service.addons || [],
-              // Use the marketplace structure
-              availableProviders: 1, // We know at least this vendor offers it
-              featuredProvider: {
-                id: vendor.id,
-                name: vendor.name,
-                isSponsored: false
-              }
-            })
-          })
-        })
+        
+        // Search services directly based on query
+        if (searchQuery.trim()) {
+          const searchResults = await searchServices(searchQuery)
+          allServices = searchResults.map(service => ({
+            id: service.id,
+            name: service.name,
+            price: typeof service.price === 'number' 
+              ? `RD$${service.price.toLocaleString()}`
+              : service.price,
+            duration: typeof service.duration === 'number'
+              ? `${service.duration} min`
+              : service.duration || "30 min",
+            rating: service.vendor?.rating || 4.5,
+            reviewCount: service.vendor?.reviewCount || 0,
+            image: service.image || service.vendor?.logo,
+            category: service.category,
+            description: service.description,
+            isPopular: service.isPopular,
+            addons: service.addons || [],
+            availableProviders: service.availableProviders || 1,
+            featuredProvider: service.vendor ? {
+              id: service.vendor.id,
+              name: service.vendor.name,
+              isSponsored: false
+            } : service.featuredProvider
+          }))
+        } else {
+          // Get all services when no search query
+          const allServicesData = await getAllServices()
+          allServices = allServicesData.map(service => ({
+            id: service.id,
+            name: service.name,
+            price: typeof service.price === 'number' 
+              ? `RD$${service.price.toLocaleString()}`
+              : service.price,
+            duration: typeof service.duration === 'number'
+              ? `${service.duration} min`
+              : service.duration || "30 min",
+            rating: service.vendor?.rating || 4.5,
+            reviewCount: service.vendor?.reviewCount || 0,
+            image: service.image || service.vendor?.logo,
+            category: service.category,
+            description: service.description,
+            isPopular: service.isPopular,
+            addons: service.addons || [],
+            availableProviders: service.availableProviders || 1,
+            featuredProvider: service.vendor ? {
+              id: service.vendor.id,
+              name: service.vendor.name,
+              isSponsored: false
+            } : service.featuredProvider
+          }))
+        }
 
         // Apply filters
         let filtered = allServices
@@ -124,8 +162,8 @@ export default function SearchPage() {
           <div className="relative">
             <Input
               placeholder="Buscar servicios o salones..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchInput}
+              onChange={handleSearchInput}
               className="h-12 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
             />
           </div>
@@ -195,6 +233,7 @@ export default function SearchPage() {
               <Button
                 variant="outline"
                 onClick={() => {
+                  setSearchInput("")
                   setSearchQuery("")
                   setFilters({
                     serviceTypes: [],

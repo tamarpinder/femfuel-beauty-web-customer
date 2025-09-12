@@ -11,21 +11,31 @@ const SERVICE_SYNONYMS: Record<string, string[]> = {
   'Tinte': ['color', 'tinte', 'dye', 'coloracion'],
   'Mechas': ['highlights', 'luces', 'mechas', 'reflejos'],
   'Alisado': ['straightening', 'liso', 'plancha', 'keratina'],
+  'Alisado Dominicano': ['alisado dominicano', 'dominicano', 'dominicana', 'blowout', 'blow out', 'blower', 'secado dominicano', 'brushing', 'rolos'],
   'Permanente': ['perm', 'rizado', 'ondas', 'permanente'],
   'Tratamiento Capilar': ['treatment', 'tratamiento', 'mascarilla', 'hidratacion'],
+  'Tratamiento de Keratina': ['keratina', 'keratin', 'alisado brasileño', 'brasileño', 'brazilian'],
+  'Balayage': ['balayage', 'babylights', 'iluminaciones', 'mechas balayage'],
   
   // Nails services
   'Manicure': ['manicure', 'mani', 'nails', 'uñas'],
+  'Manicure Dominicana': ['manicure dominicana', 'dominicana', 'manicure especial'],
   'Pedicure': ['pedicure', 'pedi', 'feet', 'pies'],
+  'Pedicure Playa Dorada': ['pedicure playa', 'playa dorada', 'pedicure dominicano'],
   'Uñas Acrílicas': ['acrylic', 'acrilicas', 'artificial', 'extension'],
-  'Uñas de Gel': ['gel', 'shellac', 'semipermanente'],
+  'Uñas de Gel': ['gel', 'shellac', 'semipermanente', 'gel polish'],
+  'Uñas de Porcelana': ['porcelana', 'porcelain', 'powder', 'dip powder'],
   'Diseño de Uñas': ['nail art', 'diseño', 'decoracion', 'art'],
+  'Nail Art': ['nail art', 'arte de uñas', 'diseño', 'decoracion'],
   
   // Makeup services
   'Maquillaje': ['makeup', 'maquillaje', 'make up'],
-  'Maquillaje de Novia': ['bridal', 'novias', 'wedding', 'boda'],
-  'Maquillaje Social': ['event', 'fiesta', 'social', 'party'],
+  'Maquillaje de Novia': ['bridal', 'novias', 'wedding', 'boda', 'matrimonio'],
+  'Maquillaje Social': ['event', 'fiesta', 'social', 'party', 'evento'],
+  'Maquillaje Caribeño': ['caribeño', 'caribbean', 'tropical', 'dominicano'],
+  'Maquillaje Profesional': ['profesional', 'professional', 'pro'],
   'Cejas': ['brows', 'eyebrows', 'cejas', 'depilacion'],
+  'Microblading': ['microblading', 'micropigmentacion', 'cejas permanentes', 'tatuaje de cejas'],
   
   // Spa services
   'Masaje': ['massage', 'masajes', 'relajacion'],
@@ -234,6 +244,65 @@ export async function getVendorBySlug(slug: string) {
 // Search vendors
 export async function searchVendors(searchTerm: string, limit = 20) {
   return await getVendors({ search: searchTerm, limit })
+}
+
+// Search services directly (new function for better search)
+export async function searchServices(searchTerm: string, limit = 50) {
+  await simulateDelay()
+  
+  try {
+    const searchLower = searchTerm.toLowerCase().trim()
+    if (!searchLower) return []
+    
+    const allServices = await getAllServices()
+    const matchedServices: any[] = []
+    
+    // Search through all services
+    allServices.forEach(service => {
+      let matchScore = 0
+      
+      // Check service name
+      if (service.name.toLowerCase().includes(searchLower)) {
+        matchScore = 100
+      }
+      
+      // Check against synonyms
+      const synonyms = SERVICE_SYNONYMS[service.name] || []
+      for (const synonym of synonyms) {
+        if (synonym.toLowerCase().includes(searchLower) || searchLower.includes(synonym.toLowerCase())) {
+          matchScore = Math.max(matchScore, 90)
+          break
+        }
+      }
+      
+      // Check service description
+      if (!matchScore && service.description?.toLowerCase().includes(searchLower)) {
+        matchScore = 70
+      }
+      
+      // Check category
+      if (!matchScore && service.category?.toLowerCase().includes(searchLower)) {
+        matchScore = 60
+      }
+      
+      // Check vendor name
+      if (!matchScore && service.vendor?.name.toLowerCase().includes(searchLower)) {
+        matchScore = 50
+      }
+      
+      if (matchScore > 0) {
+        matchedServices.push({ ...service, matchScore })
+      }
+    })
+    
+    // Sort by match score and limit results
+    return matchedServices
+      .sort((a, b) => b.matchScore - a.matchScore)
+      .slice(0, limit)
+  } catch (error) {
+    console.error('Error searching services:', error)
+    return []
+  }
 }
 
 // Get nearby vendors (placeholder - would need geolocation)

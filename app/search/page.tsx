@@ -40,7 +40,7 @@ export default function SearchPage() {
     // Set new timeout for debounced search with longer delay for smoother typing
     debounceRef.current = setTimeout(() => {
       setSearchQuery(value)
-    }, 50)
+    }, 0.01)
   }, [])
 
   // Filter services based on search query and filters

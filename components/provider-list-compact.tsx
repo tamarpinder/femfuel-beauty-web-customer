@@ -95,61 +95,63 @@ export function ProviderListCompact({
                 onClick={() => setSelectedProvider(vendor.id)}
               >
                 <CardContent className="p-6">
-                  {/* Header with Logo, Name, and Price */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-4">
-                      {/* Enhanced Provider Logo */}
-                      <div className="flex-shrink-0">
-                        <div className="w-20 h-20 rounded-xl overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 relative shadow-lg">
-                          <OptimizedImage
-                            src={vendor.logo || "/vendor-logo-placeholder.png"}
-                            alt={`${vendor.name} logo`}
-                            fill
-                            sizes="80px"
-                            className="object-cover"
-                            loading="lazy"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Provider Name and Rating */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-xl font-bold text-femfuel-dark truncate">
-                            {vendor.name}
-                          </h3>
-                          {vendor.badges && vendor.badges.length > 0 && (
-                            <Badge className="bg-femfuel-rose text-white px-2 py-0 text-xs">
-                              <Verified className="h-3 w-3 mr-1" />
-                              Verificado
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-4 text-sm">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
-                            <span className="text-femfuel-medium">({vendor.reviewCount})</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-femfuel-medium">
-                            <MapPin className="h-4 w-4" />
-                            <span>{getDistanceText(vendor)}</span>
-                          </div>
-                        </div>
+                  {/* Header with Logo and Name */}
+                  <div className="flex items-start gap-4 mb-4">
+                    {/* Enhanced Provider Logo */}
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 relative shadow-lg">
+                        <OptimizedImage
+                          src={vendor.logo || "/vendor-logo-placeholder.png"}
+                          alt={`${vendor.name} logo`}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                          loading="lazy"
+                        />
                       </div>
                     </div>
-                    
-                    {/* Prominent Price */}
-                    {vendorService && (
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-femfuel-rose">
-                          {formatPrice(vendorService.price)}
+
+                    {/* Provider Name and Rating */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1 min-w-0 pr-2">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="text-lg font-bold text-femfuel-dark truncate">
+                              {vendor.name}
+                            </h3>
+                            {vendor.badges && vendor.badges.length > 0 && (
+                              <Badge className="bg-femfuel-rose text-white px-2 py-0 text-xs flex-shrink-0">
+                                <Verified className="h-3 w-3 mr-1" />
+                                Verificado
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3 text-sm">
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                              <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
+                              <span className="text-femfuel-medium">({vendor.reviewCount})</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-femfuel-medium">
+                              <MapPin className="h-4 w-4" />
+                              <span>{getDistanceText(vendor)}</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-sm text-femfuel-medium">
-                          {vendorService.duration} min
-                        </div>
+                        
+                        {/* Prominent Price - Fixed positioning */}
+                        {vendorService && (
+                          <div className="text-right flex-shrink-0">
+                            <div className="text-lg font-bold text-femfuel-rose">
+                              {formatPrice(vendorService.price)}
+                            </div>
+                            <div className="text-xs text-femfuel-medium">
+                              {vendorService.duration} min
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
 
                   {/* Availability - Prominent Display */}
@@ -196,21 +198,21 @@ export function ProviderListCompact({
                         e.stopPropagation()
                         onBookNow(vendor)
                       }}
-                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1 h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1 h-11 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                     >
-                      Reservar - {getNextSlot(vendor).split(' ')[1]} {getNextSlot(vendor).split(' ')[2]}
+                      Reservar - {getNextSlot(vendor).includes('Today') ? getNextSlot(vendor).split(' ').slice(1, 3).join(' ') : 'Próximo'}
                     </Button>
                     
                     <Button
                       variant="outline"
-                      size="lg"
+                      size="sm"
                       onClick={(e) => {
                         e.stopPropagation()
                         onProviderSelect(vendor)
                       }}
-                      className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-6"
+                      className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
                     >
-                      Detalles
+                      Ver
                     </Button>
                   </div>
                 </CardContent>

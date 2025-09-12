@@ -84,7 +84,7 @@ export function SmartSearch({
 
   // Handle input blur with delay to allow suggestion clicks
   const handleBlur = () => {
-    setTimeout(() => setShowSuggestions(false), 10)
+    setTimeout(() => setShowSuggestions(false), 150)
   }
 
   // Handle suggestion click

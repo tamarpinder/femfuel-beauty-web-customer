@@ -60,7 +60,7 @@ export function SmartSearch({
         setSuggestions(popular)
         onSearch("", [])
       }
-    }, 0.01)  // Instant results
+    }, 10)  // 10ms for smooth search
   }, [items, onSearch])
 
   // Handle input change
@@ -84,7 +84,7 @@ export function SmartSearch({
 
   // Handle input blur with delay to allow suggestion clicks
   const handleBlur = () => {
-    setTimeout(() => setShowSuggestions(false), 0.01)
+    setTimeout(() => setShowSuggestions(false), 10)
   }
 
   // Handle suggestion click

@@ -37,20 +37,11 @@ export default function SearchPage() {
       clearTimeout(debounceRef.current)
     }
     
-    // Set new timeout for debounced search
+    // Set new timeout for debounced search with longer delay for smoother typing
     debounceRef.current = setTimeout(() => {
       setSearchQuery(value)
-    }, 300)
+    }, 400)
   }, [])
-
-  // Handle Enter key for navigation
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      // Immediately trigger search without waiting for debounce
-      setSearchQuery(searchInput.trim())
-    }
-  }, [searchInput])
 
   // Filter services based on search query and filters
   useEffect(() => {
@@ -173,7 +164,6 @@ export default function SearchPage() {
               placeholder="Buscar servicios o salones..."
               value={searchInput}
               onChange={handleSearchInput}
-              onKeyDown={handleKeyDown}
               className="h-12 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
             />
           </div>

@@ -429,10 +429,12 @@ export default function HomePage() {
   ]
 
   const handleSearch = useCallback((query: string) => {
-    // Only navigate when explicitly triggered, not during typing
-    // This prevents focus loss during live search
-    console.log('Search query:', query) // For debugging
-  }, [])
+    if (query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query)}`)
+    } else {
+      router.push("/search")
+    }
+  }, [router])
 
   const handleBookService = (serviceId: string) => {
     console.log("Book service:", serviceId)

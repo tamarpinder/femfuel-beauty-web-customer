@@ -1,9 +1,8 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useCallback, useEffect } from "react"
+import { useState, useRef, useCallback } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { Search, User, UserPlus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { AuthModal } from "@/components/auth-modal"
@@ -16,22 +15,11 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ onSearch }: MobileHeaderProps) {
   const { isAuthenticated } = useAuth()
-  const router = useRouter()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
   const [showSearch, setShowSearch] = useState(false)
   const [searchValue, setSearchValue] = useState("")
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  const navigateToSearch = useCallback(() => {
-    const query = searchValue.trim()
-    if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
-    } else {
-      router.push("/search")
-    }
-  }, [searchValue, router])
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -42,28 +30,11 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
       clearTimeout(debounceRef.current)
     }
     
-    // Debounced callback for suggestions only - NO navigation
+    // Debounced callback with slight delay to prevent focus loss
     debounceRef.current = setTimeout(() => {
       onSearch?.(value)
-    }, 300)
+    }, 500)  // Increased delay for smoother typing
   }, [onSearch])
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      navigateToSearch()
-    }
-  }, [navigateToSearch])
-
-  // Auto-focus when search mode opens
-  useEffect(() => {
-    if (showSearch && inputRef.current) {
-      // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
-    }
-  }, [showSearch])
 
   const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode)
@@ -124,12 +95,11 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  ref={inputRef}
                   placeholder="Buscar servicios o salones..."
                   className="pl-10 h-10 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
                   value={searchValue}
                   onChange={handleSearch}
-                  onKeyDown={handleKeyDown}
+                  autoFocus
                 />
               </div>
             </div>

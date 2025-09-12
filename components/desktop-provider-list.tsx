@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Star, MapPin, Clock, MessageCircle, Crown, Filter, SlidersHorizontal, ChevronDown } from "lucide-react"
+import { Star, MapPin, Clock, MessageCircle, Crown, Filter, SlidersHorizontal, ChevronDown, Quote, Verified, Sparkles, TrendingUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -40,6 +40,37 @@ export function DesktopProviderList({
 
   const getNextSlot = (vendor: Vendor) => {
     return vendor.availability?.nextSlot || "Today 3:30 PM"
+  }
+
+  const getReviewPreview = (vendor: Vendor) => {
+    const reviews = [
+      "Amazing nail art, very professional and clean workspace",
+      "Excellent service, my nails look incredible!", 
+      "Best salon experience, highly recommend!",
+      "Perfect results every time, love coming here",
+      "Professional staff and beautiful results",
+      "Outstanding quality and attention to detail"
+    ]
+    return reviews[Math.floor(Math.random() * reviews.length)]
+  }
+
+  const getServiceHighlights = (vendor: Vendor, serviceName: string) => {
+    const highlights: Record<string, string[]> = {
+      'Arte de Uñas Tropical': ['Gel coating', 'Nail art', 'Professional care'],
+      'Alisado Dominicano': ['Keratin treatment', 'Heat protection', 'Long-lasting'],
+      'Manicure': ['Cuticle care', 'Polish application', 'Hand massage']
+    }
+    return highlights[serviceName] || ['Professional service', 'Expert care', 'Quality products']
+  }
+
+  const getAvailabilityStatus = (vendor: Vendor) => {
+    const nextSlot = getNextSlot(vendor)
+    const isToday = nextSlot.includes('Today')
+    return {
+      isToday,
+      color: isToday ? 'green' : 'blue',
+      text: isToday ? 'Disponible hoy' : 'Próxima cita'
+    }
   }
 
   // Filter providers
@@ -145,101 +176,165 @@ export function DesktopProviderList({
       </div>
 
       {/* Provider Cards */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {sortedProviders.map((vendor) => {
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        {sortedProviders.map((vendor, index) => {
           const vendorService = vendor.services.find(s => s.name === serviceName)
           const isSelected = selectedProvider === vendor.id
+          const serviceHighlights = getServiceHighlights(vendor, serviceName)
+          const reviewPreview = getReviewPreview(vendor)
+          const availabilityStatus = getAvailabilityStatus(vendor)
+          const isTopPerformer = index < 3
           
           return (
             <Card 
               key={vendor.id}
-              className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                isSelected ? 'ring-2 ring-femfuel-rose shadow-lg' : 'hover:shadow-md'
-              }`}
+              className={`cursor-pointer transition-all duration-300 border-0 bg-white shadow-lg hover:shadow-2xl ${
+                isSelected ? 'ring-2 ring-femfuel-rose shadow-2xl transform scale-[1.01]' : 'hover:shadow-xl'
+              } ${isTopPerformer ? 'bg-gradient-to-r from-white to-femfuel-purple/5' : ''}`}
               onClick={() => setSelectedProvider(vendor.id)}
             >
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  {/* Provider Logo */}
-                  <div className="flex-shrink-0">
-                    <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 relative">
-                      <OptimizedImage
-                        src={vendor.logo || "/vendor-logo-placeholder.png"}
-                        alt={`${vendor.name} logo`}
-                        fill
-                        sizes="56px"
-                        className="object-cover"
-                        loading="lazy"
-                      />
+              <CardContent className="p-6">
+                <div className="grid grid-cols-12 gap-6 items-start">
+                  {/* Enhanced Provider Logo */}
+                  <div className="col-span-2">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 relative shadow-lg">
+                        <OptimizedImage
+                          src={vendor.logo || "/vendor-logo-placeholder.png"}
+                          alt={`${vendor.name} logo`}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      {isTopPerformer && (
+                        <div className="absolute -top-2 -right-2 bg-femfuel-rose text-white rounded-full p-1">
+                          <TrendingUp className="h-3 w-3" />
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  {/* Provider Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-semibold text-femfuel-dark truncate">
-                          {vendor.name}
-                        </h3>
-                        <div className="flex items-center gap-4 text-sm">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-medium">{vendor.rating}</span>
-                            <span className="text-femfuel-medium">({vendor.reviewCount})</span>
-                          </div>
-                          <div className="flex items-center gap-1 text-femfuel-medium">
-                            <MapPin className="h-4 w-4" />
-                            <span>{getDistanceText(vendor)}</span>
-                          </div>
-                        </div>
-                      </div>
-                      
+                  {/* Provider Details */}
+                  <div className="col-span-6">
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-3">
+                      <h3 className="text-xl font-bold text-femfuel-dark">
+                        {vendor.name}
+                      </h3>
                       {vendor.badges && vendor.badges.length > 0 && (
-                        <Badge variant="secondary" className="text-xs ml-2">
-                          {vendor.badges[0]}
+                        <Badge className="bg-femfuel-rose text-white px-2 py-1 text-xs">
+                          <Verified className="h-3 w-3 mr-1" />
+                          Verificado
+                        </Badge>
+                      )}
+                      {isTopPerformer && (
+                        <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs">
+                          <Crown className="h-3 w-3 mr-1" />
+                          Top Choice
                         </Badge>
                       )}
                     </div>
 
-                    {/* Service Details */}
-                    {vendorService && (
-                      <div className="flex items-center justify-between mb-3 bg-femfuel-purple rounded-lg p-3">
+                    {/* Rating and Location */}
+                    <div className="flex items-center gap-6 mb-4">
+                      <div className="flex items-center gap-2">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
+                        <span className="text-femfuel-medium text-sm">({vendor.reviewCount} reseñas)</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-femfuel-medium">
+                        <MapPin className="h-4 w-4" />
+                        <span className="text-sm">{getDistanceText(vendor)}</span>
+                      </div>
+                    </div>
+
+                    {/* Review Preview */}
+                    <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                      <div className="flex items-start gap-2">
+                        <Quote className="h-3 w-3 text-femfuel-medium flex-shrink-0 mt-1" />
                         <div>
-                          <span className="text-lg font-bold text-femfuel-dark">
-                            {formatPrice(vendorService.price)}
-                          </span>
-                          <span className="text-sm text-femfuel-medium ml-2">
-                            • {vendorService.duration} min
-                          </span>
+                          <p className="text-sm text-femfuel-dark italic line-clamp-2">
+                            "{reviewPreview}"
+                          </p>
+                          <p className="text-xs text-femfuel-medium mt-1">- Cliente verificado</p>
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm text-green-600 font-medium">
-                            Próximo: {getNextSlot(vendor)}
-                          </div>
+                      </div>
+                    </div>
+
+                    {/* Service Highlights */}
+                    <div className="flex flex-wrap gap-2">
+                      {serviceHighlights.slice(0, 3).map((highlight, index) => (
+                        <Badge 
+                          key={index}
+                          variant="outline" 
+                          className="text-xs bg-white border-femfuel-medium text-femfuel-dark"
+                        >
+                          ✓ {highlight}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Price and Availability */}
+                  <div className="col-span-2 text-center">
+                    {vendorService && (
+                      <div className="mb-4">
+                        <div className="text-2xl font-bold text-femfuel-rose">
+                          {formatPrice(vendorService.price)}
+                        </div>
+                        <div className="text-sm text-femfuel-medium">
+                          {vendorService.duration} minutos
                         </div>
                       </div>
                     )}
 
-                    {/* Actions */}
-                    <div className="flex items-center gap-2">
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onBookNow(vendor)
-                        }}
-                        className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1"
-                        size="sm"
-                      >
-                        Reservar Ahora
-                      </Button>
-                      
+                    {/* Availability Status */}
+                    <div className={`rounded-lg p-3 mb-4 ${
+                      availabilityStatus.color === 'green' 
+                        ? 'bg-green-50 border border-green-200' 
+                        : 'bg-blue-50 border border-blue-200'
+                    }`}>
+                      <div className="flex items-center gap-1 justify-center">
+                        <Clock className={`h-4 w-4 ${
+                          availabilityStatus.color === 'green' ? 'text-green-600' : 'text-blue-600'
+                        }`} />
+                        <span className={`text-xs font-medium ${
+                          availabilityStatus.color === 'green' ? 'text-green-800' : 'text-blue-800'
+                        }`}>
+                          {availabilityStatus.text}
+                        </span>
+                      </div>
+                      <div className={`text-xs mt-1 ${
+                        availabilityStatus.color === 'green' ? 'text-green-700' : 'text-blue-700'
+                      }`}>
+                        {getNextSlot(vendor)}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="col-span-2 space-y-2">
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onBookNow(vendor)
+                      }}
+                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white w-full font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                      size="sm"
+                    >
+                      Reservar
+                    </Button>
+                    
+                    <div className="flex gap-2">
                       <ChatButton
                         vendorId={vendor.id}
                         vendorName={vendor.name}
                         serviceContext={serviceName}
                         variant="inline"
                         size="sm"
-                        className="bg-green-500 hover:bg-green-600 px-3"
+                        className="bg-green-500 hover:bg-green-600 flex-1 px-2"
                       >
                         <MessageCircle className="h-4 w-4" />
                       </ChatButton>
@@ -251,7 +346,7 @@ export function DesktopProviderList({
                           e.stopPropagation()
                           onProviderSelect(vendor)
                         }}
-                        className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-3"
+                        className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white flex-1 px-2"
                       >
                         Ver
                       </Button>

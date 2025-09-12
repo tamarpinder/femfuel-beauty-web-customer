@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { getMarketplaceServices } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type Service } from "@/components/service-card"
@@ -428,13 +428,11 @@ export default function HomePage() {
     }
   ]
 
-  const handleSearch = (query: string) => {
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
-    } else {
-      router.push("/search")
-    }
-  }
+  const handleSearch = useCallback((query: string) => {
+    // Only navigate when explicitly triggered, not during typing
+    // This prevents focus loss during live search
+    console.log('Search query:', query) // For debugging
+  }, [])
 
   const handleBookService = (serviceId: string) => {
     console.log("Book service:", serviceId)

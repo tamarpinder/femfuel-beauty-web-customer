@@ -1,13 +1,16 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Search, User, UserPlus } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { SmartSearch } from "@/components/smart-search"
 import { AuthModal } from "@/components/auth-modal"
 import { UserMenu } from "@/components/user-menu"
 import { useAuth } from "@/contexts/auth-context"
+import { getAllServices } from "@/lib/vendors-api"
+import type { SearchSuggestion } from "@/lib/search-utils"
 
 interface MobileHeaderProps {
   onSearch?: (query: string) => void
@@ -15,26 +18,35 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ onSearch }: MobileHeaderProps) {
   const { isAuthenticated } = useAuth()
+  const router = useRouter()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
   const [showSearch, setShowSearch] = useState(false)
-  const [searchValue, setSearchValue] = useState("")
-  const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const [services, setServices] = useState<any[]>([])
 
-  const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSearchValue(value)
-    
-    // Clear existing timeout
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
+  // Load services for search
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const allServices = await getAllServices()
+        setServices(allServices)
+      } catch (error) {
+        console.error('Error loading services:', error)
+      }
     }
-    
-    // Debounced callback with slight delay to prevent focus loss
-    debounceRef.current = setTimeout(() => {
-      onSearch?.(value)
-    }, 500)  // Increased delay for smoother typing
-  }, [onSearch])
+    loadServices()
+  }, [])
+
+  const handleSmartSearch = (query: string, suggestions: SearchSuggestion[]) => {
+    // Just handle suggestions display, no navigation
+    console.log('Searching:', query, 'Found:', suggestions.length, 'results')
+  }
+
+  const handleSuggestionSelect = (suggestion: SearchSuggestion) => {
+    // Navigate only when user selects a suggestion
+    router.push(`/search?q=${encodeURIComponent(suggestion.name)}`)
+    setShowSearch(false)
+  }
 
   const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode)
@@ -92,14 +104,13 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
               >
                 ←
               </button>
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
+              <div className="flex-1">
+                <SmartSearch
+                  items={services}
+                  onSearch={handleSmartSearch}
+                  onSuggestionSelect={handleSuggestionSelect}
                   placeholder="Buscar servicios o salones..."
-                  className="pl-10 h-10 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
-                  value={searchValue}
-                  onChange={handleSearch}
-                  autoFocus
+                  className="w-full"
                 />
               </div>
             </div>

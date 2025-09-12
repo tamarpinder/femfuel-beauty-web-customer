@@ -60,7 +60,7 @@ export function SmartSearch({
         setSuggestions(popular)
         onSearch("", [])
       }
-    }, 300)
+    }, 50)  // Ultra-fast 50ms for instant results
   }, [items, onSearch])
 
   // Handle input change

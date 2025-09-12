@@ -1,19 +1,44 @@
 "use client"
 
 import type React from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-
-import { Search, MapPin } from "lucide-react"
-import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
+import { MapPin } from "lucide-react"
+import { SmartSearch } from "@/components/smart-search"
 import { UserMenu } from "@/components/user-menu"
+import { getAllServices } from "@/lib/vendors-api"
+import type { SearchSuggestion } from "@/lib/search-utils"
 
 interface DesktopHeaderProps {
   onSearch?: (query: string) => void
 }
 
 export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch?.(e.target.value)
+  const router = useRouter()
+  const [services, setServices] = useState<any[]>([])
+
+  // Load services for search
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const allServices = await getAllServices()
+        setServices(allServices)
+      } catch (error) {
+        console.error('Error loading services:', error)
+      }
+    }
+    loadServices()
+  }, [])
+
+  const handleSmartSearch = (query: string, suggestions: SearchSuggestion[]) => {
+    // Just handle suggestions display, no navigation
+    console.log('Searching:', query, 'Found:', suggestions.length, 'results')
+  }
+
+  const handleSuggestionSelect = (suggestion: SearchSuggestion) => {
+    // Navigate only when user selects a suggestion
+    router.push(`/search?q=${encodeURIComponent(suggestion.name)}`)
   }
 
   return (
@@ -66,14 +91,13 @@ export function DesktopHeader({ onSearch }: DesktopHeaderProps) {
             <UserMenu />
           </nav>
         </div>
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-          <Input
-            placeholder="Buscar servicios o salones..."
-            className="pl-12 h-14 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
-            onChange={handleSearch}
-          />
-        </div>
+        <SmartSearch
+          items={services}
+          onSearch={handleSmartSearch}
+          onSuggestionSelect={handleSuggestionSelect}
+          placeholder="Buscar servicios o salones..."
+          className="w-full"
+        />
       </div>
     </header>
   )

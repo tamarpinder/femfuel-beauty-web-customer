@@ -429,12 +429,10 @@ export default function HomePage() {
   ]
 
   const handleSearch = useCallback((query: string) => {
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
-    } else {
-      router.push("/search")
-    }
-  }, [router])
+    // No longer navigate on search - headers now use SmartSearch
+    // which handles suggestions and navigation separately
+    console.log('Search query received:', query)
+  }, [])
 
   const handleBookService = (serviceId: string) => {
     console.log("Book service:", serviceId)
@@ -504,8 +502,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Headers */}
-      <MobileHeader onSearch={handleSearch} />
-      <DesktopHeader onSearch={handleSearch} />
+      <MobileHeader />
+      <DesktopHeader />
 
       {/* Hero Section */}
       <HeroSection />

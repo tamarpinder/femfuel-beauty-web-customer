@@ -44,23 +44,23 @@ export function DesktopProviderList({
 
   const getReviewPreview = (vendor: Vendor) => {
     const reviews = [
-      "Amazing nail art, very professional and clean workspace",
-      "Excellent service, my nails look incredible!", 
-      "Best salon experience, highly recommend!",
-      "Perfect results every time, love coming here",
-      "Professional staff and beautiful results",
-      "Outstanding quality and attention to detail"
+      "Arte de uñas increíble, muy profesional y espacio limpio",
+      "Excelente servicio, mis uñas se ven increíbles!", 
+      "La mejor experiencia de salón, muy recomendado!",
+      "Resultados perfectos cada vez, me encanta venir aquí",
+      "Personal profesional y resultados hermosos",
+      "Calidad excepcional y atención al detalle"
     ]
     return reviews[Math.floor(Math.random() * reviews.length)]
   }
 
   const getServiceHighlights = (vendor: Vendor, serviceName: string) => {
     const highlights: Record<string, string[]> = {
-      'Arte de Uñas Tropical': ['Gel coating', 'Nail art', 'Professional care'],
-      'Alisado Dominicano': ['Keratin treatment', 'Heat protection', 'Long-lasting'],
-      'Manicure': ['Cuticle care', 'Polish application', 'Hand massage']
+      'Arte de Uñas Tropical': ['Recubrimiento gel', 'Arte de uñas', 'Cuidado profesional'],
+      'Alisado Dominicano': ['Tratamiento queratina', 'Protección térmica', 'Duradero'],
+      'Manicure': ['Cuidado cutículas', 'Aplicación esmalte', 'Masaje manos']
     }
-    return highlights[serviceName] || ['Professional service', 'Expert care', 'Quality products']
+    return highlights[serviceName] || ['Servicio profesional', 'Cuidado experto', 'Productos calidad']
   }
 
   const getAvailabilityStatus = (vendor: Vendor) => {

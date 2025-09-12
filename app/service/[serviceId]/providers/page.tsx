@@ -123,6 +123,19 @@ export default function ServiceProvidersPage() {
     router.push(`/vendor/${vendor.slug}?service=${service?.slug || serviceId}&action=book`)
   }
 
+  // Calculate average duration from providers
+  const getAverageDuration = () => {
+    if (!service || providers.length === 0) return service?.duration || 0
+    
+    const durations = providers
+      .map(provider => provider.services.find(s => s.name === service.name)?.duration)
+      .filter(duration => duration !== undefined) as number[]
+    
+    if (durations.length === 0) return service.duration
+    
+    return Math.round(durations.reduce((sum, duration) => sum + duration, 0) / durations.length)
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
@@ -188,7 +201,7 @@ export default function ServiceProvidersPage() {
 
         {/* Quick Info Cards */}
         <ServiceInfoCards
-          duration={service.duration}
+          duration={getAverageDuration()}
           category={service.category}
         />
 

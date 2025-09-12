@@ -9,21 +9,21 @@ interface ServiceInfoCardsProps {
 }
 
 export function ServiceInfoCards({ duration, category, includes }: ServiceInfoCardsProps) {
-  // Default includes based on category
+  // Default includes based on category (Dominican Spanish)
   const getDefaultIncludes = (category: string): string[] => {
     switch (category.toLowerCase()) {
       case 'nails':
-        return ['Gel Coat', 'Manicure', '+ Design', 'Cuticles']
+        return ['Gel Coat', 'Manicure', '+ Diseño', 'Cutículas']
       case 'hair':
-        return ['Wash', 'Cut', 'Style', 'Treatment']
+        return ['Lavado', 'Corte', 'Peinado', 'Tratamiento']
       case 'makeup':
-        return ['Base', 'Eyes', 'Lips', 'Contour']
+        return ['Base', 'Ojos', 'Labios', 'Contorno']
       case 'spa':
-        return ['Massage', 'Facial', 'Relax', 'Hydrate']
+        return ['Masaje', 'Facial', 'Relajación', 'Hidratación']
       case 'lashes':
-        return ['Extensions', 'Curl', 'Volume', 'Seal']
+        return ['Extensiones', 'Curvado', 'Volumen', 'Sellado']
       default:
-        return ['Professional', 'Quality', 'Guarantee', 'Care']
+        return ['Profesional', 'Calidad', 'Garantía', 'Cuidado']
     }
   }
 
@@ -32,13 +32,13 @@ export function ServiceInfoCards({ duration, category, includes }: ServiceInfoCa
   const cards = [
     {
       icon: Clock,
-      title: "Duration",
-      value: `${duration} mins`,
+      title: "Duración",
+      value: `${duration} min`,
       color: "bg-blue-50 text-blue-600"
     },
     ...serviceIncludes.slice(0, 3).map((item, index) => ({
       icon: index === 0 ? CheckCircle : index === 1 ? Palette : Shield,
-      title: "Includes",
+      title: "Incluye",
       value: item,
       color: "bg-femfuel-purple text-femfuel-dark"
     }))

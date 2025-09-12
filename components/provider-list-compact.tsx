@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Star, MapPin, Clock, MessageCircle, ChevronRight, Crown } from "lucide-react"
+import { Star, MapPin, Clock, MessageCircle, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -50,14 +50,13 @@ export function ProviderListCompact({
     <div className="px-4 py-6">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex items-center gap-2 mb-6">
-          <Crown className="h-5 w-5 text-femfuel-rose" />
+        <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-femfuel-dark">
             Especialistas Verificados
           </h2>
-          <span className="text-sm text-femfuel-medium">
-            ({providers.length} disponibles)
-          </span>
+          <div className="bg-femfuel-rose text-white px-3 py-1 rounded-full text-sm font-medium">
+            {providers.length}
+          </div>
         </div>
 
         {/* Provider Cards */}

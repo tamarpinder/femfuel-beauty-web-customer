@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 import { ArrowLeft, Search, Filter, MapPin, Clock, Heart, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { SmartSearch } from "@/components/smart-search"
+import type { SearchSuggestion } from "@/lib/search-utils"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
@@ -113,6 +115,18 @@ export default function ServicesPage() {
     router.push(`/service/${service.slug || service.id}/providers`)
   }
 
+  const handleSmartSearch = (query: string, suggestions: SearchSuggestion[]) => {
+    setSearchQuery(query)
+  }
+
+  const handleSuggestionSelect = (suggestion: SearchSuggestion) => {
+    // Find the service and navigate to it
+    const service = filteredServices.find(s => s.id === suggestion.id)
+    if (service) {
+      handleServiceClick(service)
+    }
+  }
+
   const toggleFavorite = (serviceId: string, e: React.MouseEvent) => {
     e.stopPropagation() // Prevent service click
     const newFavorites = new Set(favorites)
@@ -144,16 +158,13 @@ export default function ServicesPage() {
             <UserMenu />
           </div>
           
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-femfuel-medium" />
-            <Input
-              placeholder="Buscar servicios..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12 rounded-xl border-gray-200 focus:border-femfuel-rose focus:ring-femfuel-rose"
-            />
-          </div>
+          {/* Smart Search Bar */}
+          <SmartSearch
+            items={services}
+            onSearch={handleSmartSearch}
+            onSuggestionSelect={handleSuggestionSelect}
+            placeholder="Buscar servicios..."
+          />
         </div>
       </header>
 

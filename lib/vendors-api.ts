@@ -3,6 +3,42 @@ import { mockData } from '@/data/shared/mock-data'
 import { getVendorLogo, getVendorCover, getServiceImage, getProfessionalPortrait, getRandomProfessionalPortrait } from '@/lib/image-mappings'
 import { getServiceDescription } from '@/lib/service-descriptions'
 
+// Search synonyms for better matching
+const SERVICE_SYNONYMS: Record<string, string[]> = {
+  // Hair services
+  'Corte de Cabello': ['corte', 'hair', 'pelo', 'cabello', 'haircut'],
+  'Peinado': ['style', 'styling', 'arreglo', 'peinado'],
+  'Tinte': ['color', 'tinte', 'dye', 'coloracion'],
+  'Mechas': ['highlights', 'luces', 'mechas', 'reflejos'],
+  'Alisado': ['straightening', 'liso', 'plancha', 'keratina'],
+  'Permanente': ['perm', 'rizado', 'ondas', 'permanente'],
+  'Tratamiento Capilar': ['treatment', 'tratamiento', 'mascarilla', 'hidratacion'],
+  
+  // Nails services
+  'Manicure': ['manicure', 'mani', 'nails', 'uñas'],
+  'Pedicure': ['pedicure', 'pedi', 'feet', 'pies'],
+  'Uñas Acrílicas': ['acrylic', 'acrilicas', 'artificial', 'extension'],
+  'Uñas de Gel': ['gel', 'shellac', 'semipermanente'],
+  'Diseño de Uñas': ['nail art', 'diseño', 'decoracion', 'art'],
+  
+  // Makeup services
+  'Maquillaje': ['makeup', 'maquillaje', 'make up'],
+  'Maquillaje de Novia': ['bridal', 'novias', 'wedding', 'boda'],
+  'Maquillaje Social': ['event', 'fiesta', 'social', 'party'],
+  'Cejas': ['brows', 'eyebrows', 'cejas', 'depilacion'],
+  
+  // Spa services
+  'Masaje': ['massage', 'masajes', 'relajacion'],
+  'Facial': ['facial', 'limpieza', 'tratamiento facial'],
+  'Limpieza Facial': ['facial cleansing', 'limpieza', 'deep cleaning'],
+  'Exfoliación': ['peeling', 'exfoliacion', 'scrub'],
+  
+  // Lash services
+  'Extensiones de Pestañas': ['lashes', 'pestañas', 'extensions', 'extensiones'],
+  'Lifting de Pestañas': ['lash lift', 'lifting', 'curl', 'rizado'],
+  'Tinte de Pestañas': ['lash tint', 'tinte', 'color']
+}
+
 export interface VendorFilters {
   category?: string
   search?: string
@@ -297,6 +333,7 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
             min: Math.min(...allPrices),
             max: Math.max(...allPrices)
           },
+          searchSynonyms: SERVICE_SYNONYMS[serviceName] || [],
           availableProviders: vendorsForService.length,
           featuredProvider: topVendor ? {
             id: topVendor.id,

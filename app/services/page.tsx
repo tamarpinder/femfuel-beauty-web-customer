@@ -135,18 +135,13 @@ export default function ServicesPage() {
       <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3 flex-1">
+            <div className="flex items-center gap-3">
               <Button variant="ghost" size="sm" onClick={handleBack}>
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <div>
-                <h1 className="text-lg font-semibold text-femfuel-dark">Servicios de Belleza</h1>
-                <p className="text-sm text-femfuel-medium">Encuentra tu servicio perfecto</p>
-              </div>
+              <h1 className="text-base md:text-lg font-semibold text-femfuel-dark">Servicios de Belleza</h1>
             </div>
-            <div className="flex items-center">
-              <UserMenu />
-            </div>
+            <UserMenu />
           </div>
           
           {/* Search Bar */}
@@ -235,7 +230,7 @@ export default function ServicesPage() {
                   <div
                     key={service.id}
                     onClick={() => handleServiceClick(service)}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] flex flex-col h-[420px]"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] flex flex-col h-auto md:h-[420px] min-h-[380px]"
                   >
                     {/* Service Image */}
                     <div className="aspect-[3/2] relative overflow-hidden flex-shrink-0">
@@ -281,7 +276,7 @@ export default function ServicesPage() {
                     </div>
 
                     {/* Service Info */}
-                    <div className="p-4 flex flex-col flex-1">
+                    <div className="p-3 md:p-4 flex flex-col flex-1">
                       <h3 className="font-semibold text-femfuel-dark mb-1 group-hover:text-femfuel-rose transition-colors">
                         {service.name}
                       </h3>

@@ -56,22 +56,13 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
                 </button>
                 
                 {!isAuthenticated ? (
-                  <>
-                    <button 
-                      onClick={() => handleAuthClick("login")}
-                      className="glassmorphism-button-mobile"
-                    >
-                      <User className="h-3 w-3" />
-                      <span className="hidden xs:inline">Entrar</span>
-                    </button>
-                    <button 
-                      onClick={() => handleAuthClick("signup")}
-                      className="femfuel-button-mobile"
-                    >
-                      <UserPlus className="h-3 w-3" />
-                      <span>Comenzar</span>
-                    </button>
-                  </>
+                  <button 
+                    onClick={() => handleAuthClick("login")}
+                    className="glassmorphism-button-mobile"
+                  >
+                    <User className="h-3 w-3" />
+                    <span>Entrar</span>
+                  </button>
                 ) : (
                   <UserMenu />
                 )}

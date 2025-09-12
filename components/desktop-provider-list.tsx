@@ -175,8 +175,8 @@ export function DesktopProviderList({
         </div>
       </div>
 
-      {/* Provider Cards - Compact Horizontal Layout */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      {/* Provider Cards - Clean Vertical Layout (Option C) */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {sortedProviders.map((vendor, index) => {
           const vendorService = vendor.services.find(s => s.name === serviceName)
           const isSelected = selectedProvider === vendor.id
@@ -188,161 +188,164 @@ export function DesktopProviderList({
           return (
             <Card 
               key={vendor.id}
-              className={`cursor-pointer transition-all duration-200 border-0 bg-white shadow-md hover:shadow-lg ${
-                isSelected ? 'ring-2 ring-femfuel-rose shadow-lg' : ''
-              } ${isTopPerformer ? 'bg-gradient-to-r from-white to-yellow-50' : ''}`}
+              className={`cursor-pointer transition-all duration-200 bg-white shadow-lg hover:shadow-xl ${
+                isSelected ? 'ring-2 ring-femfuel-rose shadow-xl' : ''
+              }`}
               onClick={() => setSelectedProvider(vendor.id)}
             >
-              <CardContent className="p-4">
-                {/* Compact Horizontal Layout */}
-                <div className="flex items-center gap-4">
-                  {/* Logo with Top Performer Indicator */}
-                  <div className="relative flex-shrink-0">
-                    <div className="w-14 h-14 rounded-lg overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 shadow-md">
-                      <OptimizedImage
-                        src={vendor.logo || "/vendor-logo-placeholder.png"}
-                        alt={`${vendor.name} logo`}
-                        fill
-                        sizes="56px"
-                        className="object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                    {isTopPerformer && (
-                      <div className="absolute -top-1 -right-1 bg-yellow-500 text-white rounded-full p-0.5">
-                        <Crown className="h-3 w-3" />
+              <CardContent className="p-6">
+                {/* Top Section: Logo + Name on left, Price box on right */}
+                <div className="flex justify-between items-start mb-4">
+                  {/* Left: Logo and Vendor Info */}
+                  <div className="flex items-start gap-4 flex-1">
+                    {/* Logo */}
+                    <div className="relative flex-shrink-0">
+                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 shadow-lg">
+                        <OptimizedImage
+                          src={vendor.logo || "/vendor-logo-placeholder.png"}
+                          alt={`${vendor.name} logo`}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                          loading="lazy"
+                        />
                       </div>
-                    )}
-                  </div>
+                      {isTopPerformer && (
+                        <div className="absolute -top-2 -right-2 bg-yellow-500 text-white rounded-full p-1">
+                          <Crown className="h-3 w-3" />
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Vendor Info - Flexible Width */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-lg font-bold text-femfuel-dark truncate">
+                    {/* Vendor Name and Info */}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-femfuel-dark mb-2">
                         {vendor.name}
                       </h3>
-                      {vendor.badges && vendor.badges.length > 0 && (
-                        <Badge className="bg-femfuel-rose text-white px-2 py-0.5 text-xs flex-shrink-0">
-                          <Verified className="h-3 w-3 mr-1" />
-                          Verificado
-                        </Badge>
-                      )}
-                      {isTopPerformer && (
-                        <Badge className="bg-yellow-500 text-white px-2 py-0.5 text-xs flex-shrink-0">
-                          Top Choice
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
-                        <span className="text-femfuel-medium text-sm">({vendor.reviewCount})</span>
+                      <div className="flex items-center gap-3 mb-2">
+                        {vendor.badges && vendor.badges.length > 0 && (
+                          <Badge className="bg-femfuel-rose text-white px-2 py-1 text-xs">
+                            <Verified className="h-3 w-3 mr-1" />
+                            Verificado
+                          </Badge>
+                        )}
+                        {isTopPerformer && (
+                          <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs">
+                            <Sparkles className="h-3 w-3 mr-1" />
+                            Top Choice
+                          </Badge>
+                        )}
                       </div>
-                      <div className="flex items-center gap-1 text-femfuel-medium">
-                        <MapPin className="h-4 w-4" />
-                        <span className="text-sm">{getDistanceText(vendor)}</span>
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
+                          <span className="text-femfuel-medium">({vendor.reviewCount} reseñas)</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-femfuel-medium">
+                          <MapPin className="h-4 w-4" />
+                          <span>{getDistanceText(vendor)}</span>
+                        </div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Compact Review Preview */}
-                    <div className="flex items-start gap-2 bg-gray-50 rounded-md p-2 mb-2">
-                      <Quote className="h-3 w-3 text-femfuel-medium flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-femfuel-dark italic line-clamp-1">
+                  {/* Right: Price Box */}
+                  {vendorService && (
+                    <div className="text-right bg-femfuel-purple rounded-lg p-3 min-w-[120px]">
+                      <div className="text-2xl font-bold text-femfuel-rose">
+                        {formatPrice(vendorService.price)}
+                      </div>
+                      <div className="text-sm text-femfuel-medium">
+                        {vendorService.duration} min
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Review Quote Section */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <div className="flex items-start gap-2">
+                    <Quote className="h-4 w-4 text-femfuel-medium flex-shrink-0 mt-1" />
+                    <div className="flex-1">
+                      <p className="text-sm text-femfuel-dark italic">
                         "{reviewPreview}"
                       </p>
-                    </div>
-
-                    {/* Service Highlights - Inline */}
-                    <div className="flex flex-wrap gap-1">
-                      {serviceHighlights.slice(0, 3).map((highlight, index) => (
-                        <Badge 
-                          key={index}
-                          variant="outline" 
-                          className="text-xs bg-white border-femfuel-medium/50 text-femfuel-dark px-2 py-0"
-                        >
-                          ✓ {highlight}
-                        </Badge>
-                      ))}
+                      <p className="text-xs text-femfuel-medium mt-1">- Cliente verificado</p>
                     </div>
                   </div>
+                </div>
 
-                  {/* Price Section */}
-                  <div className="text-right flex-shrink-0 min-w-[100px]">
-                    {vendorService && (
-                      <div className="mb-2">
-                        <div className="text-xl font-bold text-femfuel-rose">
-                          {formatPrice(vendorService.price)}
-                        </div>
-                        <div className="text-xs text-femfuel-medium">
-                          {vendorService.duration} min
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Availability */}
-                  <div className="flex-shrink-0 min-w-[120px]">
-                    <div className={`rounded-md p-2 text-center ${
-                      availabilityStatus.color === 'green' 
-                        ? 'bg-green-50 border border-green-200' 
-                        : 'bg-blue-50 border border-blue-200'
-                    }`}>
-                      <div className="flex items-center gap-1 justify-center mb-1">
-                        <Clock className={`h-3 w-3 ${
-                          availabilityStatus.color === 'green' ? 'text-green-600' : 'text-blue-600'
-                        }`} />
-                        <span className={`text-xs font-medium ${
-                          availabilityStatus.color === 'green' ? 'text-green-800' : 'text-blue-800'
-                        }`}>
-                          {availabilityStatus.text}
-                        </span>
-                      </div>
-                      <div className={`text-xs ${
-                        availabilityStatus.color === 'green' ? 'text-green-700' : 'text-blue-700'
-                      }`}>
-                        {getNextSlot(vendor)}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions - Compact */}
-                  <div className="flex gap-2 flex-shrink-0">
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onBookNow(vendor)
-                      }}
-                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 px-4"
-                      size="sm"
+                {/* Service Highlights - Horizontal */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {serviceHighlights.map((highlight, index) => (
+                    <Badge 
+                      key={index}
+                      variant="outline" 
+                      className="text-sm bg-white border-femfuel-rose/30 text-femfuel-dark"
                     >
-                      Reservar
-                    </Button>
-                    
-                    <ChatButton
-                      vendorId={vendor.id}
-                      vendorName={vendor.name}
-                      serviceContext={serviceName}
-                      variant="inline"
-                      size="sm"
-                      className="bg-green-500 hover:bg-green-600 px-3"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                    </ChatButton>
+                      ✓ {highlight}
+                    </Badge>
+                  ))}
+                </div>
 
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onProviderSelect(vendor)
-                      }}
-                      className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-3"
-                    >
-                      Ver
-                    </Button>
-                  </div>
+                {/* Next Availability */}
+                <div className="flex items-center gap-2 mb-4 text-sm">
+                  <Clock className={`h-4 w-4 ${
+                    availabilityStatus.color === 'green' ? 'text-green-600' : 'text-blue-600'
+                  }`} />
+                  <span className="font-medium text-femfuel-dark">
+                    Próxima disponibilidad:
+                  </span>
+                  <span className={`font-semibold ${
+                    availabilityStatus.color === 'green' ? 'text-green-700' : 'text-blue-700'
+                  }`}>
+                    {getNextSlot(vendor)}
+                  </span>
+                  {availabilityStatus.isToday && (
+                    <Badge className="bg-green-100 text-green-800 px-2 py-0 text-xs">
+                      Disponible hoy
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-gray-200 mb-4"></div>
+
+                {/* Action Buttons at Bottom */}
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onBookNow(vendor)
+                    }}
+                    className="bg-femfuel-rose hover:bg-[#9f1853] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
+                  >
+                    Reservar - {getNextSlot(vendor)}
+                  </Button>
+                  
+                  <ChatButton
+                    vendorId={vendor.id}
+                    vendorName={vendor.name}
+                    serviceContext={serviceName}
+                    variant="inline"
+                    size="sm"
+                    className="bg-green-500 hover:bg-green-600 px-4"
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Chat
+                  </ChatButton>
+
+                  <Button
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onProviderSelect(vendor)
+                    }}
+                    className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
+                  >
+                    Ver Detalles
+                  </Button>
                 </div>
               </CardContent>
             </Card>

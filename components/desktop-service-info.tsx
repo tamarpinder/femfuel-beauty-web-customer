@@ -101,7 +101,13 @@ export function DesktopServiceInfo({
             </Badge>
           )}
           <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark px-3 py-1">
-            {category === 'nails' ? 'Uñas' : category.charAt(0).toUpperCase() + category.slice(1)}
+            {category === 'nails' ? 'Uñas' : 
+             category === 'hair' ? 'Cabello' :
+             category === 'makeup' ? 'Maquillaje' :
+             category === 'spa' ? 'Spa' :
+             category === 'lashes' ? 'Pestañas' :
+             category === 'skincare' ? 'Cuidado Facial' :
+             category.charAt(0).toUpperCase() + category.slice(1)}
           </Badge>
         </div>
 

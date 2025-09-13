@@ -58,9 +58,9 @@ export async function GET(request: Request) {
         },
         categories: vendor.categories,
         popularServices: vendorServices
-          .filter(s => s.isPopular)
+          .filter(s => s && s.isPopular)
           .slice(0, 3)
-          .map(s => s.name),
+          .map(s => s?.name || ''),
         badges: vendor.isVerified ? ['Verificado'] : [],
         availability: {
           isOpen: true,
@@ -69,18 +69,18 @@ export async function GET(request: Request) {
         },
         professionalCount: 1,
         priceRange: {
-          min: Math.min(...vendorServices.map(s => s.price)),
-          max: Math.max(...vendorServices.map(s => s.price))
+          min: vendorServices.length > 0 ? Math.min(...vendorServices.filter(s => s).map(s => s?.price || 0)) : 0,
+          max: vendorServices.length > 0 ? Math.max(...vendorServices.filter(s => s).map(s => s?.price || 0)) : 0
         },
-        services: vendorServices.map(service => ({
-          id: service.id,
-          name: service.name,
-          description: service.description,
-          price: service.price,
-          duration: service.duration,
-          category: service.category,
-          isPopular: service.isPopular,
-          image: service.images?.[0]?.url
+        services: vendorServices.filter(service => service).map(service => ({
+          id: service?.id || '',
+          name: service?.name || '',
+          description: service?.description || '',
+          price: service?.price || 0,
+          duration: service?.duration || 60,
+          category: service?.category || '',
+          isPopular: service?.isPopular || false,
+          image: service?.images?.[0]?.url || ''
         })),
         businessHours: vendor.businessHours
       }

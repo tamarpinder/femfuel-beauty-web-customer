@@ -1,5 +1,5 @@
 // Comprehensive Mock Data for FemFuel Beauty Platform
-// 25 Vendors, 50 Customers, 100 Services
+// 23 Vendors, 50 Customers, 100 Services
 // Synchronized across Customer, Vendor, and Admin applications
 
 import { 
@@ -52,8 +52,8 @@ export const users: User[] = [
   }
 ]
 
-// Vendor Users (24 vendors)
-const vendorUsers: User[] = Array.from({ length: 24 }, (_, i) => ({
+// Vendor Users (23 vendors)
+const vendorUsers: User[] = Array.from({ length: 23 }, (_, i) => ({
   id: `vendor-${String(i + 1).padStart(3, '0')}`,
   email: `vendor${i + 1}@femfuel.com`,
   name: `Vendor User ${i + 1}`,
@@ -93,16 +93,15 @@ const standardHours: BusinessHours = {
 
 // Vendor business names and specialties
 const vendorBusinessData = [
-  { name: 'Glamour Studio RD', categories: ['makeup', 'hair'], specialties: ['Bridal Makeup', 'Color Correction'] },
+  { name: 'Glamour House', categories: ['makeup', 'hair'], specialties: ['Bridal Makeup', 'Color Correction'] },
   { name: 'Nails Paradise', categories: ['nails'], specialties: ['Gel Extensions', 'Nail Art'] },
   { name: 'Hair Salon Elite', categories: ['hair'], specialties: ['Balayage', 'Keratin Treatments'] },
   { name: 'Spa Serenity', categories: ['spa'], specialties: ['Hot Stone Massage', 'Anti-aging Facials'] },
-  { name: 'Lash Boutique DR', categories: ['lashes'], specialties: ['Volume Lashes', 'Microblading'] },
-  { name: 'Beauty Corner', categories: ['nails', 'makeup'], specialties: ['Party Looks', 'Gel Manicures'] },
-  { name: 'Dominican Hair Studio', categories: ['hair'], specialties: ['Natural Hair Care', 'Dominican Blowouts'] },
-  { name: 'Radiant Skin Spa', categories: ['spa'], specialties: ['Chemical Peels', 'Hydrafacials'] },
-  { name: 'Perfect Nails Salon', categories: ['nails'], specialties: ['French Manicures', 'Pedicures'] },
-  { name: 'Makeup Artistry RD', categories: ['makeup'], specialties: ['Editorial Makeup', 'Special Effects'] },
+  { name: 'Lash Studio DR', categories: ['lashes'], specialties: ['Volume Lashes', 'Microblading'] },
+  { name: 'Beauty Studio RD', categories: ['nails', 'makeup'], specialties: ['Party Looks', 'Gel Manicures'] },
+  { name: 'Cabello y Estilo', categories: ['hair'], specialties: ['Natural Hair Care', 'Dominican Blowouts'] },
+  { name: 'Luxury Nails Spa', categories: ['nails'], specialties: ['French Manicures', 'Pedicures'] },
+  { name: 'Makeup Studio Pro', categories: ['makeup'], specialties: ['Editorial Makeup', 'Special Effects'] },
   { name: 'Trendy Hair', categories: ['hair'], specialties: ['Curly Hair Cuts', 'Deep Conditioning'] },
   { name: 'Zen Wellness Spa', categories: ['spa'], specialties: ['Aromatherapy', 'Body Wraps'] },
   { name: 'Lashes & Brows', categories: ['lashes'], specialties: ['Brow Lamination', 'Lash Lifts'] },
@@ -119,8 +118,8 @@ const vendorBusinessData = [
   { name: 'Dominican Beauty House', categories: ['hair', 'makeup', 'nails'], specialties: ['Full Service', 'Dominican Techniques'] }
 ]
 
-// Generate Vendor Profiles (24 vendors)
-export const vendorProfiles: VendorProfile[] = vendorUsers.slice(0, 24).map((user, i) => ({
+// Generate Vendor Profiles (23 vendors)
+export const vendorProfiles: VendorProfile[] = vendorUsers.slice(0, 23).map((user, i) => ({
   id: `vendor-profile-${String(i + 1).padStart(3, '0')}`,
   userId: user.id,
   user,

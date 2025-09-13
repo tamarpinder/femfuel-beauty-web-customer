@@ -208,7 +208,7 @@ const curatedServices = [
   { vendorId: 'vendor-profile-015', name: 'Corte de Cabello', category: 'hair', price: 1400, duration: 55, isPopular: true },
   { vendorId: 'vendor-profile-018', name: 'Corte de Cabello', category: 'hair', price: 2000, duration: 60, isPopular: true },
   { vendorId: 'vendor-profile-021', name: 'Corte de Cabello', category: 'hair', price: 1600, duration: 50, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Corte de Cabello', category: 'hair', price: 2800, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Corte de Cabello', category: 'hair', price: 2800, duration: 75, isPopular: true },
 
   // Tinte de Cabello (offered by 6 vendors)
   { vendorId: 'vendor-profile-001', name: 'Tinte de Cabello', category: 'hair', price: 3000, duration: 120, isPopular: true },
@@ -216,18 +216,18 @@ const curatedServices = [
   { vendorId: 'vendor-profile-011', name: 'Tinte de Cabello', category: 'hair', price: 3500, duration: 130, isPopular: true },
   { vendorId: 'vendor-profile-015', name: 'Tinte de Cabello', category: 'hair', price: 2800, duration: 110, isPopular: true },
   { vendorId: 'vendor-profile-018', name: 'Tinte de Cabello', category: 'hair', price: 3200, duration: 125, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Tinte de Cabello', category: 'hair', price: 4200, duration: 160, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Tinte de Cabello', category: 'hair', price: 4200, duration: 160, isPopular: true },
 
   // Alisado Dominicano (premium service - 4 vendors)
   { vendorId: 'vendor-profile-001', name: 'Alisado Dominicano', category: 'hair', price: 1500, duration: 90, isPopular: true },
   { vendorId: 'vendor-profile-007', name: 'Alisado Dominicano', category: 'hair', price: 1800, duration: 100, isPopular: true },
   { vendorId: 'vendor-profile-015', name: 'Alisado Dominicano', category: 'hair', price: 1400, duration: 85, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Alisado Dominicano', category: 'hair', price: 2200, duration: 120, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Alisado Dominicano', category: 'hair', price: 2200, duration: 120, isPopular: true },
 
   // Balayage (premium service - 3 vendors)
   { vendorId: 'vendor-profile-003', name: 'Balayage', category: 'hair', price: 4500, duration: 180, isPopular: true },
   { vendorId: 'vendor-profile-011', name: 'Balayage', category: 'hair', price: 5200, duration: 200, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Balayage', category: 'hair', price: 5800, duration: 220, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Balayage', category: 'hair', price: 5800, duration: 220, isPopular: true },
 
   // Tratamiento de Keratina (premium - 3 vendors)
   { vendorId: 'vendor-profile-003', name: 'Tratamiento de Keratina', category: 'hair', price: 5500, duration: 180, isPopular: true },
@@ -250,7 +250,7 @@ const curatedServices = [
   { vendorId: 'vendor-profile-014', name: 'Manicure de Gel', category: 'nails', price: 1600, duration: 70, isPopular: true },
   { vendorId: 'vendor-profile-016', name: 'Manicure de Gel', category: 'nails', price: 1300, duration: 60, isPopular: true },
   { vendorId: 'vendor-profile-019', name: 'Manicure de Gel', category: 'nails', price: 1800, duration: 75, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Manicure de Gel', category: 'nails', price: 1500, duration: 65, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Manicure de Gel', category: 'nails', price: 1500, duration: 65, isPopular: true },
 
   // Manicure Clásico (offered by 5 vendors)
   { vendorId: 'vendor-profile-002', name: 'Manicure Clásico', category: 'nails', price: 800, duration: 45, isPopular: true },
@@ -282,19 +282,19 @@ const curatedServices = [
   { vendorId: 'vendor-profile-014', name: 'Maquillaje Natural', category: 'makeup', price: 2800, duration: 50, isPopular: true },
   { vendorId: 'vendor-profile-017', name: 'Maquillaje Natural', category: 'makeup', price: 3000, duration: 55, isPopular: true },
   { vendorId: 'vendor-profile-020', name: 'Maquillaje Natural', category: 'makeup', price: 1800, duration: 40, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Maquillaje Natural', category: 'makeup', price: 3200, duration: 60, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Maquillaje Natural', category: 'makeup', price: 3200, duration: 60, isPopular: true },
 
   // Maquillaje Ejecutivo (offered by 5 vendors)
   { vendorId: 'vendor-profile-001', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3000, duration: 60, isPopular: true },
   { vendorId: 'vendor-profile-010', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 2800, duration: 55, isPopular: true },
   { vendorId: 'vendor-profile-017', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3500, duration: 65, isPopular: true },
   { vendorId: 'vendor-profile-020', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 2600, duration: 50, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3800, duration: 70, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Maquillaje Ejecutivo', category: 'makeup', price: 3800, duration: 70, isPopular: true },
 
   // Premium Makeup Services
   { vendorId: 'vendor-profile-001', name: 'Maquillaje de Novia', category: 'makeup', price: 5000, duration: 90, isPopular: true },
   { vendorId: 'vendor-profile-017', name: 'Maquillaje de Novia', category: 'makeup', price: 6500, duration: 120, isPopular: true },
-  { vendorId: 'vendor-profile-024', name: 'Maquillaje de Novia', category: 'makeup', price: 7000, duration: 130, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Maquillaje de Novia', category: 'makeup', price: 7000, duration: 130, isPopular: true },
   { vendorId: 'vendor-profile-001', name: 'Maquillaje de Gala', category: 'makeup', price: 3500, duration: 75, isPopular: true },
   { vendorId: 'vendor-profile-014', name: 'Maquillaje de Gala', category: 'makeup', price: 4200, duration: 85, isPopular: true },
   { vendorId: 'vendor-profile-017', name: 'Maquillaje de Gala', category: 'makeup', price: 4800, duration: 90, isPopular: true },

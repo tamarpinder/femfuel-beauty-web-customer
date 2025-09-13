@@ -216,7 +216,13 @@ export function DesktopProviderList({
 
                     {/* Vendor Name and Info */}
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-femfuel-dark mb-2">
+                      <h3 
+                        className="text-xl font-bold text-femfuel-dark mb-2 cursor-pointer hover:text-femfuel-rose transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onProviderSelect(vendor)
+                        }}
+                      >
                         {vendor.name}
                       </h3>
                       <div className="flex items-center gap-3 mb-2">
@@ -286,24 +292,25 @@ export function DesktopProviderList({
                   ))}
                 </div>
 
-                {/* Next Availability */}
-                <div className="flex items-center gap-2 mb-4 text-sm">
-                  <Clock className={`h-4 w-4 ${
-                    availabilityStatus.color === 'green' ? 'text-green-600' : 'text-blue-600'
-                  }`} />
-                  <span className="font-medium text-femfuel-dark">
-                    Próxima disponibilidad:
-                  </span>
-                  <span className={`font-semibold ${
-                    availabilityStatus.color === 'green' ? 'text-green-700' : 'text-blue-700'
-                  }`}>
-                    {getNextSlot(vendor)}
-                  </span>
-                  {availabilityStatus.isToday && (
-                    <Badge className="bg-green-100 text-green-800 px-2 py-0 text-xs">
-                      Disponible hoy
+                {/* Multiple Available Time Slots - Desktop Only */}
+                <div className="mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm font-medium text-femfuel-dark">
+                      Horarios disponibles:
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 text-sm font-medium">
+                      {getNextSlot(vendor)}
                     </Badge>
-                  )}
+                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 text-sm font-medium">
+                      {getNextSlot(vendor).includes('Today') ? 'Hoy 5:00 PM' : 'Mañana 2:30 PM'}
+                    </Badge>
+                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 text-sm font-medium">
+                      {getNextSlot(vendor).includes('Today') ? 'Hoy 7:00 PM' : 'Mañana 4:00 PM'}
+                    </Badge>
+                  </div>
                 </div>
 
                 {/* Divider */}
@@ -318,7 +325,7 @@ export function DesktopProviderList({
                     }}
                     className="bg-femfuel-rose hover:bg-[#9f1853] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
                   >
-                    Reservar - {getNextSlot(vendor)}
+                    Reservar
                   </Button>
                   
                   <ChatButton
@@ -334,12 +341,11 @@ export function DesktopProviderList({
                   </ChatButton>
 
                   <Button
-                    variant="outline"
                     onClick={(e) => {
                       e.stopPropagation()
                       onProviderSelect(vendor)
                     }}
-                    className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
+                    className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
                   >
                     Ver Detalles
                   </Button>

@@ -116,9 +116,15 @@ export function ProviderListCompact({
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1 min-w-0 pr-2">
                           <div className="flex items-center gap-2 mb-1">
-                            <h3 className="text-lg font-bold text-femfuel-dark truncate">
-                              {vendor.name}
-                            </h3>
+                            <h3 
+                            className="text-lg font-bold text-femfuel-dark truncate cursor-pointer hover:text-femfuel-rose transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onProviderSelect(vendor)
+                            }}
+                          >
+                            {vendor.name}
+                          </h3>
                             {vendor.badges && vendor.badges.length > 0 && (
                               <Badge className="bg-femfuel-rose text-white px-2 py-0 text-xs flex-shrink-0">
                                 <Verified className="h-3 w-3 mr-1" />
@@ -200,17 +206,26 @@ export function ProviderListCompact({
                       }}
                       className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1 h-11 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                     >
-                      Reservar - {getNextSlot(vendor).includes('Today') ? getNextSlot(vendor).split(' ').slice(1, 3).join(' ') : 'Próximo'}
+                      Reservar
                     </Button>
                     
-                    <Button
-                      variant="outline"
+                    <ChatButton
+                      vendorId={vendor.id}
+                      vendorName={vendor.name}
+                      serviceContext={serviceName}
+                      variant="inline"
                       size="sm"
+                      className="bg-green-500 hover:bg-green-600 px-3"
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                    </ChatButton>
+                    
+                    <Button
                       onClick={(e) => {
                         e.stopPropagation()
                         onProviderSelect(vendor)
                       }}
-                      className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
+                      className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
                     >
                       Ver
                     </Button>

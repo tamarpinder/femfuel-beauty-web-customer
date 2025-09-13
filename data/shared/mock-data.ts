@@ -465,7 +465,61 @@ const curatedServices = [
   { vendorId: 'vendor-profile-022', name: 'Pestañas Clásicas', category: 'lashes', price: 2900, duration: 90, isPopular: true },
 
   // Diseño de Cejas - Add missing lash vendors (022)
-  { vendorId: 'vendor-profile-022', name: 'Diseño de Cejas', category: 'lashes', price: 1100, duration: 38, isPopular: true }
+  { vendorId: 'vendor-profile-022', name: 'Diseño de Cejas', category: 'lashes', price: 1100, duration: 38, isPopular: true },
+
+  // === COMPLETE SERVICE COVERAGE EXPANSION ===
+  
+  // MAKEUP SERVICES - Add missing premium services
+  
+  // Maquillaje de Novia - Add to vendors 006, 009, 010, 013, 014
+  { vendorId: 'vendor-profile-006', name: 'Maquillaje de Novia', category: 'makeup', price: 5500, duration: 95, isPopular: true },
+  { vendorId: 'vendor-profile-009', name: 'Maquillaje de Novia', category: 'makeup', price: 6200, duration: 110, isPopular: true },
+  { vendorId: 'vendor-profile-010', name: 'Maquillaje de Novia', category: 'makeup', price: 5800, duration: 100, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Maquillaje de Novia', category: 'makeup', price: 6000, duration: 105, isPopular: true },
+  { vendorId: 'vendor-profile-014', name: 'Maquillaje de Novia', category: 'makeup', price: 6800, duration: 115, isPopular: true },
+
+  // Maquillaje de Gala - Add to vendors 006, 009, 010, 013, 016
+  { vendorId: 'vendor-profile-006', name: 'Maquillaje de Gala', category: 'makeup', price: 3800, duration: 80, isPopular: true },
+  { vendorId: 'vendor-profile-009', name: 'Maquillaje de Gala', category: 'makeup', price: 4000, duration: 85, isPopular: true },
+  { vendorId: 'vendor-profile-010', name: 'Maquillaje de Gala', category: 'makeup', price: 3600, duration: 75, isPopular: true },
+  { vendorId: 'vendor-profile-013', name: 'Maquillaje de Gala', category: 'makeup', price: 4100, duration: 80, isPopular: true },
+  { vendorId: 'vendor-profile-016', name: 'Maquillaje de Gala', category: 'makeup', price: 4400, duration: 88, isPopular: true },
+
+  // SPA SERVICES - Complete coverage for all spa vendors
+  
+  // Facial de Lujo - Add to vendors 008, 012, 019
+  { vendorId: 'vendor-profile-008', name: 'Facial de Lujo', category: 'spa', price: 4600, duration: 95, isPopular: true },
+  { vendorId: 'vendor-profile-012', name: 'Facial de Lujo', category: 'spa', price: 4400, duration: 88, isPopular: true },
+  { vendorId: 'vendor-profile-019', name: 'Facial de Lujo', category: 'spa', price: 4800, duration: 98, isPopular: true },
+
+  // Masaje con Piedras Calientes - Add to vendors 004, 008, 019
+  { vendorId: 'vendor-profile-004', name: 'Masaje con Piedras Calientes', category: 'spa', price: 4100, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-008', name: 'Masaje con Piedras Calientes', category: 'spa', price: 3900, duration: 70, isPopular: false },
+  { vendorId: 'vendor-profile-019', name: 'Masaje con Piedras Calientes', category: 'spa', price: 4300, duration: 78, isPopular: false },
+
+  // LASH SERVICES - Complete coverage for all lash vendors
+
+  // Volumen Ruso - Add to vendors 005, 022, 023
+  { vendorId: 'vendor-profile-005', name: 'Volumen Ruso', category: 'lashes', price: 3200, duration: 115, isPopular: true },
+  { vendorId: 'vendor-profile-022', name: 'Volumen Ruso', category: 'lashes', price: 3900, duration: 130, isPopular: true },
+  { vendorId: 'vendor-profile-023', name: 'Volumen Ruso', category: 'lashes', price: 4100, duration: 135, isPopular: true },
+
+  // Microblading de Cejas - Add to vendors 005, 012, 022
+  { vendorId: 'vendor-profile-005', name: 'Microblading de Cejas', category: 'lashes', price: 4200, duration: 115, isPopular: true },
+  { vendorId: 'vendor-profile-012', name: 'Microblading de Cejas', category: 'lashes', price: 4800, duration: 130, isPopular: true },
+  { vendorId: 'vendor-profile-022', name: 'Microblading de Cejas', category: 'lashes', price: 5000, duration: 135, isPopular: true },
+
+  // Tinte de Pestañas - Add to vendors 012, 022, 023
+  { vendorId: 'vendor-profile-012', name: 'Tinte de Pestañas', category: 'lashes', price: 700, duration: 28, isPopular: false },
+  { vendorId: 'vendor-profile-022', name: 'Tinte de Pestañas', category: 'lashes', price: 850, duration: 32, isPopular: false },
+  { vendorId: 'vendor-profile-023', name: 'Tinte de Pestañas', category: 'lashes', price: 900, duration: 35, isPopular: false },
+
+  // Lifting de Pestañas - Add to vendors 012, 022, 023
+  { vendorId: 'vendor-profile-012', name: 'Lifting de Pestañas', category: 'lashes', price: 2000, duration: 65, isPopular: false },
+  { vendorId: 'vendor-profile-022', name: 'Lifting de Pestañas', category: 'lashes', price: 2400, duration: 75, isPopular: false },
+  { vendorId: 'vendor-profile-023', name: 'Lifting de Pestañas', category: 'lashes', price: 2600, duration: 80, isPopular: false }
+
+  // === END COMPLETE SERVICE COVERAGE EXPANSION ===
 ]
 
 // Comprehensive transformation data with customer testimonials

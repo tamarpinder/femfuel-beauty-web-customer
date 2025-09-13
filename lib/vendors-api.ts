@@ -388,6 +388,14 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
         // Calculate average duration across all vendors offering this service
         const avgDuration = Math.round(allDurations.reduce((sum, duration) => sum + duration, 0) / allDurations.length)
         
+        // Use same filtering logic as service page: get category vendors that offer this service
+        const categoryVendors = mockData.vendorProfiles.filter(vendor => 
+          vendor.categories.includes(service.category)
+        )
+        const actualAvailableProviders = categoryVendors.filter(vendor =>
+          mockData.services.some(s => s.vendorId === vendor.id && s.name === serviceName)
+        )
+        
         serviceMap.set(serviceName, {
           id: service.id,
           name: serviceName,
@@ -403,7 +411,7 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
             max: Math.max(...allPrices)
           },
           searchSynonyms: SERVICE_SYNONYMS[serviceName] || [],
-          availableProviders: vendorsForService.length,
+          availableProviders: actualAvailableProviders.length,
           featuredProvider: topVendor ? {
             id: topVendor.id,
             name: topVendor.name,

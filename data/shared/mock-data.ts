@@ -465,73 +465,7 @@ const curatedServices = [
   { vendorId: 'vendor-profile-022', name: 'Pestañas Clásicas', category: 'lashes', price: 2900, duration: 90, isPopular: true },
 
   // Diseño de Cejas - Add missing lash vendors (022)
-  { vendorId: 'vendor-profile-022', name: 'Diseño de Cejas', category: 'lashes', price: 1100, duration: 38, isPopular: true },
-
-  // === PHASE 3: RICH MARKETPLACE SERVICE TIER SYSTEM ===
-  // Premium and Specialty Services for Rich Customer Choice
-
-  // PREMIUM HAIR SERVICES
-  { vendorId: 'vendor-profile-001', name: 'Corte + Peinado VIP', category: 'hair', price: 4500, duration: 120, isPopular: true },
-  { vendorId: 'vendor-profile-007', name: 'Tratamiento Keratina Premium', category: 'hair', price: 8500, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-011', name: 'Color + Highlights Profesional', category: 'hair', price: 7200, duration: 240, isPopular: false },
-  { vendorId: 'vendor-profile-020', name: 'Alisado Brasileño Deluxe', category: 'hair', price: 9500, duration: 300, isPopular: true },
-  { vendorId: 'vendor-profile-022', name: 'Tratamiento Capilar Intensivo', category: 'hair', price: 6800, duration: 150, isPopular: false },
-  { vendorId: 'vendor-profile-001', name: 'Botox Capilar Premium', category: 'hair', price: 7800, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-007', name: 'Mechas Balayage Artesanal', category: 'hair', price: 8900, duration: 270, isPopular: false },
-  { vendorId: 'vendor-profile-011', name: 'Corte + Color + Peinado VIP', category: 'hair', price: 9200, duration: 300, isPopular: true },
-
-  // PREMIUM NAIL SERVICES  
-  { vendorId: 'vendor-profile-002', name: 'Manicure + Pedicure VIP', category: 'nails', price: 3200, duration: 120, isPopular: true },
-  { vendorId: 'vendor-profile-005', name: 'Uñas Acrílicas Profesional', category: 'nails', price: 4500, duration: 150, isPopular: true },
-  { vendorId: 'vendor-profile-008', name: 'Gel Polish + Arte Premium', category: 'nails', price: 3800, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-010', name: 'Extensiones Uñas Deluxe', category: 'nails', price: 5200, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-013', name: 'Pedicure Spa + Masaje', category: 'nails', price: 3500, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-016', name: 'Manicure Rusa Premium', category: 'nails', price: 4200, duration: 150, isPopular: true },
-  { vendorId: 'vendor-profile-021', name: 'Uñas Builder Gel VIP', category: 'nails', price: 4800, duration: 165, isPopular: false },
-  { vendorId: 'vendor-profile-002', name: 'Tratamiento Uñas + Cutículas', category: 'nails', price: 2800, duration: 90, isPopular: false },
-
-  // PREMIUM MAKEUP SERVICES
-  { vendorId: 'vendor-profile-004', name: 'Maquillaje Novia Premium', category: 'makeup', price: 8500, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-012', name: 'Maquillaje Editorial VIP', category: 'makeup', price: 9200, duration: 150, isPopular: false },
-  { vendorId: 'vendor-profile-015', name: 'Makeup + Peinado Evento', category: 'makeup', price: 10500, duration: 240, isPopular: true },
-  { vendorId: 'vendor-profile-018', name: 'Maquillaje Sesión Fotos', category: 'makeup', price: 7800, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-004', name: 'Clase Maquillaje Personal', category: 'makeup', price: 6500, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-012', name: 'Maquillaje + Cejas HD', category: 'makeup', price: 5800, duration: 120, isPopular: false },
-
-  // PREMIUM SPA SERVICES
-  { vendorId: 'vendor-profile-006', name: 'Facial Anti-edad Premium', category: 'spa', price: 6500, duration: 120, isPopular: true },
-  { vendorId: 'vendor-profile-009', name: 'Hydrafacial + LED Therapy', category: 'spa', price: 8200, duration: 150, isPopular: true },
-  { vendorId: 'vendor-profile-019', name: 'Tratamiento Acné Profesional', category: 'spa', price: 5800, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-023', name: 'Masaje Relajante + Facial', category: 'spa', price: 7500, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-006', name: 'Peeling Químico Suave', category: 'spa', price: 4800, duration: 90, isPopular: false },
-  { vendorId: 'vendor-profile-009', name: 'Limpieza + Hidratación VIP', category: 'spa', price: 6200, duration: 135, isPopular: true },
-
-  // PREMIUM LASH SERVICES
-  { vendorId: 'vendor-profile-003', name: 'Volume Lashes Premium', category: 'lashes', price: 6800, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-014', name: 'Mega Volume + Lifting', category: 'lashes', price: 8500, duration: 210, isPopular: true },
-  { vendorId: 'vendor-profile-017', name: 'Lash Lift + Tint Premium', category: 'lashes', price: 4200, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-003', name: 'Microblading + Laminado', category: 'lashes', price: 9500, duration: 240, isPopular: true },
-  { vendorId: 'vendor-profile-014', name: 'Cejas HD + Pestañas', category: 'lashes', price: 7200, duration: 180, isPopular: false },
-
-  // SPECIALTY CROSS-CATEGORY SERVICES (for diversity)
-  { vendorId: 'vendor-profile-001', name: 'Maquillaje + Peinado', category: 'hair', price: 7500, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-004', name: 'Cejas + Maquillaje Natural', category: 'makeup', price: 4800, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-007', name: 'Tratamiento + Peinado', category: 'hair', price: 6200, duration: 210, isPopular: false },
-  { vendorId: 'vendor-profile-015', name: 'Maquillaje + Manicure', category: 'makeup', price: 6500, duration: 150, isPopular: true },
-  { vendorId: 'vendor-profile-002', name: 'Manicure + Pedicure + Cejas', category: 'nails', price: 4200, duration: 180, isPopular: false },
-
-  // ADDITIONAL VARIETY SERVICES to ensure 4-8 vendors per service category
-  { vendorId: 'vendor-profile-020', name: 'Corte Moderno + Barba', category: 'hair', price: 3500, duration: 90, isPopular: false },
-  { vendorId: 'vendor-profile-022', name: 'Tinte Fantasía Profesional', category: 'hair', price: 6800, duration: 180, isPopular: true },
-  { vendorId: 'vendor-profile-005', name: 'Uñas Gel + Decoración', category: 'nails', price: 3200, duration: 120, isPopular: false },
-  { vendorId: 'vendor-profile-008', name: 'Pedicure Médico', category: 'nails', price: 2800, duration: 90, isPopular: false },
-  { vendorId: 'vendor-profile-010', name: 'Manicure Japonés', category: 'nails', price: 3800, duration: 105, isPopular: true },
-  { vendorId: 'vendor-profile-018', name: 'Maquillaje Artístico', category: 'makeup', price: 8200, duration: 150, isPopular: false },
-  { vendorId: 'vendor-profile-019', name: 'Exfoliación Corporal', category: 'spa', price: 4500, duration: 75, isPopular: false },
-  { vendorId: 'vendor-profile-023', name: 'Facial Oxígeno', category: 'spa', price: 5200, duration: 90, isPopular: true },
-  { vendorId: 'vendor-profile-017', name: 'Permanent Lashes', category: 'lashes', price: 5800, duration: 150, isPopular: false }
-
-  // === END PHASE 3: RICH MARKETPLACE SERVICE TIER SYSTEM ===
+  { vendorId: 'vendor-profile-022', name: 'Diseño de Cejas', category: 'lashes', price: 1100, duration: 38, isPopular: true }
 ]
 
 // Comprehensive transformation data with customer testimonials

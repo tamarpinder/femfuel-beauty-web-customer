@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useEffect, useState, useCallback } from "react"
-import { getMarketplaceServices } from "@/lib/vendors-api"
+import { getMarketplaceServices, getVendors } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type Service } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
@@ -16,11 +16,17 @@ import { StarProfessionals } from "@/components/star-professionals"
 import { NearbyBeauty } from "@/components/nearby-beauty"
 import { CustomerFooter } from "@/components/customer-footer"
 import { ChatButton } from "@/components/ui/chat-button"
+import { BookingModal } from "@/components/booking-modal"
+import type { Vendor, VendorService } from "@/types/vendor"
 
 export default function HomePage() {
   const router = useRouter()
   const [featuredServices, setFeaturedServices] = useState<Service[]>([])
+  const [nearbyVendors, setNearbyVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
+  const [selectedService, setSelectedService] = useState<VendorService | null>(null)
 
   // Load marketplace services on component mount
   useEffect(() => {
@@ -50,9 +56,16 @@ export default function HomePage() {
           }))
 
         setFeaturedServices(featuredServices)
+        
+        // Get nearby vendors
+        const allVendors = await getVendors()
+        // Take first 6 vendors as "nearby" for demo
+        setNearbyVendors(allVendors.slice(0, 6))
+        
       } catch (error) {
         console.error('Error loading featured services:', error)
         setFeaturedServices([])
+        setNearbyVendors([])
       } finally {
         setLoading(false)
       }
@@ -292,141 +305,48 @@ export default function HomePage() {
     }
   ]
 
-  // Sample nearby locations data
-  const nearbyLocations = [
-    {
-      id: 1,
-      name: "Salon Elite Santo Domingo",
-      type: "Salon de Belleza Premium",
-      address: "Av. Winston Churchill 78",
-      neighborhood: "Piantini",
-      distance: "0.8 km",
-      travelTime: "3",
-      rating: 4.9,
-      reviewCount: 245,
-      specialties: ["Balayage", "Cortes", "Extensiones", "Color"],
-      openNow: true,
-      closingTime: "8:00 PM",
-      phone: "+1 809-555-0123",
-      image: "/services/hair/hair-coloring-session.png",
-      featuredService: {
-        name: "Balayage Dorado Caribeño",
-        price: "RD$3,500",
-        duration: "2.5 hrs"
-      },
-      localSpecialty: "Técnicas de coloración para clima tropical"
-    },
-    {
-      id: 2,
-      name: "Glamour House",
-      type: "Estudio de Maquillaje",
-      address: "Calle José Reyes 45",
-      neighborhood: "Zona Colonial",
-      distance: "1.2 km",
-      travelTime: "5",
-      rating: 4.8,
-      reviewCount: 189,
-      specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
-      openNow: true,
-      closingTime: "9:00 PM",
-      phone: "+1 809-555-0124",
-      image: "/services/makeup/bridal-makeup-application.png",
-      featuredService: {
-        name: "Glamour Tropical Night",
-        price: "RD$2,800",
-        duration: "1.5 hrs"
-      },
-      localSpecialty: "Maquillaje resistente al calor caribeño"
-    },
-    {
-      id: 3,
-      name: "Spa Paradise",
-      type: "Spa & Wellness",
-      address: "Av. Máximo Gómez 67",
-      neighborhood: "Bella Vista",
-      distance: "2.1 km",
-      travelTime: "7",
-      rating: 4.7,
-      reviewCount: 203,
-      specialties: ["Faciales", "Masajes", "Hidratación"],
-      openNow: false,
-      closingTime: "6:00 PM",
-      phone: "+1 809-555-0125",
-      image: "/services/spa/hot-stone-massage.png",
-      featuredService: {
-        name: "Piel Radiante Caribeña",
-        price: "RD$4,200",
-        duration: "2 hrs"
-      },
-      localSpecialty: "Tratamientos con ingredientes naturales dominicanos"
-    },
-    {
-      id: 4,
-      name: "Beauty Studio RD",
-      type: "Nail Art Studio",
-      address: "Plaza Central, Local 15",
-      neighborhood: "Naco",
-      distance: "1.5 km",
-      travelTime: "4",
-      rating: 4.6,
-      reviewCount: 156,
-      specialties: ["Nail Art", "Gel X", "Pedicure"],
-      openNow: true,
-      closingTime: "7:30 PM",
-      phone: "+1 809-555-0126",
-      image: "/services/nails/tropical-nail-art.png",
-      featuredService: {
-        name: "Tropical Nail Art",
-        price: "RD$1,800",
-        duration: "1 hr"
-      },
-      localSpecialty: "Diseños inspirados en la flora dominicana"
-    },
-    {
-      id: 5,
-      name: "Estética Los Corales",
-      type: "Centro de Belleza",
-      address: "Calle Santiago 123",
-      neighborhood: "Gazcue",
-      distance: "2.8 km",
-      travelTime: "9",
-      rating: 4.5,
-      reviewCount: 134,
-      specialties: ["Depilación", "Cejas", "Microblading"],
-      openNow: true,
-      closingTime: "8:30 PM",
-      phone: "+1 809-555-0127",
-      image: "/services/lashes/skilled-eyebrow-artist.png",
-      featuredService: {
-        name: "Microblading Natural",
-        price: "RD$6,500",
-        duration: "3 hrs"
-      },
-      localSpecialty: "Técnicas adaptadas a tonos de piel caribeños"
-    },
-    {
-      id: 6,
-      name: "Rizos & Ondas",
-      type: "Especialistas en Cabello Rizado",
-      address: "Av. Abraham Lincoln 234",
-      neighborhood: "Piantini",
-      distance: "1.1 km",
-      travelTime: "4",
-      rating: 4.8,
-      reviewCount: 198,
-      specialties: ["Cabello Rizado", "Tratamientos", "Cortes"],
-      openNow: false,
-      closingTime: "6:30 PM",
-      phone: "+1 809-555-0128",
-      image: "/services/hair/hair-treatment-session.png",
-      featuredService: {
-        name: "Definición de Rizos Naturales",
-        price: "RD$2,200",
-        duration: "1.5 hrs"
-      },
-      localSpecialty: "Expertos en texturas de cabello afrocaribeño"
+  // Transform real vendor data to NearbyLocation format
+  const transformVendorToNearbyLocation = (vendor: Vendor, index: number) => {
+    // Get a featured service from the vendor
+    const featuredService = vendor.services[0] || {
+      name: "Servicio de belleza",
+      price: 1000,
+      duration: 60
     }
-  ]
+    
+    // Generate realistic distance and travel time based on neighborhoods
+    const distances = ["0.8 km", "1.2 km", "2.1 km", "1.5 km", "2.8 km", "1.1 km"]
+    const travelTimes = ["3", "5", "7", "4", "9", "4"]
+    
+    return {
+      id: parseInt(vendor.id),
+      name: vendor.name,
+      type: vendor.categories.includes("hair") ? "Salon de Belleza" : 
+            vendor.categories.includes("makeup") ? "Estudio de Maquillaje" :
+            vendor.categories.includes("spa") ? "Spa & Wellness" :
+            vendor.categories.includes("nails") ? "Nail Art Studio" :
+            "Centro de Belleza",
+      address: vendor.location.address,
+      neighborhood: vendor.location.district,
+      distance: distances[index % distances.length],
+      travelTime: travelTimes[index % travelTimes.length],
+      rating: vendor.rating,
+      reviewCount: vendor.reviewCount,
+      specialties: vendor.popularServices || ["Belleza", "Cuidado personal"],
+      openNow: Math.random() > 0.3, // 70% chance of being open
+      closingTime: ["6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"][index % 4],
+      phone: vendor.contact?.phone || `+1 809-555-${String(index + 123).padStart(4, '0')}`,
+      image: vendor.logo || "/vendor-logo-placeholder.png",
+      featuredService: {
+        name: featuredService.name,
+        price: `RD$${featuredService.price.toLocaleString()}`,
+        duration: `${Math.round(featuredService.duration / 60)} hrs`
+      },
+      localSpecialty: vendor.description || "Servicios de belleza profesionales"
+    }
+  }
+  
+  const nearbyLocations = nearbyVendors.map(transformVendorToNearbyLocation)
 
   const handleSearch = useCallback((query: string) => {
     // No longer navigate on search - headers now use SmartSearch
@@ -484,7 +404,20 @@ export default function HomePage() {
 
   const handleBookLocation = (locationId: number) => {
     console.log("Book location:", locationId)
-    router.push(`/booking/location/${locationId}`)
+    const vendor = nearbyVendors.find(v => parseInt(v.id) === locationId)
+    if (vendor && vendor.services.length > 0) {
+      setSelectedVendor(vendor)
+      setSelectedService(vendor.services[0])
+      setShowBookingModal(true)
+    }
+  }
+  
+  const handleBookingComplete = (booking: any) => {
+    console.log("Booking completed:", booking)
+    setShowBookingModal(false)
+    setSelectedVendor(null)
+    setSelectedService(null)
+    router.push('/bookings')
   }
 
   const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile" | "chat") => {
@@ -615,6 +548,16 @@ export default function HomePage() {
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="home" onTabChange={handleTabChange} />
+      
+      {/* Booking Modal */}
+      {showBookingModal && selectedVendor && selectedService && (
+        <BookingModal
+          isOpen={showBookingModal}
+          service={selectedService}
+          onClose={() => setShowBookingModal(false)}
+          onBookingComplete={handleBookingComplete}
+        />
+      )}
     </div>
   )
 }

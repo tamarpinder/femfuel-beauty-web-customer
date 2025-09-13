@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { MapPin, Clock, Star, Navigation, Phone, ChevronRight } from "lucide-react"
+import { MapPin, Clock, Star, Navigation, Phone, ChevronRight, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { ChatButton } from "@/components/ui/chat-button"
 
 interface NearbyLocation {
   id: number
@@ -205,6 +206,19 @@ export function NearbyBeauty({
                       Llamar
                     </Button>
                   </div>
+                  
+                  {/* Chat Button */}
+                  <ChatButton
+                    vendorId={location.id.toString()}
+                    vendorName={location.name}
+                    serviceContext={location.featuredService.name}
+                    variant="inline"
+                    size="sm"
+                    className="w-full bg-green-500 hover:bg-green-600 text-white text-sm"
+                  >
+                    <MessageCircle className="h-3 w-3 mr-1" />
+                    Chatear
+                  </ChatButton>
                 </div>
               </CardContent>
             </Card>

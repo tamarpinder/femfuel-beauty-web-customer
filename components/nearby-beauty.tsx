@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ChatButton } from "@/components/ui/chat-button"
 
 interface NearbyLocation {
-  id: number
+  id: string
   name: string
   type: string
   address: string
@@ -33,9 +33,9 @@ interface NearbyLocation {
 interface NearbyBeautyProps {
   locations: NearbyLocation[]
   userLocation?: string
-  onGetDirections?: (locationId: number) => void
+  onGetDirections?: (locationId: string) => void
   onCallLocation?: (phone: string) => void
-  onBookLocation?: (locationId: number) => void
+  onBookLocation?: (locationId: string) => void
 }
 
 export function NearbyBeauty({ 

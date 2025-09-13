@@ -319,7 +319,7 @@ export default function HomePage() {
     const travelTimes = ["3", "5", "7", "4", "9", "4"]
     
     return {
-      id: parseInt(vendor.id),
+      id: vendor.id,
       name: vendor.name,
       type: vendor.categories.includes("hair") ? "Salon de Belleza" : 
             vendor.categories.includes("makeup") ? "Estudio de Maquillaje" :
@@ -392,7 +392,7 @@ export default function HomePage() {
     router.push(`/professional/${professionalId}/portfolio`)
   }
 
-  const handleGetDirections = (locationId: number) => {
+  const handleGetDirections = (locationId: string) => {
     console.log("Get directions to:", locationId)
     // TODO: Integrate with maps service
   }
@@ -402,13 +402,20 @@ export default function HomePage() {
     window.open(`tel:${phone}`)
   }
 
-  const handleBookLocation = (locationId: number) => {
-    console.log("Book location:", locationId)
-    const vendor = nearbyVendors.find(v => parseInt(v.id) === locationId)
+  const handleBookLocation = (locationId: string) => {
+    console.log("Book location called with ID:", locationId, "Type:", typeof locationId)
+    console.log("Available nearby vendors:", nearbyVendors.map(v => ({ id: v.id, name: v.name })))
+    
+    const vendor = nearbyVendors.find(v => v.id === locationId)
+    console.log("Found vendor:", vendor ? vendor.name : "None")
+    
     if (vendor && vendor.services.length > 0) {
+      console.log("Setting booking modal with vendor:", vendor.name, "Service:", vendor.services[0].name)
       setSelectedVendor(vendor)
       setSelectedService(vendor.services[0])
       setShowBookingModal(true)
+    } else {
+      console.log("No vendor found or vendor has no services")
     }
   }
   

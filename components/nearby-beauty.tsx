@@ -91,7 +91,7 @@ export function NearbyBeauty({
         {/* Locations Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredLocations.map((location) => (
-            <Card key={location.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+            <Card key={location.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
               <div className="relative">
                 <img
                   src={location.image}
@@ -111,7 +111,7 @@ export function NearbyBeauty({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
 
-              <CardContent className="p-4">
+              <CardContent className="p-4 flex flex-col flex-grow">
                 <div className="mb-3">
                   <h3 className="font-bold text-femfuel-dark mb-1">{location.name}</h3>
                   <p className="text-sm text-femfuel-medium mb-2">{location.type}</p>
@@ -177,7 +177,7 @@ export function NearbyBeauty({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="space-y-2">
+                <div className="space-y-2 mt-auto">
                   <Button
                     onClick={() => onBookLocation?.(location.id)}
                     className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white text-sm"

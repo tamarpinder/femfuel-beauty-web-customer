@@ -130,14 +130,11 @@ export function DesktopProviderList({
       {/* Header with Filters */}
       <div className="bg-white border-b border-gray-200 p-4 sticky top-0 z-10">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Crown className="h-5 w-5 text-femfuel-rose" />
-            <h2 className="text-xl font-bold text-femfuel-dark">
-              Elegí tu Especialista
-            </h2>
-            <span className="text-sm text-femfuel-medium">
-              ({sortedProviders.length} disponibles)
-            </span>
+          <h2 className="text-xl font-bold text-femfuel-dark">
+            Elegí tu Especialista
+          </h2>
+          <div className="bg-femfuel-rose text-white px-3 py-1 rounded-full text-sm font-medium">
+            {sortedProviders.length}
           </div>
         </div>
 

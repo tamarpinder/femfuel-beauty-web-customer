@@ -37,7 +37,7 @@ export default function ChatMessagesPage() {
       {
         id: "chat-001",
         vendorId: "vendor-profile-001",
-        vendorName: "Glamour Studio RD",
+        vendorName: "Glamour House",
         vendorLogo: "/vendors/logos/vendor-1-logo.png",
         serviceContext: "Maquillaje de Novia",
         lastMessage: {
@@ -65,7 +65,7 @@ export default function ChatMessagesPage() {
       {
         id: "chat-003",
         vendorId: "vendor-profile-005", 
-        vendorName: "Lash Boutique DR",
+        vendorName: "Lash Studio DR",
         vendorLogo: "/vendors/logos/vendor-5-logo.png",
         serviceContext: "Extensiones de Pestañas",
         lastMessage: {

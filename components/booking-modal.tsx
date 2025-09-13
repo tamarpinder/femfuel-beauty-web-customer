@@ -10,13 +10,14 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import type { VendorService } from "@/types/vendor"
 import type { Service } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
 
 interface BookingModalProps {
   isOpen: boolean
   onClose: () => void
-  service: Service | null
+  service: VendorService | Service | null
   onBookingComplete?: (booking: any) => void
 }
 
@@ -125,7 +126,7 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
   const handleWhatsAppConfirmation = () => {
     if (!service || !bookingData.date || !bookingData.time) return
 
-    const message = `Hola! He reservado el servicio "${service.name}" ${service.featuredProvider ? `con ${service.featuredProvider.name}` : ''} para el ${bookingData.date.toLocaleDateString("es-DO")} a las ${bookingData.time}. ¡Gracias!`
+    const message = `Hola! He reservado el servicio "${service.name}" ${'featuredProvider' in service && service.featuredProvider ? `con ${service.featuredProvider.name}` : ''} para el ${bookingData.date.toLocaleDateString("es-DO")} a las ${bookingData.time}. ¡Gracias!`
     const whatsappUrl = `https://wa.me/18095550123?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, "_blank")
   }
@@ -142,7 +143,7 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
     endDate.setMinutes(endDate.getMinutes() + durationMinutes)
 
     const event = {
-      title: `${service.name}${service.featuredProvider ? ` - ${service.featuredProvider.name}` : ''}`,
+      title: `${service.name}${'featuredProvider' in service && service.featuredProvider ? ` - ${service.featuredProvider.name}` : ''}`,
       start: startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
       end: endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
       description: `Servicio de belleza reservado a través de FemFuel Beauty`,
@@ -189,15 +190,14 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
               />
               <div className="flex-1">
                 <h3 className="font-semibold text-femfuel-dark">{service.name}</h3>
-                {service.featuredProvider && (
-                  <p className="text-sm text-femfuel-medium">{service.featuredProvider.name}</p>
-                )}
                 <div className="flex items-center gap-4 mt-2">
                   <Badge variant="secondary" className="bg-femfuel-purple">
                     <Clock className="h-3 w-3 mr-1" />
                     {service.duration} min
                   </Badge>
-                  <span className="font-bold text-femfuel-rose">{service.price}</span>
+                  <span className="font-bold text-femfuel-rose">
+                    {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
+                  </span>
                 </div>
               </div>
             </div>
@@ -207,26 +207,71 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
         {/* Step Content */}
         {currentStep === "datetime" && (
           <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-femfuel-dark mb-4">Selecciona fecha y hora</h3>
+            <h3 className="text-lg font-semibold text-femfuel-dark mb-4">Selecciona fecha y hora</h3>
 
-              {/* Calendar */}
-              <div className="mb-6">
+            {/* Side-by-Side Layout: Calendar + Time Slots */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Calendar Section */}
+              <div>
                 <Label className="text-femfuel-dark mb-2 block">Fecha</Label>
                 <CalendarComponent
                   mode="single"
                   selected={bookingData.date}
                   onSelect={handleDateSelect}
                   disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
-                  className="rounded-md border"
+                  className="rounded-md border w-full"
+                  modifiers={{
+                    available: (date) => {
+                      // Mock availability - alternate days as available
+                      return date > new Date() && date.getDate() % 2 === 0
+                    },
+                    unavailable: (date) => {
+                      // Mock unavailable - odd days (excluding disabled)
+                      return date > new Date() && date.getDate() % 2 === 1 && date.getDay() !== 0
+                    }
+                  }}
+                  modifiersStyles={{
+                    available: {
+                      position: 'relative'
+                    },
+                    unavailable: {
+                      position: 'relative'
+                    }
+                  }}
                 />
+                <style jsx global>{`
+                  .rdp-day_available::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 2px;
+                    right: 2px;
+                    width: 6px;
+                    height: 6px;
+                    background-color: #10b981;
+                    border-radius: 50%;
+                    opacity: 0.7;
+                  }
+                  .rdp-day_unavailable::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 2px;
+                    right: 2px;
+                    width: 6px;
+                    height: 6px;
+                    background-color: #ef4444;
+                    border-radius: 50%;
+                    opacity: 0.7;
+                  }
+                `}</style>
               </div>
 
-              {/* Time Slots */}
-              {bookingData.date && (
-                <div>
-                  <Label className="text-femfuel-dark mb-2 block">Hora disponible</Label>
-                  <div className="grid grid-cols-4 gap-2">
+              {/* Time Slots Section */}
+              <div>
+                <Label className="text-femfuel-dark mb-2 block">
+                  {bookingData.date ? 'Horarios disponibles' : 'Selecciona una fecha primero'}
+                </Label>
+                {bookingData.date ? (
+                  <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
                     {availableTimes.map((time) => (
                       <Button
                         key={time}
@@ -239,8 +284,12 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
                       </Button>
                     ))}
                   </div>
-                </div>
-              )}
+                ) : (
+                  <div className="h-80 flex items-center justify-center border rounded-md bg-gray-50">
+                    <p className="text-femfuel-medium text-sm">Primero selecciona una fecha</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -270,7 +319,9 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-dark">{service.featuredProvider?.name || 'Proveedor'}</span>
+                    <span className="text-femfuel-dark">
+                      {'featuredProvider' in service && service.featuredProvider ? service.featuredProvider.name : 'Proveedor'}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -393,7 +444,9 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
                   </div>
                   <div className="flex justify-between">
                     <span className="text-femfuel-medium">Salón:</span>
-                    <span className="text-femfuel-dark">{service.featuredProvider?.name || 'Proveedor'}</span>
+                    <span className="text-femfuel-dark">
+                      {'featuredProvider' in service && service.featuredProvider ? service.featuredProvider.name : 'Proveedor'}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-femfuel-medium">Fecha:</span>

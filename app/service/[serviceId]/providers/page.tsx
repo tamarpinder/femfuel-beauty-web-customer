@@ -15,9 +15,10 @@ import { BeforeAfterCarousel } from "@/components/before-after-carousel"
 import { ServiceInfoCards } from "@/components/service-info-cards"
 import { ProviderListCompact } from "@/components/provider-list-compact"
 import { ServiceDesktopLayout } from "@/components/service-desktop-layout"
+import { BookingModal } from "@/components/booking-modal"
 import { getAllServices, getVendorsByCategory } from "@/lib/vendors-api"
 import { getServiceImage, getServiceCategoryCover } from "@/lib/image-mappings"
-import type { Vendor } from "@/types/vendor"
+import type { Vendor, VendorService } from "@/types/vendor"
 
 interface ServiceWithVendor {
   id: string
@@ -73,6 +74,9 @@ export default function ServiceProvidersPage() {
   const [service, setService] = useState<ServiceWithVendor | null>(null)
   const [providers, setProviders] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
+  const [showBookingModal, setShowBookingModal] = useState(false)
+  const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
+  const [selectedService, setSelectedService] = useState<VendorService | null>(null)
 
   useEffect(() => {
     async function loadServiceAndProviders() {
@@ -119,8 +123,24 @@ export default function ServiceProvidersPage() {
   }
 
   const handleBookNow = (vendor: Vendor) => {
-    // Pre-select the service and go to booking
-    router.push(`/vendor/${vendor.slug}?service=${service?.slug || serviceId}&action=book`)
+    if (!service) return
+    
+    // Find the matching service in vendor's services
+    const vendorService = vendor.services.find(s => s.name === service.name)
+    if (vendorService) {
+      setSelectedVendor(vendor)
+      setSelectedService(vendorService)
+      setShowBookingModal(true)
+    }
+  }
+  
+  const handleBookingComplete = (booking: any) => {
+    console.log("Booking completed:", booking)
+    setShowBookingModal(false)
+    setSelectedVendor(null)
+    setSelectedService(null)
+    // Could redirect to bookings page or show success message
+    router.push('/bookings')
   }
 
   // Calculate average duration from providers
@@ -245,6 +265,16 @@ export default function ServiceProvidersPage() {
           className="shadow-lg hover:shadow-xl"
         />
       </div>
+
+      {/* Booking Modal */}
+      {showBookingModal && selectedVendor && selectedService && (
+        <BookingModal
+          isOpen={showBookingModal}
+          service={selectedService}
+          onClose={() => setShowBookingModal(false)}
+          onBookingComplete={handleBookingComplete}
+        />
+      )}
     </>
   )
 }

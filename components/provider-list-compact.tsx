@@ -113,11 +113,11 @@ export function ProviderListCompact({
 
                     {/* Provider Name and Rating */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex-1 min-w-0 pr-2">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 
-                            className="text-lg font-bold text-femfuel-dark truncate cursor-pointer hover:text-femfuel-rose transition-colors"
+                      <div className="flex flex-col">
+                        {/* Vendor Name - Full Width Line */}
+                        <div className="mb-2">
+                          <h3 
+                            className="text-lg font-bold text-femfuel-dark cursor-pointer hover:text-femfuel-rose transition-colors line-clamp-1"
                             onClick={(e) => {
                               e.stopPropagation()
                               onProviderSelect(vendor)
@@ -125,13 +125,10 @@ export function ProviderListCompact({
                           >
                             {vendor.name}
                           </h3>
-                            {vendor.badges && vendor.badges.length > 0 && (
-                              <Badge className="bg-femfuel-rose text-white px-2 py-0 text-xs flex-shrink-0">
-                                <Verified className="h-3 w-3 mr-1" />
-                                Verificado
-                              </Badge>
-                            )}
-                          </div>
+                        </div>
+                        
+                        {/* Rating, Distance & Badges Row */}
+                        <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-3 text-sm">
                             <div className="flex items-center gap-1">
                               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -142,6 +139,16 @@ export function ProviderListCompact({
                               <MapPin className="h-4 w-4" />
                               <span>{getDistanceText(vendor)}</span>
                             </div>
+                          </div>
+                          
+                          {/* Badges */}
+                          <div className="flex items-center gap-1">
+                            {vendor.badges && vendor.badges.length > 0 && (
+                              <Badge className="bg-femfuel-rose text-white px-2 py-0 text-xs flex-shrink-0">
+                                <Verified className="h-3 w-3 mr-1" />
+                                Verificado
+                              </Badge>
+                            )}
                           </div>
                         </div>
                         
@@ -215,17 +222,18 @@ export function ProviderListCompact({
                       serviceContext={serviceName}
                       variant="inline"
                       size="sm"
-                      className="bg-green-500 hover:bg-green-600 px-3"
+                      className="bg-green-500 hover:bg-green-600 h-9 px-3"
                     >
                       <MessageCircle className="h-4 w-4" />
                     </ChatButton>
                     
                     <Button
+                      size="sm"
                       onClick={(e) => {
                         e.stopPropagation()
                         onProviderSelect(vendor)
                       }}
-                      className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
+                      className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white h-9 px-4"
                     >
                       Ver
                     </Button>

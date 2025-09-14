@@ -71,6 +71,11 @@ export default function ServiceProvidersPage() {
   const router = useRouter()
   const serviceId = params.serviceId as string
   
+  // Service name mapping for marketplace-to-vendor service matching
+  const serviceNameMapping: Record<string, string> = {
+    "Alisado Dominicano": "Tratamiento de Keratina"
+  }
+  
   const [service, setService] = useState<ServiceWithVendor | null>(null)
   const [providers, setProviders] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
@@ -126,7 +131,8 @@ export default function ServiceProvidersPage() {
     if (!service) return
     
     // Find the matching service in vendor's services
-    const vendorService = vendor.services.find(s => s.name === service.name)
+    const mappedName = serviceNameMapping[service.name] || service.name
+    const vendorService = vendor.services.find(s => s.name === mappedName)
     if (vendorService) {
       setSelectedVendor(vendor)
       setSelectedService(vendorService)

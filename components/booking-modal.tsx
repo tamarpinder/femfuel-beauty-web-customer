@@ -18,6 +18,8 @@ interface BookingModalProps {
   isOpen: boolean
   onClose: () => void
   service: VendorService | Service | null
+  vendorName?: string
+  vendorRating?: number
   onBookingComplete?: (booking: any) => void
 }
 
@@ -30,7 +32,7 @@ interface BookingData {
   paymentMethod: "card" | "cash"
 }
 
-export function BookingModal({ isOpen, onClose, service, onBookingComplete }: BookingModalProps) {
+export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, onBookingComplete }: BookingModalProps) {
   const { user } = useAuth()
   const [currentStep, setCurrentStep] = useState<BookingStep>("datetime")
   const [bookingData, setBookingData] = useState<BookingData>({
@@ -180,25 +182,63 @@ export function BookingModal({ isOpen, onClose, service, onBookingComplete }: Bo
         </DialogHeader>
 
         {/* Service Summary */}
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-4">
+        <Card className="mb-6 border-femfuel-rose/10 shadow-md">
+          <CardContent className="p-5">
+            {/* Enhanced Vendor Header with Badge */}
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-femfuel-light">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
+                <span className="text-sm font-medium text-femfuel-medium">
+                  {vendorName || "Beauty Studio"}
+                </span>
+              </div>
+              {vendorRating && (
+                <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 text-xs">
+                  ⭐ {vendorRating}
+                </Badge>
+              )}
+            </div>
+
+            {/* Service Info */}
+            <div className="flex items-center gap-4 mb-4">
               <img
                 src={service.image || "/placeholder.svg?height=64&width=64&query=beauty service"}
                 alt={service.name}
-                className="w-16 h-16 rounded-xl object-cover"
+                className="w-16 h-16 rounded-xl object-cover border-2 border-femfuel-light"
               />
               <div className="flex-1">
-                <h3 className="font-semibold text-femfuel-dark">{service.name}</h3>
-                <div className="flex items-center gap-4 mt-2">
-                  <Badge variant="secondary" className="bg-femfuel-purple">
+                <h3 className="text-lg font-bold text-femfuel-dark mb-1">{service.name}</h3>
+                <p className="text-sm text-femfuel-medium mb-2">
+                  Manicure profesional con cuidado de cutículas
+                </p>
+                <div className="flex items-center gap-4">
+                  <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
                     <Clock className="h-3 w-3 mr-1" />
                     {service.duration} min
                   </Badge>
-                  <span className="font-bold text-femfuel-rose">
+                  <span className="text-xl font-bold text-femfuel-rose">
                     {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
                   </span>
                 </div>
+              </div>
+            </div>
+
+            {/* Quick Availability Preview */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-green-800">📅 Próximos Disponibles:</span>
+                <span className="text-xs text-green-600">+3 más</span>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <Badge className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1">
+                  Hoy 2:30 PM
+                </Badge>
+                <Badge className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1">
+                  Hoy 4:00 PM
+                </Badge>
+                <Badge className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1">
+                  Mañana 10:00 AM
+                </Badge>
               </div>
             </div>
           </CardContent>

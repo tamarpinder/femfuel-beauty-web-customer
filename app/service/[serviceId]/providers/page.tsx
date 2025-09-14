@@ -271,6 +271,8 @@ export default function ServiceProvidersPage() {
         <BookingModal
           isOpen={showBookingModal}
           service={selectedService}
+          vendorName={selectedVendor.name}
+          vendorRating={selectedVendor.rating}
           onClose={() => setShowBookingModal(false)}
           onBookingComplete={handleBookingComplete}
         />

@@ -377,9 +377,44 @@ export default function HomePage() {
     router.push(`/services/${categoryId}`)
   }
 
-  const handleGetThisLook = (serviceId: string, lookName: string) => {
-    console.log("Get this look:", { serviceId, lookName })
-    router.push(`/search?service=${serviceId}&look=${encodeURIComponent(lookName)}`)
+  const handleGetThisLook = (serviceId: string, lookName: string, vendorName: string) => {
+    console.log("Get this look:", { serviceId, lookName, vendorName })
+    
+    // Find the vendor by name
+    const vendor = nearbyVendors.find(v => v.name === vendorName)
+    
+    if (vendor) {
+      // Find a matching service in the vendor's services (match by name or similar service)
+      const vendorService = vendor.services.find(s => 
+        s.name.toLowerCase().includes(lookName.toLowerCase()) ||
+        lookName.toLowerCase().includes(s.name.toLowerCase()) ||
+        // Fallback to first service of the vendor
+        vendor.services[0]
+      ) || vendor.services[0]
+      
+      if (vendorService) {
+        setSelectedVendor(vendor)
+        setSelectedService(vendorService)
+        setShowBookingModal(true)
+      }
+    } else {
+      // Fallback: try to find any vendor with a similar service
+      const fallbackVendor = nearbyVendors.find(v => 
+        v.services.some(s => s.name.toLowerCase().includes(lookName.toLowerCase()))
+      )
+      
+      if (fallbackVendor) {
+        const vendorService = fallbackVendor.services.find(s => 
+          s.name.toLowerCase().includes(lookName.toLowerCase())
+        )
+        
+        if (vendorService) {
+          setSelectedVendor(fallbackVendor)
+          setSelectedService(vendorService)
+          setShowBookingModal(true)
+        }
+      }
+    }
   }
 
   const handleBookProfessional = (professionalId: number) => {

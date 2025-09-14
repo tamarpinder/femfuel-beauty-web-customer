@@ -22,7 +22,7 @@ interface Transformation {
 
 interface TransformationsShowcaseProps {
   transformations: Transformation[]
-  onGetThisLook?: (serviceId: string, lookName: string) => void
+  onGetThisLook?: (serviceId: string, lookName: string, vendorName: string) => void
 }
 
 export function TransformationsShowcase({ transformations, onGetThisLook }: TransformationsShowcaseProps) {
@@ -99,7 +99,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                     {/* Status Badge */}
                     <div className="absolute top-4 right-4">
                       <Badge className="bg-femfuel-rose text-white">
-                        {showAfter ? "✨ Resultado" : "🔄 Original"}
+                        {showAfter ? "Resultado" : "Original"}
                       </Badge>
                     </div>
                   </div>
@@ -135,11 +135,11 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
 
                   {/* Get This Look Button */}
                   <Button
-                    onClick={() => onGetThisLook?.(current.serviceId, current.lookName)}
+                    onClick={() => onGetThisLook?.(current.serviceId, current.lookName, current.vendor)}
                     className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                   >
                     <Heart className="h-4 w-4 mr-2 animate-pulse" />
-                    Conseguir Este Look
+                    Obtener Este Estilo
                   </Button>
                 </div>
               </div>

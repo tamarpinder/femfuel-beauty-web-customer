@@ -211,7 +211,7 @@ export function ProviderListCompact({
                         e.stopPropagation()
                         onBookNow(vendor)
                       }}
-                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1 h-11 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1 h-11 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
                     >
                       Reservar
                     </Button>

@@ -103,8 +103,9 @@ export default function ServiceProvidersPage() {
         const categoryProviders = await getVendorsByCategory(targetService.category)
         
         // Filter vendors that actually offer this specific service
+        const mappedServiceName = serviceNameMapping[targetService.name] || targetService.name
         const serviceProviders = categoryProviders.filter(vendor =>
-          vendor.services.some(s => s.name === targetService.name)
+          vendor.services.some(s => s.name === mappedServiceName)
         )
         
         setProviders(serviceProviders)
@@ -234,7 +235,7 @@ export default function ServiceProvidersPage() {
         {/* Provider List */}
         <ProviderListCompact
           providers={providers}
-          serviceName={service.name}
+          serviceName={serviceNameMapping[service.name] || service.name}
           onProviderSelect={handleProviderSelect}
           onBookNow={handleBookNow}
         />
@@ -259,7 +260,10 @@ export default function ServiceProvidersPage() {
 
         {/* Desktop Split-Screen Layout */}
         <ServiceDesktopLayout
-          service={service}
+          service={{
+            ...service,
+            name: serviceNameMapping[service.name] || service.name
+          }}
           providers={providers}
           onProviderSelect={handleProviderSelect}
           onBookNow={handleBookNow}

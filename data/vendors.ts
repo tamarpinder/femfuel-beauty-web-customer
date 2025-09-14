@@ -395,6 +395,74 @@ export const mockVendors: Vendor[] = [
         ]
       }
     ],
+    professionals: [
+      {
+        id: "valentina-morales",
+        name: "Valentina Morales",
+        image: "/professionals/portraits/bridal-makeup-artist-valentina.png",
+        rating: 4.9,
+        reviewCount: 87,
+        yearsExperience: 6,
+        monthlyBookings: 92,
+        specialties: ["Maquillaje de Novias", "Eventos Sociales", "Maquillaje Artístico"],
+        isTopRated: true,
+        nextAvailable: "Hoy 2:30 PM",
+        bio: "Artista del maquillaje especializada en novias y eventos especiales. Certificada internacionalmente con más de 6 años creando looks únicos para cada cliente.",
+        recommendedAddons: [
+          { id: "bridal-trial-valentina", name: "Prueba de Novia con Valentina", price: 1200, duration: 90 },
+          { id: "artistic-makeup", name: "Maquillaje Artístico", price: 800, duration: 45 },
+          { id: "premium-lashes", name: "Pestañas Premium", price: 600, duration: 30 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "10:00", end: "19:00" },
+          lunchBreak: { start: "13:30", end: "14:30" }
+        }
+      },
+      {
+        id: "alejandra-santos",
+        name: "Alejandra Santos",
+        image: "/professionals/portraits/makeup-artist-alejandra.png",
+        rating: 4.8,
+        reviewCount: 104,
+        yearsExperience: 8,
+        monthlyBookings: 78,
+        specialties: ["Maquillaje Editorial", "Fotografía", "Efectos Especiales"],
+        isTopRated: true,
+        nextAvailable: "Mañana 10:00 AM",
+        bio: "Maquilladora profesional con formación en efectos especiales y maquillaje editorial. Especialista en sesiones fotográficas y producciones artísticas.",
+        recommendedAddons: [
+          { id: "editorial-makeup", name: "Maquillaje Editorial", price: 1000, duration: 75 },
+          { id: "photo-makeup", name: "Maquillaje para Fotografía", price: 900, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "18:00" },
+          lunchBreak: { start: "12:00", end: "13:00" }
+        }
+      },
+      {
+        id: "natalia-restrepo",
+        name: "Natalia Restrepo",
+        image: "/professionals/portraits/makeup-artist-natalia.png",
+        rating: 4.7,
+        reviewCount: 69,
+        yearsExperience: 4,
+        monthlyBookings: 85,
+        specialties: ["Maquillaje Natural", "Eventos Corporativos", "Maquillaje de Día"],
+        nextAvailable: "Hoy 4:00 PM",
+        bio: "Especialista en maquillaje natural y elegante. Perfecta para eventos corporativos y looks de día que realzan la belleza natural.",
+        recommendedAddons: [
+          { id: "natural-glow", name: "Brillo Natural", price: 400, duration: 20 },
+          { id: "corporate-touch", name: "Toque Corporativo", price: 350, duration: 15 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5],
+          workingHours: { start: "11:00", end: "19:00" },
+          lunchBreak: { start: "14:00", end: "15:00" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "10:00", close: "19:00" },
       tuesday: { open: "10:00", close: "19:00" },
@@ -467,6 +535,50 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/masaje-relajante-before.png",
           after: "/transformations/after/masaje-relajante-after.png",
           title: "Masaje Relajante Completo"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "rosa-martin",
+        name: "Rosa Martín",
+        image: "/professionals/portraits/holistic-skin-therapist-rosa.png",
+        rating: 4.3,
+        reviewCount: 198,
+        yearsExperience: 10,
+        monthlyBookings: 86,
+        specialties: ["Masajes Relajantes", "Tratamientos Faciales", "Hidratación"],
+        nextAvailable: "Hoy 4:15 PM",
+        bio: "Terapeuta con 10 años de experiencia en masajes relajantes y tratamientos faciales. Especialista en técnicas de hidratación y relajación profunda.",
+        recommendedAddons: [
+          { id: "facial-hydrating", name: "Facial Hidratante Extra", price: 400, duration: 30 },
+          { id: "relaxing-oils", name: "Aceites Relajantes", price: 200, duration: 15 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "08:00", end: "17:00" },
+          lunchBreak: { start: "12:30", end: "13:30" }
+        }
+      },
+      {
+        id: "gabriela-hernandez",
+        name: "Gabriela Hernández",
+        image: "/professionals/portraits/spa-therapist-gabriela.png",
+        rating: 4.4,
+        reviewCount: 134,
+        yearsExperience: 8,
+        monthlyBookings: 72,
+        specialties: ["Masajes Deportivos", "Terapia Muscular", "Relajación"],
+        nextAvailable: "Mañana 11:45 AM",
+        bio: "Masajista especializada en terapias deportivas y musculares. Con 8 años de experiencia ayudando en la recuperación y relajación muscular.",
+        recommendedAddons: [
+          { id: "sports-massage", name: "Masaje Deportivo", price: 500, duration: 60 },
+          { id: "muscle-recovery", name: "Recuperación Muscular", price: 600, duration: 75 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6, 0],
+          workingHours: { start: "09:00", end: "18:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
         }
       }
     ],
@@ -651,6 +763,73 @@ export const mockVendors: Vendor[] = [
         ]
       }
     ],
+    professionals: [
+      {
+        id: "ricardo-santos",
+        name: "Ricardo Santos",
+        image: "/professionals/portraits/hair-stylist-ricardo.png",
+        rating: 4.9,
+        reviewCount: 156,
+        yearsExperience: 10,
+        monthlyBookings: 98,
+        specialties: ["Cortes Modernos", "Barbería", "Diseño Capilar"],
+        isTopRated: true,
+        nextAvailable: "Hoy 3:15 PM",
+        bio: "Estilista senior con más de 10 años de experiencia en cortes modernos y barbería. Especialista en diseños capilares únicos y personalizados.",
+        recommendedAddons: [
+          { id: "beard-styling", name: "Estilizado de Barba", price: 400, duration: 30 },
+          { id: "hair-design", name: "Diseño Capilar", price: 600, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "08:00", end: "18:00" },
+          lunchBreak: { start: "12:30", end: "13:30" }
+        }
+      },
+      {
+        id: "lucia-jimenez",
+        name: "Lucía Jiménez",
+        image: "/professionals/portraits/hair-colorist-lucia.png",
+        rating: 4.8,
+        reviewCount: 142,
+        yearsExperience: 7,
+        monthlyBookings: 105,
+        specialties: ["Coloración", "Balayage", "Mechas"],
+        isTopRated: true,
+        nextAvailable: "Mañana 11:00 AM",
+        bio: "Colorista experta especializada en técnicas de balayage y mechas. Certificada en las últimas tendencias de coloración capilar.",
+        recommendedAddons: [
+          { id: "color-protection", name: "Protección de Color", price: 500, duration: 30 },
+          { id: "gloss-treatment", name: "Tratamiento de Brillo", price: 450, duration: 25 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "19:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
+        }
+      },
+      {
+        id: "diego-castillo",
+        name: "Diego Castillo",
+        image: "/professionals/portraits/hair-designer-diego.png",
+        rating: 4.7,
+        reviewCount: 89,
+        yearsExperience: 5,
+        monthlyBookings: 87,
+        specialties: ["Tratamientos Capilares", "Keratina", "Alisados"],
+        nextAvailable: "Hoy 5:30 PM",
+        bio: "Especialista en tratamientos capilares y alisados. Experto en técnicas de keratina y restauración capilar.",
+        recommendedAddons: [
+          { id: "keratin-boost", name: "Refuerzo de Keratina", price: 600, duration: 45 },
+          { id: "hair-reconstruction", name: "Reconstrucción Capilar", price: 700, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 4, 5, 6],
+          workingHours: { start: "10:00", end: "18:00" },
+          lunchBreak: { start: "14:00", end: "15:00" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "9:00", close: "18:00" },
       tuesday: { open: "9:00", close: "18:00" },
@@ -708,6 +887,51 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/extensiones-pestanas-before.png",
           after: "/transformations/after/extensiones-pestanas-after.png",
           title: "Extensiones de Pestañas"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "camila-perez",
+        name: "Camila Pérez",
+        image: "/professionals/portraits/lash-specialist-camila.png",
+        rating: 4.9,
+        reviewCount: 134,
+        yearsExperience: 6,
+        monthlyBookings: 95,
+        specialties: ["Extensiones Clásicas", "Volumen Ruso", "Pestañas Híbridas"],
+        isTopRated: true,
+        nextAvailable: "Hoy 4:30 PM",
+        bio: "Técnica certificada en extensiones de pestañas con más de 6 años de experiencia. Especialista en técnicas clásicas y volumen ruso.",
+        recommendedAddons: [
+          { id: "lash-lift-tint", name: "Lifting y Tinte", price: 600, duration: 60 },
+          { id: "volume-upgrade", name: "Upgrade a Volumen", price: 400, duration: 30 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "10:00", end: "18:00" },
+          lunchBreak: { start: "13:30", end: "14:30" }
+        }
+      },
+      {
+        id: "liliana-sanchez",
+        name: "Liliana Sánchez",
+        image: "/professionals/portraits/lash-brow-liliana.png",
+        rating: 4.7,
+        reviewCount: 87,
+        yearsExperience: 4,
+        monthlyBookings: 89,
+        specialties: ["Diseño de Cejas", "Tinte de Pestañas", "Lifting"],
+        nextAvailable: "Mañana 10:15 AM",
+        bio: "Especialista en diseño de cejas y tinte de pestañas. Experta en crear looks naturales que realzan la belleza de cada mirada.",
+        recommendedAddons: [
+          { id: "brow-lamination", name: "Laminado de Cejas", price: 500, duration: 45 },
+          { id: "henna-brows", name: "Cejas con Henna", price: 400, duration: 30 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "17:00" },
+          lunchBreak: { start: "12:00", end: "13:00" }
         }
       }
     ],
@@ -787,6 +1011,50 @@ export const mockVendors: Vendor[] = [
         }
       }
     ],
+    professionals: [
+      {
+        id: "jasmine-cabrera",
+        name: "Jasmine Cabrera",
+        image: "/professionals/portraits/express-nail-tech-1.png",
+        rating: 4.2,
+        reviewCount: 167,
+        yearsExperience: 3,
+        monthlyBookings: 145,
+        specialties: ["Manicure Express", "Nail Art Rápido", "Gel Rápido"],
+        nextAvailable: "Hoy 1:00 PM",
+        bio: "Técnica especializada en servicios rápidos y eficientes. Experta en manicures express y nail art moderno con la mejor calidad en tiempo récord.",
+        recommendedAddons: [
+          { id: "quick-art", name: "Arte Rápido", price: 200, duration: 15 },
+          { id: "express-gel", name: "Gel Express", price: 300, duration: 20 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6, 0],
+          workingHours: { start: "10:00", end: "20:00" },
+          lunchBreak: { start: "14:30", end: "15:30" }
+        }
+      },
+      {
+        id: "nicole-ortega",
+        name: "Nicole Ortega",
+        image: "/professionals/portraits/express-nail-tech-2.png",
+        rating: 4.0,
+        reviewCount: 124,
+        yearsExperience: 2,
+        monthlyBookings: 156,
+        specialties: ["Pedicure Rápido", "Diseños Modernos", "Esmaltado Express"],
+        nextAvailable: "Hoy 11:45 AM",
+        bio: "Técnica joven especializada en pedicures rápidos y diseños modernos. Conocida por su velocidad y precisión en esmaltados express.",
+        recommendedAddons: [
+          { id: "modern-design", name: "Diseño Moderno", price: 250, duration: 20 },
+          { id: "quick-pedi", name: "Pedicure Ultra Rápido", price: 200, duration: 30 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 3, 4, 5, 6, 0],
+          workingHours: { start: "11:00", end: "21:00" },
+          lunchBreak: { start: "15:00", end: "16:00" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "10:00", close: "20:00" },
       tuesday: { open: "10:00", close: "20:00" },
@@ -860,6 +1128,73 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/extensiones-acrilico-before.png",
           after: "/transformations/after/extensiones-acrilico-after.png",
           title: "Uñas de Porcelana"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "patricia-vega",
+        name: "Patricia Vega",
+        image: "/professionals/portraits/nail-artist-patricia.png",
+        rating: 4.9,
+        reviewCount: 127,
+        yearsExperience: 8,
+        monthlyBookings: 89,
+        specialties: ["Uñas de Lujo", "Nail Art Avanzado", "Manicure Rusa"],
+        isTopRated: true,
+        nextAvailable: "Mañana 10:30 AM",
+        bio: "Técnica senior especializada en uñas de lujo y nail art avanzado. Certificada en técnica rusa y especialista en diseños únicos.",
+        recommendedAddons: [
+          { id: "luxury-nail-art", name: "Nail Art de Lujo", price: 800, duration: 60 },
+          { id: "russian-manicure", name: "Manicure Rusa", price: 600, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "18:00" },
+          lunchBreak: { start: "13:30", end: "14:30" }
+        }
+      },
+      {
+        id: "sofia-torres",
+        name: "Sofía Torres",
+        image: "/professionals/portraits/nail-artist-sofia.png",
+        rating: 4.8,
+        reviewCount: 95,
+        yearsExperience: 5,
+        monthlyBookings: 102,
+        specialties: ["Diseños Artísticos", "Uñas Acrílicas", "Decoraciones 3D"],
+        isTopRated: true,
+        nextAvailable: "Hoy 2:15 PM",
+        bio: "Artista de uñas especializada en diseños únicos y decoraciones 3D. Conocida por su creatividad y técnicas innovadoras.",
+        recommendedAddons: [
+          { id: "3d-nail-art", name: "Arte 3D en Uñas", price: 900, duration: 75 },
+          { id: "artistic-design", name: "Diseño Artístico", price: 700, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6, 0],
+          workingHours: { start: "10:00", end: "19:00" },
+          lunchBreak: { start: "14:00", end: "15:00" }
+        }
+      },
+      {
+        id: "carmen-herrera",
+        name: "Carmen Herrera",
+        image: "/professionals/portraits/nail-artist-carmen.png",
+        rating: 4.7,
+        reviewCount: 78,
+        yearsExperience: 6,
+        monthlyBookings: 76,
+        specialties: ["Uñas de Gel", "Pedicure de Lujo", "Cuidado de Cutículas"],
+        nextAvailable: "Mañana 3:00 PM",
+        bio: "Especialista en uñas de gel y pedicures de lujo. Experta en cuidado profesional de cutículas y tratamientos premium.",
+        recommendedAddons: [
+          { id: "gel-overlay", name: "Recubrimiento de Gel", price: 450, duration: 45 },
+          { id: "cuticle-luxury", name: "Tratamiento de Cutículas Premium", price: 300, duration: 20 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 5, 6],
+          workingHours: { start: "11:00", end: "19:00" },
+          lunchBreak: { start: "15:00", end: "16:00" }
         }
       }
     ],
@@ -939,6 +1274,51 @@ export const mockVendors: Vendor[] = [
         }
       }
     ],
+    professionals: [
+      {
+        id: "carmen-rodriguez",
+        name: "Carmen Rodríguez",
+        image: "/professionals/portraits/makeup-artist-carmen.png",
+        rating: 4.8,
+        reviewCount: 156,
+        yearsExperience: 9,
+        monthlyBookings: 67,
+        specialties: ["Maquillaje Ejecutivo", "Eventos Corporativos", "Media Training"],
+        isTopRated: true,
+        nextAvailable: "Hoy 9:00 AM",
+        bio: "Maquilladora corporativa con más de 9 años especializándose en ejecutivos y eventos empresariales. Experta en looks profesionales para medios.",
+        recommendedAddons: [
+          { id: "executive-look", name: "Look Ejecutivo Premium", price: 500, duration: 45 },
+          { id: "media-ready", name: "Preparación para Medios", price: 600, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5],
+          workingHours: { start: "07:00", end: "17:00" },
+          lunchBreak: { start: "12:00", end: "13:00" }
+        }
+      },
+      {
+        id: "andres-mejia",
+        name: "Andrés Mejía",
+        image: "/professionals/portraits/corporate-makeup-male.png",
+        rating: 4.7,
+        reviewCount: 92,
+        yearsExperience: 6,
+        monthlyBookings: 54,
+        specialties: ["Maquillaje para Hombres", "TV y Video", "Eventos Especiales"],
+        nextAvailable: "Mañana 8:30 AM",
+        bio: "Especialista en maquillaje masculino y para medios audiovisuales. Experto en crear looks naturales para ejecutivos y personalidades públicas.",
+        recommendedAddons: [
+          { id: "male-grooming", name: "Arreglo Masculino", price: 400, duration: 30 },
+          { id: "tv-makeup", name: "Maquillaje para TV", price: 700, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "08:00", end: "16:00" },
+          lunchBreak: { start: "11:30", end: "12:30" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "9:00", close: "18:00" },
       tuesday: { open: "9:00", close: "18:00" },
@@ -1011,6 +1391,30 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/makeup-transformation-3-before.png",
           after: "/transformations/after/makeup-transformation-3-after.png",
           title: "Maquillaje para Fotografía"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "ana-verde",
+        name: "Ana Verde",
+        image: "/professionals/portraits/aesthetician-ana.png",
+        rating: 4.8,
+        reviewCount: 98,
+        yearsExperience: 6,
+        monthlyBookings: 54,
+        specialties: ["Maquillaje Orgánico", "Looks Naturales", "Productos Eco-Friendly"],
+        isTopRated: true,
+        nextAvailable: "Mañana 12:00 PM",
+        bio: "Maquilladora especializada en productos orgánicos y naturales. Certificada en cosmética eco-friendly y técnicas de maquillaje que respetan la piel sensible.",
+        recommendedAddons: [
+          { id: "organic-base", name: "Base Orgánica Premium", price: 400, duration: 30 },
+          { id: "natural-glow", name: "Brillo Natural", price: 300, duration: 20 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 4, 5, 6],
+          workingHours: { start: "10:00", end: "17:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
         }
       }
     ],
@@ -1088,6 +1492,52 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/spa-transformation-1-before.png",
           after: "/transformations/after/spa-transformation-1-after.png",
           title: "Sesión de Aromaterapia"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "isabella-luna",
+        name: "Isabella Luna",
+        image: "/professionals/portraits/wellness-therapist-isabella.png",
+        rating: 4.9,
+        reviewCount: 167,
+        yearsExperience: 11,
+        monthlyBookings: 78,
+        specialties: ["Aromaterapia", "Reiki", "Masajes Holísticos"],
+        isTopRated: true,
+        nextAvailable: "Mañana 9:30 AM",
+        bio: "Terapeuta holística certificada con más de 11 años de experiencia en aromaterapia y reiki. Especialista en sanación integral mente-cuerpo.",
+        recommendedAddons: [
+          { id: "reiki-session", name: "Sesión de Reiki", price: 800, duration: 60 },
+          { id: "chakra-balancing", name: "Equilibrio de Chakras", price: 600, duration: 75 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5],
+          workingHours: { start: "08:00", end: "16:00" },
+          lunchBreak: { start: "12:00", end: "13:00" }
+        }
+      },
+      {
+        id: "raquel-valdez",
+        name: "Raquel Valdez",
+        image: "/professionals/portraits/massage-therapist-raquel.png",
+        rating: 4.8,
+        reviewCount: 134,
+        yearsExperience: 15,
+        monthlyBookings: 65,
+        specialties: ["Masaje Terapéutico", "Reflexología", "Acupresión"],
+        isTopRated: true,
+        nextAvailable: "Hoy 2:45 PM",
+        bio: "Masajista terapéutica con 15 años de experiencia en técnicas orientales. Especialista en reflexología y tratamientos de acupresión.",
+        recommendedAddons: [
+          { id: "reflexology-session", name: "Sesión de Reflexología", price: 600, duration: 60 },
+          { id: "acupressure", name: "Acupresión Terapéutica", price: 700, duration: 75 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "10:00", end: "18:00" },
+          lunchBreak: { start: "13:30", end: "14:30" }
         }
       }
     ],
@@ -1253,6 +1703,74 @@ export const mockVendors: Vendor[] = [
         ]
       }
     ],
+    professionals: [
+      {
+        id: "eduardo-martinez",
+        name: "Eduardo Martínez",
+        image: "/professionals/portraits/male-massage-therapist.png",
+        rating: 4.9,
+        reviewCount: 143,
+        yearsExperience: 12,
+        monthlyBookings: 67,
+        specialties: ["Masaje Terapéutico", "Aromaterapia", "Tratamientos VIP"],
+        isTopRated: true,
+        nextAvailable: "Mañana 11:30 AM",
+        bio: "Terapeuta senior con más de 12 años de experiencia en masajes terapéuticos y aromaterapia. Especialista en tratamientos VIP y técnicas de relajación profunda.",
+        recommendedAddons: [
+          { id: "deep-tissue-massage", name: "Masaje de Tejido Profundo", price: 800, duration: 60 },
+          { id: "aromatherapy-premium", name: "Aromaterapia Premium", price: 600, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5],
+          workingHours: { start: "09:00", end: "17:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
+        }
+      },
+      {
+        id: "minerva-batista",
+        name: "Minerva Batista",
+        image: "/professionals/portraits/anti-aging-specialist-minerva.png",
+        rating: 4.8,
+        reviewCount: 98,
+        yearsExperience: 9,
+        monthlyBookings: 73,
+        specialties: ["Tratamientos Faciales", "Anti-edad", "Limpieza Profunda"],
+        isTopRated: true,
+        nextAvailable: "Hoy 3:45 PM",
+        bio: "Esteticista especializada en tratamientos faciales anti-edad y limpiezas profundas. Certificada en las últimas tecnologías de rejuvenecimiento facial.",
+        recommendedAddons: [
+          { id: "anti-aging-facial", name: "Facial Anti-edad", price: 1000, duration: 90 },
+          { id: "collagen-treatment", name: "Tratamiento de Colágeno", price: 800, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "10:00", end: "18:00" },
+          lunchBreak: { start: "14:00", end: "15:00" }
+        }
+      },
+      {
+        id: "valentina-cruz",
+        name: "Valentina Cruz",
+        image: "/professionals/portraits/skin-specialist-valentina.png",
+        rating: 4.9,
+        reviewCount: 112,
+        yearsExperience: 7,
+        monthlyBookings: 56,
+        specialties: ["Tratamientos Corporales", "Exfoliaciones", "Envolturas"],
+        isTopRated: true,
+        nextAvailable: "Mañana 2:00 PM",
+        bio: "Especialista en tratamientos corporales de lujo. Experta en exfoliaciones y envolturas corporales con productos premium internacionales.",
+        recommendedAddons: [
+          { id: "body-wrap-gold", name: "Envoltura Corporal de Oro", price: 1500, duration: 120 },
+          { id: "exfoliation-premium", name: "Exfoliación Premium", price: 600, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 4, 5, 6],
+          workingHours: { start: "11:00", end: "19:00" },
+          lunchBreak: { start: "15:00", end: "16:00" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "9:00", close: "20:00" },
       tuesday: { open: "9:00", close: "20:00" },
@@ -1329,6 +1847,50 @@ export const mockVendors: Vendor[] = [
         }
       }
     ],
+    professionals: [
+      {
+        id: "carla-rosario",
+        name: "Carla Rosario",
+        image: "/professionals/portraits/hair-stylist-carla.png",
+        rating: 4.6,
+        reviewCount: 89,
+        yearsExperience: 4,
+        monthlyBookings: 112,
+        specialties: ["Colores Fantasía", "Cortes Modernos", "Hair Styling"],
+        nextAvailable: "Hoy 11:30 AM",
+        bio: "Estilista joven especializada en colores fantasía y cortes modernos. Experta en las últimas tendencias y técnicas de coloración creativa.",
+        recommendedAddons: [
+          { id: "fantasy-color", name: "Color Fantasía", price: 800, duration: 120 },
+          { id: "creative-cut", name: "Corte Creativo", price: 400, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "10:00", end: "19:00" },
+          lunchBreak: { start: "14:00", end: "15:00" }
+        }
+      },
+      {
+        id: "jean-carlos-diaz",
+        name: "Jean Carlos Díaz",
+        image: "/professionals/portraits/male-barber-2.png",
+        rating: 4.7,
+        reviewCount: 76,
+        yearsExperience: 5,
+        monthlyBookings: 94,
+        specialties: ["Barbería Moderna", "Fade Cuts", "Diseños Capilares"],
+        nextAvailable: "Mañana 1:15 PM",
+        bio: "Barbero especializado en cortes modernos y técnicas de fade. Experto en diseños capilares únicos y tendencias urbanas.",
+        recommendedAddons: [
+          { id: "modern-fade", name: "Fade Moderno", price: 300, duration: 45 },
+          { id: "hair-tattoo", name: "Tatuaje Capilar", price: 500, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "18:00" },
+          lunchBreak: { start: "12:30", end: "13:30" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "9:00", close: "18:00" },
       tuesday: { open: "9:00", close: "18:00" },
@@ -1401,6 +1963,50 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/peinado-evento-before.png",
           after: "/transformations/after/peinado-evento-after.png",
           title: "Peinado para Eventos"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "mercedes-garcia",
+        name: "Mercedes García",
+        image: "/professionals/portraits/senior-hair-stylist.png",
+        rating: 4.1,
+        reviewCount: 234,
+        yearsExperience: 18,
+        monthlyBookings: 89,
+        specialties: ["Cortes Familiares", "Peinados Clásicos", "Canas y Madurez"],
+        nextAvailable: "Mañana 9:00 AM",
+        bio: "Estilista senior con 18 años de experiencia atendiendo familias completas. Especialista en cortes para todas las edades y tratamientos para canas.",
+        recommendedAddons: [
+          { id: "family-package", name: "Paquete Familiar", price: 800, duration: 120 },
+          { id: "gray-coverage", name: "Cobertura de Canas", price: 400, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "08:00", end: "17:00" },
+          lunchBreak: { start: "12:00", end: "13:00" }
+        }
+      },
+      {
+        id: "gabriel-flores",
+        name: "Gabriel Flores",
+        image: "/professionals/portraits/male-barber-1.png",
+        rating: 4.0,
+        reviewCount: 189,
+        yearsExperience: 14,
+        monthlyBookings: 76,
+        specialties: ["Barbería Clásica", "Cortes de Niños", "Afeitado Tradicional"],
+        nextAvailable: "Hoy 2:30 PM",
+        bio: "Barbero tradicional con 14 años de experiencia. Especialista en barbería clásica, cortes infantiles y técnicas de afeitado tradicional con navaja.",
+        recommendedAddons: [
+          { id: "traditional-shave", name: "Afeitado Tradicional", price: 300, duration: 30 },
+          { id: "kids-cut", name: "Corte Infantil Especial", price: 200, duration: 30 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6, 0],
+          workingHours: { start: "08:00", end: "18:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
         }
       }
     ],
@@ -1480,6 +2086,51 @@ export const mockVendors: Vendor[] = [
         }
       }
     ],
+    professionals: [
+      {
+        id: "andrea-moreno",
+        name: "Andrea Moreno",
+        image: "/professionals/portraits/microblade-artist-andrea.png",
+        rating: 4.8,
+        reviewCount: 145,
+        yearsExperience: 7,
+        monthlyBookings: 98,
+        specialties: ["Microblading", "Diseño de Cejas", "Powder Brows"],
+        isTopRated: true,
+        nextAvailable: "Mañana 10:45 AM",
+        bio: "Especialista certificada en microblading y diseño de cejas con más de 7 años de experiencia. Experta en técnicas de powder brows y hiperrealismo.",
+        recommendedAddons: [
+          { id: "microblading-touch", name: "Retoque de Microblading", price: 600, duration: 90 },
+          { id: "powder-brows", name: "Powder Brows", price: 800, duration: 120 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6],
+          workingHours: { start: "10:00", end: "18:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
+        }
+      },
+      {
+        id: "stephanie-arias",
+        name: "Stephanie Arias",
+        image: "/professionals/portraits/lash-specialist-camila.png",
+        rating: 4.7,
+        reviewCount: 103,
+        yearsExperience: 5,
+        monthlyBookings: 87,
+        specialties: ["Extensiones Mega Volume", "Lash Lift", "Tinte Natural"],
+        nextAvailable: "Hoy 3:30 PM",
+        bio: "Técnica especializada en extensiones mega volume y lash lift. Certificada en técnicas avanzadas de extensiones y tratamientos naturales.",
+        recommendedAddons: [
+          { id: "mega-volume", name: "Mega Volume", price: 700, duration: 150 },
+          { id: "lash-lift-premium", name: "Lash Lift Premium", price: 500, duration: 60 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 4, 5, 6],
+          workingHours: { start: "11:00", end: "19:00" },
+          lunchBreak: { start: "15:00", end: "16:00" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "10:00", close: "18:00" },
       tuesday: { open: "10:00", close: "18:00" },
@@ -1552,6 +2203,30 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/diseno-cejas-before.png",
           after: "/transformations/after/diseno-cejas-after.png",
           title: "Tinte de Pestañas y Cejas"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "yolanda-silva",
+        name: "Yolanda Silva",
+        image: "/professionals/portraits/facial-specialist-yolanda.png",
+        rating: 4.8,
+        reviewCount: 67,
+        yearsExperience: 5,
+        monthlyBookings: 43,
+        specialties: ["Extensiones Boutique", "Looks Personalizados", "Cuidado Premium"],
+        isTopRated: true,
+        nextAvailable: "Mañana 11:30 AM",
+        bio: "Técnica boutique especializada en extensiones personalizadas y cuidado premium de pestañas. Experta en crear looks únicos adaptados a cada forma de ojo.",
+        recommendedAddons: [
+          { id: "custom-lashes", name: "Pestañas Personalizadas", price: 600, duration: 90 },
+          { id: "premium-care", name: "Cuidado Premium", price: 400, duration: 30 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 4, 5, 6],
+          workingHours: { start: "11:00", end: "19:00" },
+          lunchBreak: { start: "15:00", end: "16:00" }
         }
       }
     ],
@@ -1663,6 +2338,52 @@ export const mockVendors: Vendor[] = [
           before: "/transformations/before/pedicure-spa-before.png",
           after: "/transformations/after/pedicure-spa-after.png",
           title: "Pedicure Playa Dorada"
+        }
+      }
+    ],
+    professionals: [
+      {
+        id: "marisol-pena",
+        name: "Marisol Peña",
+        image: "/professionals/portraits/pedicure-specialist-marisol.png",
+        rating: 4.9,
+        reviewCount: 178,
+        yearsExperience: 12,
+        monthlyBookings: 87,
+        specialties: ["Blow-out Dominicano", "Tratamientos Tropicales", "Peinados Tradicionales"],
+        isTopRated: true,
+        nextAvailable: "Hoy 10:30 AM",
+        bio: "Estilista auténticamente dominicana con 12 años especializándose en blow-outs y tratamientos con productos tropicales locales. Guardiana de las tradiciones capilares dominicanas.",
+        recommendedAddons: [
+          { id: "dominican-blowout", name: "Blow-out Dominicano Tradicional", price: 600, duration: 90 },
+          { id: "coconut-treatment", name: "Tratamiento de Coco", price: 400, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "18:00" },
+          lunchBreak: { start: "12:30", end: "13:30" }
+        }
+      },
+      {
+        id: "esperanza-jimenez",
+        name: "Esperanza Jiménez",
+        image: "/professionals/portraits/hair-stylist-esperanza.png",
+        rating: 4.8,
+        reviewCount: 143,
+        yearsExperience: 15,
+        monthlyBookings: 69,
+        specialties: ["Trenzas Dominicanas", "Peinados Tradicionales", "Tratamientos Naturales"],
+        isTopRated: true,
+        nextAvailable: "Mañana 8:00 AM",
+        bio: "Estilista tradicional dominicana con 15 años de experiencia preservando las técnicas clásicas de peinados caribeños. Especialista en trenzas y tratamientos naturales.",
+        recommendedAddons: [
+          { id: "dominican-braids", name: "Trenzas Dominicanas", price: 350, duration: 120 },
+          { id: "natural-treatment", name: "Tratamiento Natural", price: 200, duration: 45 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6, 0],
+          workingHours: { start: "08:00", end: "17:00" },
+          lunchBreak: { start: "11:30", end: "12:30" }
         }
       }
     ],

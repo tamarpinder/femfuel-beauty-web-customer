@@ -23,6 +23,7 @@ export default function HomePage() {
   const router = useRouter()
   const [featuredServices, setFeaturedServices] = useState<Service[]>([])
   const [nearbyVendors, setNearbyVendors] = useState<Vendor[]>([])
+  const [allVendors, setAllVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
   const [showBookingModal, setShowBookingModal] = useState(false)
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
@@ -57,15 +58,17 @@ export default function HomePage() {
 
         setFeaturedServices(featuredServices)
         
-        // Get nearby vendors
-        const allVendors = await getVendors()
+        // Get all vendors
+        const allVendorData = await getVendors()
+        setAllVendors(allVendorData)
         // Take first 6 vendors as "nearby" for demo
-        setNearbyVendors(allVendors.slice(0, 6))
+        setNearbyVendors(allVendorData.slice(0, 6))
         
       } catch (error) {
         console.error('Error loading featured services:', error)
         setFeaturedServices([])
         setNearbyVendors([])
+        setAllVendors([])
       } finally {
         setLoading(false)
       }
@@ -119,7 +122,7 @@ export default function HomePage() {
       id: 1,
       name: "Isabella Martínez",
       service: "Balayage Dorado Caribeño",
-      vendor: "Salon Elite DR",
+      vendor: "Hair Salon Elite",
       beforeImage: "/transformations/before/hair-transformation-1-before.png",
       afterImage: "/transformations/after/hair-transformation-1-after.png",
       rating: 5.0,
@@ -131,7 +134,7 @@ export default function HomePage() {
       id: 2,
       name: "María José Peña",
       service: "Glamour Tropical Night",
-      vendor: "Beauty Studio Elite",
+      vendor: "Beauty Studio RD",
       beforeImage: "/transformations/before/makeup-transformation-3-before.png",
       afterImage: "/transformations/after/makeup-transformation-1-after.png",
       rating: 4.9,
@@ -143,7 +146,7 @@ export default function HomePage() {
       id: 3,
       name: "Carmen Delgado",
       service: "Dominican Blowout Perfecto",
-      vendor: "Hair Salon Elite",
+      vendor: "Cabello y Estilo",
       beforeImage: "/transformations/before/dominican-blowout-before.png",
       afterImage: "/transformations/after/dominican-blowout-after.png",
       rating: 4.8,
@@ -155,7 +158,7 @@ export default function HomePage() {
       id: 4,
       name: "Sophia Ramírez",
       service: "Tropical Nail Art",
-      vendor: "Nails Paradise",
+      vendor: "Luxury Nails Spa",
       beforeImage: "/transformations/before/nail-transformation-before.png",
       afterImage: "/transformations/after/nail-transformation-after.png",
       rating: 5.0,
@@ -167,7 +170,7 @@ export default function HomePage() {
       id: 5,
       name: "Alejandra Santos",
       service: "Maquillaje Natural Día",
-      vendor: "Makeup Studio Elite",
+      vendor: "Makeup Studio Pro",
       beforeImage: "/transformations/before/makeup-transformation-2-before.png",
       afterImage: "/transformations/after/makeup-transformation-2-after.png",
       rating: 4.9,
@@ -179,7 +182,7 @@ export default function HomePage() {
       id: 6,
       name: "Valentina Cruz",
       service: "Tratamiento Facial Renovador",
-      vendor: "Spa Paradise",
+      vendor: "Spa Serenity",
       beforeImage: "/transformations/before/spa-transformation-1-before.png",
       afterImage: "/transformations/after/spa-transformation-1-after.png",
       rating: 5.0,
@@ -191,7 +194,7 @@ export default function HomePage() {
       id: 7,
       name: "Camila Herrera",
       service: "Extensiones de Pestañas Volumen",
-      vendor: "Lash Studio Elite",
+      vendor: "Lash Studio DR",
       beforeImage: "/transformations/before/lash-transformation-1-before.png",
       afterImage: "/transformations/after/lash-transformation-1-after.png",
       rating: 4.8,
@@ -378,42 +381,52 @@ export default function HomePage() {
   }
 
   const handleGetThisLook = (serviceId: string, lookName: string, vendorName: string) => {
-    console.log("Get this look:", { serviceId, lookName, vendorName })
+    console.log("Get this look clicked:", { serviceId, lookName, vendorName, allVendorsCount: allVendors.length })
     
-    // Find the vendor by name
-    const vendor = nearbyVendors.find(v => v.name === vendorName)
+    // Find the vendor by exact name match
+    let vendor = allVendors.find(v => v.name === vendorName)
+    console.log("Exact vendor match:", vendor ? vendor.name : "Not found")
     
-    if (vendor) {
-      // Find a matching service in the vendor's services (match by name or similar service)
-      const vendorService = vendor.services.find(s => 
+    if (!vendor) {
+      // Fallback 1: Try partial name match (case insensitive)
+      vendor = allVendors.find(v => 
+        v.name.toLowerCase().includes(vendorName.toLowerCase()) ||
+        vendorName.toLowerCase().includes(v.name.toLowerCase())
+      )
+      console.log("Partial vendor match:", vendor ? vendor.name : "Not found")
+    }
+    
+    if (!vendor && allVendors.length > 0) {
+      // Fallback 2: Use first available vendor that has relevant services
+      vendor = allVendors.find(v => 
+        v.services.some(s => 
+          s.name.toLowerCase().includes(lookName.toLowerCase()) ||
+          lookName.toLowerCase().includes(s.name.toLowerCase())
+        )
+      ) || allVendors[0]
+      console.log("Fallback vendor match:", vendor ? vendor.name : "Not found")
+    }
+    
+    if (vendor && vendor.services.length > 0) {
+      // Find the best matching service
+      let vendorService = vendor.services.find(s => 
         s.name.toLowerCase().includes(lookName.toLowerCase()) ||
-        lookName.toLowerCase().includes(s.name.toLowerCase()) ||
-        // Fallback to first service of the vendor
-        vendor.services[0]
-      ) || vendor.services[0]
-      
-      if (vendorService) {
-        setSelectedVendor(vendor)
-        setSelectedService(vendorService)
-        setShowBookingModal(true)
-      }
-    } else {
-      // Fallback: try to find any vendor with a similar service
-      const fallbackVendor = nearbyVendors.find(v => 
-        v.services.some(s => s.name.toLowerCase().includes(lookName.toLowerCase()))
+        lookName.toLowerCase().includes(s.name.toLowerCase())
       )
       
-      if (fallbackVendor) {
-        const vendorService = fallbackVendor.services.find(s => 
-          s.name.toLowerCase().includes(lookName.toLowerCase())
-        )
-        
-        if (vendorService) {
-          setSelectedVendor(fallbackVendor)
-          setSelectedService(vendorService)
-          setShowBookingModal(true)
-        }
+      // If no matching service, use first service
+      if (!vendorService) {
+        vendorService = vendor.services[0]
       }
+      
+      console.log("Selected vendor:", vendor.name, "Selected service:", vendorService.name)
+      setSelectedVendor(vendor)
+      setSelectedService(vendorService)
+      setShowBookingModal(true)
+    } else {
+      console.error("Could not find any vendor or service for transformation:", { serviceId, lookName, vendorName })
+      // Show error message or fallback action
+      alert("Lo sentimos, no pudimos encontrar este servicio. Por favor, intenta más tarde.")
     }
   }
 

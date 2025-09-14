@@ -28,11 +28,10 @@ interface Professional {
 
 interface StarProfessionalsProps {
   professionals: Professional[]
-  onBookNow?: (professionalId: number) => void
-  onViewPortfolio?: (professionalId: number) => void
+  onViewVendor?: (professionalId: number) => void
 }
 
-export function StarProfessionals({ professionals, onBookNow, onViewPortfolio }: StarProfessionalsProps) {
+export function StarProfessionals({ professionals, onViewVendor }: StarProfessionalsProps) {
   const [selectedProfessional, setSelectedProfessional] = useState(0)
 
   if (!professionals.length) return null
@@ -121,19 +120,11 @@ export function StarProfessionals({ professionals, onBookNow, onViewPortfolio }:
                     <p className="text-femfuel-rose font-bold text-lg">{current.price}</p>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="space-y-2">
+                  {/* Action Button */}
+                  <div>
                     <Button
-                      onClick={() => onBookNow?.(current.id)}
+                      onClick={() => onViewVendor?.(current.id)}
                       className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                      disabled={!current.availableToday}
-                    >
-                      {current.availableToday ? "Reservar Hoy ✨" : "Reservar Cita"}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => onViewPortfolio?.(current.id)}
-                      className="w-full border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white transform hover:scale-105 transition-all duration-300"
                     >
                       Ver Portafolio
                     </Button>
@@ -148,7 +139,7 @@ export function StarProfessionals({ professionals, onBookNow, onViewPortfolio }:
                     <div
                       key={index}
                       className="aspect-square relative overflow-hidden group cursor-pointer"
-                      onClick={() => onViewPortfolio?.(current.id)}
+                      onClick={() => onViewVendor?.(current.id)}
                     >
                       <OptimizedImage
                         key={`${current.id}-portfolio-${index}`}

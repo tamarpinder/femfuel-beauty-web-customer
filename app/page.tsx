@@ -437,9 +437,10 @@ export default function HomePage() {
     router.push(`/booking/professional/${professionalId}`)
   }
 
-  const handleViewPortfolio = (professionalId: number) => {
-    console.log("View portfolio:", professionalId)
-    router.push(`/professional/${professionalId}/portfolio`)
+  const handleViewVendor = (professionalId: number) => {
+    console.log("View vendor for professional:", professionalId)
+    // Map professional to vendor - for now using hair-salon-elite for all professionals
+    router.push(`/vendor/hair-salon-elite`)
   }
 
   const handleGetDirections = (locationId: string) => {
@@ -522,8 +523,7 @@ export default function HomePage() {
       {/* Star Professionals */}
       <StarProfessionals 
         professionals={professionals}
-        onBookNow={handleBookProfessional}
-        onViewPortfolio={handleViewPortfolio}
+        onViewVendor={handleViewVendor}
       />
 
       {/* Nearby Beauty */}

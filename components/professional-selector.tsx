@@ -22,6 +22,64 @@ export function ProfessionalSelector({
 }: ProfessionalSelectorProps) {
   const [showPortfolio, setShowPortfolio] = useState<string | null>(null)
 
+  // If no professionals available, show "any available" option
+  if (!professionals || professionals.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
+          <h3 className="text-xl font-bold text-femfuel-dark">
+            👤 Profesionales Disponibles
+          </h3>
+          <p className="text-femfuel-medium">
+            Selecciona tu profesional preferido para tu cita
+          </p>
+        </div>
+
+        <Card className="border-femfuel-rose/20 hover:border-femfuel-rose/40 transition-colors cursor-pointer">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Avatar className="h-16 w-16 border-2 border-femfuel-rose/30">
+                  <AvatarFallback className="bg-femfuel-light text-femfuel-rose text-lg font-bold">
+                    ★
+                  </AvatarFallback>
+                </Avatar>
+                
+                <div className="space-y-2">
+                  <h4 className="text-lg font-bold text-femfuel-dark">
+                    Cualquier profesional disponible
+                  </h4>
+                  <div className="flex items-center gap-3 text-sm">
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="font-medium">Equipo experto</span>
+                    </div>
+                    <span className="text-femfuel-medium">•</span>
+                    <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
+                      ✅ Disponible hoy
+                    </Badge>
+                  </div>
+                  <p className="text-femfuel-medium text-sm">
+                    Te asignaremos el mejor profesional disponible para tu horario
+                  </p>
+                </div>
+              </div>
+              
+              <Button
+                variant="default"
+                className="bg-femfuel-rose hover:bg-femfuel-rose/90"
+                onClick={() => onProfessionalSelect(null)}
+              >
+                Continuar
+                <ChevronRight className="h-4 w-4 ml-2" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   const getAvailabilityStatus = (nextAvailable?: string) => {
     if (!nextAvailable) return { status: "unknown", color: "gray", text: "Sin información" }
     

@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils"
 import {
   getDayAvailability,
   getMultiDayAvailability,
+  getProfessionalDayAvailability,
+  getProfessionalMultiDayAvailability,
   vendorSchedules,
   getDefaultSchedule,
   type DayAvailability,
@@ -21,6 +23,7 @@ import { format, isSameDay, startOfDay } from "date-fns"
 
 interface EnhancedBookingCalendarProps {
   vendorId: string
+  professionalId?: string // Optional professional ID for filtering
   serviceDuration: number // in minutes
   selectedDate?: Date
   selectedTime?: string
@@ -30,6 +33,7 @@ interface EnhancedBookingCalendarProps {
 
 export function EnhancedBookingCalendar({
   vendorId,
+  professionalId,
   serviceDuration,
   selectedDate,
   selectedTime,
@@ -44,9 +48,11 @@ export function EnhancedBookingCalendar({
 
   // Load availability for the next 30 days
   useEffect(() => {
-    const monthlyAvailability = getMultiDayAvailability(vendorId, serviceDuration, new Date(), 30)
+    const monthlyAvailability = professionalId
+      ? getProfessionalMultiDayAvailability(vendorId, professionalId, serviceDuration, new Date(), 30)
+      : getMultiDayAvailability(vendorId, serviceDuration, new Date(), 30)
     setAvailability(monthlyAvailability)
-  }, [vendorId, serviceDuration])
+  }, [vendorId, professionalId, serviceDuration])
 
   // Load time slots when date is selected
   useEffect(() => {
@@ -54,14 +60,16 @@ export function EnhancedBookingCalendar({
       setIsLoadingTimeSlots(true)
       // Simulate loading delay for realism
       setTimeout(() => {
-        const dayAvailability = getDayAvailability(vendorId, serviceDuration, selectedDate)
+        const dayAvailability = professionalId
+          ? getProfessionalDayAvailability(vendorId, professionalId, serviceDuration, selectedDate)
+          : getDayAvailability(vendorId, serviceDuration, selectedDate)
         setCurrentDateAvailability(dayAvailability)
         setIsLoadingTimeSlots(false)
       }, 300)
     } else {
       setCurrentDateAvailability(null)
     }
-  }, [selectedDate, vendorId, serviceDuration])
+  }, [selectedDate, vendorId, professionalId, serviceDuration])
 
   // Create modifiers for the calendar
   const calendarModifiers = useMemo(() => {

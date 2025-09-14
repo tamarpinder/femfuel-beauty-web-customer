@@ -1,4 +1,6 @@
 import { addDays, format, startOfDay, isWeekend, getDay } from 'date-fns'
+import { mockVendors } from "@/data/vendors"
+import type { Professional } from "@/types/vendor"
 
 export interface VendorSchedule {
   vendorId: string
@@ -472,6 +474,104 @@ export function getMultiDayAvailability(
     if (date < startOfDay(new Date())) continue
     
     const dayAvailability = getDayAvailability(vendorId, serviceDuration, date)
+    availability.push(dayAvailability)
+  }
+  
+  return availability
+}
+
+// Professional-specific availability functions
+export function getProfessionalSchedule(vendorId: string, professionalId: string): VendorSchedule | null {
+  const vendor = mockVendors.find(v => v.id === vendorId)
+  const professional = vendor?.professionals?.find(p => p.id === professionalId)
+  
+  if (!professional || !professional.personalSchedule) {
+    return null // Use vendor schedule
+  }
+  
+  // Create a custom schedule based on professional's personal schedule
+  const vendorSchedule = vendorSchedules[vendorId] || getDefaultSchedule()
+  
+  return {
+    ...vendorSchedule,
+    workingDays: professional.personalSchedule.workingDays,
+    workingHours: professional.personalSchedule.workingHours,
+    lunchBreak: professional.personalSchedule.lunchBreak,
+    personalTimeBlocks: professional.personalSchedule.personalTimeBlocks
+  }
+}
+
+// Get professional-specific availability for a single day
+export function getProfessionalDayAvailability(
+  vendorId: string,
+  professionalId: string | null,
+  serviceDuration: number,
+  date: Date
+): DayAvailability {
+  let schedule: VendorSchedule
+  
+  if (professionalId) {
+    const professionalSchedule = getProfessionalSchedule(vendorId, professionalId)
+    schedule = professionalSchedule || vendorSchedules[vendorId] || getDefaultSchedule()
+  } else {
+    // "Any available" professional - use vendor schedule
+    schedule = vendorSchedules[vendorId] || getDefaultSchedule()
+  }
+  
+  const dayOfWeek = getDay(date)
+  
+  // Check if professional/vendor works on this day
+  if (!schedule.workingDays.includes(dayOfWeek)) {
+    return {
+      date,
+      status: 'closed',
+      availableSlots: 0,
+      totalSlots: 0,
+      timeSlots: []
+    }
+  }
+  
+  const baseTimeSlots = generateTimeSlots(schedule, serviceDuration, date)
+  const timeSlots = simulateBookingDensity(date, baseTimeSlots)
+  
+  const totalSlots = timeSlots.length
+  const availableSlots = timeSlots.filter(slot => slot.available).length
+  
+  let status: DayAvailability['status']
+  if (availableSlots === 0) {
+    status = 'full'
+  } else if (availableSlots <= 3) {
+    status = 'limited'
+  } else {
+    status = 'available'
+  }
+  
+  return {
+    date,
+    status,
+    availableSlots,
+    totalSlots,
+    timeSlots
+  }
+}
+
+// Get professional-specific multi-day availability
+export function getProfessionalMultiDayAvailability(
+  vendorId: string,
+  professionalId: string | null,
+  serviceDuration: number,
+  startDate: Date = new Date(),
+  days: number = 30
+): DayAvailability[] {
+  const availability: DayAvailability[] = []
+  
+  for (let i = 0; i < days; i++) {
+    const date = addDays(startDate, i)
+    
+    // Skip past dates
+    if (date < startOfDay(new Date())) continue
+    
+    const dayAvailability = getProfessionalDayAvailability(vendorId, professionalId, serviceDuration, date)
     availability.push(dayAvailability)
   }
   

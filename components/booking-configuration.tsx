@@ -265,6 +265,7 @@ export function BookingConfiguration({
         <CardContent>
           <EnhancedBookingCalendar
             vendorId={vendorId}
+            professionalId={selectedProfessional?.id}
             serviceDuration={totalDuration} // Use total duration including add-ons
             selectedDate={selectedDate}
             selectedTime={selectedTime}

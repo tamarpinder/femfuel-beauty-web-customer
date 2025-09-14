@@ -180,7 +180,7 @@ export function NearbyBeauty({
                 <div className="space-y-2 mt-auto">
                   <Button
                     onClick={() => onBookLocation?.(location.id)}
-                    className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white text-sm"
+                    className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-femfuel-rose/25 active:scale-95"
                     disabled={!location.openNow}
                   >
                     {location.openNow ? "Reservar Ahora" : "Ver Horarios"}
@@ -191,7 +191,7 @@ export function NearbyBeauty({
                       variant="outline"
                       size="sm"
                       onClick={() => onGetDirections?.(location.id)}
-                      className="border-femfuel-rose/20 text-femfuel-medium hover:bg-femfuel-rose hover:text-white"
+                      className="glassmorphism-button-perfect transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95 text-xs"
                     >
                       <Navigation className="h-3 w-3 mr-1" />
                       Direcciones
@@ -200,7 +200,7 @@ export function NearbyBeauty({
                       variant="outline"
                       size="sm"
                       onClick={() => onCallLocation?.(location.phone)}
-                      className="border-femfuel-rose/20 text-femfuel-medium hover:bg-femfuel-rose hover:text-white"
+                      className="glassmorphism-button-perfect transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95 text-xs"
                     >
                       <Phone className="h-3 w-3 mr-1" />
                       Llamar
@@ -214,7 +214,7 @@ export function NearbyBeauty({
                     serviceContext={location.featuredService.name}
                     variant="inline"
                     size="sm"
-                    className="w-full bg-green-500 hover:bg-green-600 text-white text-sm"
+                    className="w-full bg-green-500 hover:bg-green-600 text-white text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 active:scale-95"
                   >
                     <MessageCircle className="h-3 w-3 mr-1" />
                     Chatear

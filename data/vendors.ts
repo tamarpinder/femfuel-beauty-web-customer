@@ -828,6 +828,27 @@ export const mockVendors: Vendor[] = [
           workingHours: { start: "10:00", end: "18:00" },
           lunchBreak: { start: "14:00", end: "15:00" }
         }
+      },
+      {
+        id: "maria-fernandez",
+        name: "María Fernández",
+        image: "/professionals/portraits/hair-stylist-maria.png",
+        rating: 4.5,
+        reviewCount: 92,
+        yearsExperience: 6,
+        monthlyBookings: 78,
+        specialties: ["Cortes Clásicos", "Peinados para Eventos", "Cuidado Capilar"],
+        nextAvailable: "Hoy 4:00 PM",
+        bio: "Estilista experimentada especializada en cortes clásicos y peinados elegantes para eventos. Experta en cuidado y mantenimiento capilar.",
+        recommendedAddons: [
+          { id: "classic-styling", name: "Peinado Clásico", price: 350, duration: 30 },
+          { id: "hair-care-treatment", name: "Tratamiento de Cuidado", price: 400, duration: 25 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6],
+          workingHours: { start: "09:00", end: "17:00" },
+          lunchBreak: { start: "13:00", end: "14:00" }
+        }
       }
     ],
     businessHours: {
@@ -2112,7 +2133,7 @@ export const mockVendors: Vendor[] = [
       {
         id: "stephanie-arias",
         name: "Stephanie Arias",
-        image: "/professionals/portraits/lash-specialist-camila.png",
+        image: "/professionals/portraits/lash-brow-liliana.png",
         rating: 4.7,
         reviewCount: 103,
         yearsExperience: 5,

@@ -50,12 +50,20 @@ export interface Service {
 interface ServiceCardProps {
   service: Service
   layout?: "horizontal" | "vertical"
+  vendorId?: string
+  vendorName?: string
+  vendorRating?: number
   onViewProviders?: (serviceId: string) => void
   onBook?: (serviceId: string) => void
 }
 
-export function ServiceCard({ service, layout = "vertical", onViewProviders, onBook }: ServiceCardProps) {
+export function ServiceCard({ service, layout = "vertical", vendorId, vendorName, vendorRating, onViewProviders, onBook }: ServiceCardProps) {
   const [showBookingModal, setShowBookingModal] = useState(false)
+
+  // Use explicit vendor props or fallback to service featuredProvider
+  const effectiveVendorId = vendorId || service.featuredProvider?.id
+  const effectiveVendorName = vendorName || service.featuredProvider?.name
+  const effectiveVendorRating = vendorRating || service.rating
 
   const handleViewProviders = () => {
     onViewProviders?.(service.id)
@@ -134,6 +142,9 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
           isOpen={showBookingModal}
           onClose={() => setShowBookingModal(false)}
           service={service}
+          vendorId={effectiveVendorId}
+          vendorName={effectiveVendorName}
+          vendorRating={effectiveVendorRating}
           onBookingComplete={handleBookingComplete}
         />
       </>
@@ -203,6 +214,9 @@ export function ServiceCard({ service, layout = "vertical", onViewProviders, onB
         isOpen={showBookingModal}
         onClose={() => setShowBookingModal(false)}
         service={service}
+        vendorId={effectiveVendorId}
+        vendorName={effectiveVendorName}
+        vendorRating={effectiveVendorRating}
         onBookingComplete={handleBookingComplete}
       />
     </>

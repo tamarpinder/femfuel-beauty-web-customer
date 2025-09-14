@@ -443,6 +443,9 @@ export default function VendorPage() {
             },
             availableProviders: 1
           }}
+          vendorId={vendor.id}
+          vendorName={vendor.name}
+          vendorRating={vendor.rating}
           onBookingComplete={handleBookingComplete}
         />
       )}

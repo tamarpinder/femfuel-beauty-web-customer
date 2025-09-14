@@ -200,26 +200,19 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             </div>
 
             {/* Service Info */}
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={service.image || "/placeholder.svg?height=64&width=64&query=beauty service"}
-                alt={service.name}
-                className="w-16 h-16 rounded-xl object-cover border-2 border-femfuel-light"
-              />
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-femfuel-dark mb-1">{service.name}</h3>
-                <p className="text-sm text-femfuel-medium mb-2">
-                  Manicure profesional con cuidado de cutículas
-                </p>
-                <div className="flex items-center gap-4">
-                  <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {service.duration} min
-                  </Badge>
-                  <span className="text-xl font-bold text-femfuel-rose">
-                    {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
-                  </span>
-                </div>
+            <div className="mb-4">
+              <h3 className="text-lg font-bold text-femfuel-dark mb-1">{service.name}</h3>
+              <p className="text-sm text-femfuel-medium mb-2">
+                Manicure profesional con cuidado de cutículas
+              </p>
+              <div className="flex items-center gap-4">
+                <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
+                  <Clock className="h-3 w-3 mr-1" />
+                  {service.duration} min
+                </Badge>
+                <span className="text-xl font-bold text-femfuel-rose">
+                  {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
+                </span>
               </div>
             </div>
 

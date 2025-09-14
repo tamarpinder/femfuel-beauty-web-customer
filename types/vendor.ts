@@ -33,6 +33,7 @@ export interface Vendor {
     max: number
   }
   services: VendorService[]
+  professionals?: Professional[]
   businessHours: {
     [key: string]: {
       open: string
@@ -65,4 +66,30 @@ export interface ServiceAddon {
   name: string
   price: number
   duration?: number
+}
+
+export interface Professional {
+  id: string
+  name: string
+  image?: string
+  rating: number
+  reviewCount: number
+  yearsExperience: number
+  monthlyBookings: number
+  specialties: string[]
+  recommendedAddons: ServiceAddon[]
+  bio?: string
+  isTopRated?: boolean
+  nextAvailable?: string
+  personalSchedule?: {
+    workingDays: number[] // 0 = Sunday, 1 = Monday, etc.
+    workingHours: { start: string; end: string }
+    lunchBreak?: { start: string; end: string }
+    personalTimeBlocks?: Array<{
+      day: number
+      start: string
+      end: string
+      reason: string
+    }>
+  }
 }

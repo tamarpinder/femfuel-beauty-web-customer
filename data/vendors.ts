@@ -154,6 +154,78 @@ export const mockVendors: Vendor[] = [
         ]
       }
     ],
+    professionals: [
+      {
+        id: "maria-rodriguez",
+        name: "Maria Rodriguez",
+        image: "/professionals/maria-rodriguez.jpg",
+        rating: 4.9,
+        reviewCount: 89,
+        yearsExperience: 5,
+        monthlyBookings: 89,
+        specialties: ["Nail Art", "Gel Premium", "Diseños 3D"],
+        isTopRated: true,
+        nextAvailable: "Hoy 2:00 PM",
+        bio: "Especialista en nail art artístico con más de 5 años de experiencia. Conocida por sus diseños únicos y acabados perfectos.",
+        recommendedAddons: [
+          { id: "nail-art-premium", name: "Nail Art by Maria", price: 350, duration: 20 },
+          { id: "3d-designs", name: "Diseños 3D", price: 500, duration: 25 },
+          { id: "french-perfecto", name: "French Perfecto", price: 200, duration: 10 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+          workingHours: { start: "09:00", end: "18:00" },
+          lunchBreak: { start: "13:00", end: "14:00" },
+          personalTimeBlocks: [
+            { day: 6, start: "16:00", end: "18:00", reason: "Cursos de actualización" }
+          ]
+        }
+      },
+      {
+        id: "carmen-santana",
+        name: "Carmen Santana",
+        image: "/professionals/carmen-santana.jpg",
+        rating: 4.7,
+        reviewCount: 62,
+        yearsExperience: 3,
+        monthlyBookings: 67,
+        specialties: ["Manicure Francesa", "Cuidado de Cutículas", "Esmaltado Clásico"],
+        nextAvailable: "Hoy 3:30 PM",
+        bio: "Técnica especializada en manicures clásicos y cuidado de cutículas. Perfecta para quien busca elegancia y profesionalismo.",
+        recommendedAddons: [
+          { id: "french-tips-carmen", name: "French Tips Perfecto", price: 200, duration: 15 },
+          { id: "cuticle-care", name: "Tratamiento de Cutículas", price: 150, duration: 10 },
+          { id: "hand-massage", name: "Masaje de Manos", price: 250, duration: 15 }
+        ],
+        personalSchedule: {
+          workingDays: [1, 2, 3, 4, 5], // Mon-Fri
+          workingHours: { start: "10:00", end: "17:00" },
+          lunchBreak: { start: "12:30", end: "13:30" }
+        }
+      },
+      {
+        id: "laura-perez",
+        name: "Laura Pérez",
+        image: "/professionals/laura-perez.jpg",
+        rating: 4.8,
+        reviewCount: 74,
+        yearsExperience: 4,
+        monthlyBookings: 45,
+        specialties: ["Pedicure Spa", "Tratamientos Relajantes", "Masajes"],
+        nextAvailable: "Mañana 10:00 AM",
+        bio: "Especialista en pedicures spa y tratamientos relajantes. Experta en crear experiencias de bienestar completas.",
+        recommendedAddons: [
+          { id: "foot-massage-extended", name: "Masaje de Pies Extendido", price: 400, duration: 20 },
+          { id: "spa-treatment", name: "Tratamiento Spa Completo", price: 350, duration: 30 },
+          { id: "reflexology", name: "Reflexología", price: 300, duration: 25 }
+        ],
+        personalSchedule: {
+          workingDays: [2, 3, 4, 5, 6], // Tue-Sat
+          workingHours: { start: "10:00", end: "18:00" },
+          lunchBreak: { start: "14:00", end: "15:00" }
+        }
+      }
+    ],
     businessHours: {
       monday: { open: "9:00", close: "18:00" },
       tuesday: { open: "9:00", close: "18:00" },

@@ -10,9 +10,12 @@ import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { EnhancedBookingCalendar } from "@/components/enhanced-booking-calendar"
+import { ProfessionalSelector } from "@/components/professional-selector"
+import { BookingConfiguration } from "@/components/booking-configuration"
 import { getMultiDayAvailability } from "@/lib/vendor-scheduling"
 import { format } from "date-fns"
-import type { VendorService } from "@/types/vendor"
+import { mockVendors } from "@/data/vendors"
+import type { VendorService, Professional, ServiceAddon } from "@/types/vendor"
 import type { Service } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
 
@@ -26,26 +29,34 @@ interface BookingModalProps {
   onBookingComplete?: (booking: any) => void
 }
 
-type BookingStep = "datetime" | "details" | "payment" | "confirmation"
+type BookingStep = "professional" | "configuration" | "details" | "payment" | "confirmation"
 
 interface BookingData {
   date: Date | undefined
   time: string
+  professional: Professional | null
+  selectedAddons: ServiceAddon[]
   notes: string
   paymentMethod: "card" | "cash"
 }
 
 export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, vendorId, onBookingComplete }: BookingModalProps) {
   const { user } = useAuth()
-  const [currentStep, setCurrentStep] = useState<BookingStep>("datetime")
+  const [currentStep, setCurrentStep] = useState<BookingStep>("professional")
   const [bookingData, setBookingData] = useState<BookingData>({
     date: undefined,
     time: "",
+    professional: null,
+    selectedAddons: [],
     notes: "",
     paymentMethod: "card",
   })
   const [isLoading, setIsLoading] = useState(false)
   const [quickAvailability, setQuickAvailability] = useState<Array<{date: Date, time: string}>>([])
+
+  // Get vendor data for professionals
+  const vendor = mockVendors.find(v => v.id === vendorId)
+  const professionals = vendor?.professionals || []
 
   // Load quick availability preview
   useEffect(() => {
@@ -86,8 +97,18 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     setBookingData((prev) => ({ ...prev, time }))
   }
 
+  const handleProfessionalSelect = (professional: Professional | null) => {
+    setBookingData((prev) => ({ ...prev, professional }))
+  }
+
+  const handleAddonsChange = (selectedAddons: ServiceAddon[]) => {
+    setBookingData((prev) => ({ ...prev, selectedAddons }))
+  }
+
   const handleNext = () => {
-    if (currentStep === "datetime" && bookingData.date && bookingData.time) {
+    if (currentStep === "professional") {
+      setCurrentStep("configuration")
+    } else if (currentStep === "configuration" && bookingData.date && bookingData.time) {
       setCurrentStep("details")
     } else if (currentStep === "details") {
       setCurrentStep("payment")
@@ -97,8 +118,10 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   }
 
   const handleBack = () => {
-    if (currentStep === "details") {
-      setCurrentStep("datetime")
+    if (currentStep === "configuration") {
+      setCurrentStep("professional")
+    } else if (currentStep === "details") {
+      setCurrentStep("configuration")
     } else if (currentStep === "payment") {
       setCurrentStep("details")
     } else if (currentStep === "confirmation") {
@@ -166,10 +189,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   }
 
   const resetModal = () => {
-    setCurrentStep("datetime")
+    setCurrentStep("professional")
     setBookingData({
       date: undefined,
       time: "",
+      professional: null,
+      selectedAddons: [],
       notes: "",
       paymentMethod: "card",
     })
@@ -267,19 +292,28 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         </Card>
 
         {/* Step Content */}
-        {currentStep === "datetime" && (
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-femfuel-dark mb-4">Selecciona fecha y hora</h3>
+        {currentStep === "professional" && (
+          <ProfessionalSelector
+            professionals={professionals}
+            selectedProfessionalId={bookingData.professional?.id}
+            onProfessionalSelect={handleProfessionalSelect}
+          />
+        )}
 
-            <EnhancedBookingCalendar
-              vendorId={vendorId || 'beauty-studio-rd'}
-              serviceDuration={typeof service?.duration === 'number' ? service.duration : parseInt(service?.duration?.toString() || '60')}
-              selectedDate={bookingData.date}
-              selectedTime={bookingData.time}
-              onDateSelect={handleDateSelect}
-              onTimeSelect={handleTimeSelect}
-            />
-          </div>
+        {currentStep === "configuration" && (
+          <BookingConfiguration
+            selectedProfessional={bookingData.professional}
+            vendorId={vendorId || 'beauty-studio-rd'}
+            serviceDuration={typeof service?.duration === 'number' ? service.duration : parseInt(service?.duration?.toString() || '60')}
+            basePrice={typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString() || '0')}
+            selectedDate={bookingData.date}
+            selectedTime={bookingData.time}
+            selectedAddons={bookingData.selectedAddons}
+            onDateSelect={handleDateSelect}
+            onTimeSelect={handleTimeSelect}
+            onAddonsChange={handleAddonsChange}
+            onProfessionalChange={() => setCurrentStep("professional")}
+          />
         )}
 
         {currentStep === "details" && (
@@ -464,13 +498,13 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         {/* Action Buttons */}
         {currentStep !== "confirmation" && (
           <div className="flex justify-between pt-6">
-            <Button variant="outline" onClick={currentStep === "datetime" ? handleClose : handleBack}>
-              {currentStep === "datetime" ? "Cancelar" : "Atrás"}
+            <Button variant="outline" onClick={currentStep === "professional" ? handleClose : handleBack}>
+              {currentStep === "professional" ? "Cancelar" : "Atrás"}
             </Button>
             <Button
               className="bg-femfuel-rose hover:bg-[#9f1853]"
               onClick={handleNext}
-              disabled={(currentStep === "datetime" && (!bookingData.date || !bookingData.time)) || isLoading}
+              disabled={(currentStep === "configuration" && (!bookingData.date || !bookingData.time)) || isLoading}
             >
               {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
             </Button>

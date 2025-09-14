@@ -382,7 +382,7 @@ export default function HomePage() {
       "Pestañas": "lashes"
     }
     const categoryId = categorySlugMap[categoryName] || categoryName.toLowerCase()
-    router.push(`/services/${categoryId}`)
+    router.push(`/services?category=${categoryId}`)
   }
 
   const handleGetThisLook = (serviceId: string, lookName: string, vendorName: string) => {

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, Search, Filter, MapPin, Clock, Heart, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,9 +34,12 @@ interface MarketplaceService {
 
 export default function ServicesPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const categoryFromUrl = searchParams.get('category')
+  
   const [services, setServices] = useState<MarketplaceService[]>([])
   const [filteredServices, setFilteredServices] = useState<MarketplaceService[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [selectedCategory, setSelectedCategory] = useState<string>(categoryFromUrl || "all")
   const [searchQuery, setSearchQuery] = useState("")
   const [loading, setLoading] = useState(true)
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
@@ -64,6 +67,13 @@ export default function ServicesPage() {
     }
     loadServices()
   }, [])
+
+  // Update category when URL parameter changes
+  useEffect(() => {
+    if (categoryFromUrl) {
+      setSelectedCategory(categoryFromUrl)
+    }
+  }, [categoryFromUrl])
 
   // Filter services when category, search, or filters change
   useEffect(() => {

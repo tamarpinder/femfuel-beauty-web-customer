@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useEffect, useState, useCallback } from "react"
+import { toast } from "sonner"
 import { getMarketplaceServices, getVendors } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type Service } from "@/components/service-card"
@@ -388,7 +389,7 @@ export default function HomePage() {
     
     if (!vendor) {
       console.error("Could not find transformation vendor:", vendorName)
-      alert("Lo sentimos, no pudimos encontrar este proveedor. Por favor, intenta más tarde.")
+      toast.error("Lo sentimos, no pudimos encontrar este proveedor. Por favor, intenta más tarde.")
       return
     }
     
@@ -408,7 +409,7 @@ export default function HomePage() {
     
     if (!serviceData) {
       console.error("Unknown transformation service:", lookName)
-      alert("Lo sentimos, no pudimos encontrar este servicio. Por favor, intenta más tarde.")
+      toast.error("Lo sentimos, no pudimos encontrar este servicio. Por favor, intenta más tarde.")
       return
     }
     
@@ -428,6 +429,7 @@ export default function HomePage() {
     setSelectedVendor(vendor)
     setSelectedService(transformationService)
     setShowBookingModal(true)
+    toast.success(`¡Perfecto! Reserva tu ${transformationService.name} con ${vendor.name}`)
   }
 
   const handleBookProfessional = (professionalId: number) => {

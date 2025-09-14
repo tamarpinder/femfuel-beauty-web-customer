@@ -49,8 +49,10 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   // Load quick availability preview
   useEffect(() => {
+    
     if (service && vendorId) {
       const serviceDuration = typeof service.duration === 'number' ? service.duration : parseInt(service.duration?.toString() || '60')
+      
       const availability = getMultiDayAvailability(vendorId, serviceDuration, new Date(), 7)
       
       const quickSlots: Array<{date: Date, time: string}> = []

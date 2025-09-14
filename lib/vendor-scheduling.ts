@@ -160,6 +160,136 @@ export const vendorSchedules: Record<string, VendorSchedule> = {
       { day: 1, start: '13:00', end: '14:00', reason: 'Lunch break' },
       { day: 6, start: '14:00', end: '16:00', reason: 'Saturday family time' }
     ]
+  },
+
+  // Additional vendors from vendor data
+  'spa-paradise': {
+    vendorId: 'spa-paradise',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '09:00', end: '20:00' },
+    lunchBreak: { start: '13:00', end: '14:00' },
+    bufferMinutes: 20,
+    maxDailyBookings: 22
+  },
+
+  'lash-studio-dr': {
+    vendorId: 'lash-studio-dr',
+    type: 'independent',
+    workingDays: [2, 3, 4, 5, 6], // Tue-Sat
+    workingHours: { start: '10:00', end: '19:00' },
+    lunchBreak: { start: '14:00', end: '15:00' },
+    bufferMinutes: 15,
+    maxDailyBookings: 18
+  },
+
+  'nails-express-rd': {
+    vendorId: 'nails-express-rd',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6, 0], // Open 7 days
+    workingHours: { start: '08:00', end: '21:00' },
+    lunchBreak: { start: '12:00', end: '13:00' },
+    bufferMinutes: 10,
+    maxDailyBookings: 32
+  },
+
+  'luxury-nails-spa': {
+    vendorId: 'luxury-nails-spa',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '09:30', end: '19:30' },
+    lunchBreak: { start: '13:30', end: '14:30' },
+    bufferMinutes: 20,
+    maxDailyBookings: 20
+  },
+
+  'makeup-studio-pro': {
+    vendorId: 'makeup-studio-pro',
+    type: 'independent',
+    workingDays: [3, 4, 5, 6, 0], // Wed-Sun
+    workingHours: { start: '11:00', end: '20:00' },
+    bufferMinutes: 30,
+    maxDailyBookings: 12,
+    personalTimeBlocks: [
+      { day: 0, start: '18:00', end: '20:00', reason: 'Sunday wind down' }
+    ]
+  },
+
+  'belleza-natural-makeup': {
+    vendorId: 'belleza-natural-makeup',
+    type: 'independent',
+    workingDays: [1, 2, 4, 5, 6], // Mon, Tue, Thu-Sat
+    workingHours: { start: '10:00', end: '18:00' },
+    bufferMinutes: 25,
+    maxDailyBookings: 14
+  },
+
+  'zen-wellness-center': {
+    vendorId: 'zen-wellness-center',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '08:30', end: '19:00' },
+    lunchBreak: { start: '12:30', end: '14:00' },
+    bufferMinutes: 30,
+    maxDailyBookings: 16
+  },
+
+  'royal-spa-dominicano': {
+    vendorId: 'royal-spa-dominicano',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6, 0], // Open 7 days
+    workingHours: { start: '09:00', end: '21:00' },
+    lunchBreak: { start: '14:00', end: '15:00' },
+    bufferMinutes: 25,
+    maxDailyBookings: 24
+  },
+
+  'trendy-hair-studio': {
+    vendorId: 'trendy-hair-studio',
+    type: 'independent',
+    workingDays: [2, 3, 4, 5, 6], // Tue-Sat
+    workingHours: { start: '09:00', end: '18:00' },
+    lunchBreak: { start: '13:00', end: '14:00' },
+    bufferMinutes: 20,
+    maxDailyBookings: 15
+  },
+
+  'cabello-y-estilo': {
+    vendorId: 'cabello-y-estilo',
+    type: 'independent',
+    workingDays: [1, 3, 4, 5, 6], // Mon, Wed-Sat
+    workingHours: { start: '10:00', end: '17:00' },
+    bufferMinutes: 25,
+    maxDailyBookings: 12
+  },
+
+  'lashes-and-brows-rd': {
+    vendorId: 'lashes-and-brows-rd',
+    type: 'independent',
+    workingDays: [2, 3, 4, 5, 6], // Tue-Sat
+    workingHours: { start: '10:30', end: '18:30' },
+    lunchBreak: { start: '14:30', end: '15:30' },
+    bufferMinutes: 15,
+    maxDailyBookings: 16
+  },
+
+  'bella-mirada-studio': {
+    vendorId: 'bella-mirada-studio',
+    type: 'independent',
+    workingDays: [1, 2, 4, 5, 6], // Mon, Tue, Thu-Sat
+    workingHours: { start: '11:00', end: '19:00' },
+    bufferMinutes: 20,
+    maxDailyBookings: 14
+  },
+
+  'belleza-dominicana-salon': {
+    vendorId: 'belleza-dominicana-salon',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '08:00', end: '20:00' },
+    lunchBreak: { start: '12:00', end: '13:30' },
+    bufferMinutes: 15,
+    maxDailyBookings: 28
   }
 }
 
@@ -242,24 +372,27 @@ export function simulateBookingDensity(date: Date, timeSlots: TimeSlot[]): TimeS
   return timeSlots.map(slot => {
     if (!slot.available) return slot
     
-    let bookingProbability = 0.3 // Base 30% booking rate
+    let bookingProbability = 0.15 // Base 15% booking rate (reduced from 30%)
     
     // Weekend premium times are busier
     if (dayOfWeek === 5 || dayOfWeek === 6) { // Fri-Sat
       const hour = parseInt(slot.time.split(':')[0])
-      if (hour >= 17) bookingProbability = 0.7 // Evening slots
-      else if (hour >= 14) bookingProbability = 0.5 // Afternoon
+      if (hour >= 17) bookingProbability = 0.35 // Evening slots (reduced from 70%)
+      else if (hour >= 14) bookingProbability = 0.25 // Afternoon (reduced from 50%)
     }
     
     // Popular times (11am-1pm, 5pm-7pm)
     const hour = parseInt(slot.time.split(':')[0])
     if ((hour >= 11 && hour <= 13) || (hour >= 17 && hour <= 19)) {
-      bookingProbability += 0.2
+      bookingProbability += 0.1 // Reduced from 0.2
     }
     
     // Closer dates are more likely to be booked
-    if (daysFromNow <= 2) bookingProbability += 0.3
-    else if (daysFromNow <= 7) bookingProbability += 0.1
+    if (daysFromNow <= 2) bookingProbability += 0.2 // Reduced from 0.3
+    else if (daysFromNow <= 7) bookingProbability += 0.05 // Reduced from 0.1
+    
+    // Cap maximum booking probability at 50%
+    bookingProbability = Math.min(bookingProbability, 0.5)
     
     // Random booking simulation
     const isBooked = Math.random() < bookingProbability
@@ -282,17 +415,8 @@ export function getDayAvailability(
   serviceDuration: number,
   date: Date
 ): DayAvailability {
-  const schedule = vendorSchedules[vendorId]
+  const schedule = vendorSchedules[vendorId] || getDefaultSchedule()
   
-  if (!schedule) {
-    return {
-      date,
-      status: 'closed',
-      availableSlots: 0,
-      totalSlots: 0,
-      timeSlots: []
-    }
-  }
   
   const dayOfWeek = getDay(date)
   
@@ -338,6 +462,7 @@ export function getMultiDayAvailability(
   startDate: Date = new Date(),
   days: number = 30
 ): DayAvailability[] {
+  
   const availability: DayAvailability[] = []
   
   for (let i = 0; i < days; i++) {
@@ -346,7 +471,8 @@ export function getMultiDayAvailability(
     // Skip past dates
     if (date < startOfDay(new Date())) continue
     
-    availability.push(getDayAvailability(vendorId, serviceDuration, date))
+    const dayAvailability = getDayAvailability(vendorId, serviceDuration, date)
+    availability.push(dayAvailability)
   }
   
   return availability

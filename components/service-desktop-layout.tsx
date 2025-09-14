@@ -66,7 +66,7 @@ export function ServiceDesktopLayout({
 }: ServiceDesktopLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Split Screen Layout */}
         <div className="grid grid-cols-5 gap-6 h-screen">
           {/* Left Panel - Service Information */}

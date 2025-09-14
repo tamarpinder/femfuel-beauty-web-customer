@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import { Calendar, Clock, MapPin, Phone, CreditCard, Check } from "lucide-react"
+import { Calendar, Clock, MapPin, Phone, CreditCard, Check, MessageCircle, Navigation, Star, User, Gift, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -57,6 +57,14 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   // Get vendor data for professionals
   const vendor = mockVendors.find(v => v.id === vendorId)
   const professionals = vendor?.professionals || []
+
+  // Calculate pricing
+  const basePrice = typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString() || '0')
+  const totalAddonPrice = bookingData.selectedAddons.reduce((sum, addon) => sum + addon.price, 0)
+  const totalAddonDuration = bookingData.selectedAddons.reduce((sum, addon) => sum + (addon.duration || 0), 0)
+  const serviceDuration = typeof service?.duration === 'number' ? service.duration : parseInt(service?.duration?.toString() || '60')
+  const totalDuration = serviceDuration + totalAddonDuration
+  const totalPrice = basePrice + totalAddonPrice
 
   // Load quick availability preview
   useEffect(() => {
@@ -318,64 +326,319 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {currentStep === "details" && (
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-femfuel-dark">Detalles de la reserva</h3>
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-bold text-femfuel-dark">
+                ✨ Detalles de tu Reserva
+              </h3>
+              <p className="text-femfuel-medium">
+                Revisa y confirma todos los detalles de tu cita
+              </p>
+            </div>
 
-            {/* Booking Summary */}
-            <Card>
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-dark">
-                      {bookingData.date?.toLocaleDateString("es-DO", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-dark">{bookingData.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-dark">
-                      {'featuredProvider' in service && service.featuredProvider ? service.featuredProvider.name : 'Proveedor'}
-                    </span>
+            {/* Vendor Information */}
+            <Card className="border-femfuel-rose/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  🏪 {vendorName || vendor?.name || "Salon & Ubicación"}
+                  {vendorRating && (
+                    <Badge className="bg-yellow-100 text-yellow-800 ml-auto">
+                      <Star className="h-3 w-3 mr-1 fill-current" />
+                      {vendorRating}
+                    </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <MapPin className="h-4 w-4 text-femfuel-medium" />
+                        <span className="text-femfuel-dark">
+                          {vendor?.location?.address || "Av. Winston Churchill 1234"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Navigation className="h-4 w-4 text-femfuel-medium" />
+                        <span className="text-femfuel-medium">
+                          {vendor?.location?.district || "Piantini"} • {vendor?.location?.distance || "1.2km"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Phone className="h-4 w-4 text-femfuel-medium" />
+                        <span className="text-femfuel-medium">
+                          {vendor?.contact?.phone || "+1 809-555-0123"}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex items-center gap-2"
+                        onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(vendor?.location?.address || "Av. Winston Churchill 1234, Santo Domingo")}`, '_blank')}
+                      >
+                        <MapPin className="h-4 w-4" />
+                        Ver en Mapa
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex items-center gap-2"
+                        onClick={() => window.open(`https://wa.me/${vendor?.contact?.whatsapp?.replace(/[^\d]/g, '') || "18095550123"}?text=Hola, tengo una cita reservada`, '_blank')}
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        💬 Chat
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Customer Info */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Información del cliente</CardTitle>
+            {/* Selected Professional */}
+            {bookingData.professional && (
+              <Card className="border-femfuel-purple/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    👤 Tu Profesional
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-femfuel-light rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-femfuel-rose" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-femfuel-dark">{bookingData.professional.name}</h4>
+                        <div className="flex items-center gap-3 text-sm text-femfuel-medium">
+                          <div className="flex items-center gap-1">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span>{bookingData.professional.rating}</span>
+                          </div>
+                          <span>•</span>
+                          <span>{bookingData.professional.yearsExperience}+ años exp.</span>
+                        </div>
+                        <div className="text-xs text-femfuel-medium mt-1">
+                          Especialidades: {bookingData.professional.specialties.slice(0, 2).join(', ')}
+                        </div>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setCurrentStep("professional")}
+                    >
+                      Cambiar profesional
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Appointment Details */}
+            <Card className="border-green-200 bg-green-50">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg text-green-800">
+                  📅 Cita Confirmada
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  <p className="text-femfuel-dark">{user?.name}</p>
-                  <p className="text-femfuel-medium">{user?.email}</p>
-                  <p className="text-femfuel-medium">{user?.phone}</p>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-green-600" />
+                        <span className="font-medium text-green-800">
+                          {bookingData.date?.toLocaleDateString("es-DO", {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-green-600" />
+                        <span className="font-medium text-green-800">
+                          {bookingData.time} - {
+                            // Calculate end time
+                            (() => {
+                              if (!bookingData.time) return ''
+                              const [hours, minutes] = bookingData.time.split(':').map(Number)
+                              const endMinutes = hours * 60 + minutes + totalDuration
+                              const endHours = Math.floor(endMinutes / 60)
+                              const endMins = endMinutes % 60
+                              return `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`
+                            })()
+                          }
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="text-right">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          if (!bookingData.date || !bookingData.time) return
+                          const startDate = new Date(bookingData.date)
+                          const [hours, minutes] = bookingData.time.split(":").map(Number)
+                          startDate.setHours(hours, minutes)
+                          const endDate = new Date(startDate)
+                          endDate.setMinutes(endDate.getMinutes() + totalDuration)
+                          
+                          const event = {
+                            title: `${service?.name}${bookingData.professional ? ` - ${bookingData.professional.name}` : ''}`,
+                            start: startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
+                            end: endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
+                            description: `Servicio de belleza reservado a través de FemFuel Beauty`,
+                          }
+                          
+                          const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}`
+                          window.open(calendarUrl, "_blank")
+                        }}
+                      >
+                        📅 Agregar al calendario
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Services & Add-ons */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center justify-between text-lg">
+                  💅 Servicios y Complementos
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setCurrentStep("configuration")}
+                  >
+                    Modificar
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Base Service */}
+                  <div className="flex items-center justify-between p-3 bg-femfuel-light/30 rounded-lg">
+                    <div>
+                      <h5 className="font-medium text-femfuel-dark">{service?.name}</h5>
+                      <p className="text-sm text-femfuel-medium">{serviceDuration} minutos</p>
+                    </div>
+                    <span className="font-bold text-femfuel-rose">
+                      RD${basePrice.toLocaleString()}
+                    </span>
+                  </div>
+
+                  {/* Add-ons */}
+                  {bookingData.selectedAddons.map((addon) => (
+                    <div key={addon.id} className="flex items-center justify-between p-3 border border-femfuel-purple/20 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <Gift className="h-4 w-4 text-femfuel-purple" />
+                        <div>
+                          <h6 className="font-medium text-femfuel-dark">{addon.name}</h6>
+                          <p className="text-sm text-femfuel-medium">
+                            +{addon.duration || 0} min
+                            {bookingData.professional && bookingData.professional.recommendedAddons.some(ra => ra.id === addon.id) && 
+                              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+                                ⭐ Recomendado por {bookingData.professional.name}
+                              </span>
+                            }
+                          </p>
+                        </div>
+                      </div>
+                      <span className="font-bold text-femfuel-purple">
+                        +RD${addon.price.toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+
+                  {/* Total */}
+                  <div className="border-t pt-4">
+                    <div className="flex items-center justify-between text-lg">
+                      <div>
+                        <span className="font-bold text-femfuel-dark">Total</span>
+                        <p className="text-sm text-femfuel-medium">
+                          Duración total: {totalDuration} minutos
+                        </p>
+                      </div>
+                      <span className="font-bold text-femfuel-rose text-xl">
+                        RD${totalPrice.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Notes */}
-            <div>
-              <Label htmlFor="notes" className="text-femfuel-dark">
-                Notas adicionales (opcional)
-              </Label>
-              <Textarea
-                id="notes"
-                placeholder="Alguna preferencia especial o comentario..."
-                value={bookingData.notes}
-                onChange={(e) => setBookingData((prev) => ({ ...prev, notes: e.target.value }))}
-                className="mt-2"
-              />
-            </div>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">📝 Solicitudes Especiales</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Textarea
+                  id="notes"
+                  placeholder="Alergias, preferencias de color, estilo específico, etc."
+                  value={bookingData.notes}
+                  onChange={(e) => setBookingData((prev) => ({ ...prev, notes: e.target.value }))}
+                  className="min-h-[100px]"
+                />
+              </CardContent>
+            </Card>
+
+            {/* Preparation Tips */}
+            <Card className="border-blue-200 bg-blue-50">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg text-blue-800">
+                  💡 Preparación Recomendada
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 text-sm text-blue-700">
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
+                    <span>Retira el esmalte anterior si lo tienes</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
+                    <span>Llega 5 minutos antes de tu cita</span>
+                  </div>
+                  {bookingData.selectedAddons.some(addon => addon.name.toLowerCase().includes('art')) && (
+                    <div className="flex items-start gap-2">
+                      <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
+                      <span>Trae fotos de referencia para nail art si tienes ideas específicas</span>
+                    </div>
+                  )}
+                  <div className="flex items-start gap-2">
+                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
+                    <span>Hidrата tus cutículas la noche anterior</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Cancellation Policy */}
+            <Card className="border-orange-200 bg-orange-50">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm">
+                    <p className="font-semibold text-orange-800 mb-1">Política de cancelación:</p>
+                    <p className="text-orange-700">
+                      Puedes cancelar o reprogramar tu cita hasta 24 horas antes sin costo. 
+                      Cancelaciones con menos de 24 horas de anticipación pueden tener un cargo del 50%.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 

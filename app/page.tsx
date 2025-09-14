@@ -92,6 +92,12 @@ export default function HomePage() {
       bannerImage: "/categories/makeup-category-banner.png"
     },
     { 
+      name: "Cuerpo", 
+      icon: User, 
+      count: "0",
+      bannerImage: "/categories/body-category-banner.png"
+    },
+    { 
       name: "Spa", 
       icon: Flower2, 
       count: "26",

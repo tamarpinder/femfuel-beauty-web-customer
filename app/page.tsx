@@ -619,6 +619,7 @@ export default function HomePage() {
           service={selectedService}
           vendorName={selectedVendor.name}
           vendorRating={selectedVendor.rating}
+          vendorId={selectedVendor.id}
           onClose={() => setShowBookingModal(false)}
           onBookingComplete={handleBookingComplete}
         />

@@ -1,15 +1,17 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Calendar, Clock, MapPin, Phone, CreditCard, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { EnhancedBookingCalendar } from "@/components/enhanced-booking-calendar"
+import { getMultiDayAvailability } from "@/lib/vendor-scheduling"
+import { format } from "date-fns"
 import type { VendorService } from "@/types/vendor"
 import type { Service } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
@@ -20,6 +22,7 @@ interface BookingModalProps {
   service: VendorService | Service | null
   vendorName?: string
   vendorRating?: number
+  vendorId?: string
   onBookingComplete?: (booking: any) => void
 }
 
@@ -32,7 +35,7 @@ interface BookingData {
   paymentMethod: "card" | "cash"
 }
 
-export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, onBookingComplete }: BookingModalProps) {
+export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, vendorId, onBookingComplete }: BookingModalProps) {
   const { user } = useAuth()
   const [currentStep, setCurrentStep] = useState<BookingStep>("datetime")
   const [bookingData, setBookingData] = useState<BookingData>({
@@ -42,31 +45,36 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     paymentMethod: "card",
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [quickAvailability, setQuickAvailability] = useState<Array<{date: Date, time: string}>>([])
 
-  const availableTimes = [
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "12:00",
-    "12:30",
-    "13:00",
-    "13:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
-    "18:00",
-    "18:30",
-    "19:00",
-    "19:30",
-  ]
+  // Load quick availability preview
+  useEffect(() => {
+    if (service && vendorId) {
+      const serviceDuration = typeof service.duration === 'number' ? service.duration : parseInt(service.duration?.toString() || '60')
+      const availability = getMultiDayAvailability(vendorId, serviceDuration, new Date(), 7)
+      
+      const quickSlots: Array<{date: Date, time: string}> = []
+      
+      for (const day of availability) {
+        if (day.status === 'available' && day.availableSlots > 0) {
+          const availableTimes = day.timeSlots
+            .filter(slot => slot.available)
+            .slice(0, 2) // Take first 2 available times
+          
+          availableTimes.forEach(slot => {
+            quickSlots.push({
+              date: day.date,
+              time: slot.time
+            })
+          })
+          
+          if (quickSlots.length >= 3) break // Stop after 3 quick options
+        }
+      }
+      
+      setQuickAvailability(quickSlots)
+    }
+  }, [service, vendorId])
 
   const handleDateSelect = (date: Date | undefined) => {
     setBookingData((prev) => ({ ...prev, date }))
@@ -217,23 +225,42 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             </div>
 
             {/* Quick Availability Preview */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-green-800">📅 Próximos Disponibles:</span>
-                <span className="text-xs text-green-600">+3 más</span>
+            {quickAvailability.length > 0 ? (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-green-800">📅 Próximos Disponibles:</span>
+                  <span className="text-xs text-green-600">Disponibles ahora</span>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  {quickAvailability.slice(0, 3).map((slot, index) => {
+                    const isToday = format(slot.date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
+                    const isTomorrow = format(slot.date, 'yyyy-MM-dd') === format(new Date(Date.now() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd')
+                    
+                    let dateLabel = isToday ? 'Hoy' : isTomorrow ? 'Mañana' : format(slot.date, 'EEE d')
+                    
+                    return (
+                      <Badge 
+                        key={index}
+                        className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 cursor-pointer transition-colors"
+                        onClick={() => {
+                          handleDateSelect(slot.date)
+                          handleTimeSelect(slot.time)
+                        }}
+                      >
+                        {dateLabel} {slot.time}
+                      </Badge>
+                    )
+                  })}
+                </div>
               </div>
-              <div className="flex gap-2 flex-wrap">
-                <Badge className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1">
-                  Hoy 2:30 PM
-                </Badge>
-                <Badge className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1">
-                  Hoy 4:00 PM
-                </Badge>
-                <Badge className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-1">
-                  Mañana 10:00 AM
-                </Badge>
+            ) : (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-sm font-medium text-yellow-800">⏰ Cargando disponibilidad...</span>
+                </div>
+                <p className="text-xs text-yellow-700">Buscando los mejores horarios para ti</p>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -242,88 +269,14 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-femfuel-dark mb-4">Selecciona fecha y hora</h3>
 
-            {/* Side-by-Side Layout: Calendar + Time Slots */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Calendar Section */}
-              <div>
-                <Label className="text-femfuel-dark mb-2 block">Fecha</Label>
-                <CalendarComponent
-                  mode="single"
-                  selected={bookingData.date}
-                  onSelect={handleDateSelect}
-                  disabled={(date) => date < new Date() || date.getDay() === 0} // Disable past dates and Sundays
-                  className="rounded-md border w-full"
-                  modifiers={{
-                    available: (date) => {
-                      // Mock availability - alternate days as available
-                      return date > new Date() && date.getDate() % 2 === 0
-                    },
-                    unavailable: (date) => {
-                      // Mock unavailable - odd days (excluding disabled)
-                      return date > new Date() && date.getDate() % 2 === 1 && date.getDay() !== 0
-                    }
-                  }}
-                  modifiersStyles={{
-                    available: {
-                      position: 'relative'
-                    },
-                    unavailable: {
-                      position: 'relative'
-                    }
-                  }}
-                />
-                <style jsx global>{`
-                  .rdp-day_available::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 2px;
-                    right: 2px;
-                    width: 6px;
-                    height: 6px;
-                    background-color: #10b981;
-                    border-radius: 50%;
-                    opacity: 0.7;
-                  }
-                  .rdp-day_unavailable::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 2px;
-                    right: 2px;
-                    width: 6px;
-                    height: 6px;
-                    background-color: #ef4444;
-                    border-radius: 50%;
-                    opacity: 0.7;
-                  }
-                `}</style>
-              </div>
-
-              {/* Time Slots Section */}
-              <div>
-                <Label className="text-femfuel-dark mb-2 block">
-                  {bookingData.date ? 'Horarios disponibles' : 'Selecciona una fecha primero'}
-                </Label>
-                {bookingData.date ? (
-                  <div className="grid grid-cols-2 gap-2 max-h-80 overflow-y-auto">
-                    {availableTimes.map((time) => (
-                      <Button
-                        key={time}
-                        variant={bookingData.time === time ? "default" : "outline"}
-                        size="sm"
-                        className={bookingData.time === time ? "bg-femfuel-rose hover:bg-[#9f1853]" : ""}
-                        onClick={() => handleTimeSelect(time)}
-                      >
-                        {time}
-                      </Button>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="h-80 flex items-center justify-center border rounded-md bg-gray-50">
-                    <p className="text-femfuel-medium text-sm">Primero selecciona una fecha</p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <EnhancedBookingCalendar
+              vendorId={vendorId || 'beauty-studio-rd'}
+              serviceDuration={typeof service?.duration === 'number' ? service.duration : parseInt(service?.duration?.toString() || '60')}
+              selectedDate={bookingData.date}
+              selectedTime={bookingData.time}
+              onDateSelect={handleDateSelect}
+              onTimeSelect={handleTimeSelect}
+            />
           </div>
         )}
 

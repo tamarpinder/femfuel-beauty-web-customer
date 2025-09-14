@@ -13,6 +13,7 @@ interface Professional {
   name: string
   specialty: string
   salon: string
+  vendorId: string
   location: string
   rating: number
   reviewCount: number

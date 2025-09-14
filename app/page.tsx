@@ -223,7 +223,8 @@ export default function HomePage() {
       id: 1,
       name: "Carla Rodríguez",
       specialty: "Especialista en Color",
-      salon: "Salon Elite DR",
+      salon: "Hair Salon Elite",
+      vendorId: "vendor-profile-003",
       location: "Piantini",
       rating: 4.9,
       reviewCount: 156,
@@ -245,7 +246,8 @@ export default function HomePage() {
       id: 2,
       name: "Alejandra Santos",
       specialty: "Maquilladora Profesional",
-      salon: "Beauty Studio Elite",
+      salon: "Glamour House",
+      vendorId: "vendor-profile-001",
       location: "Zona Colonial",
       rating: 5.0,
       reviewCount: 89,
@@ -267,7 +269,8 @@ export default function HomePage() {
       id: 3,
       name: "Gabriela Méndez",
       specialty: "Terapeuta Facial",
-      salon: "Spa Bella Vista",
+      salon: "Spa Serenity",
+      vendorId: "vendor-profile-004",
       location: "Bella Vista",
       rating: 4.8,
       reviewCount: 203,
@@ -289,7 +292,8 @@ export default function HomePage() {
       id: 4,
       name: "Patricia López",
       specialty: "Nail Artist",
-      salon: "Nails & More RD",
+      salon: "Nails Paradise",
+      vendorId: "vendor-profile-002",
       location: "Naco",
       rating: 4.7,
       reviewCount: 178,
@@ -439,8 +443,10 @@ export default function HomePage() {
 
   const handleViewVendor = (professionalId: number) => {
     console.log("View vendor for professional:", professionalId)
-    // Map professional to vendor - for now using hair-salon-elite for all professionals
-    router.push(`/vendor/hair-salon-elite`)
+    const professional = professionals.find(p => p.id === professionalId)
+    if (professional?.vendorId) {
+      router.push(`/vendor/${professional.vendorId}`)
+    }
   }
 
   const handleGetDirections = (locationId: string) => {

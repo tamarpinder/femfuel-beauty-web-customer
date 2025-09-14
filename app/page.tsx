@@ -383,51 +383,51 @@ export default function HomePage() {
   const handleGetThisLook = (serviceId: string, lookName: string, vendorName: string) => {
     console.log("Get this look clicked:", { serviceId, lookName, vendorName, allVendorsCount: allVendors.length })
     
-    // Find the vendor by exact name match
-    let vendor = allVendors.find(v => v.name === vendorName)
-    console.log("Exact vendor match:", vendor ? vendor.name : "Not found")
+    // Find the exact vendor from the transformation
+    const vendor = allVendors.find(v => v.name === vendorName)
     
     if (!vendor) {
-      // Fallback 1: Try partial name match (case insensitive)
-      vendor = allVendors.find(v => 
-        v.name.toLowerCase().includes(vendorName.toLowerCase()) ||
-        vendorName.toLowerCase().includes(v.name.toLowerCase())
-      )
-      console.log("Partial vendor match:", vendor ? vendor.name : "Not found")
+      console.error("Could not find transformation vendor:", vendorName)
+      alert("Lo sentimos, no pudimos encontrar este proveedor. Por favor, intenta más tarde.")
+      return
     }
     
-    if (!vendor && allVendors.length > 0) {
-      // Fallback 2: Use first available vendor that has relevant services
-      vendor = allVendors.find(v => 
-        v.services.some(s => 
-          s.name.toLowerCase().includes(lookName.toLowerCase()) ||
-          lookName.toLowerCase().includes(s.name.toLowerCase())
-        )
-      ) || allVendors[0]
-      console.log("Fallback vendor match:", vendor ? vendor.name : "Not found")
+    // Create a custom service based on the transformation data
+    const transformationServiceMap: Record<string, { category: string, price: number, duration: number }> = {
+      "Balayage Dorado Caribeño": { category: "hair", price: 4500, duration: 180 },
+      "Glamour Tropical Night": { category: "makeup", price: 3200, duration: 120 },
+      "Dominican Blowout Perfecto": { category: "hair", price: 1800, duration: 90 },
+      "Caribbean Paradise Nails": { category: "nails", price: 2500, duration: 120 },
+      "Natural Daytime Glow": { category: "makeup", price: 2800, duration: 90 },
+      "Skin Renewal Treatment": { category: "spa", price: 3500, duration: 90 },
+      "Volume Lash Extensions": { category: "lashes", price: 3800, duration: 150 },
+      "Elegant Premium Look": { category: "makeup", price: 3500, duration: 120 }
     }
     
-    if (vendor && vendor.services.length > 0) {
-      // Find the best matching service
-      let vendorService = vendor.services.find(s => 
-        s.name.toLowerCase().includes(lookName.toLowerCase()) ||
-        lookName.toLowerCase().includes(s.name.toLowerCase())
-      )
-      
-      // If no matching service, use first service
-      if (!vendorService) {
-        vendorService = vendor.services[0]
-      }
-      
-      console.log("Selected vendor:", vendor.name, "Selected service:", vendorService.name)
-      setSelectedVendor(vendor)
-      setSelectedService(vendorService)
-      setShowBookingModal(true)
-    } else {
-      console.error("Could not find any vendor or service for transformation:", { serviceId, lookName, vendorName })
-      // Show error message or fallback action
+    const serviceData = transformationServiceMap[lookName]
+    
+    if (!serviceData) {
+      console.error("Unknown transformation service:", lookName)
       alert("Lo sentimos, no pudimos encontrar este servicio. Por favor, intenta más tarde.")
+      return
     }
+    
+    // Create the exact transformation service
+    const transformationService: VendorService = {
+      id: `transformation-${serviceId}`,
+      name: lookName, // Exact transformation service name
+      description: `Servicio especializado de transformación: ${lookName}`,
+      category: serviceData.category,
+      price: serviceData.price,
+      duration: serviceData.duration,
+      isPopular: true,
+      image: "/service-placeholder.jpg"
+    }
+    
+    console.log("Created transformation service:", transformationService.name, "for vendor:", vendor.name)
+    setSelectedVendor(vendor)
+    setSelectedService(transformationService)
+    setShowBookingModal(true)
   }
 
   const handleBookProfessional = (professionalId: number) => {

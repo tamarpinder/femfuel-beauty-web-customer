@@ -33,9 +33,9 @@ export function HeroSection() {
               <span className="font-medium">4.9/5</span>
             </div>
             <span>•</span>
-            <span>25+ salones verificados</span>
+            <span>20+ salones verificados</span>
             <span>•</span>
-            <span>150+ profesionales</span>
+            <span>10+ profesionales</span>
           </div>
           
           {/* Value propositions */}

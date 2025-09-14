@@ -82,37 +82,31 @@ export default function HomePage() {
     { 
       name: "Uñas", 
       icon: Hand, 
-      count: "45+",
+      count: "37",
       bannerImage: "/categories/nails-category-banner.png"
     },
     { 
       name: "Maquillaje", 
       icon: Palette, 
-      count: "32+",
+      count: "36",
       bannerImage: "/categories/makeup-category-banner.png"
-    },
-    { 
-      name: "Cuerpo", 
-      icon: User, 
-      count: "28+",
-      bannerImage: "/categories/body-category-banner.png"
     },
     { 
       name: "Spa", 
       icon: Flower2, 
-      count: "35+",
+      count: "26",
       bannerImage: "/categories/spa-category-banner.png"
     },
     { 
       name: "Peinados", 
       icon: Scissors, 
-      count: "40+",
+      count: "53",
       bannerImage: "/categories/hair-category-banner.png"
     },
     { 
       name: "Pestañas", 
       icon: Eye, 
-      count: "25+",
+      count: "35",
       bannerImage: "/categories/lashes-category-banner.png"
     },
   ]

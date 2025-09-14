@@ -134,6 +134,7 @@ export default function ServiceProvidersPage() {
     // Find the matching service in vendor's services
     const mappedName = serviceNameMapping[service.name] || service.name
     const vendorService = vendor.services.find(s => s.name === mappedName)
+    
     if (vendorService) {
       setSelectedVendor(vendor)
       setSelectedService(vendorService)

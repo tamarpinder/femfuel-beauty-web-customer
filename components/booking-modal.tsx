@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from "react"
 import { Calendar, Clock, MapPin, Phone, CreditCard, Check, MessageCircle, Navigation, Star, User, Gift, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
@@ -53,10 +53,71 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   })
   const [isLoading, setIsLoading] = useState(false)
   const [quickAvailability, setQuickAvailability] = useState<Array<{date: Date, time: string}>>([])
+  const [error, setError] = useState<string | null>(null)
 
-  // Get vendor data for professionals
-  const vendor = mockVendors.find(v => v.id === vendorId)
+  // Error boundary and validation
+  useEffect(() => {
+    if (isOpen && !service) {
+      setError("No se pudo cargar la información del servicio")
+      console.error("❌ BookingModal opened without service data")
+    } else if (isOpen && !vendorId && !vendorName) {
+      setError("No se pudo identificar el proveedor")
+      console.error("❌ BookingModal opened without vendor identification")
+    } else {
+      setError(null)
+    }
+  }, [isOpen, service, vendorId, vendorName])
+
+  // Get vendor data for professionals - Enhanced vendor lookup with multiple fallback strategies
+  let vendor = mockVendors.find(v => v.id === vendorId)
+  
+  // Fallback 1: Try string comparison if exact match fails
+  if (!vendor && vendorId) {
+    vendor = mockVendors.find(v => String(v.id) === String(vendorId))
+  }
+  
+  // Fallback 2: Try case-insensitive match
+  if (!vendor && vendorId) {
+    vendor = mockVendors.find(v => v.id.toLowerCase() === String(vendorId).toLowerCase())
+  }
+  
+  // Fallback 3: Try matching by name if ID fails
+  if (!vendor && vendorName) {
+    vendor = mockVendors.find(v => v.name === vendorName)
+  }
+  
+  // Set error if vendor not found
+  useEffect(() => {
+    if (isOpen && vendorId && !vendor) {
+      setError(`No se pudo encontrar el proveedor (ID: ${vendorId})`)
+    }
+  }, [isOpen, vendorId, vendor])
+  
   const professionals = vendor?.professionals || []
+  
+  // Additional service-specific professional filtering
+  const serviceProfessionals = useMemo(() => {
+    if (!professionals.length || !service) return professionals
+    
+    // Filter professionals who have specialties matching the service
+    const serviceName = service.name || ""
+    const relevantProfessionals = professionals.filter(prof => {
+      if (!prof.specialties || prof.specialties.length === 0) return true // Include if no specialties defined
+      
+      // Check if professional has specialties relevant to the service
+      const hasRelevantSpecialty = prof.specialties.some(specialty => 
+        serviceName.toLowerCase().includes(specialty.toLowerCase()) ||
+        specialty.toLowerCase().includes("keratina") ||
+        specialty.toLowerCase().includes("tratamiento") ||
+        specialty.toLowerCase().includes("alisado")
+      )
+      
+      return hasRelevantSpecialty
+    })
+    
+    // If no professionals match specialties, return all (avoid empty list)
+    return relevantProfessionals.length > 0 ? relevantProfessionals : professionals
+  }, [professionals, service])
 
   // Calculate pricing
   const basePrice = typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString() || '0')
@@ -222,7 +283,35 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           <DialogTitle className="text-xl font-bold text-femfuel-dark">
             {currentStep === "confirmation" ? "¡Reserva Confirmada!" : "Reservar Servicio"}
           </DialogTitle>
+          <DialogDescription className="text-femfuel-medium">
+            {currentStep === "confirmation" 
+              ? "Tu cita ha sido programada exitosamente" 
+              : "Selecciona tu profesional preferido y programa tu cita"}
+          </DialogDescription>
         </DialogHeader>
+
+        {/* Error Display */}
+        {error && (
+          <Card className="mb-6 border-red-200 bg-red-50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-semibold text-red-800">Error</h4>
+                  <p className="text-red-700">{error}</p>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleClose}
+                    className="mt-2 border-red-300 text-red-700 hover:bg-red-100"
+                  >
+                    Cerrar
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Service Summary */}
         <Card className="mb-6 border-femfuel-rose/10 shadow-md">
@@ -302,7 +391,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         {/* Step Content */}
         {currentStep === "professional" && (
           <ProfessionalSelector
-            professionals={professionals}
+            professionals={serviceProfessionals}
             selectedProfessionalId={bookingData.professional?.id}
             onProfessionalSelect={handleProfessionalSelect}
           />

@@ -211,9 +211,9 @@ export function ProviderListCompact({
                         e.stopPropagation()
                         onBookNow(vendor)
                       }}
-                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white flex-1 h-11 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-95 cursor-pointer"
+                      className="relative bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-500 hover:to-rose-500 text-white flex-1 h-11 text-sm font-bold shadow-lg hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 hover:scale-110 hover:-translate-y-1 active:scale-95 cursor-pointer overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700 hover:ring-4 hover:ring-pink-300/60 group"
                     >
-                      Reservar
+                      <span className="relative z-10 group-hover:text-shadow-lg">Reservar</span>
                     </Button>
                     
                     <ChatButton

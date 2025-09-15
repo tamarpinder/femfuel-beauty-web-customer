@@ -73,7 +73,7 @@ export default function ServiceProvidersPage() {
   
   // Service name mapping for marketplace-to-vendor service matching
   const serviceNameMapping: Record<string, string> = {
-    "Alisado Dominicano": "Tratamiento de Keratina"
+    // No mappings needed - service names match exactly
   }
   
   const [service, setService] = useState<ServiceWithVendor | null>(null)

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import { Calendar, Clock, MapPin, Phone, CreditCard, Check, MessageCircle, Navigation, Star, User, Gift, AlertCircle } from "lucide-react"
+import { Calendar, Clock, MapPin, Phone, CreditCard, Check, MessageCircle, Navigation, Star, User, Gift, AlertCircle, Plus, Smartphone, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
@@ -37,7 +37,7 @@ interface BookingData {
   professional: Professional | null
   selectedAddons: ServiceAddon[]
   notes: string
-  paymentMethod: "card" | "cash"
+  paymentMethod: "card" | "cash" | "apple_pay"
 }
 
 export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, vendorId, onBookingComplete }: BookingModalProps) {
@@ -333,43 +333,6 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
               </div>
             </div>
 
-            {/* Quick Availability Preview */}
-            {quickAvailability.length > 0 ? (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-green-800">📅 Próximos Disponibles:</span>
-                  <span className="text-xs text-green-600">Disponibles ahora</span>
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  {quickAvailability.slice(0, 3).map((slot, index) => {
-                    const isToday = format(slot.date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
-                    const isTomorrow = format(slot.date, 'yyyy-MM-dd') === format(new Date(Date.now() + 24 * 60 * 60 * 1000), 'yyyy-MM-dd')
-                    
-                    let dateLabel = isToday ? 'Hoy' : isTomorrow ? 'Mañana' : format(slot.date, 'EEE d')
-                    
-                    return (
-                      <Badge 
-                        key={index}
-                        className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 cursor-pointer transition-colors"
-                        onClick={() => {
-                          handleDateSelect(slot.date)
-                          handleTimeSelect(slot.time)
-                        }}
-                      >
-                        {dateLabel} {slot.time}
-                      </Badge>
-                    )
-                  })}
-                </div>
-              </div>
-            ) : (
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-medium text-yellow-800">⏰ Cargando disponibilidad...</span>
-                </div>
-                <p className="text-xs text-yellow-700">Buscando los mejores horarios para ti</p>
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -402,7 +365,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <h3 className="text-xl font-bold text-femfuel-dark">
-                ✨ Detalles de tu Reserva
+                Detalles de tu Reserva
               </h3>
               <p className="text-femfuel-medium">
                 Revisa y confirma todos los detalles de tu cita
@@ -413,7 +376,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <Card className="border-femfuel-rose/20">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  🏪 {vendorName || vendor?.name || "Salon & Ubicación"}
+                  {vendorName || vendor?.name || "Salon & Ubicación"}
                   {vendorRating && (
                     <Badge className="bg-yellow-100 text-yellow-800 ml-auto">
                       <Star className="h-3 w-3 mr-1 fill-current" />
@@ -447,23 +410,20 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                     </div>
                     
                     <div className="flex flex-col gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="flex items-center gap-2"
+                      <button 
+                        className="glassmorphism-button-perfect flex items-center gap-2 text-sm"
                         onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(vendor?.location?.address || "Av. Winston Churchill 1234, Santo Domingo")}`, '_blank')}
                       >
                         <MapPin className="h-4 w-4" />
                         Ver en Mapa
-                      </Button>
+                      </button>
                       <Button 
-                        variant="outline" 
                         size="sm" 
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
                         onClick={() => window.open(`https://wa.me/${vendor?.contact?.whatsapp?.replace(/[^\d]/g, '') || "18095550123"}?text=Hola, tengo una cita reservada`, '_blank')}
                       >
                         <MessageCircle className="h-4 w-4" />
-                        💬 Chat
+                        Chat
                       </Button>
                     </div>
                   </div>
@@ -476,7 +436,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
               <Card className="border-femfuel-purple/20">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    👤 Tu Profesional
+                    Tu Profesional
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -516,7 +476,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <Card className="border-green-200 bg-green-50">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg text-green-800">
-                  📅 Cita Confirmada
+                  Cita Confirmada
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -575,7 +535,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                           window.open(calendarUrl, "_blank")
                         }}
                       >
-                        📅 Agregar al calendario
+                        <Plus className="h-4 w-4 mr-2" />
+                        Agregar al calendario
                       </Button>
                     </div>
                   </div>
@@ -654,7 +615,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             {/* Notes */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">📝 Solicitudes Especiales</CardTitle>
+                <CardTitle className="text-lg">Solicitudes Especiales</CardTitle>
               </CardHeader>
               <CardContent>
                 <Textarea
@@ -718,66 +679,199 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {currentStep === "payment" && (
           <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-femfuel-dark">Método de pago</h3>
-
-            {/* Payment Methods */}
-            <div className="space-y-3">
-              <Card
-                className={`cursor-pointer transition-colors ${bookingData.paymentMethod === "card" ? "ring-2 ring-femfuel-rose" : ""}`}
-                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "card" }))}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <CreditCard className="h-5 w-5 text-femfuel-medium" />
-                    <div className="flex-1">
-                      <p className="font-medium text-femfuel-dark">Tarjeta de crédito/débito</p>
-                      <p className="text-sm text-femfuel-medium">Pago seguro en línea</p>
-                    </div>
-                    {bookingData.paymentMethod === "card" && <Check className="h-5 w-5 text-femfuel-rose" />}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card
-                className={`cursor-pointer transition-colors ${bookingData.paymentMethod === "cash" ? "ring-2 ring-femfuel-rose" : ""}`}
-                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "cash" }))}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-femfuel-medium" />
-                    <div className="flex-1">
-                      <p className="font-medium text-femfuel-dark">Pago en el salón</p>
-                      <p className="text-sm text-femfuel-medium">Efectivo o tarjeta en el establecimiento</p>
-                    </div>
-                    {bookingData.paymentMethod === "cash" && <Check className="h-5 w-5 text-femfuel-rose" />}
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-femfuel-dark mb-2">Métodos de Pago</h3>
+              <p className="text-sm text-femfuel-medium">Elige tu forma de pago preferida</p>
             </div>
 
-            {/* Order Summary */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Resumen del pedido</CardTitle>
+            {/* Payment Methods with Glassmorphism */}
+            <div className="space-y-3">
+              {/* Apple Pay - Primary Option */}
+              <div
+                className={`relative overflow-hidden cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
+                  bookingData.paymentMethod === "apple_pay" 
+                    ? "ring-2 ring-black shadow-2xl" 
+                    : "hover:shadow-xl"
+                }`}
+                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "apple_pay" }))}
+              >
+                <div className="absolute inset-0 bg-black rounded-xl"></div>
+                {bookingData.paymentMethod === "apple_pay" && (
+                  <div className="absolute inset-0 bg-black rounded-xl animate-pulse"></div>
+                )}
+                <div className="relative bg-black text-white rounded-xl p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                        <Smartphone className="h-6 w-6 text-black" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-lg flex items-center gap-2">
+                          <span className="text-2xl">🍎</span> Apple Pay
+                        </p>
+                        <p className="text-sm text-gray-300">Pago instantáneo y seguro</p>
+                      </div>
+                    </div>
+                    {bookingData.paymentMethod === "apple_pay" && (
+                      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-black" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Credit/Debit Card with Glassmorphism */}
+              <div
+                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
+                  bookingData.paymentMethod === "card" 
+                    ? "ring-2 ring-femfuel-rose shadow-xl" 
+                    : "hover:shadow-lg"
+                }`}
+                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "card" }))}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl backdrop-blur-sm"></div>
+                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <CreditCard className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-femfuel-dark">Tarjeta Crédito/Débito</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Visa</span>
+                          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Mastercard</span>
+                          <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Amex</span>
+                        </div>
+                      </div>
+                    </div>
+                    {bookingData.paymentMethod === "card" && (
+                      <div className="w-8 h-8 bg-femfuel-rose rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-white" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Pay at Salon with Glassmorphism */}
+              <div
+                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
+                  bookingData.paymentMethod === "cash" 
+                    ? "ring-2 ring-green-500 shadow-xl" 
+                    : "hover:shadow-lg"
+                }`}
+                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "cash" }))}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl backdrop-blur-sm"></div>
+                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                        <Wallet className="h-6 w-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-femfuel-dark">Pagar en el Salón</p>
+                        <p className="text-sm text-femfuel-medium">Efectivo o tarjeta física</p>
+                      </div>
+                    </div>
+                    {bookingData.paymentMethod === "cash" && (
+                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-white" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modern Price Breakdown */}
+            <Card className="bg-gradient-to-br from-gray-50 to-white border-gray-200 shadow-xl">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <span>Resumen de Pago</span>
+                  <Badge variant="outline" className="text-xs">
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    Incluye impuestos
+                  </Badge>
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-femfuel-medium">Servicio</span>
-                    <span className="text-femfuel-dark">{service.price}</span>
+                <div className="space-y-3">
+                  {/* Service Base Price */}
+                  <div className="flex justify-between items-center">
+                    <span className="text-femfuel-medium">Servicio base</span>
+                    <span className="text-femfuel-dark font-medium">
+                      RD${typeof service?.price === 'number' ? service.price.toLocaleString() : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0').toLocaleString()}
+                    </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-femfuel-medium">Comisión de plataforma</span>
-                    <span className="text-femfuel-dark">RD$0</span>
+                  
+                  {/* Platform Commission */}
+                  <div className="flex justify-between items-center">
+                    <span className="text-femfuel-medium flex items-center gap-1">
+                      Comisión plataforma
+                      <span className="text-xs bg-femfuel-purple text-femfuel-rose px-1.5 py-0.5 rounded">8%</span>
+                    </span>
+                    <span className="text-femfuel-dark">
+                      RD${Math.round((typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0')) * 0.08).toLocaleString()}
+                    </span>
                   </div>
-                  <Separator />
-                  <div className="flex justify-between font-semibold">
-                    <span className="text-femfuel-dark">Total</span>
-                    <span className="text-femfuel-rose">{service.price}</span>
+                  
+                  {/* ITBIS Tax */}
+                  <div className="flex justify-between items-center">
+                    <span className="text-femfuel-medium flex items-center gap-1">
+                      ITBIS
+                      <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">18%</span>
+                    </span>
+                    <span className="text-femfuel-dark">
+                      RD${Math.round((typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0')) * 1.08 * 0.18).toLocaleString()}
+                    </span>
+                  </div>
+                  
+                  {/* Addons if any */}
+                  {bookingData.selectedAddons.length > 0 && (
+                    <>
+                      <Separator className="my-2" />
+                      {bookingData.selectedAddons.map((addon, index) => (
+                        <div key={index} className="flex justify-between items-center">
+                          <span className="text-femfuel-medium text-sm">+ {addon.name}</span>
+                          <span className="text-femfuel-dark text-sm">
+                            RD${addon.price.toLocaleString()}
+                          </span>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  
+                  <Separator className="my-3" />
+                  
+                  {/* Total */}
+                  <div className="flex justify-between items-center pt-2">
+                    <span className="text-lg font-bold text-femfuel-dark">Total a pagar</span>
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-femfuel-rose">
+                        RD${Math.round(
+                          ((typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0')) * 1.08 * 1.18) +
+                          bookingData.selectedAddons.reduce((sum, addon) => sum + addon.price, 0)
+                        ).toLocaleString()}
+                      </span>
+                      <p className="text-xs text-femfuel-medium mt-1">
+                        {bookingData.paymentMethod === "apple_pay" ? "Pago instantáneo" : 
+                         bookingData.paymentMethod === "card" ? "Pago seguro" : 
+                         "Pagar al llegar"}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Security Badge */}
+            <div className="flex items-center justify-center gap-2 text-xs text-femfuel-medium">
+              <Check className="h-3 w-3 text-green-500" />
+              <span>Pago 100% seguro y encriptado</span>
+            </div>
           </div>
         )}
 
@@ -825,7 +919,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 Confirmar por WhatsApp
               </Button>
               <Button variant="outline" className="flex-1 bg-transparent" onClick={handleAddToCalendar}>
-                <Calendar className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 mr-2" />
                 Agregar al calendario
               </Button>
             </div>

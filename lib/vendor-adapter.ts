@@ -1,6 +1,6 @@
 import { mockVendors } from "@/data/vendors"
 import { mockData } from "@/data/shared/mock-data"
-import { getRandomProfessionalPortrait } from "@/lib/image-mappings"
+import { getRandomProfessionalPortrait, getVendorLogo, getVendorCover, getServiceImage } from "@/lib/image-mappings"
 import type { Vendor, Professional } from "@/types/vendor"
 
 // Unified vendor adapter to handle both data sources
@@ -46,7 +46,7 @@ export class VendorAdapter {
         duration: service.duration,
         category: service.category,
         isPopular: service.isPopular,
-        image: `/services/${service.category}/${service.name.toLowerCase().replace(/\s+/g, '-')}.jpg`,
+        image: getServiceImage(service.name),
         addons: []
       }))
     
@@ -57,8 +57,8 @@ export class VendorAdapter {
       id: vendorProfile.id,
       name: vendorProfile.businessName,
       slug: vendorProfile.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      logo: `/vendors/${vendorProfile.businessName.toLowerCase().replace(/\s+/g, '-')}-logo.png`,
-      coverImage: `/vendors/${vendorProfile.businessName.toLowerCase().replace(/\s+/g, '-')}-cover.jpg`,
+      logo: getVendorLogo(vendorProfile.businessName),
+      coverImage: getVendorCover(vendorProfile.businessName),
       description: vendorProfile.description,
       rating: vendorProfile.rating,
       reviewCount: vendorProfile.reviewCount,

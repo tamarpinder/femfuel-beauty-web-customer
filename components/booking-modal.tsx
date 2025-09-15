@@ -688,33 +688,33 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <div className="space-y-3">
               {/* Apple Pay - Primary Option */}
               <div
-                className={`relative overflow-hidden cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
+                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
                   bookingData.paymentMethod === "apple_pay" 
-                    ? "ring-2 ring-black shadow-2xl" 
+                    ? "ring-2 ring-femfuel-rose shadow-2xl" 
                     : "hover:shadow-xl"
                 }`}
                 onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "apple_pay" }))}
               >
-                <div className="absolute inset-0 bg-black rounded-xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-50/50 to-white/50 rounded-xl backdrop-blur-sm"></div>
                 {bookingData.paymentMethod === "apple_pay" && (
-                  <div className="absolute inset-0 bg-black rounded-xl animate-pulse"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-femfuel-rose/10 to-pink-500/10 rounded-xl animate-pulse"></div>
                 )}
-                <div className="relative bg-black text-white rounded-xl p-5">
+                <div className="relative glassmorphism-button-perfect rounded-xl p-5 hover:bg-femfuel-rose/5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
-                        <Smartphone className="h-6 w-6 text-black" />
+                      <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center">
+                        <Smartphone className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <p className="font-semibold text-lg flex items-center gap-2">
-                          <span className="text-2xl">🍎</span> Apple Pay
+                        <p className="font-semibold text-lg text-femfuel-dark">
+                          Apple Pay
                         </p>
-                        <p className="text-sm text-gray-300">Pago instantáneo y seguro</p>
+                        <p className="text-sm text-femfuel-medium">Pago instantáneo y seguro</p>
                       </div>
                     </div>
                     {bookingData.paymentMethod === "apple_pay" && (
-                      <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                        <Check className="h-5 w-5 text-black" />
+                      <div className="w-8 h-8 bg-femfuel-rose rounded-full flex items-center justify-center">
+                        <Check className="h-5 w-5 text-white" />
                       </div>
                     )}
                   </div>

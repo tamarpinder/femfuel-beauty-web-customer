@@ -686,29 +686,23 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
             {/* Payment Methods with Glassmorphism */}
             <div className="space-y-3">
-              {/* Apple Pay - Primary Option */}
+              {/* Apple Pay */}
               <div
-                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
+                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
                   bookingData.paymentMethod === "apple_pay" 
-                    ? "ring-2 ring-femfuel-rose shadow-2xl" 
-                    : "hover:shadow-xl"
+                    ? "ring-2 ring-femfuel-rose shadow-xl" 
+                    : "hover:shadow-lg"
                 }`}
                 onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "apple_pay" }))}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-50/50 to-white/50 rounded-xl backdrop-blur-sm"></div>
-                {bookingData.paymentMethod === "apple_pay" && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-femfuel-rose/10 to-pink-500/10 rounded-xl animate-pulse"></div>
-                )}
-                <div className="relative glassmorphism-button-perfect rounded-xl p-5 hover:bg-femfuel-rose/5">
+                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-gray-500 to-slate-600 rounded-lg flex items-center justify-center">
                         <Smartphone className="h-6 w-6 text-white" />
                       </div>
                       <div>
-                        <p className="font-semibold text-lg text-femfuel-dark">
-                          Apple Pay
-                        </p>
+                        <p className="font-semibold text-femfuel-dark">Apple Pay</p>
                         <p className="text-sm text-femfuel-medium">Pago instantáneo y seguro</p>
                       </div>
                     </div>

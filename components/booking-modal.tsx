@@ -16,13 +16,13 @@ import { getMultiDayAvailability } from "@/lib/vendor-scheduling"
 import { format } from "date-fns"
 import { VendorAdapter } from "@/lib/vendor-adapter"
 import type { VendorService, Professional, ServiceAddon } from "@/types/vendor"
-import type { Service } from "@/components/service-card"
+import type { MarketplaceService } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
 
 interface BookingModalProps {
   isOpen: boolean
   onClose: () => void
-  service: VendorService | Service | null
+  service: VendorService | MarketplaceService | null
   vendorName?: string
   vendorRating?: number
   vendorId?: string

@@ -5,6 +5,7 @@ import { Star, MapPin, Clock, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 import { Vendor } from "@/types/vendor"
 
 interface VendorCardProps {
@@ -30,10 +31,13 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
           <div className="flex items-start gap-4">
             {/* Vendor Logo */}
             <div className="relative flex-shrink-0">
-              <img
+              <OptimizedImage
                 src={vendor.logo || "/placeholder.svg?height=64&width=64&query=business logo"}
                 alt={`${vendor.name} logo`}
-                className="w-16 h-16 rounded-xl object-cover border-2 border-gray-100"
+                width={64}
+                height={64}
+                className="w-16 h-16 rounded-xl border-2 border-gray-100"
+                context="vendor"
               />
               {vendor.availability.isOpen && (
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
@@ -116,10 +120,13 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
       <CardContent className="p-0">
         {/* Cover Image */}
         <div className="relative">
-          <img
+          <OptimizedImage
             src={vendor.coverImage || "/placeholder.svg?height=192&width=320&query=beauty salon"}
             alt={`${vendor.name} cover`}
-            className="w-full h-48 object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="w-full h-48"
+            context="vendor"
           />
           {vendor.availability.isOpen && (
             <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
@@ -138,10 +145,13 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
         <div className="p-4">
           {/* Vendor Info */}
           <div className="flex items-start gap-3 mb-3">
-            <img
+            <OptimizedImage
               src={vendor.logo || "/placeholder.svg?height=40&width=40&query=business logo"}
               alt={`${vendor.name} logo`}
-              className="w-10 h-10 rounded-lg object-cover border border-gray-200 flex-shrink-0"
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-lg border border-gray-200 flex-shrink-0"
+              context="vendor"
             />
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-femfuel-dark mb-1 truncate">{vendor.name}</h3>

@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 import { useCart } from "@/contexts/cart-context"
 import { LocationModal } from "@/components/location-modal"
 import { UserLocation } from "@/types/delivery"
@@ -174,10 +175,13 @@ export function CartDrawer({ children }: CartDrawerProps) {
                           <CardContent className="p-3">
                             <div className="flex items-start gap-3">
                               {/* Product Image */}
-                              <img
+                              <OptimizedImage
                                 src={primaryImage?.url || "/placeholder.svg?height=60&width=60&query=beauty product"}
                                 alt={primaryImage?.alt || item.product.name}
-                                className="w-15 h-15 rounded-lg object-cover flex-shrink-0"
+                                width={60}
+                                height={60}
+                                className="w-15 h-15 rounded-lg flex-shrink-0"
+                                context="product"
                               />
 
                               {/* Product Info */}

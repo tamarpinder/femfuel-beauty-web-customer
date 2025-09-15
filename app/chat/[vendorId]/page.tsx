@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { OptimizedImage } from "@/components/ui/optimized-image"
 import { useAuth } from "@/contexts/auth-context"
 
 interface Message {
@@ -19,7 +20,7 @@ interface Message {
   metadata?: any
 }
 
-interface Vendor {
+interface ChatVendor {
   id: string
   name: string
   rating: number
@@ -50,7 +51,7 @@ export default function ChatPage() {
   
   const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState("")
-  const [vendor, setVendor] = useState<Vendor | null>(null)
+  const [vendor, setVendor] = useState<ChatVendor | null>(null)
   const [bookingContext, setBookingContext] = useState<BookingContext | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   
@@ -63,7 +64,7 @@ export default function ChatPage() {
     }
 
     // Mock data - replace with Supabase queries
-    const mockVendor: Vendor = {
+    const mockVendor: ChatVendor = {
       id: vendorId,
       name: "Beauty Studio RD",
       rating: 4.8,
@@ -196,10 +197,13 @@ export default function ChatPage() {
               </Button>
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <img
+                  <OptimizedImage
                     src={vendor.professionalImage || "/professionals/portraits/hair-stylist-maria.png"}
                     alt={vendor.professionalName}
-                    className="w-10 h-10 rounded-full object-cover"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full"
+                    context="professional"
                   />
                   {vendor.isOnline && (
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>

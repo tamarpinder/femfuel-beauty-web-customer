@@ -96,6 +96,21 @@ export class VendorAdapter {
     }
   }
   
+  // Simple deterministic random number generator based on seed
+  static seededRandom(seed: string): () => number {
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      const char = seed.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    
+    return function() {
+      hash = ((hash * 1103515245) + 12345) & 0x7fffffff;
+      return hash / 0x7fffffff;
+    }
+  }
+
   // Generate professionals for vendor based on services
   static generateProfessionals(vendorProfile: any, services: any[]): Professional[] {
     const serviceCategories = [...new Set(services.map(s => s.category))]
@@ -104,6 +119,11 @@ export class VendorAdapter {
     const professionals: Professional[] = []
     
     for (let i = 0; i < professionalCount; i++) {
+      const professionalId = `${vendorProfile.id}-prof-${i + 1}`
+      
+      // Create deterministic random generator for this specific professional
+      const random = this.seededRandom(professionalId)
+      
       const baseNames = [
         'María', 'Carmen', 'Ana', 'Rosa', 'Lucía', 'Patricia', 'Sofia', 'Gabriela',
         'Ricardo', 'Carlos', 'Diego', 'Eduardo', 'Andrés', 'Gabriel', 'Jean Carlos'
@@ -113,25 +133,36 @@ export class VendorAdapter {
         'Flores', 'Rivera', 'Morales', 'Jiménez', 'Cruz', 'Valdez', 'Herrera'
       ]
       
-      const firstName = baseNames[Math.floor(Math.random() * baseNames.length)]
-      const lastName = lastNames[Math.floor(Math.random() * lastNames.length)]
+      const firstName = baseNames[Math.floor(random() * baseNames.length)]
+      const lastName = lastNames[Math.floor(random() * lastNames.length)]
       const name = `${firstName} ${lastName}`
       
       // Generate specialties based on service categories
       const specialties = this.generateSpecialties(serviceCategories, services)
       
+      // Generate deterministic professional portrait based on ID
+      const portraitIndex = Math.abs(professionalId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 32 + 1
+      const image = `/professionals/professional-${portraitIndex.toString().padStart(2, '0')}.png`
+      
+      const rating = +(4.2 + random() * 0.7).toFixed(1)
+      const reviewCount = Math.floor(random() * 150) + 50
+      const yearsExperience = Math.floor(random() * 10) + 3
+      const monthlyBookings = Math.floor(random() * 80) + 40
+      const isTopRated = random() > 0.6
+      const bioExperience = Math.floor(random() * 10) + 3
+      
       professionals.push({
-        id: `${vendorProfile.id}-prof-${i + 1}`,
+        id: professionalId,
         name,
-        image: getRandomProfessionalPortrait(),
-        rating: +(4.2 + Math.random() * 0.7).toFixed(1),
-        reviewCount: Math.floor(Math.random() * 150) + 50,
-        yearsExperience: Math.floor(Math.random() * 10) + 3,
-        monthlyBookings: Math.floor(Math.random() * 80) + 40,
+        image,
+        rating,
+        reviewCount,
+        yearsExperience,
+        monthlyBookings,
         specialties,
-        isTopRated: Math.random() > 0.6,
+        isTopRated,
         nextAvailable: "Hoy 3:15 PM",
-        bio: `${specialties[0]} especialista con ${Math.floor(Math.random() * 10) + 3} años de experiencia.`,
+        bio: `${specialties[0]} especialista con ${bioExperience} años de experiencia.`,
         recommendedAddons: []
       })
     }

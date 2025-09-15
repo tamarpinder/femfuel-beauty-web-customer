@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react"
 import { toast } from "sonner"
 import { getMarketplaceServices, getVendors } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
-import { ServiceCard, type Service } from "@/components/service-card"
+import { ServiceCard, type MarketplaceService } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
 import { MobileHeader } from "@/components/mobile-header"
 import { DesktopHeader } from "@/components/desktop-header"
@@ -22,7 +22,7 @@ import type { Vendor, VendorService } from "@/types/vendor"
 
 export default function HomePage() {
   const router = useRouter()
-  const [featuredServices, setFeaturedServices] = useState<Service[]>([])
+  const [featuredServices, setFeaturedServices] = useState<MarketplaceService[]>([])
   const [nearbyVendors, setNearbyVendors] = useState<Vendor[]>([])
   const [allVendors, setAllVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ export default function HomePage() {
         const marketplaceServices = await getMarketplaceServices({ limit: 6 })
         
         // Transform to match Service interface
-        const featuredServices: Service[] = marketplaceServices
+        const featuredServices: MarketplaceService[] = marketplaceServices
           .filter(service => service.isPopular)
           .map(service => ({
             id: service.id,

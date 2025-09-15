@@ -9,7 +9,7 @@ import { AuthGuard } from "@/components/auth-guard"
 import { BookingModal } from "@/components/booking-modal"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 
-export interface Service {
+export interface MarketplaceService {
   id: string
   name: string
   price: string
@@ -48,7 +48,7 @@ export interface Service {
 }
 
 interface ServiceCardProps {
-  service: Service
+  service: MarketplaceService
   layout?: "horizontal" | "vertical"
   vendorId?: string
   vendorName?: string

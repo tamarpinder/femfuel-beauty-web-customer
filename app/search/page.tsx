@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { ArrowLeft, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ServiceCard, type Service } from "@/components/service-card"
+import { ServiceCard, type MarketplaceService } from "@/components/service-card"
 import { SearchFiltersComponent, type SearchFilters } from "@/components/search-filters"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { getVendors, searchVendors, searchServices, getAllServices } from "@/lib/vendors-api"
@@ -25,7 +25,7 @@ export default function SearchPage() {
     rating: 0,
     availability: "anytime",
   })
-  const [filteredServices, setFilteredServices] = useState<Service[]>([])
+  const [filteredServices, setFilteredServices] = useState<MarketplaceService[]>([])
 
   // Handle search input with debouncing
   const handleSearchInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ export default function SearchPage() {
   useEffect(() => {
     async function loadServices() {
       try {
-        let allServices: Service[] = []
+        let allServices: MarketplaceService[] = []
         
         // Search services directly based on query
         if (searchQuery.trim()) {

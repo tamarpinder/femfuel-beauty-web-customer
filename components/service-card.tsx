@@ -84,7 +84,7 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
         <Card className="overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:border-femfuel-rose/20 bg-white">
           <CardContent className="p-0">
             <div className="flex items-center">
-              <div className="w-24 h-20 relative flex-shrink-0">
+              <div className="w-20 sm:w-24 h-20 relative flex-shrink-0">
                 <OptimizedImage
                   src={service.image || "/services/hair/modern-haircut.png"}
                   alt={service.name}
@@ -95,13 +95,13 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
                   quality={85}
                 />
               </div>
-              <div className="flex-1 p-4">
-                <div className="mb-3">
-                  <h3 className="font-bold text-femfuel-dark text-lg mb-2">{service.name}</h3>
+              <div className="flex-1 p-3 sm:p-4">
+                <div className="mb-2 sm:mb-3">
+                  <h3 className="font-bold text-femfuel-dark text-sm sm:text-lg mb-1 sm:mb-2 line-clamp-2">{service.name}</h3>
                   {service.featuredProvider && (
                     <div className="mb-2">
-                      <p className="text-sm font-semibold text-femfuel-dark mb-1">{service.featuredProvider.name}</p>
-                      <div className="flex items-center gap-2 text-xs">
+                      <p className="text-xs sm:text-sm font-semibold text-femfuel-dark mb-1 line-clamp-1">{service.featuredProvider.name}</p>
+                      <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs">
                         <div className="flex items-center gap-1">
                           <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                           <span className="font-medium">4.9</span>
@@ -116,16 +116,16 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
                     </div>
                   )}
                   
-                  <div className="space-y-2">
-                    <p className="font-bold text-femfuel-rose text-base">{service.price}</p>
+                  <div className="space-y-1 sm:space-y-2">
+                    <p className="font-bold text-femfuel-rose text-sm sm:text-base">{service.price}</p>
                     <div className="flex items-center gap-1 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100 rounded px-2 py-1">
-                      <span className="font-semibold text-orange-700 text-xs">{service.availableProviders} especialistas disponibles</span>
+                      <span className="font-semibold text-orange-700 text-xs line-clamp-1">{service.availableProviders} especialistas disponibles</span>
                     </div>
                   </div>
                 </div>
                 
                 <button
-                  className="glassmorphism-button-perfect w-full"
+                  className="glassmorphism-button-perfect w-full h-9 sm:h-10 text-sm sm:text-base"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleViewProviders()

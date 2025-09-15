@@ -263,12 +263,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-femfuel-dark">
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-[95vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto mx-auto">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="text-lg sm:text-xl font-bold text-femfuel-dark">
             {currentStep === "confirmation" ? "¡Reserva Confirmada!" : "Reservar Servicio"}
           </DialogTitle>
-          <DialogDescription className="text-femfuel-medium">
+          <DialogDescription className="text-sm sm:text-base text-femfuel-medium">
             {currentStep === "confirmation" 
               ? "Tu cita ha sido programada exitosamente" 
               : "Selecciona tu profesional preferido y programa tu cita"}
@@ -277,8 +277,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {/* Error Display */}
         {error && (
-          <Card className="mb-6 border-red-200 bg-red-50">
-            <CardContent className="p-4">
+          <Card className="mb-4 sm:mb-6 border-red-200 bg-red-50">
+            <CardContent className="p-3 sm:p-4">
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
                 <div>
@@ -299,10 +299,10 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         )}
 
         {/* Service Summary */}
-        <Card className="mb-6 border-femfuel-rose/10 shadow-md">
-          <CardContent className="p-5">
+        <Card className="mb-4 sm:mb-6 border-femfuel-rose/10 shadow-md">
+          <CardContent className="p-4 sm:p-5">
             {/* Enhanced Vendor Header with Badge */}
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-femfuel-light">
+            <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-femfuel-light">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
                 <span className="text-sm font-medium text-femfuel-medium">
@@ -318,16 +318,16 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
             {/* Service Info */}
             <div className="mb-4">
-              <h3 className="text-lg font-bold text-femfuel-dark mb-1">{service.name}</h3>
-              <p className="text-sm text-femfuel-medium mb-2">
+              <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-1 line-clamp-2">{service.name}</h3>
+              <p className="text-xs sm:text-sm text-femfuel-medium mb-2 line-clamp-2">
                 Manicure profesional con cuidado de cutículas
               </p>
-              <div className="flex items-center gap-4">
-                <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark text-xs sm:text-sm w-fit">
                   <Clock className="h-3 w-3 mr-1" />
                   {service.duration} min
                 </Badge>
-                <span className="text-xl font-bold text-femfuel-rose">
+                <span className="text-lg sm:text-xl font-bold text-femfuel-rose">
                   {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
                 </span>
               </div>
@@ -362,12 +362,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         )}
 
         {currentStep === "details" && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="text-center space-y-2">
-              <h3 className="text-xl font-bold text-femfuel-dark">
+              <h3 className="text-lg sm:text-xl font-bold text-femfuel-dark">
                 Detalles de tu Reserva
               </h3>
-              <p className="text-femfuel-medium">
+              <p className="text-sm sm:text-base text-femfuel-medium">
                 Revisa y confirma todos los detalles de tu cita
               </p>
             </div>
@@ -375,7 +375,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             {/* Vendor Information */}
             <Card className="border-femfuel-rose/20">
               <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg">
+                <CardTitle className="flex flex-col sm:flex-row sm:items-center gap-2 text-base sm:text-lg">
                   {vendorName || vendor?.name || "Salon & Ubicación"}
                   {vendorRating && (
                     <Badge className="bg-yellow-100 text-yellow-800 ml-auto">
@@ -389,9 +389,9 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <MapPin className="h-4 w-4 text-femfuel-medium" />
-                        <span className="text-femfuel-dark">
+                      <div className="flex items-start gap-2 text-xs sm:text-sm">
+                        <MapPin className="h-4 w-4 text-femfuel-medium flex-shrink-0 mt-0.5" />
+                        <span className="text-femfuel-dark line-clamp-2">
                           {vendor?.location?.address || "Av. Winston Churchill 1234"}
                         </span>
                       </div>

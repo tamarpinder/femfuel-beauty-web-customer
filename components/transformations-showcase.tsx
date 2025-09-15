@@ -46,11 +46,11 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
   const current = transformations[currentIndex]
 
   return (
-    <section className="px-4 py-12 bg-gradient-to-br from-femfuel-light to-pink-50">
+    <section className="px-4 py-8 sm:py-12 bg-gradient-to-br from-femfuel-light to-pink-50">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-femfuel-dark mb-3">Transformaciones Increíbles</h2>
-          <p className="text-femfuel-medium">Descubre el poder de la belleza profesional</p>
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-femfuel-dark mb-2 sm:mb-3">Transformaciones Increíbles</h2>
+          <p className="text-sm sm:text-base text-femfuel-medium">Descubre el poder de la belleza profesional</p>
         </div>
 
         <div className="relative">
@@ -77,11 +77,11 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                     />
                     
                     {/* Before/After Toggle */}
-                    <div className="absolute top-4 left-4 flex bg-black/20 backdrop-blur-sm rounded-full p-1">
+                    <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex bg-black/20 backdrop-blur-sm rounded-full p-0.5 sm:p-1">
                       <Button
                         variant={!showAfter ? "default" : "ghost"}
                         size="sm"
-                        className={`rounded-full px-3 py-1 text-xs ${!showAfter ? 'bg-white text-black' : 'text-white hover:bg-white/20'}`}
+                        className={`rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-xs ${!showAfter ? 'bg-white text-black' : 'text-white hover:bg-white/20'}`}
                         onClick={() => setShowAfter(false)}
                       >
                         Antes
@@ -89,7 +89,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                       <Button
                         variant={showAfter ? "default" : "ghost"}
                         size="sm"
-                        className={`rounded-full px-3 py-1 text-xs ${showAfter ? 'bg-white text-black' : 'text-white hover:bg-white/20'}`}
+                        className={`rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-xs ${showAfter ? 'bg-white text-black' : 'text-white hover:bg-white/20'}`}
                         onClick={() => setShowAfter(true)}
                       >
                         Después
@@ -97,8 +97,8 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                     </div>
 
                     {/* Status Badge */}
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-femfuel-rose text-white">
+                    <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
+                      <Badge className="bg-femfuel-rose text-white text-xs sm:text-sm">
                         {showAfter ? "Resultado" : "Original"}
                       </Badge>
                     </div>
@@ -106,10 +106,10 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                 </div>
 
                 {/* Content */}
-                <div className="md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-bold text-femfuel-dark mb-2">{current.lookName}</h3>
-                    <p className="text-femfuel-medium mb-3">{current.service} • {current.vendor}</p>
+                <div className="md:w-1/2 p-4 sm:p-6 md:p-8 flex flex-col justify-center">
+                  <div className="mb-3 sm:mb-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-femfuel-dark mb-2 line-clamp-2">{current.lookName}</h3>
+                    <p className="text-sm sm:text-base text-femfuel-medium mb-2 sm:mb-3 line-clamp-2">{current.service} • {current.vendor}</p>
                     
                     {/* Rating */}
                     <div className="flex items-center gap-2 mb-4">
@@ -126,9 +126,9 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                   </div>
 
                   {/* Testimonial */}
-                  <blockquote className="text-femfuel-medium italic mb-6 border-l-4 border-femfuel-rose pl-4">
+                  <blockquote className="text-sm sm:text-base text-femfuel-medium italic mb-4 sm:mb-6 border-l-2 sm:border-l-4 border-femfuel-rose pl-3 sm:pl-4">
                     "{current.testimonial}"
-                    <footer className="text-sm font-medium text-femfuel-dark mt-2 not-italic">
+                    <footer className="text-xs sm:text-sm font-medium text-femfuel-dark mt-2 not-italic">
                       — {current.name}
                     </footer>
                   </blockquote>
@@ -136,7 +136,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                   {/* Get This Look Button */}
                   <Button
                     onClick={() => onGetThisLook?.(current.serviceId, current.lookName, current.vendor)}
-                    className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl h-11 sm:h-12 text-sm sm:text-base"
                   >
                     <Heart className="h-4 w-4 mr-2 animate-pulse" />
                     Obtener Este Estilo

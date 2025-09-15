@@ -28,7 +28,7 @@ export function CategoryCard({ category, onClick }: CategoryCardProps) {
     >
       <CardContent className="p-0">
         {category.bannerImage ? (
-          <div className="relative h-24 w-full">
+          <div className="relative h-20 sm:h-24 w-full">
             <OptimizedImage
               src={category.bannerImage}
               alt={`${category.name} category`}
@@ -39,17 +39,17 @@ export function CategoryCard({ category, onClick }: CategoryCardProps) {
               quality={80}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div className="absolute bottom-2 left-0 right-0 text-center">
-              <h3 className="font-medium text-white text-sm mb-1">{category.name}</h3>
+            <div className="absolute bottom-1 sm:bottom-2 left-0 right-0 text-center">
+              <h3 className="font-medium text-white text-xs sm:text-sm mb-0.5 sm:mb-1">{category.name}</h3>
               <p className="text-xs text-white/80">{category.count}</p>
             </div>
           </div>
         ) : (
-          <div className="p-4">
-            <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-[var(--femfuel-rose)] to-[var(--femfuel-gold)] rounded-full flex items-center justify-center">
-              <category.icon className="h-6 w-6 text-white" />
+          <div className="p-3 sm:p-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-gradient-to-br from-[var(--femfuel-rose)] to-[var(--femfuel-gold)] rounded-full flex items-center justify-center">
+              <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
             </div>
-            <h3 className="font-medium text-femfuel-dark text-sm mb-1">{category.name}</h3>
+            <h3 className="font-medium text-femfuel-dark text-xs sm:text-sm mb-0.5 sm:mb-1">{category.name}</h3>
             <p className="text-xs text-femfuel-medium">{category.count}</p>
           </div>
         )}

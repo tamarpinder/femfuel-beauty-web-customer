@@ -122,30 +122,24 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={isMobile ? "max-w-[calc(100vw-1rem)]" : "sm:max-w-md"}>
+      <DialogContent className="w-[calc(100vw-2rem)] max-w-[95vw] sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className={`text-center font-bold text-femfuel-dark ${
-            isMobile ? "text-lg" : "text-xl"
-          }`}>
+          <DialogTitle className="text-center font-bold text-femfuel-dark text-lg sm:text-xl">
             {mode === "login" ? "Iniciar Sesión" : "Crear Cuenta"}
           </DialogTitle>
-          <DialogDescription className={`text-center text-femfuel-medium ${
-            isMobile ? "text-xs" : "text-sm"
-          }`}>
+          <DialogDescription className="text-center text-femfuel-medium text-sm">
             {mode === "login"
               ? "Accede a tu cuenta para reservar servicios"
               : "Únete a FemFuel Beauty y descubre los mejores profesionales"}
           </DialogDescription>
         </DialogHeader>
 
-        <div className={isMobile ? "space-y-3" : "space-y-4"}>
+        <div className="space-y-4">
           {/* Social Login Buttons */}
-          <div className={isMobile ? "space-y-2" : "space-y-3"}>
+          <div className="space-y-2 sm:space-y-3">
             <Button
               variant="outline"
-              className={`w-full border-gray-200 hover:bg-gray-50 bg-transparent ${
-                isMobile ? "h-10 text-xs" : "h-12"
-              }`}
+              className="w-full border-gray-200 hover:bg-gray-50 bg-transparent h-11 sm:h-12 text-sm sm:text-base"
               onClick={() => handleSocialLogin("google")}
               disabled={isLoading}
             >
@@ -172,9 +166,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
             <Button
               variant="outline"
-              className={`w-full border-gray-200 hover:bg-gray-50 bg-transparent ${
-                isMobile ? "h-10 text-xs" : "h-12"
-              }`}
+              className="w-full border-gray-200 hover:bg-gray-50 bg-transparent h-11 sm:h-12 text-sm sm:text-base"
               onClick={() => handleSocialLogin("facebook")}
               disabled={isLoading}
             >
@@ -190,22 +182,16 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
               <Separator className="w-full" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className={`bg-white px-2 text-femfuel-medium ${
-                isMobile ? "text-xs" : "text-sm"
-              }`}>O continúa con email</span>
+              <span className="bg-white px-2 text-femfuel-medium text-xs sm:text-sm">O continúa con email</span>
             </div>
           </div>
 
           {/* Test Credentials Notice - Only in Login Mode */}
           {mode === "login" && (
-            <div className={isMobile ? "space-y-2" : "space-y-3"}>
-              <div className={`bg-blue-50 border border-blue-200 rounded-lg ${
-                isMobile ? "p-3" : "p-4"
-              }`}>
+            <div className="space-y-2 sm:space-y-3">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
                 <div className="flex items-start gap-3">
-                  <Info className={`text-blue-600 flex-shrink-0 mt-0.5 ${
-                    isMobile ? "h-4 w-4" : "h-5 w-5"
-                  }`} />
+                  <Info className="text-blue-600 flex-shrink-0 mt-0.5 h-4 w-4 sm:h-5 sm:w-5" />
                   <div>
                     <h4 className={`font-medium text-blue-900 mb-1 ${
                       isMobile ? "text-sm" : "text-base"

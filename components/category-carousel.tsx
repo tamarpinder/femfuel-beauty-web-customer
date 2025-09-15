@@ -116,9 +116,9 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
 
   return (
     <div className="mb-6">
-      <div 
+      <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 px-1"
+        className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide pb-2 px-1"
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
@@ -143,9 +143,9 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                 }`}
                 onClick={() => handleCategoryClick(category.id)}
               >
-                <CardContent className="p-0 w-20">
+                <CardContent className="p-0 w-24 sm:w-28">
                   {/* Image Section */}
-                  <div className="relative h-12 bg-gray-100 overflow-hidden">
+                  <div className="relative h-14 sm:h-16 bg-gray-100 overflow-hidden">
                     <img
                       src={categoryImage}
                       alt={category.name}
@@ -154,7 +154,7 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                     
                     {/* Icon Overlay */}
                     <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                      <category.icon className="h-5 w-5 text-white drop-shadow-sm" />
+                      <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow-sm" />
                     </div>
                     
                     {/* Product Count Badge */}
@@ -169,9 +169,9 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                   
                   {/* Category Name */}
                   <div className="p-2 text-center">
-                    <p className={`text-xs font-medium leading-tight ${
-                      isSelected 
-                        ? "text-femfuel-rose" 
+                    <p className={`text-xs sm:text-sm font-medium leading-tight ${
+                      isSelected
+                        ? "text-femfuel-rose"
                         : "text-femfuel-dark"
                     }`}>
                       {category.shortName}

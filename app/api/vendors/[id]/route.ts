@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { mockData } from '@/data/shared/mock-data'
+import { VendorAdapter } from '@/lib/vendor-adapter'
 
 export async function GET(
   request: Request,
@@ -9,71 +9,15 @@ export async function GET(
     const resolvedParams = await params
     const vendorId = resolvedParams.id
 
-    // Find vendor by ID or slug
-    const vendor = mockData.vendorProfiles.find(v => 
-      v.id === vendorId || 
-      v.id.toLowerCase().replace(/[^a-z0-9]/g, '-') === vendorId
-    )
+    // Find vendor using unified adapter
+    const vendor = VendorAdapter.findVendor(vendorId)
 
     if (!vendor) {
       return NextResponse.json({ error: 'Vendor not found' }, { status: 404 })
     }
 
-    // Get vendor services
-    const vendorServices = mockData.services.filter(s => s.vendorId === vendor.id)
-
-    // Transform data to match frontend format
-    const transformedVendor = {
-      id: vendor.id,
-      name: vendor.businessName,
-      slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      logo: vendor.user.avatar,
-      coverImage: `/vendor-cover-${vendor.id}.jpg`,
-      description: vendor.description,
-      rating: vendor.rating,
-      reviewCount: vendor.reviewCount,
-      serviceCount: vendorServices.length,
-      location: {
-        address: vendor.location.address,
-        district: vendor.location.district,
-        city: vendor.location.city,
-        distance: "2.5km"
-      },
-      contact: {
-        phone: vendor.user.phone,
-        email: vendor.user.email,
-        whatsapp: vendor.user.phone
-      },
-      categories: vendor.categories,
-      popularServices: vendorServices
-        .filter(s => s && s.isPopular)
-        .slice(0, 3)
-        .map(s => s?.name || ''),
-      badges: vendor.isVerified ? ['Verificado'] : [],
-      availability: {
-        isOpen: true,
-        nextSlot: "Hoy 3:00 PM",
-        todayAvailable: true
-      },
-      professionalCount: 1,
-      priceRange: {
-        min: vendorServices.length > 0 ? Math.min(...vendorServices.filter(s => s).map(s => s?.price || 0)) : 0,
-        max: vendorServices.length > 0 ? Math.max(...vendorServices.filter(s => s).map(s => s?.price || 0)) : 0
-      },
-      services: vendorServices.filter(service => service).map(service => ({
-        id: service?.id || '',
-        name: service?.name || '',
-        description: service?.description || '',
-        price: service?.price || 0,
-        duration: service?.duration || 60,
-        category: service?.category || '',
-        isPopular: service?.isPopular || false,
-        image: service?.images?.[0]?.url || '',
-        addons: []
-      })),
-      businessHours: vendor.businessHours,
-      gallery: vendor.portfolio.map(p => p.url)
-    }
+    // Return vendor directly (already in correct format from VendorAdapter)
+    const transformedVendor = vendor
 
     return NextResponse.json(transformedVendor)
   } catch (error) {

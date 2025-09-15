@@ -14,7 +14,7 @@ import { ProfessionalSelector } from "@/components/professional-selector"
 import { BookingConfiguration } from "@/components/booking-configuration"
 import { getMultiDayAvailability } from "@/lib/vendor-scheduling"
 import { format } from "date-fns"
-import { mockVendors } from "@/data/vendors"
+import { VendorAdapter } from "@/lib/vendor-adapter"
 import type { VendorService, Professional, ServiceAddon } from "@/types/vendor"
 import type { Service } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
@@ -68,23 +68,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     }
   }, [isOpen, service, vendorId, vendorName])
 
-  // Get vendor data for professionals - Enhanced vendor lookup with multiple fallback strategies
-  let vendor = mockVendors.find(v => v.id === vendorId)
-  
-  // Fallback 1: Try string comparison if exact match fails
-  if (!vendor && vendorId) {
-    vendor = mockVendors.find(v => String(v.id) === String(vendorId))
-  }
-  
-  // Fallback 2: Try case-insensitive match
-  if (!vendor && vendorId) {
-    vendor = mockVendors.find(v => v.id.toLowerCase() === String(vendorId).toLowerCase())
-  }
-  
-  // Fallback 3: Try matching by name if ID fails
-  if (!vendor && vendorName) {
-    vendor = mockVendors.find(v => v.name === vendorName)
-  }
+  // Get vendor data using unified adapter (handles both data sources)
+  const vendor = vendorId ? VendorAdapter.findVendor(vendorId) : null
   
   // Set error if vendor not found
   useEffect(() => {

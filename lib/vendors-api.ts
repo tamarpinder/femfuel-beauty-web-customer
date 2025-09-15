@@ -1,5 +1,6 @@
-// Mock data functions for demo - using shared mock data directly
+// Mock data functions for demo - using unified vendor adapter
 import { mockData } from '@/data/shared/mock-data'
+import { VendorAdapter } from '@/lib/vendor-adapter'
 import { getVendorLogo, getVendorCover, getServiceImage, getProfessionalPortrait, getRandomProfessionalPortrait } from '@/lib/image-mappings'
 import { getServiceDescription } from '@/lib/service-descriptions'
 
@@ -128,7 +129,7 @@ export async function getVendors(filters: VendorFilters = {}) {
           nextSlot: "Hoy 3:00 PM",
           todayAvailable: true
         },
-        professionalCount: 1,
+        professionalCount: Math.floor(Math.random() * 4) + 2, // 2-5 professionals
         priceRange: {
           min: Math.min(...vendorServices.map(s => s.price)),
           max: Math.max(...vendorServices.map(s => s.price))
@@ -146,7 +147,9 @@ export async function getVendors(filters: VendorFilters = {}) {
           beforeAfter: (service as any).beforeAfter,
           addons: (service as any).addons || []
         })),
-        businessHours: vendor.businessHours
+        businessHours: vendor.businessHours,
+        // Generate professionals using unified adapter
+        professionals: VendorAdapter.generateProfessionals(vendor, vendorServices)
       }
     })
 
@@ -167,69 +170,9 @@ export async function getVendorById(id: string) {
   await simulateDelay()
   
   try {
-    const vendor = mockData.vendorProfiles.find(v => v.id === id || v.id.toLowerCase().replace(/[^a-z0-9]/g, '-') === id)
-    if (!vendor) return null
-
-    // Transform single vendor to match format
-    const vendorServices = mockData.services.filter(s => s.vendorId === vendor.id)
-    
-    return {
-      id: vendor.id,
-      name: vendor.businessName,
-      slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-      logo: getVendorLogo(vendor.businessName),
-      coverImage: getVendorCover(vendor.businessName),
-      description: vendor.description,
-      rating: vendor.rating,
-      reviewCount: vendor.reviewCount,
-      serviceCount: vendorServices.length,
-      location: {
-        address: vendor.location.address,
-        district: vendor.location.district,
-        city: vendor.location.city,
-        distance: "2.5km"
-      },
-      contact: {
-        phone: vendor.user.phone || "",
-        email: vendor.user.email,
-        whatsapp: vendor.user.phone || ""
-      },
-      categories: vendor.categories,
-      popularServices: vendorServices
-        .filter(s => s.isPopular)
-        .slice(0, 3)
-        .map(s => s.name),
-      badges: vendor.isVerified ? ['Verificado'] : [],
-      availability: {
-        isOpen: true,
-        nextSlot: "Hoy 3:00 PM",
-        todayAvailable: true
-      },
-      professionalCount: 1,
-      priceRange: {
-        min: Math.min(...vendorServices.map(s => s.price)),
-        max: Math.max(...vendorServices.map(s => s.price))
-      },
-      services: vendorServices.map(service => ({
-        id: service.id,
-        slug: `${service.category}-${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`,
-        name: service.name,
-        description: service.description,
-        price: service.price,
-        duration: service.duration,
-        category: service.category,
-        isPopular: service.isPopular,
-        image: getServiceImage(service.name),
-        beforeAfter: (service as any).beforeAfter,
-        addons: (service as any).addons || []
-      })),
-      businessHours: vendor.businessHours,
-      gallery: [
-        `/vendors/galleries/${vendor.businessName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}-1.png`,
-        `/vendors/galleries/${vendor.businessName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}-2.png`,
-        `/vendors/galleries/${vendor.businessName.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}-3.png`
-      ]
-    }
+    // Use unified vendor adapter
+    const vendor = VendorAdapter.findVendor(id)
+    return vendor
   } catch (error) {
     console.error('Error fetching vendor by id:', error)
     return null

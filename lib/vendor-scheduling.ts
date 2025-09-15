@@ -1,5 +1,5 @@
 import { addDays, format, startOfDay, isWeekend, getDay } from 'date-fns'
-import { mockVendors } from "@/data/vendors"
+import { VendorAdapter } from "@/lib/vendor-adapter"
 import type { Professional } from "@/types/vendor"
 
 export interface VendorSchedule {
@@ -482,7 +482,7 @@ export function getMultiDayAvailability(
 
 // Professional-specific availability functions
 export function getProfessionalSchedule(vendorId: string, professionalId: string): VendorSchedule | null {
-  const vendor = mockVendors.find(v => v.id === vendorId)
+  const vendor = VendorAdapter.findVendor(vendorId)
   const professional = vendor?.professionals?.find(p => p.id === professionalId)
   
   if (!professional || !professional.personalSchedule) {

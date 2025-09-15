@@ -1,6 +1,5 @@
 // Mock data functions for demo - using unified vendor adapter
 import { mockData } from '@/data/shared/mock-data'
-import { mockVendors } from '@/data/vendors'
 import { VendorAdapter } from '@/lib/vendor-adapter'
 import { getVendorLogo, getVendorCover, getServiceImage, getProfessionalPortrait, getRandomProfessionalPortrait } from '@/lib/image-mappings'
 import { getServiceDescription } from '@/lib/service-descriptions'
@@ -154,11 +153,7 @@ export async function getVendors(filters: VendorFilters = {}) {
       }
     })
 
-    // Merge with static vendors from vendors.ts to maintain both data sources
-    const staticVendors = [...mockVendors]
-    const allVendors = [...transformedVendors, ...staticVendors]
-
-    return allVendors
+    return transformedVendors
   } catch (error) {
     console.error('Error processing vendor data:', error)
     return []

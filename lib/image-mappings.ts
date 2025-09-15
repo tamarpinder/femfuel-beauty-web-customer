@@ -59,62 +59,46 @@ export const vendorCoverMap: Record<string, string> = {
   'Dominican Beauty House': '/vendors/covers/dominican-beauty-house-cover.png'
 }
 
-// Service image mappings for 45 curated services
+// Service image mappings for all active services
 export const serviceImageMap: Record<string, string> = {
-  // Hair services (12 services) - Spanish names
+  // Hair services - Spanish names (all services from mockData.services)
   'alisado dominicano': '/services/hair/alisado-dominicano-premium.png',
   'balayage': '/services/hair/balayage-treatment.png',
   'tratamiento de keratina': '/services/hair/keratin-treatment-service-after.png',
   'corte de cabello': '/services/hair/modern-haircut.png',
   'tinte de cabello': '/services/hair/hair-coloring-session.png',
-  'peinado de boda': '/services/hair/wedding-hairstyle-service.png',
   'corte de cabello rizado': '/services/hair/curly-hair-cut-service.png',
   'tratamiento capilar': '/services/hair/hair-treatment-session.png',
-  'extensiones de cabello': '/services/hair/hair-extensions-service.png',
   'mechas californianas': '/services/hair/hair-highlights-service.png',
-  'alisado químico': '/services/hair/hair-straightening-service.png',
   'mascarilla capilar': '/services/hair/hair-mask-treatment-service.png',
   
-  // Nail services (10 services) - Spanish names
+  // Nail services - Spanish names (all services from mockData.services)
   'manicure de gel': '/services/nails/premium-gel-manicure.png',
-  'arte de uñas tropical': '/services/nails/tropical-nail-art.png',
   'manicure clásico': '/services/nails/classic-manicure.png',
-  'extensiones de acrílico': '/services/nails/acrylic-extensions.png',
   'pedicure spa': '/services/nails/spa-pedicure-treatment.png',
-  'manicure exprés': '/services/nails/express-manicure.png',
-  'manicure de lujo': '/services/nails/luxury-manicure.png',
-  'pedicure spa deluxe': '/services/nails/deluxe-spa-pedicure-service.png',
-  'manicure francés moderno': '/services/nails/modern-french-manicure-service.png',
-  'reparación de uñas': '/services/nails/nail-repair-service.png',
+  'arte de uñas tropical': '/services/nails/tropical-nail-art.png',
+  'extensiones de acrílico': '/services/nails/acrylic-extensions.png',
   
-  // Makeup services (8 services) - Spanish names
-  'maquillaje de novia': '/services/makeup/bridal-makeup-application.png',
+  // Makeup services - Spanish names (all services from mockData.services)
   'maquillaje natural': '/services/makeup/natural-makeup.png',
-  'maquillaje de gala': '/services/makeup/glamour-evening-look.png',
   'maquillaje ejecutivo': '/services/makeup/corporate-makeup-service.png',
-  'maquillaje para fotografía': '/services/makeup/photography-makeup-service.png',
-  'maquillaje caribeño': '/services/makeup/caribbean-makeup.png',
-  'maquillaje con aerógrafo': '/services/makeup/airbrush-makeup-service.png',
-  'maquillaje de ocasión especial': '/services/makeup/special-occasion-makeup-service.png',
+  'maquillaje de novia': '/services/makeup/bridal-makeup-application.png',
+  'maquillaje de gala': '/services/makeup/glamour-evening-look.png',
   
-  // Spa services (8 services) - Spanish names
-  'facial de lujo': '/services/spa/luxury-facial-treatment.png',
+  // Spa services - Spanish names (all services from mockData.services)
   'masaje relajante': '/services/spa/massage.png',
   'limpieza facial profunda': '/services/spa/deep-cleansing-facial-service.png',
-  'aromaterapia': '/services/spa/aromatherapy-massage-service.png',
+  'facial de lujo': '/services/spa/luxury-facial-treatment.png',
   'masaje con piedras calientes': '/services/spa/hot-stone-massage.png',
-  'masaje terapéutico': '/services/spa/massage3.png',
-  'microdermoabrasión': '/services/spa/microdermabrasion-service.png',
-  'masaje de pareja': '/services/spa/couples-massage-service.png',
   
-  // Lash & Brow services (7 services) - Spanish names
+  // Lash & Brow services - Spanish names (all services from mockData.services)
   'extensiones de pestañas': '/services/lashes/lash-extensions.png',
-  'volumen ruso': '/services/lashes/russian-volume-lashes.png',
   'pestañas clásicas': '/services/lashes/classic-lashes.png',
-  'tinte de pestañas': '/services/lashes/lash-tint.png',
+  'diseño de cejas': '/services/lashes/skilled-eyebrow-artist.png',
+  'volumen ruso': '/services/lashes/russian-volume-lashes.png',
   'microblading de cejas': '/services/lashes/skilled-eyebrow-artist.png',
-  'lifting de pestañas': '/services/lashes/lash-extensions.png', // Reuse similar image
-  'diseño de cejas': '/services/lashes/skilled-eyebrow-artist.png', // Reuse eyebrow image
+  'tinte de pestañas': '/services/lashes/lash-tint.png',
+  'lifting de pestañas': '/services/lashes/lash-extensions.png',
 }
 
 // Professional portrait mappings

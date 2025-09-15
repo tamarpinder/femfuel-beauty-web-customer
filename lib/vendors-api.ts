@@ -65,8 +65,8 @@ export async function getVendors(filters: VendorFilters = {}) {
   await simulateDelay()
   
   try {
-    // Start with all vendors from shared mock data
-    let filteredVendors = [...mockData.vendorProfiles]
+    // Start with all vendors from unified VendorAdapter (includes both data sources)
+    let filteredVendors = VendorAdapter.getAllVendors()
 
     // Apply category filter
     if (filters.category) {
@@ -79,7 +79,7 @@ export async function getVendors(filters: VendorFilters = {}) {
     if (filters.search) {
       const searchLower = filters.search.toLowerCase()
       filteredVendors = filteredVendors.filter(vendor =>
-        vendor.businessName.toLowerCase().includes(searchLower) ||
+        vendor.name.toLowerCase().includes(searchLower) ||
         vendor.description.toLowerCase().includes(searchLower) ||
         vendor.location.district.toLowerCase().includes(searchLower)
       )
@@ -90,70 +90,11 @@ export async function getVendors(filters: VendorFilters = {}) {
       filteredVendors = filteredVendors.slice(0, filters.limit)
     }
 
-    // Sort vendors alphabetically by business name (using Spanish locale for proper ordering)
-    filteredVendors.sort((a, b) => a.businessName.localeCompare(b.businessName, 'es-ES'))
+    // Sort vendors alphabetically by name (using Spanish locale for proper ordering)
+    filteredVendors.sort((a, b) => a.name.localeCompare(b.name, 'es-ES'))
 
-    // Transform data to match frontend format
-    const transformedVendors = filteredVendors.map(vendor => {
-      const vendorServices = mockData.services.filter(s => s.vendorId === vendor.id)
-      
-      return {
-        id: vendor.id,
-        name: vendor.businessName,
-        slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-        logo: getVendorLogo(vendor.businessName),
-        coverImage: getVendorCover(vendor.businessName),
-        description: vendor.description,
-        rating: vendor.rating,
-        reviewCount: vendor.reviewCount,
-        serviceCount: vendorServices.length,
-        location: {
-          address: vendor.location.address,
-          district: vendor.location.district,
-          city: vendor.location.city,
-          distance: "2.5km"
-        },
-        contact: {
-          phone: vendor.user.phone || "",
-          email: vendor.user.email,
-          whatsapp: vendor.user.phone || ""
-        },
-        categories: vendor.categories,
-        popularServices: vendorServices
-          .filter(s => s.isPopular)
-          .slice(0, 3)
-          .map(s => s.name),
-        badges: vendor.isVerified ? ['Verificado'] : [],
-        availability: {
-          isOpen: true,
-          nextSlot: "Hoy 3:00 PM",
-          todayAvailable: true
-        },
-        professionalCount: Math.floor(Math.random() * 4) + 2, // 2-5 professionals
-        priceRange: {
-          min: Math.min(...vendorServices.map(s => s.price)),
-          max: Math.max(...vendorServices.map(s => s.price))
-        },
-        services: vendorServices.map(service => ({
-          id: service.id,
-          slug: `${service.category}-${service.name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-')}`,
-          name: service.name,
-          description: service.description,
-          price: service.price,
-          duration: service.duration,
-          category: service.category,
-          isPopular: service.isPopular,
-          image: getServiceImage(service.name),
-          beforeAfter: (service as any).beforeAfter,
-          addons: (service as any).addons || []
-        })),
-        businessHours: vendor.businessHours,
-        // Generate professionals using unified adapter
-        professionals: VendorAdapter.generateProfessionals(vendor, vendorServices)
-      }
-    })
-
-    return transformedVendors
+    // VendorAdapter.getAllVendors() already returns proper Vendor objects
+    return filteredVendors
   } catch (error) {
     console.error('Error processing vendor data:', error)
     return []

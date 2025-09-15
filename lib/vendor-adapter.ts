@@ -163,7 +163,7 @@ export class VendorAdapter {
         isTopRated,
         nextAvailable: "Hoy 3:15 PM",
         bio: `${specialties[0]} especialista con ${bioExperience} años de experiencia.`,
-        recommendedAddons: []
+        recommendedAddons: this.generateRecommendedAddons(specialties, professionalId, random)
       })
     }
     
@@ -197,6 +197,91 @@ export class VendorAdapter {
     const uniqueSpecialties = [...new Set(allSpecialties)]
     const count = Math.min(Math.max(2, Math.ceil(categories.length * 1.5)), 4)
     return uniqueSpecialties.slice(0, count)
+  }
+  
+  // Generate recommended add-ons based on professional specialties
+  static generateRecommendedAddons(specialties: string[], professionalId: string, random: () => number): any[] {
+    const addonsByCategory: Record<string, any[]> = {
+      'hair': [
+        { id: 'hair-treatment-premium', name: 'Tratamiento Capilar Premium', price: 800, duration: 30 },
+        { id: 'deep-conditioning', name: 'Acondicionamiento Profundo', price: 600, duration: 20 },
+        { id: 'scalp-massage', name: 'Masaje del Cuero Cabelludo', price: 400, duration: 15 },
+        { id: 'hair-glossing', name: 'Brillo Capilar', price: 500, duration: 25 },
+        { id: 'split-ends-treatment', name: 'Tratamiento de Puntas', price: 350, duration: 15 }
+      ],
+      'nails': [
+        { id: 'nail-art-premium', name: 'Nail Art Premium', price: 500, duration: 25 },
+        { id: 'gel-overlay', name: 'Capa de Gel Protector', price: 300, duration: 15 },
+        { id: 'cuticle-treatment', name: 'Tratamiento de Cutículas', price: 200, duration: 10 },
+        { id: 'nail-strengthening', name: 'Fortalecimiento de Uñas', price: 400, duration: 20 },
+        { id: 'french-manicure', name: 'Manicure Francesa', price: 350, duration: 20 }
+      ],
+      'makeup': [
+        { id: 'lash-extensions', name: 'Extensión de Pestañas', price: 700, duration: 45 },
+        { id: 'brow-shaping', name: 'Diseño de Cejas', price: 400, duration: 20 },
+        { id: 'makeup-touch-up', name: 'Retoque de Maquillaje', price: 300, duration: 15 },
+        { id: 'lip-treatment', name: 'Tratamiento de Labios', price: 250, duration: 10 },
+        { id: 'primer-application', name: 'Aplicación de Primer', price: 200, duration: 10 }
+      ],
+      'spa': [
+        { id: 'aromatherapy-upgrade', name: 'Aromaterapia Premium', price: 600, duration: 30 },
+        { id: 'hot-stone-addition', name: 'Piedras Calientes Adicionales', price: 500, duration: 20 },
+        { id: 'facial-mask', name: 'Mascarilla Facial Premium', price: 450, duration: 25 },
+        { id: 'scalp-treatment', name: 'Tratamiento del Cuero Cabelludo', price: 350, duration: 15 },
+        { id: 'relaxation-music', name: 'Sesión de Música Relajante', price: 150, duration: 0 }
+      ],
+      'general': [
+        { id: 'consultation-extended', name: 'Consulta Extendida', price: 200, duration: 15 },
+        { id: 'product-recommendation', name: 'Recomendación de Productos', price: 100, duration: 5 },
+        { id: 'aftercare-kit', name: 'Kit de Cuidado Post-Servicio', price: 300, duration: 5 },
+        { id: 'photo-session', name: 'Sesión de Fotos del Resultado', price: 250, duration: 10 }
+      ]
+    }
+    
+    const allAddons: any[] = []
+    
+    // Add category-specific addons based on specialties
+    specialties.forEach(specialty => {
+      const specialtyLower = specialty.toLowerCase()
+      
+      if (specialtyLower.includes('corte') || specialtyLower.includes('color') || specialtyLower.includes('keratina') || specialtyLower.includes('alisado')) {
+        allAddons.push(...addonsByCategory.hair)
+      }
+      if (specialtyLower.includes('nail') || specialtyLower.includes('manicure') || specialtyLower.includes('pedicure')) {
+        allAddons.push(...addonsByCategory.nails)
+      }
+      if (specialtyLower.includes('maquillaje') || specialtyLower.includes('makeup') || specialtyLower.includes('pestañas')) {
+        allAddons.push(...addonsByCategory.makeup)
+      }
+      if (specialtyLower.includes('masaje') || specialtyLower.includes('facial') || specialtyLower.includes('spa')) {
+        allAddons.push(...addonsByCategory.spa)
+      }
+    })
+    
+    // Always add some general addons
+    allAddons.push(...addonsByCategory.general)
+    
+    // Remove duplicates and select 2-4 addons deterministically
+    const uniqueAddons = allAddons.filter((addon, index, self) => 
+      index === self.findIndex(a => a.id === addon.id)
+    )
+    
+    // Use random function to select 2-4 addons consistently
+    const addonCount = Math.floor(random() * 3) + 2 // 2-4 addons
+    const selectedAddons: any[] = []
+    
+    for (let i = 0; i < Math.min(addonCount, uniqueAddons.length); i++) {
+      const randomIndex = Math.floor(random() * uniqueAddons.length)
+      const selectedAddon = uniqueAddons[randomIndex]
+      if (!selectedAddons.find(a => a.id === selectedAddon.id)) {
+        selectedAddons.push({
+          ...selectedAddon,
+          id: `${professionalId}-${selectedAddon.id}`
+        })
+      }
+    }
+    
+    return selectedAddons
   }
   
   // Get all vendors from both sources

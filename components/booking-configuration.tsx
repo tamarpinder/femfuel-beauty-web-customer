@@ -73,7 +73,7 @@ export function BookingConfiguration({
     <div className="space-y-6">
       <div className="text-center space-y-2">
         <h3 className="text-xl font-bold text-femfuel-dark">
-          📅 Personaliza tu Cita
+          Personaliza tu Cita
         </h3>
         <p className="text-femfuel-medium">
           Selecciona complementos y tu horario preferido
@@ -98,7 +98,7 @@ export function BookingConfiguration({
                 
                 <div>
                   <h4 className="font-bold text-femfuel-dark flex items-center gap-2">
-                    👤 Con: {selectedProfessional.name}
+                    Con: {selectedProfessional.name}
                   </h4>
                   <div className="flex items-center gap-3 text-sm text-femfuel-medium">
                     <div className="flex items-center gap-1">
@@ -128,7 +128,7 @@ export function BookingConfiguration({
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              ✨ Mejora tu Experiencia
+              Mejora tu Experiencia
               <Badge variant="secondary" className="text-xs">
                 Opcional
               </Badge>
@@ -166,7 +166,7 @@ export function BookingConfiguration({
                           {addon.name}
                           {(addon as any).isRecommended && (
                             <Badge variant="secondary" className="text-xs bg-yellow-100 text-yellow-800">
-                              ⭐ Recomendado por {(addon as any).professionalName}
+                              Recomendado por {(addon as any).professionalName}
                             </Badge>
                           )}
                         </label>
@@ -253,7 +253,7 @@ export function BookingConfiguration({
         <CardHeader>
           <CardTitle className="flex items-center justify-between text-lg">
             <span className="flex items-center gap-2">
-              📅 Selecciona Fecha y Hora
+              Selecciona Fecha y Hora
             </span>
             {totalDuration !== serviceDuration && (
               <Badge variant="outline" className="text-xs">
@@ -277,11 +277,11 @@ export function BookingConfiguration({
           {selectedDate && selectedTime && (
             <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
               <h5 className="font-semibold text-green-800 mb-2">
-                ✅ Resumen de tu cita:
+                Resumen de tu cita:
               </h5>
               <div className="space-y-1 text-sm text-green-700">
-                <div>📅 {format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
-                <div>🕐 {selectedTime} - {
+                <div>{format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
+                <div>{selectedTime} - {
                   // Calculate end time
                   (() => {
                     const [hours, minutes] = selectedTime.split(':').map(Number)
@@ -292,9 +292,9 @@ export function BookingConfiguration({
                   })()
                 }</div>
                 {selectedProfessional && (
-                  <div>👤 Con {selectedProfessional.name}</div>
+                  <div>Con {selectedProfessional.name}</div>
                 )}
-                <div>💰 Total: RD${totalPrice.toLocaleString()}</div>
+                <div>Total: RD${totalPrice.toLocaleString()}</div>
               </div>
             </div>
           )}

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Star, Clock, Users, Award, ChevronRight } from "lucide-react"
+import { Star, Clock, Users, Award, ChevronRight, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Professional } from "@/types/vendor"
 
@@ -28,7 +28,7 @@ export function ProfessionalSelector({
       <div className="space-y-6">
         <div className="text-center space-y-2">
           <h3 className="text-xl font-bold text-femfuel-dark">
-            👤 Profesionales Disponibles
+            Profesionales Disponibles
           </h3>
           <p className="text-femfuel-medium">
             Selecciona tu profesional preferido para tu cita
@@ -56,7 +56,8 @@ export function ProfessionalSelector({
                     </div>
                     <span className="text-femfuel-medium">•</span>
                     <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
-                      ✅ Disponible hoy
+                      <Check className="h-3 w-3 mr-1" />
+                      Disponible hoy
                     </Badge>
                   </div>
                   <p className="text-femfuel-medium text-sm">
@@ -96,7 +97,7 @@ export function ProfessionalSelector({
     <div className="space-y-6">
       <div className="text-center space-y-2">
         <h3 className="text-xl font-bold text-femfuel-dark">
-          🎯 Elige tu profesional preferido
+          Elige tu profesional preferido
         </h3>
         <p className="text-femfuel-medium">
           Cada profesional tiene especialidades únicas y horarios diferentes
@@ -142,20 +143,12 @@ export function ProfessionalSelector({
                             <Award className="h-4 w-4 text-yellow-500" />
                           )}
                         </h4>
-                        <div className="flex items-center gap-4 text-sm text-femfuel-medium">
-                          <div className="flex items-center gap-1">
-                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-medium">{professional.rating}</span>
-                            <span>({professional.reviewCount} reseñas)</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{professional.yearsExperience}+ años exp.</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>{professional.monthlyBookings} citas este mes</span>
-                          </div>
+                        <div className="flex items-center gap-1 text-sm text-femfuel-medium">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">{professional.rating}</span>
+                          <span>({professional.reviewCount} reseñas)</span>
+                          <span className="text-femfuel-medium mx-2">•</span>
+                          <span>{professional.yearsExperience}+ años exp.</span>
                         </div>
                       </div>
                       
@@ -175,19 +168,23 @@ export function ProfessionalSelector({
 
                     {/* Specialties */}
                     <div>
-                      <h5 className="text-sm font-semibold text-femfuel-dark mb-2 flex items-center gap-1">
-                        🏆 Especialidades:
+                      <h5 className="text-sm font-semibold text-femfuel-dark mb-2">
+                        Especialidades:
                       </h5>
                       <div className="flex flex-wrap gap-2">
-                        {professional.specialties.map((specialty, index) => (
-                          <Badge 
-                            key={index}
-                            variant="secondary" 
-                            className="text-xs bg-femfuel-purple/20 text-femfuel-dark"
-                          >
-                            {specialty}
-                          </Badge>
-                        ))}
+                        {professional.specialties.map((specialty, index) => {
+                          const hasCheckmark = ['Nail Art', 'Gel Premium', 'Manicure Francesa'].includes(specialty)
+                          return (
+                            <Badge
+                              key={index}
+                              variant="secondary"
+                              className="text-xs bg-femfuel-purple/20 text-femfuel-dark flex items-center gap-1"
+                            >
+                              {hasCheckmark && <Check className="h-3 w-3" />}
+                              {specialty}
+                            </Badge>
+                          )
+                        })}
                       </div>
                     </div>
 
@@ -195,7 +192,7 @@ export function ProfessionalSelector({
                     {professional.recommendedAddons.length > 0 && (
                       <div>
                         <h5 className="text-sm font-semibold text-femfuel-dark mb-2">
-                          ✨ Servicios especiales:
+                          Servicios especiales:
                         </h5>
                         <div className="space-y-1">
                           {professional.recommendedAddons.slice(0, 2).map((addon) => (
@@ -215,49 +212,35 @@ export function ProfessionalSelector({
                       </div>
                     )}
 
-                    {/* Availability */}
-                    <div className="flex items-center justify-between pt-2">
-                      <div className="flex items-center gap-2">
-                        <div className={cn(
-                          "w-2 h-2 rounded-full",
-                          availability.status === "available" ? "bg-green-500" :
-                          availability.status === "limited" ? "bg-yellow-500" :
-                          "bg-red-500"
-                        )} />
-                        <span className="text-sm font-medium text-femfuel-dark">
-                          {availability.text}
-                        </span>
-                      </div>
+                    {/* Action Buttons */}
+                    <div className="flex gap-2 pt-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-xs"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setShowPortfolio(
+                            showPortfolio === professional.id ? null : professional.id
+                          )
+                        }}
+                      >
+                        Ver Portfolio
+                      </Button>
 
-                      <div className="flex gap-2">
+                      {!isSelected && (
                         <Button
-                          variant="outline"
                           size="sm"
-                          className="text-xs"
+                          className="bg-femfuel-rose hover:bg-[#9f1853] text-white"
                           onClick={(e) => {
                             e.stopPropagation()
-                            setShowPortfolio(
-                              showPortfolio === professional.id ? null : professional.id
-                            )
+                            onProfessionalSelect(professional)
                           }}
                         >
-                          Ver Portfolio
+                          Seleccionar
+                          <ChevronRight className="h-4 w-4 ml-1" />
                         </Button>
-                        
-                        {!isSelected && (
-                          <Button
-                            size="sm"
-                            className="bg-femfuel-rose hover:bg-[#9f1853] text-white"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              onProfessionalSelect(professional)
-                            }}
-                          >
-                            Seleccionar
-                            <ChevronRight className="h-4 w-4 ml-1" />
-                          </Button>
-                        )}
-                      </div>
+                      )}
                     </div>
 
                     {/* Portfolio Preview (Collapsible) */}
@@ -296,7 +279,9 @@ export function ProfessionalSelector({
         >
           <CardContent className="p-6 text-center">
             <div className="space-y-3">
-              <div className="text-4xl">🤷</div>
+              <div className="w-12 h-12 mx-auto bg-femfuel-light rounded-full flex items-center justify-center">
+                <Users className="h-6 w-6 text-femfuel-rose" />
+              </div>
               <h4 className="text-lg font-bold text-femfuel-dark">
                 Sin preferencia de profesional
               </h4>

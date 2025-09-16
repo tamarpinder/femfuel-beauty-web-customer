@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { EnhancedBookingCalendar } from "@/components/enhanced-booking-calendar"
 import { ProfessionalSelector } from "@/components/professional-selector"
 import { BookingConfiguration } from "@/components/booking-configuration"
@@ -169,6 +170,14 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     } else if (currentStep === "payment") {
       handleBooking()
     }
+
+    // Scroll to top of modal on step change
+    setTimeout(() => {
+      const dialogContent = document.querySelector('[role="dialog"]')
+      if (dialogContent) {
+        dialogContent.scrollTop = 0
+      }
+    }, 100)
   }
 
   const handleBack = () => {
@@ -307,9 +316,9 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <div className="relative">
               {/* Desktop continuous bar */}
               <div className="hidden sm:block">
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                   <div
-                    className="h-full bg-gradient-to-r from-femfuel-rose to-femfuel-rose/80 rounded-full transition-all duration-500 ease-out"
+                    className="h-full bg-gradient-to-r from-femfuel-rose via-pink-500 to-purple-500 rounded-full transition-all duration-700 ease-in-out shadow-sm"
                     style={{
                       width: currentStep === "professional" ? "25%" :
                              currentStep === "configuration" ? "50%" :
@@ -319,12 +328,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 </div>
               </div>
 
-              {/* Mobile: Simple progress bar */}
+              {/* Mobile: Enhanced progress bar with gradient */}
               <div className="sm:hidden">
                 <div className="max-w-64 mx-auto">
-                  <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                     <div
-                      className="h-full bg-gradient-to-r from-femfuel-rose to-femfuel-rose/80 rounded-full transition-all duration-500 ease-out"
+                      className="h-full bg-gradient-to-r from-femfuel-rose via-pink-500 to-purple-500 rounded-full transition-all duration-700 ease-in-out shadow-sm"
                       style={{
                         width: currentStep === "professional" ? "25%" :
                                currentStep === "configuration" ? "50%" :
@@ -333,10 +342,10 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                     />
                   </div>
                   <div className="flex justify-between mt-2 text-xs text-femfuel-medium px-1">
-                    <span className={currentStep === "professional" ? "text-femfuel-rose font-medium" : ""}>1</span>
-                    <span className={currentStep === "configuration" ? "text-femfuel-rose font-medium" : ""}>2</span>
-                    <span className={currentStep === "details" ? "text-femfuel-rose font-medium" : ""}>3</span>
-                    <span className={currentStep === "payment" ? "text-femfuel-rose font-medium" : ""}>4</span>
+                    <span className={currentStep === "professional" ? "text-femfuel-rose font-bold" : ""}>1</span>
+                    <span className={currentStep === "configuration" ? "text-femfuel-rose font-bold" : ""}>2</span>
+                    <span className={currentStep === "details" ? "text-femfuel-rose font-bold" : ""}>3</span>
+                    <span className={currentStep === "payment" ? "text-femfuel-rose font-bold" : ""}>4</span>
                   </div>
                 </div>
               </div>
@@ -370,29 +379,30 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         {/* Service Summary */}
         <Card className="mb-6 border-femfuel-rose/10 shadow-md mx-1 sm:mx-0">
           <CardContent className="p-4 sm:p-5">
-            {/* Enhanced Vendor Header with Badge */}
-            <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-femfuel-light">
-              <div className="flex items-center gap-2">
+            {/* Enhanced Vendor Header - Centered and Compact */}
+            <div className="text-center mb-3 pb-2 border-b border-femfuel-light">
+              <div className="flex items-center justify-center gap-2 mb-1">
                 <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
-                <span className="text-sm font-medium text-femfuel-medium">
+                <span className="text-sm font-medium text-femfuel-dark">
                   {vendorName || "Beauty Studio"}
                 </span>
+                {vendorRating && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 text-xs ml-2">
+                    <Star className="h-3 w-3 mr-1 fill-current" />
+                    {vendorRating}
+                  </Badge>
+                )}
               </div>
-              {vendorRating && (
-                <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 text-xs">
-                  ⭐ {vendorRating}
-                </Badge>
-              )}
             </div>
 
-            {/* Service Info */}
-            <div className="mb-4">
-              <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-1 line-clamp-2 break-words">{service.name}</h3>
-              <p className="text-xs sm:text-sm text-femfuel-medium mb-2 line-clamp-2 break-words">
+            {/* Service Info - Centered */}
+            <div className="mb-4 text-center">
+              <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-2 line-clamp-2 break-words">{service.name}</h3>
+              <p className="text-xs sm:text-sm text-femfuel-medium mb-3 line-clamp-2 break-words">
                 Manicure profesional con cuidado de cutículas
               </p>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-                <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark text-xs sm:text-sm w-fit">
+              <div className="flex flex-col items-center gap-2">
+                <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark text-xs sm:text-sm">
                   <Clock className="h-3 w-3 mr-1" />
                   {service.duration} min
                 </Badge>
@@ -444,10 +454,10 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             {/* Vendor Information */}
             <Card className="border-femfuel-rose/20">
               <CardHeader className="pb-3">
-                <CardTitle className="flex flex-col sm:flex-row sm:items-center gap-2 text-base sm:text-lg">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
                   {vendorName || vendor?.name || "Salon & Ubicación"}
                   {vendorRating && (
-                    <Badge className="bg-yellow-100 text-yellow-800 ml-auto">
+                    <Badge className="bg-yellow-100 text-yellow-800">
                       <Star className="h-3 w-3 mr-1 fill-current" />
                       {vendorRating}
                     </Badge>
@@ -500,41 +510,43 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
               </CardContent>
             </Card>
 
-            {/* Selected Professional */}
+            {/* Selected Professional - Compact Design */}
             {bookingData.professional && (
               <Card className="border-femfuel-purple/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    Tu Profesional
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-femfuel-light rounded-full flex items-center justify-center">
-                        <User className="h-6 w-6 text-femfuel-rose" />
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-femfuel-dark">{bookingData.professional.name}</h4>
-                        <div className="flex items-center gap-3 text-sm text-femfuel-medium">
-                          <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-3 flex-1">
+                      <Avatar className="h-10 w-10 border border-femfuel-light">
+                        <AvatarImage
+                          src={bookingData.professional.image}
+                          alt={bookingData.professional.name}
+                        />
+                        <AvatarFallback className="bg-femfuel-light text-femfuel-rose text-sm font-bold">
+                          {bookingData.professional.name.split(' ').map(n => n[0]).join('')}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-bold text-femfuel-dark text-sm truncate">{bookingData.professional.name}</h4>
+                          <div className="flex items-center gap-1 text-xs text-femfuel-medium">
                             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                             <span>{bookingData.professional.rating}</span>
+                            <span>•</span>
+                            <span>{bookingData.professional.yearsExperience}+ años</span>
                           </div>
-                          <span>•</span>
-                          <span>{bookingData.professional.yearsExperience}+ años exp.</span>
                         </div>
-                        <div className="text-xs text-femfuel-medium mt-1">
-                          Especialidades: {bookingData.professional.specialties.slice(0, 2).join(', ')}
+                        <div className="text-xs text-femfuel-medium truncate">
+                          {bookingData.professional.specialties.slice(0, 2).join(', ')}
                         </div>
                       </div>
                     </div>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
+                      className="text-xs px-2 py-1 h-7"
                       onClick={() => setCurrentStep("professional")}
                     >
-                      Cambiar profesional
+                      Cambiar
                     </Button>
                   </div>
                 </CardContent>
@@ -545,6 +557,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <Card className="border-green-200 bg-green-50">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg text-green-800">
+                  <Check className="h-5 w-5" />
                   Cita Confirmada
                 </CardTitle>
               </CardHeader>
@@ -617,7 +630,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center justify-between text-lg">
-                  💅 Servicios y Complementos
+                  Servicios y Complementos
                   <Button 
                     variant="outline" 
                     size="sm"
@@ -701,7 +714,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <Card className="border-blue-200 bg-blue-50">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg text-blue-800">
-                  💡 Preparación Recomendada
+                  <AlertCircle className="h-5 w-5" />
+                  Preparación Recomendada
                 </CardTitle>
               </CardHeader>
               <CardContent>

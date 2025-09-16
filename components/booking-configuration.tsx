@@ -250,19 +250,17 @@ export function BookingConfiguration({
 
       {/* Calendar Section */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between text-lg">
-            <span className="flex items-center gap-2">
-              Selecciona Fecha y Hora
-            </span>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center justify-between text-base">
+            <span>Selecciona Fecha y Hora</span>
             {totalDuration !== serviceDuration && (
               <Badge variant="outline" className="text-xs">
-                Duración: {totalDuration} min
+                {totalDuration} min
               </Badge>
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           <EnhancedBookingCalendar
             vendorId={vendorId}
             professionalId={selectedProfessional?.id}
@@ -273,13 +271,13 @@ export function BookingConfiguration({
             onTimeSelect={onTimeSelect}
           />
 
-          {/* Booking Summary */}
+          {/* Booking Summary - Compact */}
           {selectedDate && selectedTime && (
-            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <h5 className="font-semibold text-green-800 mb-2">
+            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <h5 className="font-medium text-green-800 mb-2 text-sm">
                 Resumen de tu cita:
               </h5>
-              <div className="space-y-1 text-sm text-green-700">
+              <div className="space-y-1 text-xs text-green-700">
                 <div>{format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
                 <div>{selectedTime} - {
                   // Calculate end time
@@ -294,7 +292,7 @@ export function BookingConfiguration({
                 {selectedProfessional && (
                   <div>Con {selectedProfessional.name}</div>
                 )}
-                <div>Total: RD${totalPrice.toLocaleString()}</div>
+                <div className="font-medium">Total: RD${totalPrice.toLocaleString()}</div>
               </div>
             </div>
           )}

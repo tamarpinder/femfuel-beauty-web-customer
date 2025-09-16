@@ -95,7 +95,7 @@ export function ProviderListCompact({
                 onClick={() => setSelectedProvider(vendor.id)}
               >
                 <CardContent className="p-4">
-                  {/* Compact Header with Logo, Name, Price and Rating */}
+                  {/* Compact Header with Logo and Name */}
                   <div className="flex items-center gap-3 mb-3">
                     {/* Smaller Provider Logo */}
                     <div className="flex-shrink-0">
@@ -111,62 +111,67 @@ export function ProviderListCompact({
                       </div>
                     </div>
 
-                    {/* Provider Info - Consolidated */}
+                    {/* Provider Info - Name and Basic Info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h3 
-                            className="text-base font-bold text-femfuel-dark cursor-pointer hover:text-femfuel-rose transition-colors line-clamp-1 mb-1"
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              onProviderSelect(vendor)
-                            }}
-                          >
-                            {vendor.name}
-                          </h3>
-                          
-                          {/* Rating and Distance in one compact line */}
-                          <div className="flex items-center gap-3 text-xs text-femfuel-medium">
-                            <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              <span className="font-medium">{vendor.rating}</span>
-                              <span>({vendor.reviewCount})</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              <span>{getDistanceText(vendor)}</span>
-                            </div>
-                            {vendor.badges && vendor.badges.length > 0 && (
-                              <Badge className="bg-femfuel-rose text-white px-1 py-0 text-xs h-4">
-                                <Verified className="h-2 w-2 mr-1" />
-                                Verificado
-                              </Badge>
-                            )}
-                          </div>
+                      <h3
+                        className="text-base font-bold text-femfuel-dark cursor-pointer hover:text-femfuel-rose transition-colors line-clamp-1 mb-1"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onProviderSelect(vendor)
+                        }}
+                      >
+                        {vendor.name}
+                      </h3>
+
+                      {/* Rating and Distance in one compact line */}
+                      <div className="flex items-center gap-3 text-xs text-femfuel-medium">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">{vendor.rating}</span>
+                          <span>({vendor.reviewCount})</span>
                         </div>
-                        
-                        {/* Price - Right aligned */}
-                        {vendorService && (
-                          <div className="text-right flex-shrink-0 ml-2">
-                            <div className="text-base font-bold text-femfuel-rose">
-                              {formatPrice(vendorService.price)}
-                            </div>
-                            <div className="text-xs text-femfuel-medium">
-                              {vendorService.duration} min
-                            </div>
-                          </div>
-                        )}
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          <span>{getDistanceText(vendor)}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Compact Availability and Review */}
-                  <div className="flex items-center gap-2 mb-3 text-xs">
-                    <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded">
+                  {/* Price and Duration Info */}
+                  {vendorService && (
+                    <div className="bg-femfuel-purple rounded-lg p-3 mb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl font-bold text-femfuel-rose">
+                          {formatPrice(vendorService.price)}
+                        </div>
+                        <div className="text-sm text-femfuel-medium">
+                          {vendorService.duration} min
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Availability, Verification and Review */}
+                  <div className="space-y-2 mb-3">
+                    {/* Time availability */}
+                    <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded text-xs w-fit">
                       <Clock className="h-3 w-3" />
                       <span className="font-medium">{getNextSlot(vendor)}</span>
                     </div>
-                    <div className="flex-1 bg-gray-50 text-femfuel-dark px-2 py-1 rounded">
+
+                    {/* Verification badge below time */}
+                    {vendor.badges && vendor.badges.length > 0 && (
+                      <div>
+                        <Badge className="bg-femfuel-rose text-white px-2 py-1 text-xs">
+                          <Verified className="h-3 w-3 mr-1" />
+                          Verificado
+                        </Badge>
+                      </div>
+                    )}
+
+                    {/* Review */}
+                    <div className="bg-gray-50 text-femfuel-dark px-2 py-1 rounded text-xs">
                       <Quote className="h-3 w-3 inline mr-1 text-femfuel-medium" />
                       <span className="italic line-clamp-1">"{reviewPreview}"</span>
                     </div>
@@ -210,11 +215,12 @@ export function ProviderListCompact({
                     
                     <Button
                       size="sm"
+                      variant="outline"
                       onClick={(e) => {
                         e.stopPropagation()
                         onProviderSelect(vendor)
                       }}
-                      className="border border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white h-8 px-3 text-sm"
+                      className="bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-gray-800 h-8 px-3 text-sm"
                     >
                       Ver
                     </Button>

@@ -263,7 +263,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-1rem)] max-w-[98vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto mx-auto">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-[96vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto mx-auto px-3 sm:px-6">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-lg sm:text-xl font-bold text-femfuel-dark">
             {currentStep === "confirmation" ? "¡Reserva Confirmada!" : "Reservar Servicio"}
@@ -277,10 +277,21 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {/* Progress Bar - Only show when not in confirmation step */}
         {currentStep !== "confirmation" && (
-          <div className="mb-4 sm:mb-6">
-            <div className="flex items-center justify-between mb-2">
+          <div className="mb-6 px-1 sm:px-0">
+            {/* Mobile: Compact centered step info */}
+            <div className="sm:hidden text-center mb-4">
+              <div className="text-sm font-medium text-femfuel-dark mb-2">
+                Paso {currentStep === "professional" ? "1" : currentStep === "configuration" ? "2" : currentStep === "details" ? "3" : "4"} de 4
+              </div>
+              <div className="text-xs text-femfuel-medium mb-1">
+                {currentStep === "professional" ? "Profesional" : currentStep === "configuration" ? "Fecha y Hora" : currentStep === "details" ? "Detalles" : "Pago"}
+              </div>
+            </div>
+
+            {/* Desktop: Horizontal layout */}
+            <div className="hidden sm:flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-xs sm:text-sm font-medium text-femfuel-dark">
+                <span className="text-sm font-medium text-femfuel-dark">
                   Paso {currentStep === "professional" ? "1" : currentStep === "configuration" ? "2" : currentStep === "details" ? "3" : "4"} de 4
                 </span>
                 <span className="text-xs text-femfuel-medium">
@@ -308,87 +319,35 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 </div>
               </div>
 
-              {/* Mobile dots indicator */}
-              <div className="flex sm:hidden items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                      currentStep === "professional" || currentStep === "configuration" || currentStep === "details" || currentStep === "payment"
-                        ? "bg-femfuel-rose text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}>
-                      1
-                    </div>
-                    <div className={`flex-1 h-1 transition-all duration-300 ${
-                      currentStep === "configuration" || currentStep === "details" || currentStep === "payment"
-                        ? "bg-femfuel-rose"
-                        : "bg-gray-200"
-                    }`} />
+              {/* Mobile: Simple progress bar */}
+              <div className="sm:hidden">
+                <div className="max-w-64 mx-auto">
+                  <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-femfuel-rose to-femfuel-rose/80 rounded-full transition-all duration-500 ease-out"
+                      style={{
+                        width: currentStep === "professional" ? "25%" :
+                               currentStep === "configuration" ? "50%" :
+                               currentStep === "details" ? "75%" : "100%"
+                      }}
+                    />
                   </div>
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                      currentStep === "configuration" || currentStep === "details" || currentStep === "payment"
-                        ? "bg-femfuel-rose text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}>
-                      2
-                    </div>
-                    <div className={`flex-1 h-1 transition-all duration-300 ${
-                      currentStep === "details" || currentStep === "payment"
-                        ? "bg-femfuel-rose"
-                        : "bg-gray-200"
-                    }`} />
-                  </div>
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                      currentStep === "details" || currentStep === "payment"
-                        ? "bg-femfuel-rose text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}>
-                      3
-                    </div>
-                    <div className={`flex-1 h-1 transition-all duration-300 ${
-                      currentStep === "payment"
-                        ? "bg-femfuel-rose"
-                        : "bg-gray-200"
-                    }`} />
-                  </div>
-                </div>
-
-                <div className="flex-1">
-                  <div className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                      currentStep === "payment"
-                        ? "bg-femfuel-rose text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}>
-                      4
-                    </div>
+                  <div className="flex justify-between mt-2 text-xs text-femfuel-medium px-1">
+                    <span className={currentStep === "professional" ? "text-femfuel-rose font-medium" : ""}>1</span>
+                    <span className={currentStep === "configuration" ? "text-femfuel-rose font-medium" : ""}>2</span>
+                    <span className={currentStep === "details" ? "text-femfuel-rose font-medium" : ""}>3</span>
+                    <span className={currentStep === "payment" ? "text-femfuel-rose font-medium" : ""}>4</span>
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Step labels for mobile */}
-            <div className="flex sm:hidden justify-between mt-2">
-              <span className="text-xs text-femfuel-medium">Pro</span>
-              <span className="text-xs text-femfuel-medium">Fecha</span>
-              <span className="text-xs text-femfuel-medium">Info</span>
-              <span className="text-xs text-femfuel-medium">Pago</span>
             </div>
           </div>
         )}
 
         {/* Error Display */}
         {error && (
-          <Card className="mb-4 sm:mb-6 border-red-200 bg-red-50">
-            <CardContent className="p-3 sm:p-4">
+          <Card className="mb-6 border-red-200 bg-red-50 mx-1 sm:mx-0">
+            <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
                 <div>
@@ -409,7 +368,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         )}
 
         {/* Service Summary */}
-        <Card className="mb-4 sm:mb-6 border-femfuel-rose/10 shadow-md">
+        <Card className="mb-6 border-femfuel-rose/10 shadow-md mx-1 sm:mx-0">
           <CardContent className="p-4 sm:p-5">
             {/* Enhanced Vendor Header with Badge */}
             <div className="flex items-center justify-between mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-femfuel-light">
@@ -428,8 +387,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
             {/* Service Info */}
             <div className="mb-4">
-              <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-1 line-clamp-2">{service.name}</h3>
-              <p className="text-xs sm:text-sm text-femfuel-medium mb-2 line-clamp-2">
+              <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-1 line-clamp-2 break-words">{service.name}</h3>
+              <p className="text-xs sm:text-sm text-femfuel-medium mb-2 line-clamp-2 break-words">
                 Manicure profesional con cuidado de cutículas
               </p>
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
@@ -437,7 +396,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                   <Clock className="h-3 w-3 mr-1" />
                   {service.duration} min
                 </Badge>
-                <span className="text-lg sm:text-xl font-bold text-femfuel-rose">
+                <span className="text-lg sm:text-xl font-bold text-femfuel-rose break-words">
                   {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
                 </span>
               </div>
@@ -1017,12 +976,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
               </CardContent>
             </Card>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button variant="outline" className="flex-1 bg-transparent" onClick={handleWhatsAppConfirmation}>
+            <div className="flex flex-col sm:flex-row gap-3 px-2 sm:px-0">
+              <Button variant="outline" className="flex-1 bg-transparent min-h-[44px]" onClick={handleWhatsAppConfirmation}>
                 <Phone className="h-4 w-4 mr-2" />
                 Confirmar por WhatsApp
               </Button>
-              <Button variant="outline" className="flex-1 bg-transparent" onClick={handleAddToCalendar}>
+              <Button variant="outline" className="flex-1 bg-transparent min-h-[44px]" onClick={handleAddToCalendar}>
                 <Plus className="h-4 w-4 mr-2" />
                 Agregar al calendario
               </Button>
@@ -1032,12 +991,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {/* Action Buttons */}
         {currentStep !== "confirmation" && (
-          <div className="flex flex-col sm:flex-row justify-between gap-3 pt-6">
-            <Button variant="outline" className="min-h-[44px]" onClick={currentStep === "professional" ? handleClose : handleBack}>
+          <div className="flex flex-col sm:flex-row justify-between gap-3 pt-6 px-2 sm:px-0">
+            <Button variant="outline" className="min-h-[44px] w-full sm:w-auto" onClick={currentStep === "professional" ? handleClose : handleBack}>
               {currentStep === "professional" ? "Cancelar" : "Atrás"}
             </Button>
             <Button
-              className="bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px]"
+              className="bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px] w-full sm:w-auto"
               onClick={handleNext}
               disabled={(currentStep === "configuration" && (!bookingData.date || !bookingData.time)) || isLoading}
             >
@@ -1047,7 +1006,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         )}
 
         {currentStep === "confirmation" && (
-          <div className="pt-6">
+          <div className="pt-6 px-2 sm:px-0">
             <Button className="w-full bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px]" onClick={handleClose}>
               Cerrar
             </Button>

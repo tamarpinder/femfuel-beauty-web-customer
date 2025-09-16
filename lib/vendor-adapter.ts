@@ -276,7 +276,7 @@ export class VendorAdapter {
       if (!selectedAddons.find(a => a.id === selectedAddon.id)) {
         selectedAddons.push({
           ...selectedAddon,
-          id: `${professionalId}-${selectedAddon.id}`
+          id: `${professionalId}-${selectedAddon.id}-${i}`
         })
       }
     }

@@ -59,7 +59,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Mock session check - check localStorage for demo user
     const mockUser = localStorage.getItem('mockCustomerUser');
     if (mockUser) {
-      setUser(JSON.parse(mockUser));
+      const parsedUser = JSON.parse(mockUser);
+
+      // Ensure María González always has her test payment method
+      if (parsedUser.name === 'María González' && (!parsedUser.paymentMethods || parsedUser.paymentMethods.length === 0)) {
+        parsedUser.paymentMethods = [
+          {
+            id: 'pm-001',
+            type: 'card' as const,
+            cardNumber: '4242',
+            expiryDate: '12/27',
+            cardHolderName: 'María González',
+            brand: 'visa' as const,
+            isDefault: true
+          }
+        ];
+        // Update localStorage with the corrected user data
+        localStorage.setItem('mockCustomerUser', JSON.stringify(parsedUser));
+      }
+
+      setUser(parsedUser);
     }
     setIsLoading(false);
 

@@ -4,12 +4,23 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 import { auth } from "@/lib/api"
 import type { User as SupabaseUser, Session } from "@supabase/supabase-js"
 
+export interface PaymentMethod {
+  id: string
+  type: "card" | "apple_pay" | "cash"
+  cardNumber?: string // Last 4 digits for display
+  expiryDate?: string
+  cardHolderName?: string
+  brand?: "visa" | "mastercard" | "amex" | "discover"
+  isDefault?: boolean
+}
+
 export interface User {
   id: string
   name: string
   email: string
   phone?: string
   avatar?: string
+  paymentMethods?: PaymentMethod[]
 }
 
 interface AuthContextType {
@@ -20,6 +31,10 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ data: any; error: any }>
   signOut: () => Promise<{ error: any }>
   isAuthenticated: boolean
+  addPaymentMethod: (paymentMethod: Omit<PaymentMethod, "id">) => void
+  removePaymentMethod: (paymentMethodId: string) => void
+  setDefaultPaymentMethod: (paymentMethodId: string) => void
+  getDefaultPaymentMethod: () => PaymentMethod | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -97,14 +112,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     // TODO: Replace with real Supabase auth
     // const result = await auth.signIn(email, password)
-    
-    // Mock signin - always successful
+
+    // Mock signin - always successful with test payment method
     const mockUser = {
       id: 'customer-001',
       name: 'María González',
       email: email,
       phone: '+1 809 555 0101',
-      avatar: ''
+      avatar: '',
+      paymentMethods: [
+        {
+          id: 'pm-001',
+          type: 'card' as const,
+          cardNumber: '4242',
+          expiryDate: '12/27',
+          cardHolderName: 'María González',
+          brand: 'visa' as const,
+          isDefault: true
+        }
+      ]
     };
     setUser(mockUser);
     localStorage.setItem('mockCustomerUser', JSON.stringify(mockUser));
@@ -125,6 +151,70 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: null }
   }
 
+  const addPaymentMethod = (paymentMethodData: Omit<PaymentMethod, "id">) => {
+    if (!user) return;
+
+    const newPaymentMethod: PaymentMethod = {
+      id: 'pm-' + Date.now(),
+      ...paymentMethodData
+    };
+
+    // If this is the first payment method, make it default
+    if (!user.paymentMethods || user.paymentMethods.length === 0) {
+      newPaymentMethod.isDefault = true;
+    }
+
+    const updatedUser = {
+      ...user,
+      paymentMethods: [...(user.paymentMethods || []), newPaymentMethod]
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem('mockCustomerUser', JSON.stringify(updatedUser));
+  };
+
+  const removePaymentMethod = (paymentMethodId: string) => {
+    if (!user || !user.paymentMethods) return;
+
+    const updatedPaymentMethods = user.paymentMethods.filter(pm => pm.id !== paymentMethodId);
+
+    // If we removed the default payment method, make the first remaining one default
+    const removedMethod = user.paymentMethods.find(pm => pm.id === paymentMethodId);
+    if (removedMethod?.isDefault && updatedPaymentMethods.length > 0) {
+      updatedPaymentMethods[0].isDefault = true;
+    }
+
+    const updatedUser = {
+      ...user,
+      paymentMethods: updatedPaymentMethods
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem('mockCustomerUser', JSON.stringify(updatedUser));
+  };
+
+  const setDefaultPaymentMethod = (paymentMethodId: string) => {
+    if (!user || !user.paymentMethods) return;
+
+    const updatedPaymentMethods = user.paymentMethods.map(pm => ({
+      ...pm,
+      isDefault: pm.id === paymentMethodId
+    }));
+
+    const updatedUser = {
+      ...user,
+      paymentMethods: updatedPaymentMethods
+    };
+
+    setUser(updatedUser);
+    localStorage.setItem('mockCustomerUser', JSON.stringify(updatedUser));
+  };
+
+  const getDefaultPaymentMethod = (): PaymentMethod | null => {
+    if (!user || !user.paymentMethods) return null;
+    return user.paymentMethods.find(pm => pm.isDefault) || user.paymentMethods[0] || null;
+  };
+
   const value = {
     user,
     session,
@@ -133,6 +223,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signIn,
     signOut,
     isAuthenticated: !!user,
+    addPaymentMethod,
+    removePaymentMethod,
+    setDefaultPaymentMethod,
+    getDefaultPaymentMethod
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

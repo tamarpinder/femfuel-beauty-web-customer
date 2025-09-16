@@ -13,6 +13,7 @@ import { BookingSkeletonList } from "@/components/booking-skeleton"
 import { ChatButton } from "@/components/ui/chat-button"
 import { UserFlowHeader } from "@/components/user-flow-header"
 import { useAuth } from "@/contexts/auth-context"
+import { useBooking } from "@/contexts/booking-context"
 import { useRouter } from "next/navigation"
 
 interface Booking {
@@ -45,8 +46,8 @@ interface Booking {
 
 export default function BookingsPage() {
   const { user, isAuthenticated } = useAuth()
+  const { bookings: contextBookings, getUpcomingBookings } = useBooking()
   const router = useRouter()
-  const [bookings, setBookings] = useState<Booking[]>([])
   const [filteredBookings, setFilteredBookings] = useState<Booking[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("date")
@@ -54,106 +55,48 @@ export default function BookingsPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  // Transform BookingContext bookings to the page format
+  const transformBookings = (contextBookings: any[]): Booking[] => {
+    return contextBookings.map(booking => ({
+      id: booking.id,
+      service: {
+        name: booking.serviceName,
+        vendor: booking.vendorName,
+        price: `RD$${booking.price.toLocaleString()}`,
+        image: booking.serviceImage || "/service-placeholder.jpg",
+        duration: booking.duration,
+      },
+      vendor: {
+        id: booking.vendorId,
+        name: booking.vendorName,
+        rating: booking.vendorRating || 4.5,
+        reviewCount: 150,
+        address: "Dirección del proveedor",
+        phone: "+1 809-555-0100",
+        professionalName: booking.professionalName || "Profesional",
+        professionalImage: "/professionals/professional-placeholder.png",
+        isOnline: true,
+        responseTime: "Responde rápido"
+      },
+      date: booking.date,
+      time: booking.time,
+      status: booking.status === "confirmed" ? "upcoming" : booking.status,
+      paymentMethod: booking.paymentMethod?.type || "card",
+      notes: booking.notes
+    }))
+  }
+
   useEffect(() => {
-    // TODO: Re-enable authentication once auth system is fully implemented
-    // if (!isAuthenticated) {
-    //   router.push("/")
-    //   return
-    // }
-
-    // Mock bookings data
-    const mockBookings: Booking[] = [
-      {
-        id: "1",
-        service: {
-          name: "Manicure Gel Premium",
-          vendor: "Beauty Studio RD",
-          price: "RD$1,200",
-          image: "/premium-gel-manicure.png",
-          duration: 60,
-        },
-        vendor: {
-          id: "vendor-1",
-          name: "Beauty Studio RD",
-          rating: 4.8,
-          reviewCount: 156,
-          address: "Plaza Central, Local 15, Naco",
-          phone: "+1 809-555-0126",
-          professionalName: "Patricia López",
-          professionalImage: "/professionals/portraits/nail-artist-patricia.png",
-          isOnline: true,
-          responseTime: "Responde en 15 min"
-        },
-        date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
-        time: "14:30",
-        status: "upcoming",
-        paymentMethod: "card",
-        notes: "Prefiero colores neutros",
-      },
-      {
-        id: "2",
-        service: {
-          name: "Tratamiento Facial",
-          vendor: "Spa Paradise",
-          price: "RD$3,500",
-          image: "/facial-treatment-spa.png",
-          duration: 75,
-        },
-        vendor: {
-          id: "vendor-2",
-          name: "Spa Paradise",
-          rating: 4.7,
-          reviewCount: 203,
-          address: "Av. Máximo Gómez 67, Bella Vista",
-          phone: "+1 809-555-0125",
-          professionalName: "Gabriela Méndez",
-          professionalImage: "/professionals/portraits/spa-therapist-gabriela.png",
-          isOnline: false,
-          responseTime: "Responde en 2 horas"
-        },
-        date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        time: "11:00",
-        status: "completed",
-        paymentMethod: "cash",
-      },
-      {
-        id: "3",
-        service: {
-          name: "Maquillaje Profesional",
-          vendor: "Glamour House",
-          price: "RD$2,500",
-          duration: 90,
-        },
-        vendor: {
-          id: "vendor-3",
-          name: "Glamour House",
-          rating: 5.0,
-          reviewCount: 89,
-          address: "Calle José Reyes 45, Zona Colonial",
-          phone: "+1 809-555-0124",
-          professionalName: "Alejandra Santos",
-          professionalImage: "/professionals/portraits/makeup-artist-alejandra.png",
-          isOnline: true,
-          responseTime: "Responde al instante"
-        },
-        date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
-        time: "16:00",
-        status: "upcoming",
-        paymentMethod: "card",
-      },
-    ]
-
-    // Simulate loading (reduced for testing)
-    setTimeout(() => {
-      setBookings(mockBookings)
-      setFilteredBookings(mockBookings)
-      setIsLoading(false)
-    }, 500)
-  }, [router])
+    // Transform context bookings to page format
+    const transformedBookings = transformBookings(contextBookings)
+    setFilteredBookings(transformedBookings)
+    setIsLoading(false)
+  }, [contextBookings])
 
   // Filter and sort bookings
   useEffect(() => {
-    let filtered = bookings
+    const transformedBookings = transformBookings(contextBookings)
+    let filtered = transformedBookings
 
     // Search filter
     if (searchQuery.trim()) {
@@ -190,7 +133,7 @@ export default function BookingsPage() {
     })
 
     setFilteredBookings(filtered)
-  }, [bookings, searchQuery, sortBy, filterStatus])
+  }, [contextBookings, searchQuery, sortBy, filterStatus])
 
   const upcomingBookings = filteredBookings.filter((booking) => booking.status === "upcoming")
   const completedBookings = filteredBookings.filter((booking) => booking.status === "completed")

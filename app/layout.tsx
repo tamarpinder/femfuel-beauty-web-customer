@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { AuthProvider } from "@/contexts/auth-context"
 import { CartProvider } from "@/contexts/cart-context"
+import { BookingProvider } from "@/contexts/booking-context"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
@@ -33,8 +34,10 @@ export default function RootLayout({
         <ErrorBoundary>
           <AuthProvider>
             <CartProvider>
-              {children}
-              <Toaster />
+              <BookingProvider>
+                {children}
+                <Toaster />
+              </BookingProvider>
             </CartProvider>
           </AuthProvider>
         </ErrorBoundary>

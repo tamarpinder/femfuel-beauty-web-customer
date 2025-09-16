@@ -36,10 +36,10 @@ export function ProfessionalSelector({
         </div>
 
         <Card className="border-femfuel-rose/20 hover:border-femfuel-rose/40 transition-colors cursor-pointer">
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Avatar className="h-16 w-16 border-2 border-femfuel-rose/30">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <Avatar className="h-12 w-12 sm:h-16 sm:w-16 border-2 border-femfuel-rose/30">
                   <AvatarFallback className="bg-femfuel-light text-femfuel-rose text-lg font-bold">
                     ★
                   </AvatarFallback>
@@ -119,10 +119,10 @@ export function ProfessionalSelector({
               )}
               onClick={() => onProfessionalSelect(professional)}
             >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
                   {/* Professional Avatar */}
-                  <Avatar className="h-16 w-16 border-2 border-femfuel-light">
+                  <Avatar className="h-12 w-12 sm:h-16 sm:w-16 border-2 border-femfuel-light">
                     <AvatarImage 
                       src={professional.image} 
                       alt={professional.name}

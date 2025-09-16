@@ -263,7 +263,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-2rem)] max-w-[95vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto mx-auto">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-[98vw] sm:max-w-2xl max-h-[85vh] overflow-y-auto mx-auto">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-lg sm:text-xl font-bold text-femfuel-dark">
             {currentStep === "confirmation" ? "¡Reserva Confirmada!" : "Reservar Servicio"}
@@ -387,7 +387,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-start gap-2 text-xs sm:text-sm">
                         <MapPin className="h-4 w-4 text-femfuel-medium flex-shrink-0 mt-0.5" />
@@ -481,7 +481,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-green-600" />
@@ -678,14 +678,14 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         )}
 
         {currentStep === "payment" && (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-femfuel-dark mb-2">Métodos de Pago</h3>
+          <div className="space-y-4 sm:space-y-6">
+            <div className="text-center mb-4 sm:mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-femfuel-dark mb-2">Métodos de Pago</h3>
               <p className="text-sm text-femfuel-medium">Elige tu forma de pago preferida</p>
             </div>
 
             {/* Payment Methods with Glassmorphism */}
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {/* Apple Pay */}
               <div
                 className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
@@ -695,15 +695,15 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 }`}
                 onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "apple_pay" }))}
               >
-                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-5">
+                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-5">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-gray-500 to-slate-600 rounded-lg flex items-center justify-center">
-                        <Smartphone className="h-6 w-6 text-white" />
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-gray-500 to-slate-600 rounded-lg flex items-center justify-center">
+                        <Smartphone className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
                       <div>
-                        <p className="font-semibold text-femfuel-dark">Apple Pay</p>
-                        <p className="text-sm text-femfuel-medium">Pago instantáneo y seguro</p>
+                        <p className="font-semibold text-femfuel-dark text-sm sm:text-base">Apple Pay</p>
+                        <p className="text-xs sm:text-sm text-femfuel-medium">Pago instantáneo y seguro</p>
                       </div>
                     </div>
                     {bookingData.paymentMethod === "apple_pay" && (
@@ -725,18 +725,18 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "card" }))}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl backdrop-blur-sm"></div>
-                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-5">
+                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-5">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                        <CreditCard className="h-6 w-6 text-white" />
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
                       <div>
-                        <p className="font-semibold text-femfuel-dark">Tarjeta Crédito/Débito</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Visa</span>
-                          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Mastercard</span>
-                          <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">Amex</span>
+                        <p className="font-semibold text-femfuel-dark text-sm sm:text-base">Tarjeta Crédito/Débito</p>
+                        <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-1">
+                          <span className="text-xs bg-blue-100 text-blue-700 px-1.5 sm:px-2 py-0.5 rounded">Visa</span>
+                          <span className="text-xs bg-red-100 text-red-700 px-1.5 sm:px-2 py-0.5 rounded">Mastercard</span>
+                          <span className="text-xs bg-gray-100 text-gray-700 px-1.5 sm:px-2 py-0.5 rounded">Amex</span>
                         </div>
                       </div>
                     </div>
@@ -759,15 +759,15 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                 onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "cash" }))}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl backdrop-blur-sm"></div>
-                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-5">
+                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-5">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                        <Wallet className="h-6 w-6 text-white" />
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                        <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
                       <div>
-                        <p className="font-semibold text-femfuel-dark">Pagar en el Salón</p>
-                        <p className="text-sm text-femfuel-medium">Efectivo o tarjeta física</p>
+                        <p className="font-semibold text-femfuel-dark text-sm sm:text-base">Pagar en el Salón</p>
+                        <p className="text-xs sm:text-sm text-femfuel-medium">Efectivo o tarjeta física</p>
                       </div>
                     </div>
                     {bookingData.paymentMethod === "cash" && (
@@ -922,12 +922,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {/* Action Buttons */}
         {currentStep !== "confirmation" && (
-          <div className="flex justify-between pt-6">
-            <Button variant="outline" onClick={currentStep === "professional" ? handleClose : handleBack}>
+          <div className="flex flex-col sm:flex-row justify-between gap-3 pt-6">
+            <Button variant="outline" className="min-h-[44px]" onClick={currentStep === "professional" ? handleClose : handleBack}>
               {currentStep === "professional" ? "Cancelar" : "Atrás"}
             </Button>
             <Button
-              className="bg-femfuel-rose hover:bg-[#9f1853]"
+              className="bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px]"
               onClick={handleNext}
               disabled={(currentStep === "configuration" && (!bookingData.date || !bookingData.time)) || isLoading}
             >
@@ -938,7 +938,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
         {currentStep === "confirmation" && (
           <div className="pt-6">
-            <Button className="w-full bg-femfuel-rose hover:bg-[#9f1853]" onClick={handleClose}>
+            <Button className="w-full bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px]" onClick={handleClose}>
               Cerrar
             </Button>
           </div>

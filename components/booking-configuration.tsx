@@ -70,12 +70,12 @@ export function BookingConfiguration({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="text-center space-y-2">
-        <h3 className="text-xl font-bold text-femfuel-dark">
+        <h3 className="text-lg sm:text-xl font-bold text-femfuel-dark">
           Personaliza tu Cita
         </h3>
-        <p className="text-femfuel-medium">
+        <p className="text-sm sm:text-base text-femfuel-medium">
           Selecciona complementos y tu horario preferido
         </p>
       </div>

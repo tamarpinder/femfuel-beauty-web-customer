@@ -80,43 +80,44 @@ export function BookingConfiguration({
         </p>
       </div>
 
-      {/* Selected Professional Header */}
+      {/* Selected Professional Header - Ultra Compact Mobile */}
       {selectedProfessional && (
         <Card className="border-femfuel-rose/20 bg-gradient-to-r from-femfuel-light/20 to-pink-50">
-          <CardContent className="p-4">
+          <CardContent className="p-2 sm:p-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12 border-2 border-femfuel-rose/30">
-                  <AvatarImage 
-                    src={selectedProfessional.image} 
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                <Avatar className="h-8 w-8 sm:h-12 sm:w-12 border sm:border-2 border-femfuel-rose/30">
+                  <AvatarImage
+                    src={selectedProfessional.image}
                     alt={selectedProfessional.name}
                   />
-                  <AvatarFallback className="bg-femfuel-light text-femfuel-rose font-bold">
+                  <AvatarFallback className="bg-femfuel-light text-femfuel-rose text-xs sm:text-base font-bold">
                     {selectedProfessional.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
-                
-                <div>
-                  <h4 className="font-bold text-femfuel-dark flex items-center gap-2">
+
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-femfuel-dark text-xs sm:text-base truncate">
                     Con: {selectedProfessional.name}
                   </h4>
-                  <div className="flex items-center gap-3 text-sm text-femfuel-medium">
+                  <div className="flex items-center gap-1 sm:gap-3 text-xs sm:text-sm text-femfuel-medium">
                     <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <Star className="h-2.5 w-2.5 sm:h-3 sm:w-3 fill-yellow-400 text-yellow-400" />
                       <span>{selectedProfessional.rating}</span>
                     </div>
-                    <span>•</span>
-                    <span>{selectedProfessional.specialties[0]}</span>
+                    <span className="hidden sm:inline">•</span>
+                    <span className="hidden sm:inline truncate">{selectedProfessional.specialties[0]}</span>
                   </div>
                 </div>
               </div>
-              
-              <Button 
-                variant="outline" 
+
+              <Button
+                variant="outline"
                 size="sm"
+                className="text-xs px-1.5 py-1 h-6 sm:h-auto sm:px-3 sm:py-2"
                 onClick={onProfessionalChange}
               >
-                Cambiar profesional
+                Cambiar
               </Button>
             </div>
           </CardContent>
@@ -126,51 +127,51 @@ export function BookingConfiguration({
       {/* Add-ons Section */}
       {availableAddons.length > 0 && (
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
+          <CardHeader className="pb-2 sm:pb-4">
+            <CardTitle className="flex items-center gap-2 text-sm sm:text-lg">
               Mejora tu Experiencia
               <Badge variant="secondary" className="text-xs">
                 Opcional
               </Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="pt-0">
+            <div className="space-y-2 sm:space-y-4">
               {availableAddons.slice(0, expandedAddons ? availableAddons.length : 3).map((addon) => {
                 const isSelected = isAddonSelected(addon.id)
                 return (
-                  <div 
+                  <div
                     key={addon.id}
                     className={cn(
-                      "flex items-center justify-between p-4 rounded-lg border transition-colors",
-                      isSelected 
-                        ? "border-femfuel-rose bg-femfuel-rose/5" 
+                      "flex items-center justify-between p-2 sm:p-4 rounded-lg border transition-colors",
+                      isSelected
+                        ? "border-femfuel-rose bg-femfuel-rose/5"
                         : "border-gray-200 hover:border-femfuel-rose/30"
                     )}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <Checkbox
                         id={addon.id}
                         checked={isSelected}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange={(checked) =>
                           handleAddonToggle(addon, checked as boolean)
                         }
                         className="data-[state=checked]:bg-femfuel-rose border-femfuel-rose"
                       />
-                      
+
                       <div>
-                        <label 
+                        <label
                           htmlFor={addon.id}
-                          className="font-medium text-femfuel-dark cursor-pointer flex items-center gap-2"
+                          className="font-medium text-femfuel-dark cursor-pointer flex items-center gap-1 sm:gap-2 text-sm"
                         >
                           {addon.name}
                           {(addon as any).isRecommended && (
-                            <Badge variant="secondary" className="text-xs bg-yellow-100 text-yellow-800">
+                            <Badge variant="secondary" className="text-xs bg-yellow-100 text-yellow-800 hidden sm:inline-flex">
                               Recomendado por {(addon as any).professionalName}
                             </Badge>
                           )}
                         </label>
-                        <div className="flex items-center gap-3 text-sm text-femfuel-medium">
+                        <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-femfuel-medium">
                           <span className="font-medium text-femfuel-rose">
                             +RD${addon.price.toLocaleString()}
                           </span>
@@ -250,8 +251,8 @@ export function BookingConfiguration({
 
       {/* Calendar Section */}
       <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center justify-between text-base">
+        <CardHeader className="pb-2 sm:pb-3">
+          <CardTitle className="flex items-center justify-between text-sm sm:text-base">
             <span>Selecciona Fecha y Hora</span>
             {totalDuration !== serviceDuration && (
               <Badge variant="outline" className="text-xs">
@@ -271,15 +272,15 @@ export function BookingConfiguration({
             onTimeSelect={onTimeSelect}
           />
 
-          {/* Booking Summary - Compact */}
+          {/* Booking Summary - Ultra Compact */}
           {selectedDate && selectedTime && (
-            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-              <h5 className="font-medium text-green-800 mb-2 text-sm">
+            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg">
+              <h5 className="font-medium text-green-800 mb-1 sm:mb-2 text-xs sm:text-sm">
                 Resumen de tu cita:
               </h5>
-              <div className="space-y-1 text-xs text-green-700">
-                <div>{format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
-                <div>{selectedTime} - {
+              <div className="space-y-0.5 sm:space-y-1 text-xs text-green-700">
+                <div className="text-xs">{format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
+                <div className="text-xs">{selectedTime} - {
                   // Calculate end time
                   (() => {
                     const [hours, minutes] = selectedTime.split(':').map(Number)
@@ -290,9 +291,9 @@ export function BookingConfiguration({
                   })()
                 }</div>
                 {selectedProfessional && (
-                  <div>Con {selectedProfessional.name}</div>
+                  <div className="text-xs">Con {selectedProfessional.name}</div>
                 )}
-                <div className="font-medium">Total: RD${totalPrice.toLocaleString()}</div>
+                <div className="font-medium text-xs">Total: RD${totalPrice.toLocaleString()}</div>
               </div>
             </div>
           )}

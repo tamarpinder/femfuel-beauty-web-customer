@@ -1190,6 +1190,14 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
       <ProcessingOverlay
         isVisible={showProcessingOverlay}
         onComplete={handleProcessingComplete}
+        bookingData={{
+          serviceName: service?.name,
+          vendorName: vendorName,
+          date: bookingData.date ? format(bookingData.date, 'dd MMM yyyy') : undefined,
+          time: bookingData.time,
+          price: service?.price ? (Number(service.price) + bookingData.selectedAddons.reduce((sum, addon) => sum + addon.price, 0)) : undefined,
+          bookingReference: completedBooking?.bookingReference
+        }}
       />
     </Dialog>
   )

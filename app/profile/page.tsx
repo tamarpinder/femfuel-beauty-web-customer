@@ -19,15 +19,24 @@ import {
   Bell,
   Shield,
   LogOut,
-  Edit3
+  Edit3,
+  Heart
 } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useState, useEffect } from "react"
 
 export default function ProfilePage() {
   const { user, signOut, isAuthenticated } = useAuth()
   const router = useRouter()
-  const [activeSection, setActiveSection] = useState<"overview" | "payment" | "settings">("overview")
+  const searchParams = useSearchParams()
+  const [activeSection, setActiveSection] = useState<"overview" | "payment" | "settings" | "favoritos">("overview")
+
+  useEffect(() => {
+    const section = searchParams.get('section')
+    if (section && ['overview', 'payment', 'settings', 'favoritos'].includes(section)) {
+      setActiveSection(section as "overview" | "payment" | "settings" | "favoritos")
+    }
+  }, [searchParams])
 
   if (!isAuthenticated || !user) {
     return (
@@ -132,6 +141,17 @@ export default function ProfilePage() {
               <span className="hidden sm:inline">Métodos de Pago</span>
             </button>
             <button
+              onClick={() => setActiveSection("favoritos")}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeSection === "favoritos"
+                  ? "bg-femfuel-rose text-white"
+                  : "text-femfuel-medium hover:text-femfuel-dark"
+              }`}
+            >
+              <Heart className="h-4 w-4" />
+              <span className="hidden sm:inline">Favoritos</span>
+            </button>
+            <button
               onClick={() => setActiveSection("settings")}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === "settings"
@@ -206,6 +226,63 @@ export default function ProfilePage() {
 
           {activeSection === "payment" && (
             <PaymentMethodsSettings />
+          )}
+
+          {activeSection === "favoritos" && (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="h-5 w-5" />
+                    Servicios Favoritos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8">
+                    <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-femfuel-dark mb-2">
+                      No tienes servicios favoritos aún
+                    </h3>
+                    <p className="text-femfuel-medium mb-4">
+                      Agrega servicios a tus favoritos para encontrarlos fácilmente
+                    </p>
+                    <Button
+                      onClick={() => router.push('/services')}
+                      className="bg-femfuel-rose hover:bg-femfuel-rose/90"
+                    >
+                      Explorar Servicios
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="h-5 w-5" />
+                    Salones Favoritos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8">
+                    <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-femfuel-dark mb-2">
+                      No tienes salones favoritos aún
+                    </h3>
+                    <p className="text-femfuel-medium mb-4">
+                      Guarda tus salones preferidos para acceso rápido
+                    </p>
+                    <Button
+                      onClick={() => router.push('/services')}
+                      variant="outline"
+                      className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white"
+                    >
+                      Buscar Salones
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {activeSection === "settings" && (

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { User, Settings, Heart, Calendar, LogOut, ChevronDown, UserPlus } from "lucide-react"
+import { User, Settings, Heart, Calendar, LogOut, ChevronDown, UserPlus, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -14,15 +14,25 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/contexts/auth-context"
 import { AuthModal } from "@/components/auth-modal"
+import { useRouter } from "next/navigation"
 
 export function UserMenu() {
   const { user, isAuthenticated, signOut } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
+  const router = useRouter()
 
   const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode)
     setShowAuthModal(true)
+  }
+
+  const handleNavigateToProfile = (section?: string) => {
+    if (section) {
+      router.push(`/profile?section=${section}`)
+    } else {
+      router.push('/profile')
+    }
   }
 
   if (!isAuthenticated) {
@@ -80,21 +90,33 @@ export function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+        <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+        <DropdownMenuItem
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => handleNavigateToProfile('overview')}
+        >
           <User className="h-4 w-4" />
           <span>Perfil</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-          <Calendar className="h-4 w-4" />
-          <span>Mis Reservas</span>
+        <DropdownMenuItem
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => handleNavigateToProfile('payment')}
+        >
+          <Wallet className="h-4 w-4" />
+          <span>Métodos de Pago</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+        <DropdownMenuItem
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => handleNavigateToProfile('favoritos')}
+        >
           <Heart className="h-4 w-4" />
           <span>Favoritos</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+        <DropdownMenuItem
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => handleNavigateToProfile('settings')}
+        >
           <Settings className="h-4 w-4" />
           <span>Configuración</span>
         </DropdownMenuItem>

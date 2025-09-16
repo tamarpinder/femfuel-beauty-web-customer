@@ -275,6 +275,116 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           </DialogDescription>
         </DialogHeader>
 
+        {/* Progress Bar - Only show when not in confirmation step */}
+        {currentStep !== "confirmation" && (
+          <div className="mb-4 sm:mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className="text-xs sm:text-sm font-medium text-femfuel-dark">
+                  Paso {currentStep === "professional" ? "1" : currentStep === "configuration" ? "2" : currentStep === "details" ? "3" : "4"} de 4
+                </span>
+                <span className="text-xs text-femfuel-medium">
+                  {currentStep === "professional" ? "Profesional" : currentStep === "configuration" ? "Fecha y Hora" : currentStep === "details" ? "Detalles" : "Pago"}
+                </span>
+              </div>
+              <span className="text-xs text-femfuel-medium">
+                {currentStep === "professional" ? "25%" : currentStep === "configuration" ? "50%" : currentStep === "details" ? "75%" : "100%"}
+              </span>
+            </div>
+
+            {/* Progress bar with dots for mobile, continuous bar for desktop */}
+            <div className="relative">
+              {/* Desktop continuous bar */}
+              <div className="hidden sm:block">
+                <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-femfuel-rose to-femfuel-rose/80 rounded-full transition-all duration-500 ease-out"
+                    style={{
+                      width: currentStep === "professional" ? "25%" :
+                             currentStep === "configuration" ? "50%" :
+                             currentStep === "details" ? "75%" : "100%"
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Mobile dots indicator */}
+              <div className="flex sm:hidden items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                      currentStep === "professional" || currentStep === "configuration" || currentStep === "details" || currentStep === "payment"
+                        ? "bg-femfuel-rose text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}>
+                      1
+                    </div>
+                    <div className={`flex-1 h-1 transition-all duration-300 ${
+                      currentStep === "configuration" || currentStep === "details" || currentStep === "payment"
+                        ? "bg-femfuel-rose"
+                        : "bg-gray-200"
+                    }`} />
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                      currentStep === "configuration" || currentStep === "details" || currentStep === "payment"
+                        ? "bg-femfuel-rose text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}>
+                      2
+                    </div>
+                    <div className={`flex-1 h-1 transition-all duration-300 ${
+                      currentStep === "details" || currentStep === "payment"
+                        ? "bg-femfuel-rose"
+                        : "bg-gray-200"
+                    }`} />
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                      currentStep === "details" || currentStep === "payment"
+                        ? "bg-femfuel-rose text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}>
+                      3
+                    </div>
+                    <div className={`flex-1 h-1 transition-all duration-300 ${
+                      currentStep === "payment"
+                        ? "bg-femfuel-rose"
+                        : "bg-gray-200"
+                    }`} />
+                  </div>
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex items-center">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                      currentStep === "payment"
+                        ? "bg-femfuel-rose text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}>
+                      4
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step labels for mobile */}
+            <div className="flex sm:hidden justify-between mt-2">
+              <span className="text-xs text-femfuel-medium">Pro</span>
+              <span className="text-xs text-femfuel-medium">Fecha</span>
+              <span className="text-xs text-femfuel-medium">Info</span>
+              <span className="text-xs text-femfuel-medium">Pago</span>
+            </div>
+          </div>
+        )}
+
         {/* Error Display */}
         {error && (
           <Card className="mb-4 sm:mb-6 border-red-200 bg-red-50">

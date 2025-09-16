@@ -511,3 +511,16 @@
   .DialogContent { padding: 1rem !important; }
   .CardContent { padding: 0.75rem !important; }
 }
+
+/* Custom animation delays */
+.animation-delay-150 {
+  animation-delay: 150ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}

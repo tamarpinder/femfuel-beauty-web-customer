@@ -63,7 +63,7 @@ export default function BookingsPage() {
         name: booking.serviceName,
         vendor: booking.vendorName,
         price: `RD$${booking.price.toLocaleString()}`,
-        image: booking.serviceImage || "/service-placeholder.jpg",
+        image: booking.vendorLogo || "/vendors/logos/default-vendor-logo.png",
         duration: booking.duration,
       },
       vendor: {

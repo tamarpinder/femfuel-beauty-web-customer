@@ -20,6 +20,8 @@ import type { VendorService, Professional, ServiceAddon } from "@/types/vendor"
 import type { MarketplaceService } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
 import { useBooking } from "@/contexts/booking-context"
+import { ProcessingOverlay } from "@/components/processing-overlay"
+import { getVendorLogo } from "@/lib/image-mappings"
 
 interface BookingModalProps {
   isOpen: boolean
@@ -55,6 +57,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     paymentMethod: "card",
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [showProcessingOverlay, setShowProcessingOverlay] = useState(false)
+  const [completedBooking, setCompletedBooking] = useState<any>(null)
   const [quickAvailability, setQuickAvailability] = useState<Array<{date: Date, time: string}>>([])
   const [error, setError] = useState<string | null>(null)
 
@@ -198,10 +202,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     if (!service || !user || !bookingData.date || !bookingData.time) return
 
     setIsLoading(true)
-    try {
-      // Mock booking API call delay
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+    setShowProcessingOverlay(true)
 
+    // Let the processing animation play
+    await new Promise((resolve) => setTimeout(resolve, 2200))
+
+    try {
       // Get the selected payment method
       const selectedPaymentMethod = bookingData.paymentMethod === "card" ?
         getDefaultPaymentMethod() || {
@@ -223,12 +229,14 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
         }
 
       // Create booking data for BookingContext
+      const finalVendorName = vendorName || vendor?.name || 'Salon de Belleza'
       const bookingForContext = {
         serviceId: service.id,
         serviceName: service.name,
         serviceImage: 'image' in service ? service.image : undefined,
         vendorId: vendorId || 'default-vendor',
-        vendorName: vendorName || vendor?.name || 'Salon de Belleza',
+        vendorName: finalVendorName,
+        vendorLogo: getVendorLogo(finalVendorName),
         vendorRating: vendorRating || vendor?.rating,
         professionalId: bookingData.professional?.id,
         professionalName: bookingData.professional?.name,
@@ -245,13 +253,20 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
       // Add booking to context (this will generate ID and reference automatically)
       const createdBooking = addBooking(bookingForContext)
 
-      setCurrentStep("confirmation")
-      onBookingComplete?.(createdBooking)
+      // Store the booking for when processing completes
+      setCompletedBooking(createdBooking)
     } catch (error) {
       console.error("Booking error:", error)
-    } finally {
+      setShowProcessingOverlay(false)
       setIsLoading(false)
     }
+  }
+
+  const handleProcessingComplete = () => {
+    setShowProcessingOverlay(false)
+    setCurrentStep("confirmation")
+    setIsLoading(false)
+    onBookingComplete?.(completedBooking)
   }
 
   const handleWhatsAppConfirmation = () => {
@@ -1170,6 +1185,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           </div>
         )}
       </DialogContent>
+
+      {/* Processing Overlay */}
+      <ProcessingOverlay
+        isVisible={showProcessingOverlay}
+        onComplete={handleProcessingComplete}
+      />
     </Dialog>
   )
 }

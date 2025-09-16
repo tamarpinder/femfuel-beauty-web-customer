@@ -19,6 +19,7 @@ export interface Booking {
   serviceImage?: string
   vendorId: string
   vendorName: string
+  vendorLogo?: string
   vendorRating?: number
   professionalId?: string
   professionalName?: string

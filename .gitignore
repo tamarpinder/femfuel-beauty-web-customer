@@ -27,3 +27,5 @@ yarn-error.log*
 next-env.d.ts
 # Supabase credentials - DO NOT COMMIT
 supabase-keys.md
+# MD files - Project rules
+*.md

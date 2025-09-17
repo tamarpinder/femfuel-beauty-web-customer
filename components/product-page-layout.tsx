@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowLeft, Heart, Share2, ShoppingCart, Plus, Minus, Star, Shield, Truck, RotateCcw } from "lucide-react"
+import { ArrowLeft, Heart, Share2, ShoppingCart, Plus, Minus, Star, Shield, Truck, RotateCcw, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Product } from "@/types/product"
 import { useCart } from "@/contexts/cart-context"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { CartDrawer } from "@/components/cart-drawer"
 
 interface ProductPageLayoutProps {
   product: Product
@@ -15,7 +16,7 @@ interface ProductPageLayoutProps {
 
 export function ProductPageLayout({ product }: ProductPageLayoutProps) {
   const router = useRouter()
-  const { addToCart } = useCart()
+  const { addToCart, itemCount } = useCart()
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isLiked, setIsLiked] = useState(false)
@@ -69,6 +70,16 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
               <Button variant="ghost" size="sm">
                 <Share2 className="h-4 w-4" />
               </Button>
+              <CartDrawer>
+                <Button variant="ghost" size="sm" className="relative">
+                  <ShoppingBag className="h-4 w-4" />
+                  {itemCount > 0 && (
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-femfuel-rose text-white text-xs flex items-center justify-center p-0">
+                      {itemCount}
+                    </Badge>
+                  )}
+                </Button>
+              </CartDrawer>
             </div>
           </div>
         </div>

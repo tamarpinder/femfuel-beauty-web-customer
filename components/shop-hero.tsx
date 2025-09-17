@@ -56,7 +56,11 @@ export function ShopHero() {
         {/* Header with Logo */}
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="text-3xl">🎀</div>
+            <img
+              src="/femfuel-logo.png"
+              alt="FemFuel Beauty Logo"
+              className="w-8 h-8 sm:w-10 sm:h-10"
+            />
             <h1 className="text-2xl sm:text-3xl font-bold text-femfuel-dark">
               FemFuel Beauty
             </h1>

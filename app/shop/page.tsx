@@ -15,6 +15,8 @@ import { CartDrawer } from "@/components/cart-drawer"
 import { CategoryCarousel } from "@/components/category-carousel"
 import { ShopHero } from "@/components/shop-hero"
 import { FeaturedCollections } from "@/components/featured-collections"
+import { UserMenu } from "@/components/user-menu"
+import { ExpandableSearch } from "@/components/expandable-search"
 import { useCart } from "@/contexts/cart-context"
 import { 
   mockProducts, 
@@ -201,9 +203,10 @@ export default function ShopPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <ExpandableSearch onSearch={setSearchQuery} />
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setShowLocationModal(true)}
               >
                 <MapPin className="h-4 w-4" />
@@ -218,6 +221,7 @@ export default function ShopPage() {
                   )}
                 </Button>
               </CartDrawer>
+              <UserMenu />
             </div>
           </div>
         </div>

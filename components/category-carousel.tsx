@@ -18,79 +18,69 @@ const categories: Array<{
   icon: React.ComponentType<{ className?: string }>
   shortName: string
   gradient: string
-  emoji: string
 }> = [
   {
     id: "all",
     name: "Todos",
     icon: Sparkles,
     shortName: "Todos",
-    gradient: "from-purple-400 via-pink-400 to-red-400",
-    emoji: "✨"
+    gradient: "from-purple-400 via-pink-400 to-red-400"
   },
   {
     id: "skincare",
     name: "Cuidado Facial",
     icon: Droplet,
     shortName: "Facial",
-    gradient: "from-blue-400 via-cyan-400 to-teal-400",
-    emoji: "💧"
+    gradient: "from-blue-400 via-cyan-400 to-teal-400"
   },
   {
     id: "makeup",
     name: "Maquillaje",
     icon: Palette,
     shortName: "Maquillaje",
-    gradient: "from-pink-400 via-rose-400 to-red-400",
-    emoji: "💄"
+    gradient: "from-pink-400 via-rose-400 to-red-400"
   },
   {
     id: "haircare",
     name: "Cuidado Capilar",
     icon: Scissors,
     shortName: "Cabello",
-    gradient: "from-amber-400 via-orange-400 to-red-400",
-    emoji: "✂️"
+    gradient: "from-amber-400 via-orange-400 to-red-400"
   },
   {
     id: "nailcare",
     name: "Cuidado Uñas",
     icon: Hand,
     shortName: "Uñas",
-    gradient: "from-purple-400 via-violet-400 to-purple-600",
-    emoji: "💅"
+    gradient: "from-purple-400 via-violet-400 to-purple-600"
   },
   {
     id: "fragrance",
     name: "Fragancias",
     icon: Flower2,
     shortName: "Fragancia",
-    gradient: "from-emerald-400 via-green-400 to-teal-400",
-    emoji: "🌸"
+    gradient: "from-emerald-400 via-green-400 to-teal-400"
   },
   {
     id: "bodycare",
     name: "Cuidado Corporal",
     icon: Package,
     shortName: "Cuerpo",
-    gradient: "from-indigo-400 via-blue-400 to-cyan-400",
-    emoji: "🧴"
+    gradient: "from-indigo-400 via-blue-400 to-cyan-400"
   },
   {
     id: "tools",
     name: "Herramientas",
     icon: Wrench,
     shortName: "Herramientas",
-    gradient: "from-gray-400 via-slate-400 to-zinc-400",
-    emoji: "🔧"
+    gradient: "from-gray-400 via-slate-400 to-zinc-400"
   },
   {
     id: "accessories",
     name: "Accesorios",
     icon: Gem,
     shortName: "Acceso",
-    gradient: "from-yellow-400 via-amber-400 to-orange-400",
-    emoji: "💎"
+    gradient: "from-yellow-400 via-amber-400 to-orange-400"
   }
 ]
 
@@ -142,7 +132,7 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                 }`}
                 onClick={() => handleCategoryClick(category.id)}
               >
-                <CardContent className="p-0 w-28 sm:w-32">
+                <CardContent className="p-0 w-28 sm:w-32 h-32 sm:h-36 flex flex-col">
                   {/* Gradient Background Section */}
                   <div className={`relative h-16 sm:h-20 bg-gradient-to-br ${category.gradient} overflow-hidden`}>
                     {/* Decorative pattern */}
@@ -151,12 +141,9 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                       <div className="absolute bottom-2 left-2 w-4 h-4 bg-white/20 rounded-full"></div>
                     </div>
 
-                    {/* Emoji and Icon */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">
-                        {category.emoji}
-                      </span>
-                      <category.icon className="h-4 w-4 text-white/80 drop-shadow-sm" />
+                    {/* Icon */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <category.icon className="h-8 w-8 sm:h-10 sm:w-10 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
                     </div>
 
                     {/* Product Count Badge */}
@@ -175,7 +162,7 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                   </div>
 
                   {/* Category Name */}
-                  <div className="p-3 text-center bg-white">
+                  <div className="p-3 text-center bg-white flex-1 flex flex-col justify-center">
                     <p className={`text-xs sm:text-sm font-semibold leading-tight transition-colors duration-200 ${
                       isSelected
                         ? "text-femfuel-rose"

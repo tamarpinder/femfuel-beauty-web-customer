@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
+import Image from "next/image"
 import { ProductCategory } from "@/types/product"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +19,7 @@ const categories: Array<{
   icon: React.ComponentType<{ className?: string }>
   shortName: string
   gradient: string
+  bannerImage?: string
 }> = [
   {
     id: "all",
@@ -31,61 +33,74 @@ const categories: Array<{
     name: "Cuidado Facial",
     icon: Droplet,
     shortName: "Facial",
-    gradient: "from-blue-400 via-cyan-400 to-teal-400"
+    gradient: "from-blue-400 via-cyan-400 to-teal-400",
+    bannerImage: "/categories/banners/skincare-banner.png"
   },
   {
     id: "makeup",
     name: "Maquillaje",
     icon: Palette,
     shortName: "Maquillaje",
-    gradient: "from-pink-400 via-rose-400 to-red-400"
+    gradient: "from-pink-400 via-rose-400 to-red-400",
+    bannerImage: "/categories/banners/makeup-banner.png"
   },
   {
     id: "haircare",
     name: "Cuidado Capilar",
     icon: Scissors,
     shortName: "Cabello",
-    gradient: "from-amber-400 via-orange-400 to-red-400"
+    gradient: "from-amber-400 via-orange-400 to-red-400",
+    bannerImage: "/categories/banners/haircare-banner.png"
   },
   {
     id: "nailcare",
     name: "Cuidado Uñas",
     icon: Hand,
     shortName: "Uñas",
-    gradient: "from-purple-400 via-violet-400 to-purple-600"
+    gradient: "from-purple-400 via-violet-400 to-purple-600",
+    bannerImage: "/categories/banners/nailcare-banner.png"
   },
   {
     id: "fragrance",
     name: "Fragancias",
     icon: Flower2,
     shortName: "Fragancia",
-    gradient: "from-emerald-400 via-green-400 to-teal-400"
+    gradient: "from-emerald-400 via-green-400 to-teal-400",
+    bannerImage: "/categories/banners/fragrance-banner.png"
   },
   {
     id: "bodycare",
     name: "Cuidado Corporal",
     icon: Package,
     shortName: "Cuerpo",
-    gradient: "from-indigo-400 via-blue-400 to-cyan-400"
+    gradient: "from-indigo-400 via-blue-400 to-cyan-400",
+    bannerImage: "/categories/banners/bodycare-banner.png"
   },
   {
     id: "tools",
     name: "Herramientas",
     icon: Wrench,
     shortName: "Herramientas",
-    gradient: "from-gray-400 via-slate-400 to-zinc-400"
+    gradient: "from-gray-400 via-slate-400 to-zinc-400",
+    bannerImage: "/categories/banners/tools-banner.png"
   },
   {
     id: "accessories",
     name: "Accesorios",
     icon: Gem,
     shortName: "Acceso",
-    gradient: "from-yellow-400 via-amber-400 to-orange-400"
+    gradient: "from-yellow-400 via-amber-400 to-orange-400",
+    bannerImage: "/categories/banners/hightech-tools-banner.png"
   }
 ]
 
 export function CategoryCarousel({ selectedCategory, onCategoryChange, productCounts }: CategoryCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set())
+
+  const handleImageError = (categoryId: string) => {
+    setImageErrors(prev => new Set(prev).add(categoryId))
+  }
 
 
   const handleCategoryClick = (categoryId: ProductCategory | "all") => {
@@ -133,8 +148,23 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
                 onClick={() => handleCategoryClick(category.id)}
               >
                 <CardContent className="p-0 w-28 sm:w-32 h-32 sm:h-36 flex flex-col">
-                  {/* Gradient Background Section */}
-                  <div className={`relative h-16 sm:h-20 bg-gradient-to-br ${category.gradient} overflow-hidden`}>
+                  {/* Banner Image or Gradient Background Section */}
+                  <div className={`relative h-16 sm:h-20 overflow-hidden ${!category.bannerImage || imageErrors.has(category.id) ? `bg-gradient-to-br ${category.gradient}` : ''}`}>
+                    {/* Banner Image */}
+                    {category.bannerImage && !imageErrors.has(category.id) && (
+                      <Image
+                        src={category.bannerImage}
+                        alt={`${category.name} banner`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 112px, 128px"
+                        onError={() => handleImageError(category.id)}
+                      />
+                    )}
+
+                    {/* Overlay for better contrast */}
+                    <div className="absolute inset-0 bg-black/30"></div>
+
                     {/* Decorative pattern */}
                     <div className="absolute inset-0 bg-white/10">
                       <div className="absolute top-2 right-2 w-6 h-6 bg-white/20 rounded-full"></div>

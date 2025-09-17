@@ -133,7 +133,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
   // Grid layout (default)
   return (
     <Card
-      className="cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group bg-white border border-gray-100 hover:border-femfuel-rose/30"
+      className="cursor-pointer hover:shadow-2xl hover:shadow-femfuel-rose/10 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 overflow-hidden group bg-white border border-gray-100 hover:border-femfuel-rose/20"
       onClick={handleViewProduct}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -147,9 +147,9 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
+          {/* Subtle Gradient for depth - no black */}
+          <div className="absolute inset-0 bg-gradient-to-t from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
             {product.isNewArrival && (
@@ -169,9 +169,9 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             )}
           </div>
 
-          {/* Actions Overlay */}
-          <div className={`absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center ${isHovered ? "opacity-100" : "opacity-0"}`}>
-            <div className="flex items-center gap-2">
+          {/* Actions Container - No overlay, just buttons */}
+          <div className={`absolute bottom-4 left-0 right-0 transition-all duration-300 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}>
+            <div className="flex items-center justify-center gap-2 px-4">
               <Button
                 variant="secondary"
                 size="sm"
@@ -179,7 +179,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
                   e.stopPropagation()
                   handleViewProduct()
                 }}
-                className="shadow-lg"
+                className="shadow-lg bg-white/95 backdrop-blur-sm hover:bg-white"
               >
                 <Eye className="h-4 w-4 mr-1" />
                 Ver
@@ -187,7 +187,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
               <Button
                 size="sm"
                 onClick={handleAddToCart}
-                className="bg-femfuel-rose hover:bg-[#9f1853] text-white shadow-lg"
+                className="bg-femfuel-rose/95 backdrop-blur-sm hover:bg-femfuel-rose text-white shadow-lg"
               >
                 <ShoppingCart className="h-4 w-4 mr-1" />
                 Agregar
@@ -200,9 +200,9 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             variant="ghost"
             size="sm"
             onClick={handleToggleLike}
-            className="absolute top-2 right-2 bg-white bg-opacity-80 hover:bg-opacity-100 transition-all duration-200"
+            className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110 transition-all duration-200 shadow-md"
           >
-            <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-gray-600"}`} />
+            <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-gray-600 hover:text-red-500"}`} />
           </Button>
         </div>
 

@@ -21,6 +21,7 @@ export interface Booking {
   vendorName: string
   vendorLogo?: string
   vendorRating?: number
+  vendorLocation?: string
   professionalId?: string
   professionalName?: string
   date: Date

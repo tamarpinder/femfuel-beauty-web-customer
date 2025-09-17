@@ -1,13 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ArrowLeft, Calendar, Clock, MapPin, MessageCircle, Star, User, Filter, SlidersHorizontal, Hand, Flower2, Palette, Scissors } from "lucide-react"
+import { ArrowLeft, Calendar, Clock, MapPin, MessageCircle, Star, User, Filter, SlidersHorizontal, Hand, Flower2, Palette, Scissors, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingSkeletonList } from "@/components/booking-skeleton"
 import { ChatButton } from "@/components/ui/chat-button"
@@ -46,7 +47,7 @@ interface Booking {
 
 export default function BookingsPage() {
   const { user, isAuthenticated } = useAuth()
-  const { bookings: contextBookings, getUpcomingBookings } = useBooking()
+  const { bookings: contextBookings, getUpcomingBookings, updateBooking, cancelBooking } = useBooking()
   const router = useRouter()
   const [filteredBookings, setFilteredBookings] = useState<Booking[]>([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -54,6 +55,8 @@ export default function BookingsPage() {
   const [filterStatus, setFilterStatus] = useState("all")
   const [showFilters, setShowFilters] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [showRescheduleModal, setShowRescheduleModal] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
 
   // Transform BookingContext bookings to the page format
   const transformBookings = (contextBookings: any[]): Booking[] => {
@@ -62,7 +65,7 @@ export default function BookingsPage() {
       service: {
         name: booking.serviceName,
         vendor: booking.vendorName,
-        price: `RD$${booking.price.toLocaleString()}`,
+        price: `RD$${(booking.price + booking.addons.reduce((sum: number, addon: any) => sum + addon.price, 0)).toLocaleString()}`,
         image: booking.vendorLogo || "/vendors/logos/default-vendor-logo.png",
         duration: booking.duration,
       },
@@ -71,7 +74,7 @@ export default function BookingsPage() {
         name: booking.vendorName,
         rating: booking.vendorRating || 4.5,
         reviewCount: 150,
-        address: "Dirección del proveedor",
+        address: booking.vendorLocation || "Santo Domingo, RD",
         phone: "+1 809-555-0100",
         professionalName: booking.professionalName || "Profesional",
         professionalImage: "/professionals/professional-placeholder.png",
@@ -144,13 +147,28 @@ export default function BookingsPage() {
   }
 
   const handleReschedule = (bookingId: string) => {
-    console.log("Reschedule booking:", bookingId)
-    // TODO: Implement reschedule functionality
+    const booking = filteredBookings.find(b => b.id === bookingId)
+    if (booking) {
+      setSelectedBooking(booking)
+      setShowRescheduleModal(true)
+    }
   }
 
   const handleCancel = (bookingId: string) => {
-    console.log("Cancel booking:", bookingId)
-    // TODO: Implement cancel functionality
+    if (cancelBooking) {
+      cancelBooking(bookingId)
+    }
+  }
+
+  const handleRescheduleSubmit = (newDate: Date, newTime: string) => {
+    if (selectedBooking && updateBooking) {
+      updateBooking(selectedBooking.id, {
+        date: newDate,
+        time: newTime
+      })
+      setShowRescheduleModal(false)
+      setSelectedBooking(null)
+    }
   }
 
   const handleChat = (booking: Booking) => {
@@ -345,14 +363,22 @@ export default function BookingsPage() {
 
                         {/* Mobile-optimized buttons - no price here since it's in header */}
                         <div className="flex gap-1.5">
-                          <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative flex-1 text-xs py-1.5 px-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleChat(booking)}
+                            className="relative flex-1 text-xs py-1.5 px-2 bg-green-500 hover:bg-green-600 text-white border-0"
+                          >
                             <MessageCircle className="h-3 w-3 mr-1" />
                             Chatear
                             {booking.vendor.isOnline && (
-                              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
+                              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full border border-white"></div>
                             )}
                           </Button>
-                          <Button variant="outline" size="sm" onClick={() => handleReschedule(booking.id)} className="flex-1 text-xs py-1.5 px-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleReschedule(booking.id)}
+                            className="glassmorphism-button-perfect flex-1 text-xs py-1.5 px-2"
+                          >
                             Cambiar
                           </Button>
                         </div>
@@ -475,11 +501,15 @@ export default function BookingsPage() {
 
                         {/* Mobile-optimized buttons - no price here since it's in header */}
                         <div className="flex gap-1.5">
-                          <Button variant="outline" size="sm" onClick={() => handleChat(booking)} className="relative flex-1 text-xs py-1.5 px-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleChat(booking)}
+                            className="relative flex-1 text-xs py-1.5 px-2 bg-green-500 hover:bg-green-600 text-white border-0"
+                          >
                             <MessageCircle className="h-3 w-3 mr-1" />
                             Chatear
                             {booking.vendor.isOnline && (
-                              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white"></div>
+                              <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full border border-white"></div>
                             )}
                           </Button>
                           <Button variant="outline" size="sm" onClick={() => handleReview(booking.id)} className="flex-1 text-xs py-1.5 px-2">
@@ -610,6 +640,74 @@ export default function BookingsPage() {
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="bookings" />
       
+      {/* Reschedule/Cancel Modal */}
+      <Dialog open={showRescheduleModal} onOpenChange={setShowRescheduleModal}>
+        <DialogContent className="w-[95%] max-w-md rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Cambiar Cita</DialogTitle>
+          </DialogHeader>
+
+          {selectedBooking && (
+            <div className="space-y-4">
+              {/* Current Booking Info */}
+              <div className="bg-femfuel-purple rounded-lg p-3">
+                <h4 className="font-medium text-femfuel-dark mb-1">{selectedBooking.service.name}</h4>
+                <p className="text-sm text-femfuel-medium">{selectedBooking.vendor.name}</p>
+                <div className="flex items-center gap-2 mt-2 text-sm text-femfuel-medium">
+                  <Calendar className="h-4 w-4" />
+                  <span>{selectedBooking.date.toLocaleDateString("es-DO")} - {selectedBooking.time}</span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <div className="text-sm text-femfuel-medium">
+                  ¿Qué te gustaría hacer?
+                </div>
+
+                <Button
+                  onClick={() => {
+                    // For now, just close modal - could implement date picker later
+                    setShowRescheduleModal(false)
+                    setSelectedBooking(null)
+                  }}
+                  className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                >
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Reagendar Cita
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    if (selectedBooking) {
+                      handleCancel(selectedBooking.id)
+                      setShowRescheduleModal(false)
+                      setSelectedBooking(null)
+                    }
+                  }}
+                  variant="outline"
+                  className="w-full border-red-200 text-red-600 hover:bg-red-50"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Cancelar Cita
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    setShowRescheduleModal(false)
+                    setSelectedBooking(null)
+                  }}
+                  variant="ghost"
+                  className="w-full"
+                >
+                  Volver
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Extra bottom padding for mobile to ensure content visibility */}
       <div className="md:hidden pb-6"></div>
     </div>

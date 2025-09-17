@@ -187,9 +187,9 @@ export function EnhancedBookingCalendar({
       </div>
 
       {/* Calendar and Time Selection Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-full overflow-hidden">
         {/* Calendar Section */}
-        <div className="space-y-4">
+        <div className="space-y-4 min-w-0">
           <div>
             <Label className="text-femfuel-dark mb-2 block font-medium">
               Selecciona una fecha
@@ -221,7 +221,7 @@ export function EnhancedBookingCalendar({
             selected={selectedDate}
             onSelect={handleDateSelect}
             disabled={(date) => date < startOfDay(new Date())} // Only disable past dates
-            className="rounded-md border w-full"
+            className="rounded-md border w-full max-w-full"
             modifiers={calendarModifiers}
             modifiersStyles={{
               available: {
@@ -262,7 +262,7 @@ export function EnhancedBookingCalendar({
         </div>
 
         {/* Time Slots Section */}
-        <div className="space-y-4">
+        <div className="space-y-4 min-w-0">
           <Label className="text-femfuel-dark font-medium">
             {selectedDate ? 'Horarios disponibles' : 'Selecciona una fecha primero'}
           </Label>

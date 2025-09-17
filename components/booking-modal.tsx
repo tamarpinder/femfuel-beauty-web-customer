@@ -320,7 +320,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-1rem)] max-w-[96vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto mx-auto px-3 sm:px-6">
+      <DialogContent className="w-[calc(100vw-1rem)] max-w-[96vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto mx-auto px-3 sm:px-6">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-lg sm:text-xl font-bold text-femfuel-dark">
             {currentStep === "confirmation" ? "¡Reserva Confirmada!" : "Reservar Servicio"}

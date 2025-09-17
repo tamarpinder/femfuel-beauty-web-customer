@@ -5,7 +5,7 @@ import Image from "next/image"
 import { ProductCategory } from "@/types/product"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Sparkles, Droplet, Palette, Scissors, Hand, Flower2, Package, Wrench, Gem } from "lucide-react"
+import { Sparkles, Droplet, Palette, Scissors, Hand, Flower2, Package, Wrench } from "lucide-react"
 
 interface CategoryCarouselProps {
   selectedCategory: ProductCategory | "all"
@@ -26,7 +26,8 @@ const categories: Array<{
     name: "Todos",
     icon: Sparkles,
     shortName: "Todos",
-    gradient: "from-purple-400 via-pink-400 to-red-400"
+    gradient: "from-purple-400 via-pink-400 to-red-400",
+    bannerImage: "/categories/banners/All-banner.png"
   },
   {
     id: "skincare",
@@ -83,14 +84,6 @@ const categories: Array<{
     shortName: "Herramientas",
     gradient: "from-gray-400 via-slate-400 to-zinc-400",
     bannerImage: "/categories/banners/tools-banner.png"
-  },
-  {
-    id: "accessories",
-    name: "Accesorios",
-    icon: Gem,
-    shortName: "Acceso",
-    gradient: "from-yellow-400 via-amber-400 to-orange-400",
-    bannerImage: "/categories/banners/hightech-tools-banner.png"
   }
 ]
 

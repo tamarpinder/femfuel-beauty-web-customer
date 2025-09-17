@@ -79,39 +79,39 @@ export default function HomePage() {
   }, [])
 
   const categories: Category[] = [
-    { 
-      name: "Uñas", 
-      icon: Hand, 
+    {
+      name: "Uñas",
+      icon: Hand,
       count: "37",
-      bannerImage: "/categories/nails-category-banner.png"
+      bannerImage: "/categories/banners/nailcare-banner.png"
     },
-    { 
-      name: "Maquillaje", 
-      icon: Palette, 
+    {
+      name: "Maquillaje",
+      icon: Palette,
       count: "36",
-      bannerImage: "/categories/makeup-category-banner.png"
+      bannerImage: "/categories/banners/makeup-banner.png"
     },
-    { 
-      name: "Cuerpo", 
-      icon: User, 
+    {
+      name: "Cuerpo",
+      icon: User,
       count: "0",
-      bannerImage: "/categories/body-category-banner.png"
+      bannerImage: "/categories/banners/bodycare-banner.png"
     },
-    { 
-      name: "Spa", 
-      icon: Flower2, 
+    {
+      name: "Spa",
+      icon: Flower2,
       count: "26",
-      bannerImage: "/categories/spa-category-banner.png"
+      bannerImage: "/categories/banners/skincare-banner.png"
     },
-    { 
-      name: "Peinados", 
-      icon: Scissors, 
+    {
+      name: "Peinados",
+      icon: Scissors,
       count: "53",
-      bannerImage: "/categories/hair-category-banner.png"
+      bannerImage: "/categories/banners/haircare-banner.png"
     },
-    { 
-      name: "Pestañas", 
-      icon: Eye, 
+    {
+      name: "Pestañas",
+      icon: Eye,
       count: "35",
       bannerImage: "/categories/lashes-category-banner.png"
     },

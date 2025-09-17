@@ -40,30 +40,22 @@ export function UserMenu() {
       <>
         {/* Desktop Layout */}
         <div className="hidden md:flex items-center gap-3">
-          <button 
+          <button
             onClick={() => handleAuthClick("login")}
             className="glassmorphism-button"
           >
             <User className="h-4 w-4" />
             <span>Iniciar Sesión</span>
           </button>
-          <button 
-            onClick={() => handleAuthClick("signup")}
-            className="femfuel-button-lg"
-          >
-            <UserPlus className="h-4 w-4" />
-            <span>Comenzar</span>
-          </button>
         </div>
 
         {/* Mobile Layout */}
         <div className="md:hidden flex items-center gap-2">
-          <button 
+          <button
             onClick={() => handleAuthClick("login")}
-            className="glassmorphism-button-mobile"
+            className="icon-button-mobile"
           >
-            <User className="h-3 w-3" />
-            <span>Entrar</span>
+            <User className="h-4 w-4" />
           </button>
         </div>
 

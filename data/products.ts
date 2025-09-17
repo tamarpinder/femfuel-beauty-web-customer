@@ -1,6 +1,11 @@
 import { Product, ProductCategory } from "@/types/product"
+import { femfuelProducts } from "./femfuel-products"
 
-export const mockProducts: Product[] = [
+// Use FemFuel Beauty products as the main product catalog
+export const mockProducts: Product[] = femfuelProducts
+
+// Keep original mock products for reference (commented out)
+export const originalMockProducts: Product[] = [
   // SKINCARE PRODUCTS
   {
     id: "cerave-hydrating-cleanser",

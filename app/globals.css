@@ -586,3 +586,50 @@
 .animation-delay-300 {
   animation-delay: 300ms;
 }
+
+/* Glassmorphism Input Field */
+.glassmorphism-input {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(185, 28, 92, 0.2);
+  color: #111827;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.glassmorphism-input::placeholder {
+  color: rgba(75, 85, 99, 0.7);
+}
+
+.glassmorphism-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #b91c5c;
+  box-shadow: 0 4px 12px rgba(185, 28, 92, 0.2);
+  outline: none;
+}
+
+/* Glassmorphism Dropdown */
+.glassmorphism-dropdown {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* FemFuel Background Patterns */
+.bg-femfuel-pattern {
+  background-image: url('/backgrounds/beauty-pattern-subtle.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-femfuel-pattern-subtle {
+  background-image: url('/backgrounds/beauty-pattern-subtle.png');
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  background-position: center;
+  opacity: 0.05;
+}

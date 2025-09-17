@@ -4,7 +4,6 @@ import { useState, useRef } from "react"
 import { ProductCategory } from "@/types/product"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { mockProducts } from "@/data/products"
 import { Sparkles, Droplet, Palette, Scissors, Hand, Flower2, Package, Wrench, Gem } from "lucide-react"
 
 interface CategoryCarouselProps {
@@ -13,90 +12,91 @@ interface CategoryCarouselProps {
   productCounts?: Record<string, number>
 }
 
-const categories: Array<{ 
+const categories: Array<{
   id: ProductCategory | "all"
   name: string
   icon: React.ComponentType<{ className?: string }>
   shortName: string
+  gradient: string
+  emoji: string
 }> = [
-  { 
-    id: "all", 
-    name: "Todos", 
-    icon: Sparkles, 
-    shortName: "Todos"
+  {
+    id: "all",
+    name: "Todos",
+    icon: Sparkles,
+    shortName: "Todos",
+    gradient: "from-purple-400 via-pink-400 to-red-400",
+    emoji: "✨"
   },
-  { 
-    id: "skincare", 
-    name: "Cuidado Facial", 
-    icon: Droplet, 
-    shortName: "Facial"
+  {
+    id: "skincare",
+    name: "Cuidado Facial",
+    icon: Droplet,
+    shortName: "Facial",
+    gradient: "from-blue-400 via-cyan-400 to-teal-400",
+    emoji: "💧"
   },
-  { 
-    id: "makeup", 
-    name: "Maquillaje", 
-    icon: Palette, 
-    shortName: "Maquillaje"
+  {
+    id: "makeup",
+    name: "Maquillaje",
+    icon: Palette,
+    shortName: "Maquillaje",
+    gradient: "from-pink-400 via-rose-400 to-red-400",
+    emoji: "💄"
   },
-  { 
-    id: "haircare", 
-    name: "Cuidado Capilar", 
-    icon: Scissors, 
-    shortName: "Cabello"
+  {
+    id: "haircare",
+    name: "Cuidado Capilar",
+    icon: Scissors,
+    shortName: "Cabello",
+    gradient: "from-amber-400 via-orange-400 to-red-400",
+    emoji: "✂️"
   },
-  { 
-    id: "nailcare", 
-    name: "Cuidado Uñas", 
-    icon: Hand, 
-    shortName: "Uñas"
+  {
+    id: "nailcare",
+    name: "Cuidado Uñas",
+    icon: Hand,
+    shortName: "Uñas",
+    gradient: "from-purple-400 via-violet-400 to-purple-600",
+    emoji: "💅"
   },
-  { 
-    id: "fragrance", 
-    name: "Fragancias", 
-    icon: Flower2, 
-    shortName: "Fragancia"
+  {
+    id: "fragrance",
+    name: "Fragancias",
+    icon: Flower2,
+    shortName: "Fragancia",
+    gradient: "from-emerald-400 via-green-400 to-teal-400",
+    emoji: "🌸"
   },
-  { 
-    id: "bodycare", 
-    name: "Cuidado Corporal", 
-    icon: Package, 
-    shortName: "Cuerpo"
+  {
+    id: "bodycare",
+    name: "Cuidado Corporal",
+    icon: Package,
+    shortName: "Cuerpo",
+    gradient: "from-indigo-400 via-blue-400 to-cyan-400",
+    emoji: "🧴"
   },
-  { 
-    id: "tools", 
-    name: "Herramientas", 
-    icon: Wrench, 
-    shortName: "Herramientas"
+  {
+    id: "tools",
+    name: "Herramientas",
+    icon: Wrench,
+    shortName: "Herramientas",
+    gradient: "from-gray-400 via-slate-400 to-zinc-400",
+    emoji: "🔧"
   },
-  { 
-    id: "accessories", 
-    name: "Accesorios", 
-    icon: Gem, 
-    shortName: "Acceso"
+  {
+    id: "accessories",
+    name: "Accesorios",
+    icon: Gem,
+    shortName: "Acceso",
+    gradient: "from-yellow-400 via-amber-400 to-orange-400",
+    emoji: "💎"
   }
 ]
 
 export function CategoryCarousel({ selectedCategory, onCategoryChange, productCounts }: CategoryCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Get sample product image for each category
-  const getCategoryImage = (categoryId: ProductCategory | "all") => {
-    if (categoryId === "all") {
-      // Return first available product image
-      const firstProduct = mockProducts.find(p => p.availability.inStock)
-      return firstProduct?.images.find(img => img.isPrimary)?.url || 
-             firstProduct?.images[0]?.url || 
-             "/placeholder.svg?height=60&width=60&query=beauty product"
-    }
-    
-    // Find first product in this category
-    const categoryProduct = mockProducts.find(p => 
-      p.category === categoryId && p.availability.inStock
-    )
-    
-    return categoryProduct?.images.find(img => img.isPrimary)?.url || 
-           categoryProduct?.images[0]?.url || 
-           "/placeholder.svg?height=60&width=60&query=beauty product"
-  }
 
   const handleCategoryClick = (categoryId: ProductCategory | "all") => {
     onCategoryChange(categoryId)
@@ -127,55 +127,67 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
         {categories.map((category) => {
           const isSelected = selectedCategory === category.id
           const productCount = productCounts?.[category.id] || 0
-          const categoryImage = getCategoryImage(category.id)
-          
+
           return (
             <div
               key={category.id}
               data-category={category.id}
               className="flex-shrink-0"
             >
-              <Card 
-                className={`cursor-pointer transition-all duration-300 overflow-hidden hover:shadow-md ${
-                  isSelected 
-                    ? "ring-2 ring-femfuel-rose shadow-lg scale-105" 
+              <Card
+                className={`cursor-pointer transition-all duration-300 overflow-hidden hover:shadow-lg hover:-translate-y-1 group ${
+                  isSelected
+                    ? "ring-2 ring-femfuel-rose shadow-xl scale-105 transform"
                     : "hover:scale-105"
                 }`}
                 onClick={() => handleCategoryClick(category.id)}
               >
-                <CardContent className="p-0 w-24 sm:w-28">
-                  {/* Image Section */}
-                  <div className="relative h-14 sm:h-16 bg-gray-100 overflow-hidden">
-                    <img
-                      src={categoryImage}
-                      alt={category.name}
-                      className="w-full h-full object-cover"
-                    />
-                    
-                    {/* Icon Overlay */}
-                    <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-                      <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow-sm" />
+                <CardContent className="p-0 w-28 sm:w-32">
+                  {/* Gradient Background Section */}
+                  <div className={`relative h-16 sm:h-20 bg-gradient-to-br ${category.gradient} overflow-hidden`}>
+                    {/* Decorative pattern */}
+                    <div className="absolute inset-0 bg-white/10">
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-white/20 rounded-full"></div>
+                      <div className="absolute bottom-2 left-2 w-4 h-4 bg-white/20 rounded-full"></div>
                     </div>
-                    
+
+                    {/* Emoji and Icon */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-2xl sm:text-3xl mb-1 group-hover:scale-110 transition-transform duration-300">
+                        {category.emoji}
+                      </span>
+                      <category.icon className="h-4 w-4 text-white/80 drop-shadow-sm" />
+                    </div>
+
                     {/* Product Count Badge */}
                     {productCount > 0 && (
-                      <Badge 
-                        className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs bg-femfuel-rose"
+                      <Badge
+                        className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-white text-femfuel-dark font-bold shadow-md"
                       >
                         {productCount}
                       </Badge>
                     )}
+
+                    {/* Selection Indicator */}
+                    {isSelected && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-white shadow-lg"></div>
+                    )}
                   </div>
-                  
+
                   {/* Category Name */}
-                  <div className="p-2 text-center">
-                    <p className={`text-xs sm:text-sm font-medium leading-tight ${
+                  <div className="p-3 text-center bg-white">
+                    <p className={`text-xs sm:text-sm font-semibold leading-tight transition-colors duration-200 ${
                       isSelected
                         ? "text-femfuel-rose"
-                        : "text-femfuel-dark"
+                        : "text-femfuel-dark group-hover:text-femfuel-rose"
                     }`}>
                       {category.shortName}
                     </p>
+                    {productCount > 0 && (
+                      <p className="text-xs text-femfuel-light mt-1">
+                        {productCount} productos
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>

@@ -132,20 +132,23 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
 
   // Grid layout (default)
   return (
-    <Card 
-      className="cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden group"
+    <Card
+      className="cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group bg-white border border-gray-100 hover:border-femfuel-rose/30"
       onClick={handleViewProduct}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <CardContent className="p-0">
         {/* Product Image */}
-        <div className="relative aspect-square bg-gray-100 overflow-hidden">
+        <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
           <img
             src={primaryImage?.url || "/placeholder.svg?height=200&width=200&query=beauty product"}
             alt={primaryImage?.alt || product.name}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">

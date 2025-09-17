@@ -13,6 +13,8 @@ import { ProductCard } from "@/components/product-card"
 import { LocationModal } from "@/components/location-modal"
 import { CartDrawer } from "@/components/cart-drawer"
 import { CategoryCarousel } from "@/components/category-carousel"
+import { ShopHero } from "@/components/shop-hero"
+import { FeaturedCollections } from "@/components/featured-collections"
 import { useCart } from "@/contexts/cart-context"
 import { 
   mockProducts, 
@@ -222,29 +224,53 @@ export default function ShopPage() {
       </header>
 
       <div className="px-4 py-4 max-w-7xl mx-auto">
-        {/* Search and Filters */}
-        <div className="mb-6 space-y-4">
-          <div className="flex gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                placeholder="Buscar productos, marcas..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filtros
-            </Button>
-          </div>
+        {/* Hero Section */}
+        <ShopHero />
 
-          {showFilters && (
+        {/* Enhanced Search */}
+        <div className="mb-8">
+          <Card className="p-6 bg-gradient-to-r from-white via-femfuel-light/20 to-pink-50 border-femfuel-rose/20">
+            <div className="space-y-4">
+              <div className="text-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-femfuel-dark mb-2">
+                  ¿Qué estás buscando hoy?
+                </h2>
+                <p className="text-femfuel-medium text-sm">
+                  Encuentra productos perfectos para realzar tu belleza natural
+                </p>
+              </div>
+
+              <div className="max-w-2xl mx-auto">
+                <div className="flex gap-3">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-femfuel-medium h-5 w-5" />
+                    <Input
+                      placeholder="Buscar productos, marcas, categorías..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-12 h-12 text-base border-femfuel-rose/30 focus:border-femfuel-rose"
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="h-12 px-6 glassmorphism-button-perfect"
+                    onClick={() => setShowFilters(!showFilters)}
+                  >
+                    <Filter className="h-4 w-4 mr-2" />
+                    Filtros
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Advanced Filters */}
+        {showFilters && (
+          <div className="mb-6">
+            <Card className="border-femfuel-rose/20">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-femfuel-dark mb-4">Filtros Avanzados</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-lg border">
               <div>
                 <label className="block text-sm font-medium mb-2">Categoría</label>
@@ -298,8 +324,10 @@ export default function ShopPage() {
                 </Select>
               </div>
             </div>
-          )}
-        </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Category Carousel */}
         <CategoryCarousel
@@ -307,6 +335,13 @@ export default function ShopPage() {
           onCategoryChange={setSelectedCategory}
           productCounts={productCounts}
         />
+
+        {/* Featured Collections */}
+        {!searchQuery && selectedCategory === "all" && (
+          <div className="mb-8">
+            <FeaturedCollections />
+          </div>
+        )}
 
         {/* Results Header */}
         <div className="flex items-center justify-between mb-4">

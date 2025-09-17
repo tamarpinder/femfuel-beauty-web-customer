@@ -77,7 +77,7 @@ export default function BookingsPage() {
         address: booking.vendorLocation || "Santo Domingo, RD",
         phone: "+1 809-555-0100",
         professionalName: booking.professionalName || "Profesional",
-        professionalImage: "/professionals/professional-placeholder.png",
+        professionalImage: "/professionals/portraits/aesthetician-ana.png",
         isOnline: true,
         responseTime: "Responde rápido"
       },
@@ -325,7 +325,7 @@ export default function BookingsPage() {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
                           <div className="flex items-center gap-2">
                             <img
-                              src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
+                              src={booking.vendor.professionalImage || "/professionals/portraits/aesthetician-ana.png"}
                               alt={booking.vendor.professionalName}
                               className="w-6 h-6 rounded-full object-cover"
                             />
@@ -471,7 +471,7 @@ export default function BookingsPage() {
                         <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
                           <div className="flex items-center gap-2">
                             <img
-                              src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
+                              src={booking.vendor.professionalImage || "/professionals/portraits/aesthetician-ana.png"}
                               alt={booking.vendor.professionalName}
                               className="w-6 h-6 rounded-full object-cover"
                             />
@@ -586,7 +586,7 @@ export default function BookingsPage() {
                         {/* Professional Info */}
                         <div className="flex items-center gap-2 mb-2">
                           <img
-                            src={booking.vendor.professionalImage || "/placeholder-user.jpg"}
+                            src={booking.vendor.professionalImage || "/professionals/portraits/aesthetician-ana.png"}
                             alt={booking.vendor.professionalName}
                             className="w-6 h-6 rounded-full object-cover grayscale"
                           />

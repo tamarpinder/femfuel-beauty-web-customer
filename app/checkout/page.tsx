@@ -130,45 +130,59 @@ export default function CheckoutPage() {
   }
 
   const handlePlaceOrder = async () => {
-    setIsProcessing(true)
-    setCurrentStep("processing")
-    setProcessingProgress(0)
+    try {
+      setIsProcessing(true)
+      setCurrentStep("processing")
+      setProcessingProgress(0)
 
-    // Step 1: Validating payment
-    setProcessingStep("Validando método de pago...")
-    setProcessingProgress(20)
-    await new Promise(resolve => setTimeout(resolve, 1500))
+      // Step 1: Validating payment
+      setProcessingStep("Validando método de pago...")
+      setProcessingProgress(20)
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
-    // Step 2: Processing payment
-    setProcessingStep("Procesando pago...")
-    setProcessingProgress(45)
-    await new Promise(resolve => setTimeout(resolve, 2000))
+      // Step 2: Processing payment
+      setProcessingStep("Procesando pago...")
+      setProcessingProgress(45)
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
-    // Step 3: Creating order
-    setProcessingStep("Creando tu pedido...")
-    setProcessingProgress(70)
-    await new Promise(resolve => setTimeout(resolve, 1000))
+      // Step 3: Creating order
+      setProcessingStep("Creando tu pedido...")
+      setProcessingProgress(70)
+      await new Promise(resolve => setTimeout(resolve, 1000))
 
-    // Step 4: Confirming delivery
-    setProcessingStep("Confirmando entrega...")
-    setProcessingProgress(90)
-    await new Promise(resolve => setTimeout(resolve, 800))
+      // Step 4: Confirming delivery
+      setProcessingStep("Confirmando entrega...")
+      setProcessingProgress(90)
+      await new Promise(resolve => setTimeout(resolve, 800))
 
-    // Step 5: Complete
-    setProcessingStep("¡Pedido confirmado!")
-    setProcessingProgress(100)
+      // Step 5: Complete
+      setProcessingStep("¡Pedido confirmado!")
+      setProcessingProgress(100)
 
-    // Show success state for a moment with animation
-    await new Promise(resolve => setTimeout(resolve, 1200))
+      // Show success state for a moment with animation
+      await new Promise(resolve => setTimeout(resolve, 1200))
 
-    // Generate order number
-    const orderNum = `FF${Date.now().toString().slice(-6)}`
-    setOrderNumber(orderNum)
+      // Generate order number
+      const orderNum = `FF${Date.now().toString().slice(-6)}`
+      setOrderNumber(orderNum)
 
-    // Clear cart and transition to success with smooth animation
-    await clearCart()
-    setCurrentStep("success")
-    setIsProcessing(false)
+      // Transition to success state first, then clear cart
+      setCurrentStep("success")
+      setIsProcessing(false)
+
+      // Clear cart after state transition
+      try {
+        await clearCart()
+      } catch (error) {
+        console.error("Error clearing cart:", error)
+        // Don't let cart clearing failure prevent success state
+      }
+    } catch (error) {
+      console.error("Error in handlePlaceOrder:", error)
+      setIsProcessing(false)
+      // Reset to review step on error
+      setCurrentStep("review")
+    }
   }
 
   // Card handling functions

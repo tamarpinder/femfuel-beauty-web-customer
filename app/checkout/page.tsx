@@ -557,47 +557,6 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                 </div>
-
-                {/* Desktop Navigation Buttons */}
-                <div className="mt-8 space-y-4">
-                  {/* Primary Action */}
-                  <Button
-                    onClick={() => router.push("/shop")}
-                    className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white font-semibold h-14 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
-                  >
-                    🛍️ Continuar Comprando
-                  </Button>
-
-                  {/* Secondary Actions */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button
-                      variant="outline"
-                      onClick={() => router.push("/profile?section=orders")}
-                      className="h-12 text-gray-700 border-gray-300 hover:bg-gray-50 font-medium rounded-xl transition-all duration-300 hover:scale-[1.02]"
-                    >
-                      📦 Ver Mis Pedidos
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        const text = `¡Acabo de hacer un pedido en FemFuel Beauty! 💄✨ Pedido #${orderNumber}`;
-                        if (navigator.share) {
-                          navigator.share({
-                            title: 'FemFuel Beauty - Pedido Confirmado',
-                            text: text,
-                            url: window.location.origin
-                          });
-                        } else {
-                          navigator.clipboard.writeText(text);
-                          toast.success("Copiado al portapapeles");
-                        }
-                      }}
-                      className="h-12 text-gray-700 border-gray-300 hover:bg-gray-50 font-medium rounded-xl transition-all duration-300 hover:scale-[1.02]"
-                    >
-                      📱 Compartir
-                    </Button>
-                  </div>
-                </div>
               </div>
             )}
           </div>

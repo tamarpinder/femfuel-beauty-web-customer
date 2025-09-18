@@ -335,6 +335,34 @@
   }
 }
 
+@keyframes checkmark-draw {
+  0% {
+    stroke-dashoffset: 30;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes success-scale {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 @keyframes pulse-glow {
   0%, 100% {
     opacity: 1;
@@ -360,6 +388,14 @@
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-checkmark-draw {
+  animation: checkmark-draw 1s ease-out forwards;
+}
+
+.animate-success-scale {
+  animation: success-scale 0.6s ease-out forwards;
 }
 
 .glassmorphism-button-perfect:focus-visible {

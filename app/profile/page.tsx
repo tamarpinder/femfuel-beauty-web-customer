@@ -20,7 +20,8 @@ import {
   Shield,
   LogOut,
   Edit3,
-  Heart
+  Heart,
+  ShoppingBag
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
@@ -29,12 +30,12 @@ export default function ProfilePage() {
   const { user, signOut, isAuthenticated } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [activeSection, setActiveSection] = useState<"overview" | "payment" | "settings" | "favoritos">("overview")
+  const [activeSection, setActiveSection] = useState<"overview" | "payment" | "settings" | "favoritos" | "orders">("overview")
 
   useEffect(() => {
     const section = searchParams.get('section')
-    if (section && ['overview', 'payment', 'settings', 'favoritos'].includes(section)) {
-      setActiveSection(section as "overview" | "payment" | "settings" | "favoritos")
+    if (section && ['overview', 'payment', 'settings', 'favoritos', 'orders'].includes(section)) {
+      setActiveSection(section as "overview" | "payment" | "settings" | "favoritos" | "orders")
     }
   }, [searchParams])
 
@@ -141,6 +142,17 @@ export default function ProfilePage() {
               <span className="hidden sm:inline">Métodos de Pago</span>
             </button>
             <button
+              onClick={() => setActiveSection("orders")}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeSection === "orders"
+                  ? "bg-femfuel-rose text-white"
+                  : "text-femfuel-medium hover:text-femfuel-dark"
+              }`}
+            >
+              <ShoppingBag className="h-4 w-4" />
+              <span className="hidden sm:inline">Órdenes</span>
+            </button>
+            <button
               onClick={() => setActiveSection("favoritos")}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === "favoritos"
@@ -226,6 +238,36 @@ export default function ProfilePage() {
 
           {activeSection === "payment" && (
             <PaymentMethodsSettings />
+          )}
+
+          {activeSection === "orders" && (
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ShoppingBag className="h-5 w-5" />
+                    Historial de Órdenes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8">
+                    <ShoppingBag className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-femfuel-dark mb-2">
+                      No tienes órdenes aún
+                    </h3>
+                    <p className="text-femfuel-medium mb-4">
+                      Cuando realices tu primera compra, aparecerá aquí
+                    </p>
+                    <Button
+                      onClick={() => router.push('/shop')}
+                      className="bg-femfuel-rose hover:bg-femfuel-rose/90"
+                    >
+                      Ir a la Tienda
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {activeSection === "favoritos" && (

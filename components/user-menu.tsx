@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { User, Settings, Heart, Calendar, LogOut, ChevronDown, UserPlus, Wallet } from "lucide-react"
+import { User, Settings, Heart, Calendar, LogOut, ChevronDown, UserPlus, Wallet, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -97,6 +97,13 @@ export function UserMenu() {
         >
           <Wallet className="h-4 w-4" />
           <span>Métodos de Pago</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => handleNavigateToProfile('orders')}
+        >
+          <ShoppingBag className="h-4 w-4" />
+          <span>Órdenes</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           className="flex items-center gap-2 cursor-pointer"

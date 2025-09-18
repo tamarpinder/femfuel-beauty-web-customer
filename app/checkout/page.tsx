@@ -39,7 +39,7 @@ type CheckoutStep = "delivery" | "payment" | "review" | "processing" | "success"
 interface OrderData {
   phone: string
   deliveryNotes: string
-  paymentMethod: "cash" | "card" | "apple_pay"
+  paymentMethod: "cash" | "card" | "apple_pay" | string
   cardDetails?: {
     number: string
     expiry: string
@@ -241,6 +241,29 @@ export default function CheckoutPage() {
     setShowAddCardModal(true)
   }
 
+  // Helper function to get payment method display text
+  const getPaymentMethodDisplay = () => {
+    if (orderData.paymentMethod === "cash") {
+      return "Contra Entrega"
+    } else if (orderData.paymentMethod === "apple_pay") {
+      return "Apple Pay"
+    } else if (orderData.paymentMethod === "card") {
+      return "Tarjeta de Crédito/Débito"
+    } else if (orderData.paymentMethod.startsWith("saved_card_")) {
+      // Find the specific saved card
+      const cardId = orderData.paymentMethod.replace("saved_card_", "")
+      const savedCard = user?.paymentMethods?.find(card => card.id === cardId)
+      if (savedCard) {
+        const brandName = savedCard.brand === 'visa' ? 'Visa' :
+                         savedCard.brand === 'mastercard' ? 'Mastercard' :
+                         savedCard.brand === 'amex' ? 'American Express' : 'Tarjeta'
+        return `${brandName} ••••${savedCard.cardNumber}`
+      }
+      return "Tarjeta"
+    }
+    return "No especificado"
+  }
+
   if (itemCount === 0) {
     return null // Will redirect
   }
@@ -393,17 +416,32 @@ export default function CheckoutPage() {
                     {processingStep || "Estamos preparando todo para ti"}
                   </p>
 
-                  {/* Progress Bar */}
+                  {/* Enhanced Progress Bar */}
                   <div className="w-full max-w-md mx-auto">
-                    <div className="flex justify-between text-sm text-gray-500 mb-2">
-                      <span>{processingProgress}%</span>
+                    <div className="flex justify-between text-sm font-medium text-gray-700 mb-3">
+                      <span className="text-femfuel-rose font-semibold">{processingProgress}%</span>
                       <span>Completado</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
                       <div
-                        className="bg-gradient-to-r from-femfuel-rose to-femfuel-purple h-3 rounded-full transition-all duration-700 ease-out"
-                        style={{ width: `${processingProgress}%` }}
-                      ></div>
+                        className="bg-gradient-to-r from-femfuel-rose via-pink-500 to-femfuel-purple h-4 rounded-full transition-all duration-1000 ease-out shadow-lg relative"
+                        style={{
+                          width: `${processingProgress}%`,
+                          boxShadow: '0 0 20px rgba(185, 28, 92, 0.4)'
+                        }}
+                      >
+                        {/* Animated shimmer effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
+
+                    {/* Progress steps indicator */}
+                    <div className="flex justify-between mt-4 text-xs text-gray-500">
+                      <span className={processingProgress >= 20 ? "text-femfuel-rose font-medium" : ""}>Validando</span>
+                      <span className={processingProgress >= 45 ? "text-femfuel-rose font-medium" : ""}>Procesando</span>
+                      <span className={processingProgress >= 70 ? "text-femfuel-rose font-medium" : ""}>Creando</span>
+                      <span className={processingProgress >= 90 ? "text-femfuel-rose font-medium" : ""}>Confirmando</span>
+                      <span className={processingProgress >= 100 ? "text-femfuel-rose font-medium" : ""}>Listo</span>
                     </div>
                   </div>
 
@@ -586,8 +624,7 @@ export default function CheckoutPage() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Pago:</span>
                       <span className="text-gray-800">
-                        {orderData.paymentMethod === "cash" ? "Contra Entrega" :
-                         orderData.paymentMethod === "card" ? "Tarjeta" : "Apple Pay"}
+                        {getPaymentMethodDisplay()}
                       </span>
                     </div>
                     {orderData.deliveryNotes && (
@@ -759,27 +796,15 @@ export default function CheckoutPage() {
                           </div>
                         ))}
 
-                        {/* Add New Card Option */}
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 border-dashed">
-                          <div className="flex items-center space-x-3">
-                            <RadioGroupItem
-                              value="new_card"
-                              id="new_card"
-                              className="border-blue-500 text-blue-600"
-                              onClick={handleNewCardSelection}
-                            />
-                            <Label htmlFor="new_card" className="flex-1 cursor-pointer" onClick={handleNewCardSelection}>
-                              <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-100 rounded-lg">
-                                  <Plus className="h-5 w-5 text-blue-600" />
-                                </div>
-                                <div>
-                                  <p className="font-medium text-blue-800">Usar otra tarjeta</p>
-                                  <p className="text-sm text-blue-700">Agrega una nueva tarjeta de crédito o débito</p>
-                                </div>
-                              </div>
-                            </Label>
-                          </div>
+                        {/* Subtle Add New Card Link */}
+                        <div className="pt-3">
+                          <button
+                            onClick={handleNewCardSelection}
+                            className="flex items-center gap-2 text-femfuel-rose hover:text-femfuel-rose/80 text-sm font-medium transition-colors duration-200 group"
+                          >
+                            <Plus className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
+                            Agregar nueva tarjeta
+                          </button>
                         </div>
                       </div>
                     ) : (
@@ -872,8 +897,7 @@ export default function CheckoutPage() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Pago:</span>
                       <span className="text-gray-800">
-                        {orderData.paymentMethod === "cash" ? "Contra Entrega" :
-                         orderData.paymentMethod === "card" ? "Tarjeta" : "Apple Pay"}
+                        {getPaymentMethodDisplay()}
                       </span>
                     </div>
                     {orderData.deliveryNotes && (

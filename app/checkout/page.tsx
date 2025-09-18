@@ -102,7 +102,7 @@ export default function CheckoutPage() {
     { id: "review", label: "Confirmar", description: "Revisar pedido", icon: Check },
   ]
 
-  const formatPrice = (price: number) => `RD$${price.toLocaleString()}`
+  const formatPrice = (price: number) => `RD$${price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
 
   const handleLocationUpdate = (location: UserLocation) => {
     setUserLocation(location)
@@ -157,13 +157,15 @@ export default function CheckoutPage() {
     // Step 5: Complete
     setProcessingStep("¡Pedido confirmado!")
     setProcessingProgress(100)
-    await new Promise(resolve => setTimeout(resolve, 500))
+
+    // Show success state for a moment with animation
+    await new Promise(resolve => setTimeout(resolve, 1200))
 
     // Generate order number
     const orderNum = `FF${Date.now().toString().slice(-6)}`
     setOrderNumber(orderNum)
 
-    // Clear cart and show success
+    // Clear cart and transition to success with smooth animation
     await clearCart()
     setCurrentStep("success")
     setIsProcessing(false)
@@ -405,29 +407,60 @@ export default function CheckoutPage() {
 
             {currentStep === "processing" && (
               <div className="space-y-8">
-                <div className="w-24 h-24 bg-femfuel-rose/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto">
-                  <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-femfuel-rose"></div>
+                <div className={`w-24 h-24 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto relative transition-all duration-700 ${
+                  processingProgress === 100
+                    ? "bg-green-100 border-2 border-green-400 shadow-lg shadow-green-200 scale-110"
+                    : "bg-femfuel-rose/10"
+                }`}>
+                  <img
+                    src="/femfuel-logo.png"
+                    alt="FemFuel Beauty"
+                    className={`w-16 h-16 object-contain transition-all duration-500 ${
+                      processingProgress === 100 ? "animate-bounce" : "animate-pulse"
+                    }`}
+                  />
+                  {/* Conditional ring animation */}
+                  {processingProgress === 100 ? (
+                    <div className="absolute inset-0 animate-ping rounded-full border-2 border-green-400"></div>
+                  ) : (
+                    <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-femfuel-rose/30 border-r-femfuel-rose/30"></div>
+                  )}
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold text-gray-800 mb-4">
                     Procesando tu pedido...
                   </h1>
-                  <p className="text-xl text-gray-600 mb-6">
+                  <p className={`text-xl mb-6 transition-all duration-500 ${
+                    processingProgress === 100 ? "text-green-600 font-semibold animate-pulse" : "text-gray-600"
+                  }`}>
                     {processingStep || "Estamos preparando todo para ti"}
+                    {processingProgress === 100 && " ✨"}
                   </p>
 
                   {/* Enhanced Progress Bar */}
                   <div className="w-full max-w-md mx-auto">
                     <div className="flex justify-between text-sm font-medium text-gray-700 mb-3">
-                      <span className="text-femfuel-rose font-semibold">{processingProgress}%</span>
-                      <span>Completado</span>
+                      <span className={`font-semibold transition-colors duration-500 ${
+                        processingProgress === 100 ? "text-green-600" : "text-femfuel-rose"
+                      }`}>
+                        {processingProgress}%
+                      </span>
+                      <span className={processingProgress === 100 ? "text-green-600 font-semibold" : ""}>
+                        {processingProgress === 100 ? "¡Completado!" : "Completado"}
+                      </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
                       <div
-                        className="bg-gradient-to-r from-femfuel-rose via-pink-500 to-femfuel-purple h-4 rounded-full transition-all duration-1000 ease-out shadow-lg relative"
+                        className={`h-4 rounded-full transition-all duration-1000 ease-out shadow-lg relative ${
+                          processingProgress === 100
+                            ? "bg-gradient-to-r from-green-500 via-green-400 to-emerald-500"
+                            : "bg-gradient-to-r from-femfuel-rose via-pink-500 to-femfuel-purple"
+                        }`}
                         style={{
                           width: `${processingProgress}%`,
-                          boxShadow: '0 0 20px rgba(185, 28, 92, 0.4)'
+                          boxShadow: processingProgress === 100
+                            ? '0 0 20px rgba(34, 197, 94, 0.4)'
+                            : '0 0 20px rgba(185, 28, 92, 0.4)'
                         }}
                       >
                         {/* Animated shimmer effect */}
@@ -796,16 +829,18 @@ export default function CheckoutPage() {
                           </div>
                         ))}
 
-                        {/* Subtle Add New Card Link */}
-                        <div className="pt-3">
-                          <button
-                            onClick={handleNewCardSelection}
-                            className="flex items-center gap-2 text-femfuel-rose hover:text-femfuel-rose/80 text-sm font-medium transition-colors duration-200 group"
-                          >
-                            <Plus className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
-                            Agregar nueva tarjeta
-                          </button>
-                        </div>
+                        {/* Subtle Add New Card Link - Only show when a saved card is selected */}
+                        {orderData.paymentMethod.startsWith("saved_card_") && (
+                          <div className="pt-3">
+                            <button
+                              onClick={handleNewCardSelection}
+                              className="flex items-center gap-2 text-femfuel-rose hover:text-femfuel-rose/80 text-sm font-medium transition-colors duration-200 group"
+                            >
+                              <Plus className="h-4 w-4 group-hover:scale-110 transition-transform duration-200" />
+                              Agregar nueva tarjeta
+                            </button>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       /* No Saved Cards - Show Simple Card Option */

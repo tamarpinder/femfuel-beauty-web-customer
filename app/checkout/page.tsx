@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Check, CreditCard, Truck, MapPin, Clock, Phone, Star, Shield, RotateCcw, Sparkles, Gift, Smartphone } from "lucide-react"
+import { ArrowLeft, Check, CreditCard, Truck, MapPin, Clock, Phone, Star, Shield, RotateCcw, Sparkles, Gift, Smartphone, Plus, Share } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,11 +10,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { LocationModal } from "@/components/location-modal"
 import { UserMenu } from "@/components/user-menu"
 import { useCart } from "@/contexts/cart-context"
+import { useAuth } from "@/contexts/auth-context"
 import { UserLocation } from "@/types/delivery"
+import { toast } from "sonner"
+import type { PaymentMethod } from "@/contexts/auth-context"
 
 type CheckoutStep = "delivery" | "payment" | "review" | "processing" | "success"
 
@@ -32,6 +50,7 @@ interface OrderData {
 
 export default function CheckoutPage() {
   const router = useRouter()
+  const { user, addPaymentMethod } = useAuth()
   const {
     cart,
     itemCount,
@@ -52,6 +71,17 @@ export default function CheckoutPage() {
   const [showLocationModal, setShowLocationModal] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const [orderNumber, setOrderNumber] = useState("")
+  const [processingStep, setProcessingStep] = useState("")
+  const [processingProgress, setProcessingProgress] = useState(0)
+  const [showAddCardModal, setShowAddCardModal] = useState(false)
+  const [isAddingCard, setIsAddingCard] = useState(false)
+  const [cardFormData, setCardFormData] = useState({
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
+    cardHolderName: "",
+    brand: "visa" as const
+  })
 
   const cartItems = getCartItems()
   const MOTO_DELIVERY_FEE = 300
@@ -102,9 +132,32 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async () => {
     setIsProcessing(true)
     setCurrentStep("processing")
+    setProcessingProgress(0)
 
-    // Simulate order processing
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    // Step 1: Validating payment
+    setProcessingStep("Validando método de pago...")
+    setProcessingProgress(20)
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
+    // Step 2: Processing payment
+    setProcessingStep("Procesando pago...")
+    setProcessingProgress(45)
+    await new Promise(resolve => setTimeout(resolve, 2000))
+
+    // Step 3: Creating order
+    setProcessingStep("Creando tu pedido...")
+    setProcessingProgress(70)
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    // Step 4: Confirming delivery
+    setProcessingStep("Confirmando entrega...")
+    setProcessingProgress(90)
+    await new Promise(resolve => setTimeout(resolve, 800))
+
+    // Step 5: Complete
+    setProcessingStep("¡Pedido confirmado!")
+    setProcessingProgress(100)
+    await new Promise(resolve => setTimeout(resolve, 500))
 
     // Generate order number
     const orderNum = `FF${Date.now().toString().slice(-6)}`
@@ -114,6 +167,78 @@ export default function CheckoutPage() {
     await clearCart()
     setCurrentStep("success")
     setIsProcessing(false)
+  }
+
+  // Card handling functions
+  const formatCardNumber = (value: string) => {
+    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+    const matches = v.match(/\d{4,16}/g)
+    const match = matches && matches[0] || ''
+    const parts = []
+
+    for (let i = 0, len = match.length; i < len; i += 4) {
+      parts.push(match.substring(i, i + 4))
+    }
+
+    if (parts.length) {
+      return parts.join(' ')
+    } else {
+      return v
+    }
+  }
+
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCardNumber(e.target.value)
+    setCardFormData(prev => ({ ...prev, cardNumber: formatted }))
+  }
+
+  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '')
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2, 4)
+    }
+    setCardFormData(prev => ({ ...prev, expiryDate: value }))
+  }
+
+  const handleAddCard = async () => {
+    if (!cardFormData.cardNumber || !cardFormData.expiryDate || !cardFormData.cvv || !cardFormData.cardHolderName) {
+      toast.error("Por favor completa todos los campos")
+      return
+    }
+
+    setIsAddingCard(true)
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      const newPaymentMethod: Omit<PaymentMethod, "id"> = {
+        type: "card",
+        cardNumber: cardFormData.cardNumber.slice(-4), // Only store last 4 digits
+        expiryDate: cardFormData.expiryDate,
+        cardHolderName: cardFormData.cardHolderName,
+        brand: cardFormData.brand,
+        isDefault: !user?.paymentMethods || user.paymentMethods.length === 0
+      }
+
+      addPaymentMethod(newPaymentMethod)
+      setShowAddCardModal(false)
+      setCardFormData({
+        cardNumber: "",
+        expiryDate: "",
+        cvv: "",
+        cardHolderName: "",
+        brand: "visa"
+      })
+      toast.success("Tarjeta agregada exitosamente")
+    } catch (error) {
+      toast.error("Error al agregar la tarjeta")
+    } finally {
+      setIsAddingCard(false)
+    }
+  }
+
+  const handleNewCardSelection = () => {
+    setShowAddCardModal(true)
   }
 
   if (itemCount === 0) {
@@ -264,16 +389,43 @@ export default function CheckoutPage() {
                   <h1 className="text-4xl font-bold text-gray-800 mb-4">
                     Procesando tu pedido...
                   </h1>
-                  <p className="text-xl text-gray-600">
-                    Estamos preparando todo para ti
+                  <p className="text-xl text-gray-600 mb-6">
+                    {processingStep || "Estamos preparando todo para ti"}
                   </p>
+
+                  {/* Progress Bar */}
+                  <div className="w-full max-w-md mx-auto">
+                    <div className="flex justify-between text-sm text-gray-500 mb-2">
+                      <span>{processingProgress}%</span>
+                      <span>Completado</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div
+                        className="bg-gradient-to-r from-femfuel-rose to-femfuel-purple h-3 rounded-full transition-all duration-700 ease-out"
+                        style={{ width: `${processingProgress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* Security Message */}
+                  <div className="mt-8 flex items-center justify-center gap-2 text-gray-500">
+                    <Shield className="h-4 w-4" />
+                    <span className="text-sm">Tu pago está encriptado y seguro</span>
+                  </div>
                 </div>
               </div>
             )}
 
             {currentStep === "success" && (
-              <div className="space-y-8">
-                <div className="w-24 h-24 bg-green-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto animate-success-scale">
+              <div className="space-y-8 relative">
+                {/* Confetti Animation */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  {Array.from({ length: 9 }, (_, i) => (
+                    <div key={i} className={`confetti confetti-${i + 1}`} />
+                  ))}
+                </div>
+
+                <div className="w-24 h-24 bg-green-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto animate-success-scale animate-success-pulse">
                   <svg
                     className="w-12 h-12 text-green-600"
                     fill="none"
@@ -293,26 +445,46 @@ export default function CheckoutPage() {
                     />
                   </svg>
                 </div>
-                <div>
+
+                <div className="animate-celebration-bounce">
                   <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                    ¡Pedido confirmado!
+                    ¡Pedido confirmado! 🎉
                   </h1>
-                  <p className="text-xl text-gray-700 mb-2">
+                  <p className="text-xl text-gray-700 mb-2 flex items-center justify-center gap-2">
                     Pedido #{orderNumber}
+                    <button
+                      onClick={() => navigator.clipboard.writeText(orderNumber)}
+                      className="text-femfuel-rose hover:text-femfuel-rose/80 text-sm ml-2 px-2 py-1 rounded bg-femfuel-rose/10 hover:bg-femfuel-rose/20 transition-colors"
+                      title="Copiar número de pedido"
+                    >
+                      Copiar
+                    </button>
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-4">
                     Tu moto está en camino. Te notificaremos cuando esté cerca.
                   </p>
                 </div>
 
-                <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
+                <div className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-2xl p-6 shadow-lg">
                   <div className="flex items-center justify-center gap-3 mb-3">
-                    <Truck className="h-6 w-6 text-green-600" />
-                    <span className="text-green-800 font-semibold">Entrega en 30-60 minutos</span>
+                    <div className="p-2 bg-green-500 rounded-full">
+                      <Truck className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-green-800 font-semibold text-lg">Entrega en 30-60 minutos</span>
                   </div>
-                  <p className="text-green-700 text-sm">
+                  <p className="text-green-700 text-center">
                     Recibirás notificaciones en tiempo real del estado de tu pedido
                   </p>
+
+                  {/* Customer Service Quick Access */}
+                  <div className="mt-4 pt-4 border-t border-green-200">
+                    <p className="text-green-600 text-sm text-center">
+                      ¿Necesitas ayuda? Contáctanos al{' '}
+                      <a href="tel:+18095551234" className="font-semibold underline">
+                        (809) 555-1234
+                      </a>
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
@@ -536,6 +708,7 @@ export default function CheckoutPage() {
                   onValueChange={(value) => setOrderData(prev => ({ ...prev, paymentMethod: value as "cash" | "card" | "apple_pay" }))}
                 >
                   <div className="space-y-4">
+                    {/* Cash Option */}
                     <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                       <div className="flex items-center space-x-3">
                         <RadioGroupItem value="cash" id="cash" className="border-green-400 text-green-600" />
@@ -553,23 +726,83 @@ export default function CheckoutPage() {
                       </div>
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                      <div className="flex items-center space-x-3">
-                        <RadioGroupItem value="card" id="card" className="border-blue-500 text-blue-600" />
-                        <Label htmlFor="card" className="flex-1 cursor-pointer">
-                          <div className="flex items-center gap-3">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                              <CreditCard className="h-5 w-5 text-blue-600" />
-                            </div>
-                            <div>
-                              <p className="font-medium text-blue-800">Tarjeta de Crédito/Débito</p>
-                              <p className="text-sm text-blue-700">Visa, Mastercard, American Express</p>
+                    {/* Saved Cards Section */}
+                    {user?.paymentMethods && user.paymentMethods.length > 0 ? (
+                      <div className="space-y-3">
+                        {user.paymentMethods.map((paymentMethod) => (
+                          <div key={paymentMethod.id} className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                            <div className="flex items-center space-x-3">
+                              <RadioGroupItem value={`saved_card_${paymentMethod.id}`} id={`saved_card_${paymentMethod.id}`} className="border-blue-500 text-blue-600" />
+                              <Label htmlFor={`saved_card_${paymentMethod.id}`} className="flex-1 cursor-pointer">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-12 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded flex items-center justify-center text-white text-xs font-bold">
+                                      {paymentMethod.brand === 'visa' ? 'VISA' : paymentMethod.brand === 'mastercard' ? 'MC' : 'CARD'}
+                                    </div>
+                                    <div>
+                                      <p className="font-medium text-blue-800">
+                                        {paymentMethod.brand === 'visa' ? 'Visa' :
+                                         paymentMethod.brand === 'mastercard' ? 'Mastercard' :
+                                         paymentMethod.brand === 'amex' ? 'American Express' : 'Tarjeta'} ••••{paymentMethod.cardNumber}
+                                      </p>
+                                      <p className="text-sm text-blue-700">{paymentMethod.cardHolderName}</p>
+                                    </div>
+                                  </div>
+                                  {paymentMethod.isDefault && (
+                                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
+                                      Principal
+                                    </Badge>
+                                  )}
+                                </div>
+                              </Label>
                             </div>
                           </div>
-                        </Label>
-                      </div>
-                    </div>
+                        ))}
 
+                        {/* Add New Card Option */}
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 border-dashed">
+                          <div className="flex items-center space-x-3">
+                            <RadioGroupItem
+                              value="new_card"
+                              id="new_card"
+                              className="border-blue-500 text-blue-600"
+                              onClick={handleNewCardSelection}
+                            />
+                            <Label htmlFor="new_card" className="flex-1 cursor-pointer" onClick={handleNewCardSelection}>
+                              <div className="flex items-center gap-3">
+                                <div className="p-2 bg-blue-100 rounded-lg">
+                                  <Plus className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <div>
+                                  <p className="font-medium text-blue-800">Usar otra tarjeta</p>
+                                  <p className="text-sm text-blue-700">Agrega una nueva tarjeta de crédito o débito</p>
+                                </div>
+                              </div>
+                            </Label>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* No Saved Cards - Show Simple Card Option */
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div className="flex items-center space-x-3">
+                          <RadioGroupItem value="card" id="card" className="border-blue-500 text-blue-600" />
+                          <Label htmlFor="card" className="flex-1 cursor-pointer">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-blue-100 rounded-lg">
+                                <CreditCard className="h-5 w-5 text-blue-600" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-blue-800">Tarjeta de Crédito/Débito</p>
+                                <p className="text-sm text-blue-700">Visa, Mastercard, American Express</p>
+                              </div>
+                            </div>
+                          </Label>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Apple Pay Option */}
                     <div className="bg-gray-900 border border-gray-700 rounded-xl p-4">
                       <div className="flex items-center space-x-3">
                         <RadioGroupItem value="apple_pay" id="apple_pay" className="border-white text-white" />
@@ -731,20 +964,59 @@ export default function CheckoutPage() {
               </div>
 
               {currentStep === "success" && (
-                <div className="space-y-3">
+                <div className="space-y-4">
+                  {/* Primary Action */}
                   <Button
                     onClick={() => router.push("/shop")}
-                    className="w-full glassmorphism-button-perfect font-semibold h-12"
+                    className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white font-semibold h-14 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                   >
-                    Continuar Comprando
+                    🛍️ Continuar Comprando
                   </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => router.push("/profile")}
-                    className="w-full text-gray-600 border-gray-300 hover:bg-gray-100"
-                  >
-                    Ver Mis Pedidos
-                  </Button>
+
+                  {/* Secondary Actions */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={() => router.push("/profile?section=orders")}
+                      className="h-12 text-gray-700 border-gray-300 hover:bg-gray-50 font-medium rounded-xl transition-all duration-300 hover:scale-[1.02]"
+                    >
+                      📦 Mis Pedidos
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const text = `¡Acabo de hacer un pedido en FemFuel Beauty! 💄✨ Pedido #${orderNumber}`;
+                        if (navigator.share) {
+                          navigator.share({
+                            title: 'FemFuel Beauty - Pedido Confirmado',
+                            text: text,
+                            url: window.location.origin
+                          });
+                        } else {
+                          navigator.clipboard.writeText(text);
+                          toast.success("Copiado al portapapeles");
+                        }
+                      }}
+                      className="h-12 text-gray-700 border-gray-300 hover:bg-gray-50 font-medium rounded-xl transition-all duration-300 hover:scale-[1.02]"
+                    >
+                      <Share className="h-4 w-4 mr-1" />
+                      Compartir
+                    </Button>
+                  </div>
+
+                  {/* Quick Customer Service */}
+                  <div className="pt-4 border-t border-gray-200">
+                    <p className="text-center text-sm text-gray-500 mb-3">
+                      ¿Algo no está bien con tu pedido?
+                    </p>
+                    <Button
+                      variant="ghost"
+                      onClick={() => window.open('tel:+18095551234')}
+                      className="w-full text-femfuel-rose hover:bg-femfuel-rose/5 font-medium h-10"
+                    >
+                      📞 Soporte Inmediato
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
@@ -898,6 +1170,87 @@ export default function CheckoutPage() {
         onLocationUpdate={handleLocationUpdate}
         currentLocation={userLocation}
       />
+
+      {/* Add Card Modal */}
+      <Dialog open={showAddCardModal} onOpenChange={setShowAddCardModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Agregar Nueva Tarjeta</DialogTitle>
+            <DialogDescription>
+              Agrega una nueva tarjeta de crédito o débito para usar en tu pedido
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="cardNumber">Número de Tarjeta</Label>
+              <Input
+                id="cardNumber"
+                placeholder="1234 5678 9012 3456"
+                value={cardFormData.cardNumber}
+                onChange={handleCardNumberChange}
+                maxLength={19}
+                className="mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="expiryDate">Fecha de Vencimiento</Label>
+                <Input
+                  id="expiryDate"
+                  placeholder="MM/YY"
+                  value={cardFormData.expiryDate}
+                  onChange={handleExpiryChange}
+                  maxLength={5}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="cvv">CVV</Label>
+                <Input
+                  id="cvv"
+                  placeholder="123"
+                  value={cardFormData.cvv}
+                  onChange={(e) => setCardFormData(prev => ({ ...prev, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                  maxLength={4}
+                  className="mt-1"
+                />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="cardHolderName">Nombre del Titular</Label>
+              <Input
+                id="cardHolderName"
+                placeholder="Nombre como aparece en la tarjeta"
+                value={cardFormData.cardHolderName}
+                onChange={(e) => setCardFormData(prev => ({ ...prev, cardHolderName: e.target.value }))}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="brand">Tipo de Tarjeta</Label>
+              <Select value={cardFormData.brand} onValueChange={(value) => setCardFormData(prev => ({ ...prev, brand: value as any }))}>
+                <SelectTrigger className="mt-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="visa">Visa</SelectItem>
+                  <SelectItem value="mastercard">Mastercard</SelectItem>
+                  <SelectItem value="amex">American Express</SelectItem>
+                  <SelectItem value="discover">Discover</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddCardModal(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleAddCard} disabled={isAddingCard} className="bg-femfuel-rose hover:bg-femfuel-rose/90">
+              {isAddingCard ? "Agregando..." : "Agregar Tarjeta"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Mobile Navigation - only show on non-checkout steps */}
       {currentStep === "success" && (

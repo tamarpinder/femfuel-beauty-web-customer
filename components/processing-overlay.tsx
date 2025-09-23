@@ -52,6 +52,16 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
   const [progress, setProgress] = useState(0)
   const animationRunningRef = useRef(false)
 
+  // Debug logging
+  console.log('🔍 ProcessingOverlay Debug:', {
+    isVisible,
+    showSuccess,
+    showNavigationState,
+    hasOnNavigate: !!onNavigate,
+    currentStep,
+    progress
+  })
+
   useEffect(() => {
     if (!isVisible) {
       setCurrentStep(0)
@@ -91,12 +101,16 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
 
       // Show success state
       setShowSuccess(true)
+      console.log('✅ Success state activated, onNavigate available:', !!onNavigate)
 
       setTimeout(() => {
+        console.log('⏰ Navigation timeout completed, showing navigation state')
         if (onNavigate) {
           setShowNavigationState(true)
+          console.log('🚀 Navigation state set to true')
           // Don't call onComplete - keep overlay visible for user choice
         } else {
+          console.log('❌ No onNavigate prop, calling onComplete instead')
           animationRunningRef.current = false
           onComplete?.()
         }
@@ -269,8 +283,15 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
             </div>
           )}
 
+          {/* Debug State Indicator */}
+          {showSuccess && (
+            <div className="fixed top-4 left-4 bg-red-500 text-white px-4 py-2 text-sm z-[10000] rounded">
+              DEBUG: showNavigationState: {showNavigationState.toString()}, hasOnNavigate: {(!!onNavigate).toString()}
+            </div>
+          )}
+
           {/* Integrated Navigation State - Glassmorphic Buttons */}
-          {showNavigationState && (
+          {(showNavigationState || (showSuccess && onNavigate)) && (
             <div className="space-y-2 sm:space-y-3 md:space-y-4 mt-2 sm:mt-3 md:mt-4 animate-in slide-in-from-bottom-4 duration-700">
               {/* Enhanced booking details */}
               <div className="bg-white/10 rounded-2xl p-2.5 sm:p-3 border border-white/20 backdrop-blur-md">
@@ -306,6 +327,7 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
                 {/* Primary Action - Ver Mis Citas */}
                 <button
                   onClick={() => {
+                    console.log('🔥 Ver Mis Citas button clicked!', { onNavigate: !!onNavigate })
                     onNavigate?.('bookings')
                   }}
                   className="relative z-10 w-full bg-white/20 hover:bg-femfuel-rose backdrop-blur-md
@@ -327,6 +349,7 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
                 {/* Secondary Action - Inicio */}
                 <button
                   onClick={() => {
+                    console.log('🏠 Volver al Inicio button clicked!', { onNavigate: !!onNavigate })
                     onNavigate?.('home')
                   }}
                   className="relative z-10 w-full bg-white/15 hover:bg-white/40 backdrop-blur-md

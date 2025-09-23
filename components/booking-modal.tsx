@@ -211,6 +211,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   // Handler for integrated ProcessingOverlay navigation
   const handleProcessingNavigation = useCallback((destination: 'bookings' | 'home' | 'new-booking') => {
+    console.log('🎯 handleProcessingNavigation called with destination:', destination)
 
     // Close processing overlay and reset modal
     setShowProcessingOverlay(false)
@@ -226,11 +227,15 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     onClose()
 
     // Handle the actual navigation
+    console.log('🚀 About to navigate to:', destination)
     if (destination === 'bookings') {
+      console.log('📅 Navigating to /bookings')
       router.push('/bookings')
     } else if (destination === 'home') {
+      console.log('🏠 Navigating to /')
       router.push('/')
     } else if (destination === 'new-booking') {
+      console.log('➕ Navigating to /services')
       router.push('/services')
     }
   }, [router, onBookingComplete, onClose])
@@ -775,6 +780,13 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           fullBookingData={completedBooking}
           onNavigate={handleProcessingNavigation}
         />
+      )}
+
+      {/* Debug indicator */}
+      {showProcessingOverlay && (
+        <div className="fixed top-16 left-4 bg-blue-500 text-white px-4 py-2 text-sm z-[10001] rounded">
+          BookingModal: ProcessingOverlay is visible, onNavigate prop passed: {(!!handleProcessingNavigation).toString()}
+        </div>
       )}
     </>
   )

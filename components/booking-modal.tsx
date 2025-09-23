@@ -230,6 +230,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
       router.push('/bookings')
     } else if (destination === 'home') {
       router.push('/')
+    } else if (destination === 'new-booking') {
+      router.push('/services')
     }
   }, [router, onBookingComplete, onClose])
 
@@ -303,29 +305,38 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
           <div className="p-6 space-y-6">
             {/* Service Information */}
             <Card className="border-femfuel-rose/20 bg-gradient-to-r from-femfuel-light/30 to-white">
-              <CardContent className="p-6">
-                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                  <div className="flex items-center gap-4 flex-1">
-                    <div className="w-16 h-16 bg-femfuel-rose/10 rounded-xl flex items-center justify-center">
-                      <Clock className="h-8 w-8 text-femfuel-rose" />
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col gap-4">
+                  {/* Service Title and Description */}
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-femfuel-rose/10 rounded-xl flex items-center justify-center">
+                      <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-femfuel-rose" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold text-femfuel-dark mb-1">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-1 line-clamp-1 break-words">
                         {service.name}
                       </h3>
-                      <p className="text-sm text-femfuel-medium line-clamp-2">
+                      <p className="text-xs sm:text-sm text-femfuel-medium line-clamp-2 break-words">
                         {service.description || "Manicure profesional con cuidado de cutículas"}
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-2">
-                    <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
-                      <Clock className="h-3 w-3 mr-1" />
-                      {serviceDuration} min
-                    </Badge>
-                    <span className="text-xl font-bold text-black">
-                      {formatPrice(basePrice)}
-                    </span>
+
+                  {/* Centered Price & Duration */}
+                  <div className="flex items-center justify-center gap-4 py-3 px-4 bg-gradient-to-r from-femfuel-light/10 to-pink-50/30 rounded-lg border border-femfuel-rose/10">
+                    <div className="text-center">
+                      <p className="text-xl sm:text-2xl font-bold text-black">{formatPrice(basePrice)}</p>
+                      <p className="text-xs sm:text-sm text-femfuel-medium">Precio</p>
+                    </div>
+                    <div className="w-px h-8 bg-femfuel-rose/20"></div>
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-femfuel-rose" />
+                        <p className="text-xl sm:text-2xl font-bold text-black">{serviceDuration}</p>
+                        <span className="text-xs sm:text-sm text-femfuel-medium">min</span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-femfuel-medium">Duración</p>
+                    </div>
                   </div>
                 </div>
               </CardContent>

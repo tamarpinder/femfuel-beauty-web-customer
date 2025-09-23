@@ -102,10 +102,12 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
             onClick={() => {
               onNavigate('bookings')
             }}
-            className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white py-4 text-lg font-bold"
+            className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white py-4 text-lg font-bold
+                       transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-xl hover:shadow-femfuel-rose/50
+                       active:scale-95 group hover:brightness-110"
           >
-            <Calendar className="h-5 w-5 mr-2" />
-            Ver Mis Citas
+            <Calendar className="h-5 w-5 mr-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
+            <span className="group-hover:tracking-wide transition-all duration-300 ease-out">Ver Mis Citas</span>
           </Button>
 
           <div className="grid grid-cols-2 gap-3">
@@ -114,20 +116,24 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 onNavigate('home')
               }}
               variant="outline"
-              className="py-3 text-sm border-2"
+              className="py-3 text-sm border-2 border-gray-300 hover:border-femfuel-rose hover:bg-femfuel-rose/10 hover:text-femfuel-rose
+                         transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-lg
+                         active:scale-95 group"
             >
-              <Home className="h-4 w-4 mr-1" />
-              Inicio
+              <Home className="h-4 w-4 mr-1 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />
+              <span className="group-hover:tracking-wide transition-all duration-300 ease-out">Inicio</span>
             </Button>
             <Button
               onClick={() => {
                 onNavigate('new-booking')
               }}
               variant="outline"
-              className="py-3 text-sm border-2"
+              className="py-3 text-sm border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 hover:text-green-700
+                         transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-lg
+                         active:scale-95 group"
             >
-              <Plus className="h-4 w-4 mr-1" />
-              Nueva Cita
+              <Plus className="h-4 w-4 mr-1 group-hover:scale-125 group-hover:rotate-90 transition-all duration-300 ease-out" />
+              <span className="group-hover:tracking-wide transition-all duration-300 ease-out">Nueva Cita</span>
             </Button>
           </div>
         </div>
@@ -281,10 +287,15 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
               onClick={() => {
                 onNavigate('bookings')
               }}
-              className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white py-6 text-xl font-bold"
+              className="w-full bg-femfuel-rose hover:bg-femfuel-rose text-white py-6 text-xl font-bold
+                         transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-2xl hover:shadow-femfuel-rose/50
+                         active:scale-95 group hover:brightness-110 cursor-pointer
+                         focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2"
             >
-              <Calendar className="h-6 w-6 mr-3" />
-              Ver Mis Citas
+              <Calendar className="h-6 w-6 mr-3 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
+              <span className="group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-black">Ver Mis Citas</span>
+              {/* Enhanced hover feedback */}
+              <div className="absolute inset-0 bg-gradient-to-r from-femfuel-rose/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Button>
 
             <div className="grid grid-cols-2 gap-4">
@@ -293,20 +304,26 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                   onNavigate('home')
                 }}
                 variant="outline"
-                className="py-4 text-lg border-2 border-gray-300"
+                className="py-4 text-lg border-2 border-gray-300 hover:border-femfuel-rose hover:bg-femfuel-rose/10 hover:text-femfuel-rose
+                           transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-xl
+                           active:scale-95 group cursor-pointer
+                           focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2"
               >
-                <Home className="h-5 w-5 mr-2" />
-                Volver al Inicio
+                <Home className="h-5 w-5 mr-2 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />
+                <span className="group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-bold">Volver al Inicio</span>
               </Button>
               <Button
                 onClick={() => {
                   onNavigate('new-booking')
                 }}
                 variant="outline"
-                className="py-4 text-lg border-2 border-gray-300"
+                className="py-4 text-lg border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 hover:text-green-700
+                           transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-xl
+                           active:scale-95 group cursor-pointer
+                           focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
-                <Plus className="h-5 w-5 mr-2" />
-                Reservar Otra Cita
+                <Plus className="h-5 w-5 mr-2 group-hover:scale-125 group-hover:rotate-90 transition-all duration-300 ease-out" />
+                <span className="group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-bold">Reservar Otra Cita</span>
               </Button>
             </div>
           </div>

@@ -55,9 +55,7 @@ export default function TopProfessionalsPage() {
     // TODO: Implement contact functionality
   }
 
-  const handleVendorClick = (vendorName: string) => {
-    // Create slug from vendor name
-    const vendorSlug = vendorName.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+  const handleVendorClick = (vendorSlug: string) => {
     router.push(`/vendor/${vendorSlug}`)
   }
 
@@ -235,7 +233,7 @@ export default function TopProfessionalsPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
-                            handleVendorClick(professional.vendor.name)
+                            handleVendorClick(professional.vendor.slug)
                           }}
                           className="text-purple-600 hover:text-purple-800 font-medium text-sm underline transition-colors cursor-pointer text-left"
                         >

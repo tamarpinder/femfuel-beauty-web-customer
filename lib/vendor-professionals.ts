@@ -11,26 +11,10 @@ export function getProfessionalsForVendor(vendorName: string): Professional[] {
 export function getProfessionalsByVendorSlug(vendorSlug: string): Professional[] {
   const allProfessionals = getAllProfessionals()
 
-  // Convert vendor slug back to vendor name for matching
-  // This is a simple approach - in a real app you'd have a proper slug-to-vendor mapping
-  const vendorNameFromSlug = vendorSlug
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
-
-  return allProfessionals.filter(professional => {
-    const vendorName = professional.vendor.name.toLowerCase()
-    const searchName = vendorNameFromSlug.toLowerCase()
-
-    // Try exact match first
-    if (vendorName === searchName) {
-      return true
-    }
-
-    // Try partial match for cases where slug doesn't perfectly match vendor name
-    return vendorName.includes(searchName.split(' ')[0]) ||
-           searchName.includes(vendorName.split(' ')[0])
-  })
+  // Direct slug matching - much more reliable
+  return allProfessionals.filter(professional =>
+    professional.vendor.slug === vendorSlug
+  )
 }
 
 // Generate sample transformations for a vendor based on their services

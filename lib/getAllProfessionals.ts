@@ -20,6 +20,7 @@ export interface Professional {
   bio?: string
   vendor: {
     name: string
+    slug: string
     location: {
       address: string
       district: string
@@ -48,6 +49,7 @@ export function getAllProfessionals(): Professional[] {
           ...professional,
           vendor: {
             name: vendor.name,
+            slug: vendor.slug,
             location: vendor.location
           }
         })

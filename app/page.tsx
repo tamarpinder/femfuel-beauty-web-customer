@@ -217,81 +217,102 @@ export default function HomePage() {
     }
   ]
 
-  // Get star professionals from real VendorAdapter system
+  // Simple, direct Star Professionals structure
   const getStarProfessionals = useCallback(() => {
-    const allProfessionals = getAllProfessionals()
-
-    // Sort by rating and review count to get the best professionals
-    const sortedProfessionals = allProfessionals
-      .sort((a, b) => {
-        if (b.rating !== a.rating) return b.rating - a.rating
-        return b.reviewCount - a.reviewCount
-      })
-      .slice(0, 4) // Get top 4 professionals
-
-    // Map real professionals to the expected format with curated images
-    const imageMappings = [
+    return [
       {
+        id: "carla-rodriguez",
+        name: "Carla Rodríguez",
+        specialty: "Especialista en Color",
+        salon: "Hair Salon Elite",
+        vendorId: "hair-salon-elite",
+        location: "Piantini",
+        rating: 4.9,
+        reviewCount: 156,
+        yearsExperience: 8,
         avatar: "/professionals/portraits/hair-colorist-lucia.png",
         portfolioImages: [
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-1.png",
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-2.png",
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-3.png",
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-4.png"
-        ]
+        ],
+        specialties: ["Balayage", "Colorimetría", "Cabello Rizado"],
+        availableToday: true,
+        nextAvailable: "Hoy 2:00 PM",
+        signature: "Balayage Dorado Caribeño",
+        price: "RD$4,500"
       },
       {
+        id: "sofia-rodriguez",
+        name: "Sofia Rodriguez",
+        specialty: "Maquilladora Profesional",
+        salon: "Glamour House",
+        vendorId: "glamour-house",
+        location: "Zona Colonial",
+        rating: 5.0,
+        reviewCount: 89,
+        yearsExperience: 6,
         avatar: "/professionals/portraits/bridal-makeup-artist-valentina.png",
         portfolioImages: [
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-2.png",
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-3.png",
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-4.png"
-        ]
+        ],
+        specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
+        availableToday: false,
+        nextAvailable: "Mañana 10:00 AM",
+        signature: "Glamour Tropical Night",
+        price: "RD$3,500"
       },
       {
+        id: "gabriela-mendez",
+        name: "Gabriela Méndez",
+        specialty: "Terapeuta Facial",
+        salon: "Spa Serenity",
+        vendorId: "spa-serenity",
+        location: "Bella Vista",
+        rating: 4.8,
+        reviewCount: 203,
+        yearsExperience: 12,
         avatar: "/professionals/portraits/wellness-therapist-isabella.png",
         portfolioImages: [
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-1.png",
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-2.png",
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-3.png",
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-4.png"
-        ]
+        ],
+        specialties: ["Antiedad", "Acné", "Hidratación"],
+        availableToday: true,
+        nextAvailable: "Hoy 4:30 PM",
+        signature: "Piel Radiante Caribeña",
+        price: "RD$4,200"
       },
       {
+        id: "patricia-lopez",
+        name: "Patricia López",
+        specialty: "Nail Artist",
+        salon: "Nails Paradise",
+        vendorId: "nails-paradise",
+        location: "Naco",
+        rating: 4.7,
+        reviewCount: 178,
+        yearsExperience: 5,
         avatar: "/professionals/portraits/nail-artist-sofia.png",
         portfolioImages: [
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-1.png",
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-2.png",
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-3.png",
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-4.png"
-        ]
+        ],
+        specialties: ["Nail Art", "Gel X", "Decoraciones"],
+        availableToday: true,
+        nextAvailable: "Hoy 1:00 PM",
+        signature: "Tropical Nail Art",
+        price: "RD$1,800"
       }
     ]
-
-    return sortedProfessionals.map((professional, index) => {
-      const mapping = imageMappings[index] || imageMappings[0]
-      const primarySpecialty = professional.specialties[0] || "Especialista en Belleza"
-
-      return {
-        id: professional.id,
-        name: professional.name,
-        specialty: primarySpecialty,
-        salon: professional.vendor.name,
-        vendorId: professional.vendor.slug,
-        location: `${professional.vendor.location.district}`,
-        rating: professional.rating,
-        reviewCount: professional.reviewCount,
-        yearsExperience: professional.yearsExperience,
-        avatar: mapping.avatar,
-        portfolioImages: mapping.portfolioImages,
-        specialties: professional.specialties,
-        availableToday: Math.random() > 0.5, // Random availability for demo
-        nextAvailable: professional.nextAvailable || "Consultar",
-        signature: `${primarySpecialty} Exclusivo`,
-        price: `RD$${(Math.floor(Math.random() * 3000) + 2000).toLocaleString()}`
-      }
-    })
   }, [])
 
   const professionals = getStarProfessionals()

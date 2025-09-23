@@ -40,7 +40,14 @@ export default function VendorPage() {
   const [showServiceGallery, setShowServiceGallery] = useState(false)
   const [galleryService, setGalleryService] = useState<VendorService | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [bookingData, setBookingData] = useState({
+  const [bookingData, setBookingData] = useState<{
+    date: Date | undefined
+    time: string
+    professional: any
+    selectedAddons: any[]
+    notes: string
+    paymentMethod: string
+  }>({
     date: undefined,
     time: "",
     professional: null,

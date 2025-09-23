@@ -52,15 +52,6 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
   const [progress, setProgress] = useState(0)
   const animationRunningRef = useRef(false)
 
-  // Debug logging
-  console.log('🔍 ProcessingOverlay Debug:', {
-    isVisible,
-    showSuccess,
-    showNavigationState,
-    hasOnNavigate: !!onNavigate,
-    currentStep,
-    progress
-  })
 
   useEffect(() => {
     if (!isVisible) {
@@ -101,16 +92,12 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
 
       // Show success state
       setShowSuccess(true)
-      console.log('✅ Success state activated, onNavigate available:', !!onNavigate)
 
       setTimeout(() => {
-        console.log('⏰ Navigation timeout completed, showing navigation state')
         if (onNavigate) {
           setShowNavigationState(true)
-          console.log('🚀 Navigation state set to true')
           // Don't call onComplete - keep overlay visible for user choice
         } else {
-          console.log('❌ No onNavigate prop, calling onComplete instead')
           animationRunningRef.current = false
           onComplete?.()
         }
@@ -283,12 +270,6 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
             </div>
           )}
 
-          {/* Debug State Indicator */}
-          {showSuccess && (
-            <div className="fixed top-4 left-4 bg-red-500 text-white px-4 py-2 text-sm z-[10000] rounded">
-              DEBUG: showNavigationState: {showNavigationState.toString()}, hasOnNavigate: {(!!onNavigate).toString()}
-            </div>
-          )}
 
           {/* Integrated Navigation State - Glassmorphic Buttons */}
           {(showNavigationState || (showSuccess && onNavigate)) && (
@@ -326,17 +307,14 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
               <div className="space-y-2 sm:space-y-3">
                 {/* Primary Action - Ver Mis Citas */}
                 <button
-                  onClick={() => {
-                    console.log('🔥 Ver Mis Citas button clicked!', { onNavigate: !!onNavigate })
-                    onNavigate?.('bookings')
-                  }}
-                  className="relative z-10 w-full bg-white/20 hover:bg-femfuel-rose backdrop-blur-md
+                  onClick={() => onNavigate?.('bookings')}
+                  className="relative z-20 w-full bg-white/20 hover:bg-femfuel-rose backdrop-blur-md
                            border border-white/30 hover:border-femfuel-rose rounded-xl p-3 sm:p-4
                            text-white font-semibold transition-all duration-300 ease-out
                            hover:scale-105 hover:shadow-2xl hover:shadow-femfuel-rose/50
                            active:scale-95 group transform cursor-pointer
                            focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2
-                           hover:brightness-110"
+                           hover:brightness-110 pointer-events-auto"
                 >
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
                     <Calendar className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
@@ -348,17 +326,14 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
 
                 {/* Secondary Action - Inicio */}
                 <button
-                  onClick={() => {
-                    console.log('🏠 Volver al Inicio button clicked!', { onNavigate: !!onNavigate })
-                    onNavigate?.('home')
-                  }}
-                  className="relative z-10 w-full bg-white/15 hover:bg-white/40 backdrop-blur-md
+                  onClick={() => onNavigate?.('home')}
+                  className="relative z-20 w-full bg-white/15 hover:bg-white/40 backdrop-blur-md
                            border border-white/20 hover:border-white/80 rounded-xl p-3 sm:p-4
                            text-white font-medium transition-all duration-300 ease-out
                            hover:scale-105 hover:shadow-xl hover:shadow-white/50
                            active:scale-95 group transform cursor-pointer
                            focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2
-                           hover:brightness-110"
+                           hover:brightness-110 pointer-events-auto"
                 >
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
                     <Home className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />

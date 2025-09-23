@@ -55,6 +55,10 @@ export default function TopProfessionalsPage() {
     // TODO: Implement contact functionality
   }
 
+  const handleVendorClick = (vendorSlug: string) => {
+    router.push(`/vendor/${vendorSlug}`)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
@@ -226,7 +230,15 @@ export default function TopProfessionalsPage() {
                         <h3 className="text-lg font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors">
                           {professional.name}
                         </h3>
-                        <p className="text-purple-600 font-medium text-sm">{professional.vendor.name}</p>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleVendorClick(professional.vendor.slug)
+                          }}
+                          className="text-purple-600 hover:text-purple-800 font-medium text-sm underline transition-colors cursor-pointer text-left"
+                        >
+                          {professional.vendor.name}
+                        </button>
                         <div className="flex items-center gap-2 text-sm text-femfuel-medium">
                           <MapPin className="h-4 w-4" />
                           <span>{professional.vendor.location.district}, {professional.vendor.location.city}</span>

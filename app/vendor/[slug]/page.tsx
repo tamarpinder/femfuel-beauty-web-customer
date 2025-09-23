@@ -13,9 +13,13 @@ import { BookingModal } from "@/components/booking-modal"
 import { ServiceDetailGallery } from "@/components/service-detail-gallery"
 import { ChatButton } from "@/components/ui/chat-button"
 import { UserFlowHeader } from "@/components/user-flow-header"
+import { ProfessionalShowcase } from "@/components/vendor/professional-showcase"
+import { ServicesByCategory } from "@/components/vendor/services-by-category"
+import { TransformationGallery } from "@/components/vendor/transformation-gallery"
 import { getVendorBySlug } from "@/lib/vendors-api"
 import { getServiceDetailImages } from "@/lib/service-detail-mappings"
 import { getServiceImage } from "@/lib/image-mappings"
+import { getProfessionalsByVendorSlug, generateVendorTransformations } from "@/lib/vendor-professionals"
 import { Vendor, VendorService } from "@/types/vendor"
 
 export default function VendorPage() {
@@ -36,6 +40,20 @@ export default function VendorPage() {
   const [showServiceGallery, setShowServiceGallery] = useState(false)
   const [galleryService, setGalleryService] = useState<VendorService | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [bookingData, setBookingData] = useState({
+    date: undefined,
+    time: "",
+    professional: null,
+    selectedAddons: [],
+    notes: "",
+    paymentMethod: "cash"
+  })
+
+  // Get professionals for this vendor
+  const vendorProfessionals = getProfessionalsByVendorSlug(vendorSlug)
+
+  // Generate transformations for this vendor
+  const vendorTransformations = vendor ? generateVendorTransformations(vendor.name, vendor.services) : []
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -91,6 +109,37 @@ export default function VendorPage() {
       setGalleryService(service)
       setShowServiceGallery(true)
     }
+  }
+
+  const handleViewProfile = (professional: any) => {
+    const slug = professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+    router.push(`/professional/${slug}`)
+  }
+
+  const handleBookNow = (professional: any) => {
+    // Pre-select the professional when opening booking modal
+    if (vendor?.services && vendor.services.length > 0) {
+      // Use the most popular service or first service for quick booking
+      const defaultService = vendor.services.find(s => s.isPopular) || vendor.services[0]
+      setSelectedService(defaultService)
+      setBookingData(prev => ({
+        ...prev,
+        professional: {
+          id: professional.id,
+          name: professional.name,
+          image: professional.image,
+          rating: professional.rating,
+          specialties: professional.specialties,
+          yearsExperience: professional.yearsExperience
+        }
+      }))
+      setShowBookingModal(true)
+    }
+  }
+
+  const handleGetThisLook = (transformation: any) => {
+    // TODO: Implement transformation booking
+    console.log('Get this look:', transformation.title)
   }
 
   const handleBookingComplete = (booking: any) => {
@@ -167,250 +216,169 @@ export default function VendorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">{/* Vendor profile page relies on SmartHeader from layout */}
-
-      {/* Cover Image */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
+      {/* Cover Image - Full Width */}
       <div className="relative h-64 md:h-80">
         <img
           src={vendor.coverImage || "/placeholder.svg?height=320&width=800&query=beauty salon"}
           alt={`${vendor.name} cover`}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        
-        {/* Floating Actions */}
-        <div className="absolute bottom-4 right-4 flex gap-2">
-          <ChatButton
-            vendorId={vendor.id}
-            vendorName={vendor.name}
-            variant="inline"
-            size="sm"
-            className="bg-green-500 hover:bg-green-600 text-white shadow-lg"
-          >
-            💬 Chat
-          </ChatButton>
-          <Button size="sm" className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white shadow-lg">
-            <Phone className="h-4 w-4 mr-2" />
-            Llamar
-          </Button>
-        </div>
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
-      <div className="px-4 py-6 max-w-4xl mx-auto">
-        {/* Vendor Info Card */}
-        <Card className="shadow-sm mb-6">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4 mb-4">
+        {/* Vendor Info Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-end gap-6">
               <img
                 src={vendor.logo || "/placeholder.svg?height=80&width=80&query=business logo"}
                 alt={`${vendor.name} logo`}
-                className="w-20 h-20 rounded-xl object-cover border-2 border-gray-100 flex-shrink-0"
+                className="w-20 h-20 rounded-xl object-cover border-4 border-white/20 backdrop-blur-sm flex-shrink-0"
               />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h1 className="text-2xl font-bold text-femfuel-dark mb-1">{vendor.name}</h1>
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="flex items-center gap-1">
-                        <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                        <span className="text-lg font-semibold">{vendor.rating}</span>
-                        <span className="text-femfuel-medium">({vendor.reviewCount} reseñas)</span>
-                      </div>
-                      {vendor.professionalCount > 1 && (
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4 text-femfuel-medium" />
-                          <span className="text-femfuel-medium">{vendor.professionalCount} profesionales</span>
-                        </div>
-                      )}
-                    </div>
+              <div className="flex-1 text-white">
+                <h1 className="text-3xl md:text-4xl font-bold mb-2">{vendor.name}</h1>
+                <div className="flex items-center gap-6 text-white/90">
+                  <div className="flex items-center gap-2">
+                    <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                    <span className="font-semibold">{vendor.rating}</span>
+                    <span>({vendor.reviewCount} reseñas)</span>
                   </div>
-                  {vendor.badges && vendor.badges.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {vendor.badges.map((badge, index) => (
-                        <Badge key={index} variant="secondary">{badge}</Badge>
-                      ))}
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>{vendor.location.district}, {vendor.location.city}</span>
+                  </div>
+                  {vendor.professionalCount > 1 && (
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span>{vendor.professionalCount} profesionales</span>
                     </div>
                   )}
                 </div>
-
-                <p className="text-femfuel-medium mb-4">{vendor.description}</p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-medium">
-                      {vendor.location.address}, {vendor.location.district}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-medium">
-                      Hoy: {getTodayHours()}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-femfuel-medium" />
-                    <span className="text-femfuel-medium">
-                      {vendor.availability.todayAvailable ? vendor.availability.nextSlot : "Sin disponibilidad hoy"}
-                    </span>
-                  </div>
-                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Service Context Banner */}
-        {contextService && (
-          <Card className="shadow-sm mb-6 bg-gradient-to-r from-femfuel-rose to-femfuel-purple">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between text-white">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                    <span className="text-xl">✨</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Interesado en {contextService.name}</h3>
-                    <p className="text-white/90 text-sm">
-                      {formatPrice(contextService.price)} • {contextService.duration} min
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => handleServiceBook(contextService.id)}
-                    className="bg-white text-femfuel-rose hover:bg-white/90"
-                  >
-                    Reservar Ahora
-                  </Button>
-                  <ChatButton
-                    vendorId={vendor.id}
-                    vendorName={vendor.name}
-                    serviceContext={contextService.name}
-                    variant="inline"
-                    size="sm"
-                    className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
-                  >
-                    💬 Preguntar
-                  </ChatButton>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Services Section */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-femfuel-dark mb-4">
-            Servicios ({vendor.serviceCount})
-          </h2>
-
-          {/* Category Filter */}
-          {getUniqueCategories().length > 1 && (
-            <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-              <Button
-                variant={selectedCategory === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedCategory("all")}
-                className={selectedCategory === "all" ? "bg-femfuel-rose" : ""}
-              >
-                Todos
-              </Button>
-              {getUniqueCategories().map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className={selectedCategory === category ? "bg-femfuel-rose" : ""}
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <ChatButton
+                  vendorId={vendor.id}
+                  vendorName={vendor.name}
+                  variant="inline"
+                  size="default"
+                  className="bg-green-500 hover:bg-green-600 text-white shadow-lg backdrop-blur-sm"
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  💬 Chat
+                </ChatButton>
+                <Button className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white shadow-lg backdrop-blur-sm">
+                  <Phone className="h-4 w-4 mr-2" />
+                  Llamar
                 </Button>
-              ))}
+              </div>
             </div>
-          )}
-
-          {/* Services Grid */}
-          {getFilteredServices().length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {getFilteredServices().map((service) => (
-                <Card key={service.id} className="shadow-sm">
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
-                      <img
-                        src={getServiceImage(service.name)}
-                        alt={service.name}
-                        className="w-15 h-15 rounded-lg object-cover flex-shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="font-semibold text-femfuel-dark truncate">{service.name}</h3>
-                            {service.isPopular && (
-                              <Badge variant="secondary" className="text-xs mt-1">Popular</Badge>
-                            )}
-                          </div>
-                          <span className="font-bold text-black ml-2">
-                            {formatPrice(service.price)}
-                          </span>
-                        </div>
-                        
-                        <p className="text-sm text-femfuel-medium mb-3 line-clamp-2">
-                          {service.description}
-                        </p>
-                        
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-1 text-sm text-femfuel-medium">
-                            <Clock className="h-4 w-4" />
-                            <span>{service.duration} min</span>
-                            {getServiceDetailImages(service.name).length > 0 && (
-                              <button
-                                onClick={() => handleServiceGallery(service.id)}
-                                className="ml-2 text-xs text-femfuel-rose hover:text-femfuel-dark underline"
-                              >
-                                Ver proceso
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <Button
-                            size="sm"
-                            className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
-                            onClick={() => handleServiceBook(service.id)}
-                          >
-                            Reservar
-                          </Button>
-                          <ChatButton
-                            vendorId={vendor.id}
-                            vendorName={vendor.name}
-                            serviceContext={service.name}
-                            variant="inline"
-                            size="sm"
-                            className="bg-green-500 hover:bg-green-600 text-white"
-                          >
-                            💬
-                          </ChatButton>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <h3 className="text-lg font-medium text-femfuel-dark mb-2">
-                No hay servicios en esta categoría
-              </h3>
-              <p className="text-femfuel-medium">
-                Intenta seleccionar otra categoría
-              </p>
-            </div>
-          )}
+          </div>
         </div>
       </div>
+
+      {/* Vendor Description - Full Width */}
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-lg text-femfuel-medium leading-relaxed mb-8">{vendor.description}</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div className="p-4">
+                <Clock className="h-8 w-8 text-femfuel-rose mx-auto mb-2" />
+                <p className="font-semibold text-femfuel-dark">Horario Hoy</p>
+                <p className="text-femfuel-medium">{getTodayHours()}</p>
+              </div>
+              <div className="p-4">
+                <Calendar className="h-8 w-8 text-femfuel-rose mx-auto mb-2" />
+                <p className="font-semibold text-femfuel-dark">Disponibilidad</p>
+                <p className="text-femfuel-medium">
+                  {vendor.availability.todayAvailable ? vendor.availability.nextSlot : "Sin disponibilidad hoy"}
+                </p>
+              </div>
+              <div className="p-4">
+                <MapPin className="h-8 w-8 text-femfuel-rose mx-auto mb-2" />
+                <p className="font-semibold text-femfuel-dark">Ubicación</p>
+                <p className="text-femfuel-medium">{vendor.location.address}</p>
+              </div>
+            </div>
+
+            {vendor.badges && vendor.badges.length > 0 && (
+              <div className="flex justify-center gap-2 mt-6">
+                {vendor.badges.map((badge, index) => (
+                  <Badge key={index} variant="secondary" className="bg-purple-100 text-purple-700">{badge}</Badge>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Service Context Banner */}
+      {contextService && (
+        <div className="py-8 bg-gradient-to-r from-femfuel-rose to-femfuel-purple">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-center justify-between text-white">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
+                  <span className="text-2xl">✨</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">Interesado en {contextService.name}</h3>
+                  <p className="text-white/90">
+                    {formatPrice(contextService.price)} • {contextService.duration} min
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => handleServiceBook(contextService.id)}
+                  className="bg-white text-femfuel-rose hover:bg-white/90"
+                >
+                  Reservar Ahora
+                </Button>
+                <ChatButton
+                  vendorId={vendor.id}
+                  vendorName={vendor.name}
+                  serviceContext={contextService.name}
+                  variant="inline"
+                  size="default"
+                  className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                >
+                  💬 Preguntar
+                </ChatButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Professional Showcase */}
+      {vendorProfessionals.length > 0 && (
+        <ProfessionalShowcase
+          professionals={vendorProfessionals}
+          onViewProfile={handleViewProfile}
+          onBookNow={handleBookNow}
+        />
+      )}
+
+      {/* Services by Category */}
+      <ServicesByCategory
+        services={vendor.services}
+        vendorId={vendor.id}
+        vendorName={vendor.name}
+        onServiceBook={handleServiceBook}
+        onServiceGallery={handleServiceGallery}
+        formatPrice={formatPrice}
+      />
+
+      {/* Transformation Gallery */}
+      {vendorTransformations.length > 0 && (
+        <TransformationGallery
+          transformations={vendorTransformations}
+          onGetThisLook={handleGetThisLook}
+        />
+      )}
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="search" />
@@ -422,6 +390,7 @@ export default function VendorPage() {
           onClose={() => {
             setShowBookingModal(false)
             setSelectedService(null)
+            setBookingData(prev => ({ ...prev, professional: null }))
           }}
           service={{
             id: selectedService.id,
@@ -445,6 +414,8 @@ export default function VendorPage() {
           vendorId={vendor.id}
           vendorName={vendor.name}
           vendorRating={vendor.rating}
+          professionalId={bookingData.professional?.id}
+          professionalName={bookingData.professional?.name}
           onBookingComplete={handleBookingComplete}
         />
       )}

@@ -217,102 +217,171 @@ export default function HomePage() {
     }
   ]
 
-  // Simple, direct Star Professionals structure
+  // Get Star Professionals from real VendorAdapter professionals
   const getStarProfessionals = useCallback(() => {
-    return [
+    const allProfessionals = getAllProfessionals()
+
+    // Portfolio image structure - keep existing images
+    const portfolioStructure = [
       {
-        id: "carla-rodriguez",
-        name: "Carla Rodríguez",
-        specialty: "Especialista en Color",
-        salon: "Hair Salon Elite",
-        vendorId: "hair-salon-elite",
-        location: "Piantini",
-        rating: 4.9,
-        reviewCount: 156,
-        yearsExperience: 8,
-        avatar: "/professionals/portraits/hair-colorist-lucia.png",
+        category: "hair",
         portfolioImages: [
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-1.png",
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-2.png",
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-3.png",
           "/professionals/portfolios/carla-rodriguez/carla-portfolio-4.png"
         ],
-        specialties: ["Balayage", "Colorimetría", "Cabello Rizado"],
-        availableToday: true,
-        nextAvailable: "Hoy 2:00 PM",
+        avatar: "/professionals/portraits/hair-colorist-lucia.png",
         signature: "Balayage Dorado Caribeño",
         price: "RD$4,500"
       },
       {
-        id: "sofia-rodriguez",
-        name: "Sofia Rodriguez",
-        specialty: "Maquilladora Profesional",
-        salon: "Glamour House",
-        vendorId: "glamour-house",
-        location: "Zona Colonial",
-        rating: 5.0,
-        reviewCount: 89,
-        yearsExperience: 6,
-        avatar: "/professionals/portraits/bridal-makeup-artist-valentina.png",
+        category: "makeup",
         portfolioImages: [
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-2.png",
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-3.png",
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-4.png"
         ],
-        specialties: ["Maquillaje de Novia", "Eventos", "Editorial"],
-        availableToday: false,
-        nextAvailable: "Mañana 10:00 AM",
+        avatar: "/professionals/portraits/bridal-makeup-artist-valentina.png",
         signature: "Glamour Tropical Night",
         price: "RD$3,500"
       },
       {
-        id: "gabriela-mendez",
-        name: "Gabriela Méndez",
-        specialty: "Terapeuta Facial",
-        salon: "Spa Serenity",
-        vendorId: "spa-serenity",
-        location: "Bella Vista",
-        rating: 4.8,
-        reviewCount: 203,
-        yearsExperience: 12,
-        avatar: "/professionals/portraits/wellness-therapist-isabella.png",
+        category: "spa",
         portfolioImages: [
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-1.png",
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-2.png",
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-3.png",
           "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-4.png"
         ],
-        specialties: ["Antiedad", "Acné", "Hidratación"],
-        availableToday: true,
-        nextAvailable: "Hoy 4:30 PM",
+        avatar: "/professionals/portraits/wellness-therapist-isabella.png",
         signature: "Piel Radiante Caribeña",
         price: "RD$4,200"
       },
       {
-        id: "patricia-lopez",
-        name: "Patricia López",
-        specialty: "Nail Artist",
-        salon: "Nails Paradise",
-        vendorId: "nails-paradise",
-        location: "Naco",
-        rating: 4.7,
-        reviewCount: 178,
-        yearsExperience: 5,
-        avatar: "/professionals/portraits/nail-artist-sofia.png",
+        category: "nails",
         portfolioImages: [
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-1.png",
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-2.png",
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-3.png",
           "/professionals/portfolios/patricia-lopez/patricia-portfolio-4.png"
         ],
-        specialties: ["Nail Art", "Gel X", "Decoraciones"],
-        availableToday: true,
-        nextAvailable: "Hoy 1:00 PM",
+        avatar: "/professionals/portraits/nail-artist-sofia.png",
         signature: "Tropical Nail Art",
         price: "RD$1,800"
       }
     ]
+
+    // Helper function to find professional by specialty
+    const findProfessionalBySpecialty = (specialtyKeywords: string[]) => {
+      return allProfessionals.find(prof =>
+        prof.specialties && prof.specialties.some(specialty =>
+          specialtyKeywords.some(keyword =>
+            specialty.toLowerCase().includes(keyword.toLowerCase())
+          )
+        )
+      )
+    }
+
+    // Find real professionals by specialty categories
+    const hairColorist = findProfessionalBySpecialty(['Coloración', 'Balayage', 'Color'])
+    const makeupArtist = findProfessionalBySpecialty(['Maquillaje', 'Makeup'])
+    const spaTherapist = findProfessionalBySpecialty(['Tratamientos Faciales', 'Facial', 'Spa'])
+    const nailArtist = findProfessionalBySpecialty(['Nail Art', 'Manicure', 'Uñas'])
+
+    // Build result using real professionals mapped to portfolio structure
+    const starProfessionals = []
+
+    if (hairColorist) {
+      const slug = hairColorist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+      starProfessionals.push({
+        id: slug,
+        name: hairColorist.name,
+        specialty: hairColorist.specialties?.[0] || "Especialista en Color",
+        salon: hairColorist.vendor.name,
+        vendorId: hairColorist.vendor.slug,
+        location: hairColorist.vendor.location.district,
+        rating: hairColorist.rating,
+        reviewCount: hairColorist.reviewCount,
+        yearsExperience: hairColorist.yearsExperience,
+        avatar: portfolioStructure[0].avatar,
+        portfolioImages: portfolioStructure[0].portfolioImages,
+        specialties: hairColorist.specialties,
+        availableToday: true,
+        nextAvailable: hairColorist.nextAvailable || "Hoy 2:00 PM",
+        signature: portfolioStructure[0].signature,
+        price: portfolioStructure[0].price
+      })
+    }
+
+    if (makeupArtist) {
+      const slug = makeupArtist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+      starProfessionals.push({
+        id: slug,
+        name: makeupArtist.name,
+        specialty: makeupArtist.specialties?.[0] || "Maquilladora Profesional",
+        salon: makeupArtist.vendor.name,
+        vendorId: makeupArtist.vendor.slug,
+        location: makeupArtist.vendor.location.district,
+        rating: makeupArtist.rating,
+        reviewCount: makeupArtist.reviewCount,
+        yearsExperience: makeupArtist.yearsExperience,
+        avatar: portfolioStructure[1].avatar,
+        portfolioImages: portfolioStructure[1].portfolioImages,
+        specialties: makeupArtist.specialties,
+        availableToday: false,
+        nextAvailable: makeupArtist.nextAvailable || "Mañana 10:00 AM",
+        signature: portfolioStructure[1].signature,
+        price: portfolioStructure[1].price
+      })
+    }
+
+    if (spaTherapist) {
+      const slug = spaTherapist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+      starProfessionals.push({
+        id: slug,
+        name: spaTherapist.name,
+        specialty: spaTherapist.specialties?.[0] || "Terapeuta Facial",
+        salon: spaTherapist.vendor.name,
+        vendorId: spaTherapist.vendor.slug,
+        location: spaTherapist.vendor.location.district,
+        rating: spaTherapist.rating,
+        reviewCount: spaTherapist.reviewCount,
+        yearsExperience: spaTherapist.yearsExperience,
+        avatar: portfolioStructure[2].avatar,
+        portfolioImages: portfolioStructure[2].portfolioImages,
+        specialties: spaTherapist.specialties,
+        availableToday: true,
+        nextAvailable: spaTherapist.nextAvailable || "Hoy 4:30 PM",
+        signature: portfolioStructure[2].signature,
+        price: portfolioStructure[2].price
+      })
+    }
+
+    if (nailArtist) {
+      const slug = nailArtist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+      starProfessionals.push({
+        id: slug,
+        name: nailArtist.name,
+        specialty: nailArtist.specialties?.[0] || "Nail Artist",
+        salon: nailArtist.vendor.name,
+        vendorId: nailArtist.vendor.slug,
+        location: nailArtist.vendor.location.district,
+        rating: nailArtist.rating,
+        reviewCount: nailArtist.reviewCount,
+        yearsExperience: nailArtist.yearsExperience,
+        avatar: portfolioStructure[3].avatar,
+        portfolioImages: portfolioStructure[3].portfolioImages,
+        specialties: nailArtist.specialties,
+        availableToday: true,
+        nextAvailable: nailArtist.nextAvailable || "Hoy 1:00 PM",
+        signature: portfolioStructure[3].signature,
+        price: portfolioStructure[3].price
+      })
+    }
+
+    return starProfessionals
   }, [])
 
   const professionals = getStarProfessionals()

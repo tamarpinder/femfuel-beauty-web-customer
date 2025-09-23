@@ -124,25 +124,71 @@ export class VendorAdapter {
       // Create deterministic random generator for this specific professional
       const random = this.seededRandom(professionalId)
       
-      const baseNames = [
-        'María', 'Carmen', 'Ana', 'Rosa', 'Lucía', 'Patricia', 'Sofia', 'Gabriela',
-        'Ricardo', 'Carlos', 'Diego', 'Eduardo', 'Andrés', 'Gabriel', 'Jean Carlos'
-      ]
+      // Separate names by gender
+      const femaleNames = ['María', 'Carmen', 'Ana', 'Rosa', 'Lucía', 'Patricia', 'Sofia', 'Gabriela']
+      const maleNames = ['Ricardo', 'Carlos', 'Diego', 'Eduardo', 'Andrés', 'Gabriel', 'Jean Carlos']
+
       const lastNames = [
         'García', 'Rodríguez', 'Martínez', 'López', 'González', 'Pérez', 'Sánchez', 'Torres',
         'Flores', 'Rivera', 'Morales', 'Jiménez', 'Cruz', 'Valdez', 'Herrera'
       ]
-      
-      const firstName = baseNames[Math.floor(random() * baseNames.length)]
+
+      // Separate portraits by gender
+      const femalePortraits = [
+        'aesthetician-ana.png',
+        'anti-aging-specialist-minerva.png',
+        'bridal-makeup-artist-valentina.png',
+        'express-nail-tech-1.png',
+        'express-nail-tech-2.png',
+        'facial-specialist-yolanda.png',
+        'hair-colorist-lucia.png',
+        'hair-stylist-carla.png',
+        'hair-stylist-esperanza.png',
+        'hair-stylist-maria.png',
+        'holistic-skin-therapist-rosa.png',
+        'lash-brow-liliana.png',
+        'lash-specialist-camila.png',
+        'makeup-artist-alejandra.png',
+        'makeup-artist-carmen.png',
+        'makeup-artist-natalia.png',
+        'massage-therapist-raquel.png',
+        'microblade-artist-andrea.png',
+        'nail-artist-carmen.png',
+        'nail-artist-patricia.png',
+        'nail-artist-sofia.png',
+        'pedicure-specialist-marisol.png',
+        'skin-specialist-valentina.png',
+        'spa-therapist-gabriela.png',
+        'wellness-therapist-isabella.png'
+      ]
+
+      const malePortraits = [
+        'corporate-makeup-male.png',
+        'hair-designer-diego.png',
+        'hair-stylist-ricardo.png',
+        'male-barber-1.png',
+        'male-barber-2.png',
+        'male-massage-therapist.png'
+      ]
+
+      // Determine gender (70% female, 30% male to match beauty industry demographics)
+      const isFemale = random() > 0.3
+
+      // Select name and portrait based on gender
+      const firstName = isFemale
+        ? femaleNames[Math.floor(random() * femaleNames.length)]
+        : maleNames[Math.floor(random() * maleNames.length)]
+
       const lastName = lastNames[Math.floor(random() * lastNames.length)]
       const name = `${firstName} ${lastName}`
-      
+
       // Generate specialties based on service categories
       const specialties = this.generateSpecialties(serviceCategories, services)
-      
-      // Generate deterministic professional portrait based on ID
-      const portraitIndex = Math.abs(professionalId.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % 32 + 1
-      const image = `/professionals/professional-${portraitIndex.toString().padStart(2, '0')}.png`
+
+      // Select portrait matching the gender using random selection
+      const portraits = isFemale ? femalePortraits : malePortraits
+      const portraitIndex = Math.floor(random() * portraits.length)
+      const image = `/professionals/portraits/${portraits[portraitIndex]}`
       
       const rating = +(4.2 + random() * 0.7).toFixed(1)
       const reviewCount = Math.floor(random() * 150) + 50
@@ -186,11 +232,33 @@ export class VendorAdapter {
       allSpecialties.push(...categorySpecialties)
     })
     
-    // Add service-specific specialties
+    // Add service-specific specialties for transformation services
     services.forEach(service => {
-      if (service.name.includes('Keratina')) allSpecialties.push('Tratamiento de Keratina')
-      if (service.name.includes('Alisado')) allSpecialties.push('Alisados Profesionales')
-      if (service.name.includes('Novia')) allSpecialties.push('Maquillaje de Novias')
+      const serviceName = service.name || ''
+
+      // Transformation-specific specialties
+      if (serviceName === 'Balayage') {
+        allSpecialties.push('Balayage', 'Coloración Avanzada', 'Técnicas de Color')
+      } else if (serviceName === 'Maquillaje de Gala') {
+        allSpecialties.push('Maquillaje de Gala', 'Eventos Especiales', 'Maquillaje Profesional')
+      } else if (serviceName === 'Alisado Dominicano') {
+        allSpecialties.push('Alisado Dominicano', 'Tratamientos Capilares', 'Técnicas de Alisado')
+      } else if (serviceName === 'Arte de Uñas Tropical') {
+        allSpecialties.push('Arte de Uñas Tropical', 'Diseños Creativos', 'Nail Art Especializado')
+      } else if (serviceName === 'Maquillaje Natural') {
+        allSpecialties.push('Maquillaje Natural', 'Look Diario', 'Maquillaje Sutil')
+      } else if (serviceName === 'Facial de Lujo') {
+        allSpecialties.push('Facial de Lujo', 'Tratamientos Anti-edad', 'Cuidado Premium')
+      } else if (serviceName === 'Extensiones de Pestañas') {
+        allSpecialties.push('Extensiones de Pestañas', 'Volumen Profesional', 'Técnicas de Extensión')
+      } else if (serviceName === 'Maquillaje de Novia') {
+        allSpecialties.push('Maquillaje de Novia', 'Looks Nupciales', 'Maquillaje para Bodas')
+      }
+
+      // General service-specific specialties
+      if (serviceName.includes('Keratina')) allSpecialties.push('Tratamiento de Keratina')
+      if (serviceName.includes('Alisado')) allSpecialties.push('Alisados Profesionales')
+      if (serviceName.includes('Novia')) allSpecialties.push('Maquillaje de Novias')
     })
     
     // Return 2-4 unique specialties

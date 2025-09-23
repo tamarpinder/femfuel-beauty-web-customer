@@ -6,6 +6,7 @@ import { CartProvider } from "@/contexts/cart-context"
 import { BookingProvider } from "@/contexts/booking-context"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { Toaster } from "@/components/ui/sonner"
+import { SmartHeader } from "@/components/smart-header"
 import "./globals.css"
 
 const inter = Inter({
@@ -27,7 +28,7 @@ export default function RootLayout({
 }>) {
   // Handle potential translation classes that might be added by browser extensions
   const htmlClasses = `${inter.variable} antialiased`
-  
+
   return (
     <html lang="es" className={htmlClasses} suppressHydrationWarning>
       <body className="font-sans" suppressHydrationWarning>
@@ -35,6 +36,7 @@ export default function RootLayout({
           <AuthProvider>
             <CartProvider>
               <BookingProvider>
+                <SmartHeader />
                 {children}
                 <Toaster />
               </BookingProvider>

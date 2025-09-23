@@ -142,7 +142,7 @@ export function ProviderListCompact({
                   {vendorService && (
                     <div className="bg-femfuel-purple rounded-lg p-3 mb-3">
                       <div className="flex items-center justify-between">
-                        <div className="text-xl font-bold text-femfuel-rose">
+                        <div className="text-xl font-bold text-black">
                           {formatPrice(vendorService.price)}
                         </div>
                         <div className="text-sm text-femfuel-medium">

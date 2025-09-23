@@ -186,49 +186,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={() => router.back()}>
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <OptimizedImage
-                    src={vendor.professionalImage || "/professionals/portraits/hair-stylist-maria.png"}
-                    alt={vendor.professionalName}
-                    width={40}
-                    height={40}
-                    className="w-10 h-10 rounded-full"
-                    context="professional"
-                  />
-                  {vendor.isOnline && (
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                  )}
-                </div>
-                <div>
-                  <h1 className="text-sm font-semibold text-femfuel-dark">{vendor.professionalName}</h1>
-                  <p className="text-xs text-femfuel-medium">{vendor.name}</p>
-                  <p className="text-xs text-femfuel-light">
-                    {vendor.isOnline ? "En línea" : `Visto ${formatTime(vendor.lastSeen!)}`}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm">
-                <Phone className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white flex flex-col">{/* Chat page content relies on SmartHeader from layout */}
 
       {/* Booking Context */}
       {bookingContext && (
@@ -326,7 +284,7 @@ export default function ChatPage() {
           />
           <Button
             size="sm"
-            className="rounded-full bg-femfuel-rose hover:bg-[#9f1853] text-white"
+            className="rounded-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
             onClick={handleSendMessage}
             disabled={!newMessage.trim()}
           >

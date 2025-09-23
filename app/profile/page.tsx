@@ -1,8 +1,6 @@
 "use client"
 
 import { useAuth } from "@/contexts/auth-context"
-import { MobileHeader } from "@/components/mobile-header"
-import { DesktopHeader } from "@/components/desktop-header"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,10 +19,50 @@ import {
   LogOut,
   Edit3,
   Heart,
-  ShoppingBag
+  ShoppingBag,
+  Star
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
+
+// Mock favorites data - in a real app this would come from context/API
+const mockFavoriteServices = [
+  {
+    id: "1",
+    name: "Manicure Dominicana",
+    vendor: "Nails & Beauty Studio",
+    image: "/services/manicure-dominicana.jpg",
+    price: "RD$800",
+    rating: 4.8
+  },
+  {
+    id: "2",
+    name: "Alisado Dominicano",
+    vendor: "Salon Eleganza",
+    image: "/services/alisado-dominicano.jpg",
+    price: "RD$1,200",
+    rating: 4.9
+  }
+]
+
+const mockFavoriteSalons = [
+  {
+    id: "1",
+    name: "Salon Eleganza",
+    location: "Piantini",
+    image: "/vendors/salon-eleganza.jpg",
+    rating: 4.9,
+    services: "Cabello, Maquillaje"
+  },
+  {
+    id: "2",
+    name: "Beauty Express",
+    location: "Naco",
+    image: "/vendors/beauty-express.jpg",
+    rating: 4.7,
+    services: "Uñas, Spa"
+  }
+]
 
 export default function ProfilePage() {
   const { user, signOut, isAuthenticated } = useAuth()
@@ -57,11 +95,13 @@ export default function ProfilePage() {
     router.push("/")
   }
 
-  const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile" | "chat") => {
+  const handleTabChange = (tab: "home" | "search" | "blog" | "bookings" | "shop" | "profile" | "chat") => {
     if (tab === "home") {
       router.push("/")
     } else if (tab === "search") {
       router.push("/services")
+    } else if (tab === "blog") {
+      router.push("/blog")
     } else if (tab === "shop") {
       router.push("/shop")
     } else if (tab === "bookings") {
@@ -73,10 +113,6 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Headers */}
-      <MobileHeader />
-      <DesktopHeader />
-
       {/* Main Content */}
       <div className="pt-14 sm:pt-16 pb-20 sm:pb-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -219,7 +255,7 @@ export default function ProfilePage() {
                       <div className="text-sm text-femfuel-medium">Servicios Reservados</div>
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-femfuel-rose">RD$8,500</div>
+                      <div className="text-2xl font-bold text-black">RD$8,500</div>
                       <div className="text-sm text-femfuel-medium">Total Gastado</div>
                     </div>
                     <div>
@@ -280,21 +316,51 @@ export default function ProfilePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-center py-8">
-                    <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-femfuel-dark mb-2">
-                      No tienes servicios favoritos aún
-                    </h3>
-                    <p className="text-femfuel-medium mb-4">
-                      Agrega servicios a tus favoritos para encontrarlos fácilmente
-                    </p>
-                    <Button
-                      onClick={() => router.push('/services')}
-                      className="bg-femfuel-rose hover:bg-femfuel-rose/90"
-                    >
-                      Explorar Servicios
-                    </Button>
-                  </div>
+                  {mockFavoriteServices.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {mockFavoriteServices.map((service) => (
+                        <div key={service.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              <h4 className="font-medium text-femfuel-dark">{service.name}</h4>
+                              <p className="text-sm text-femfuel-medium">{service.vendor}</p>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-femfuel-rose hover:bg-femfuel-rose/10">
+                              <Heart className="h-4 w-4 fill-current" />
+                            </Button>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 fill-current text-yellow-400" />
+                              <span className="text-sm font-medium">{service.rating}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-femfuel-dark">{service.price}</span>
+                              <Button size="sm" className="bg-femfuel-rose hover:bg-femfuel-rose/90">
+                                Reservar
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-femfuel-dark mb-2">
+                        No tienes servicios favoritos aún
+                      </h3>
+                      <p className="text-femfuel-medium mb-4">
+                        Agrega servicios a tus favoritos para encontrarlos fácilmente
+                      </p>
+                      <Button
+                        onClick={() => router.push('/services')}
+                        className="bg-femfuel-rose hover:bg-femfuel-rose/90"
+                      >
+                        Explorar Servicios
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
@@ -306,22 +372,57 @@ export default function ProfilePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-center py-8">
-                    <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-femfuel-dark mb-2">
-                      No tienes salones favoritos aún
-                    </h3>
-                    <p className="text-femfuel-medium mb-4">
-                      Guarda tus salones preferidos para acceso rápido
-                    </p>
-                    <Button
-                      onClick={() => router.push('/services')}
-                      variant="outline"
-                      className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white"
-                    >
-                      Buscar Salones
-                    </Button>
-                  </div>
+                  {mockFavoriteSalons.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {mockFavoriteSalons.map((salon) => (
+                        <div key={salon.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex-1">
+                              <h4 className="font-medium text-femfuel-dark">{salon.name}</h4>
+                              <p className="text-sm text-femfuel-medium flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {salon.location}
+                              </p>
+                              <p className="text-xs text-femfuel-medium mt-1">{salon.services}</p>
+                            </div>
+                            <Button variant="ghost" size="sm" className="text-femfuel-rose hover:bg-femfuel-rose/10">
+                              <Heart className="h-4 w-4 fill-current" />
+                            </Button>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 fill-current text-yellow-400" />
+                              <span className="text-sm font-medium">{salon.rating}</span>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white"
+                            >
+                              Ver Servicios
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-femfuel-dark mb-2">
+                        No tienes salones favoritos aún
+                      </h3>
+                      <p className="text-femfuel-medium mb-4">
+                        Guarda tus salones preferidos para acceso rápido
+                      </p>
+                      <Button
+                        onClick={() => router.push('/services')}
+                        variant="outline"
+                        className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white"
+                      >
+                        Buscar Salones
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>

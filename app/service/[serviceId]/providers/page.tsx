@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { ArrowLeft, Star, MapPin, Clock, Heart, Users, Calendar, ChevronRight, Sparkles, Shield, TrendingUp, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -111,7 +111,6 @@ export default function ServiceProvidersPage() {
         setProviders(serviceProviders)
         
       } catch (error) {
-        console.error('Error loading service and providers:', error)
       } finally {
         setLoading(false)
       }
@@ -143,13 +142,19 @@ export default function ServiceProvidersPage() {
   }
   
   const handleBookingComplete = (booking: any) => {
-    console.log("Booking completed:", booking)
+    // Booking completed successfully
+  }
+
+    // BookingModal and ProcessingOverlay are already closed by this point
+    // Just handle cleanup and navigation
     setShowBookingModal(false)
     setSelectedVendor(null)
     setSelectedService(null)
-    // Could redirect to bookings page or show success message
-    router.push('/bookings')
+
+    // Navigation is now handled directly by ProcessingOverlay
+    // User chooses where to go next through the integrated navigation buttons
   }
+
 
   // Calculate average duration from providers
   const getAverageDuration = () => {
@@ -193,7 +198,7 @@ export default function ServiceProvidersPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-femfuel-dark mb-4">Servicio no encontrado</h1>
-          <Button onClick={() => router.push("/services")} className="bg-femfuel-rose hover:bg-[#9f1853] text-white">
+          <Button onClick={() => router.push("/services")} className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white">
             Volver a Servicios
           </Button>
         </div>
@@ -204,12 +209,7 @@ export default function ServiceProvidersPage() {
   return (
     <>
       {/* Mobile Layout (< md screens) */}
-      <div className="md:hidden min-h-screen bg-white">
-        {/* Header */}
-        <UserFlowHeader 
-          title={service.name} 
-          onBack={handleBack}
-        />
+      <div className="md:hidden min-h-screen bg-white">{/* Mobile service page relies on SmartHeader */}
 
         {/* Compact Service Header */}
         <ServiceHeaderCompact
@@ -252,12 +252,7 @@ export default function ServiceProvidersPage() {
       </div>
 
       {/* Desktop Layout (md+ screens) */}
-      <div className="hidden md:block">
-        {/* Header */}
-        <UserFlowHeader 
-          title={service.name} 
-          onBack={handleBack}
-        />
+      <div className="hidden md:block">{/* Desktop service page relies on SmartHeader */}
 
         {/* Desktop Split-Screen Layout */}
         <ServiceDesktopLayout
@@ -289,6 +284,7 @@ export default function ServiceProvidersPage() {
           onBookingComplete={handleBookingComplete}
         />
       )}
+
     </>
   )
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ChevronDown, Facebook, Instagram, Twitter, Music } from "lucide-react"
 import { customerFooterSections } from "@/components/customer-footer-content"
 import { AuthModal } from "@/components/auth-modal"
@@ -14,21 +15,51 @@ interface FooterSection {
 }
 
 export function CustomerFooter() {
+  const router = useRouter()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("signup")
 
   const handleAuthSuccess = (user: any) => {
     // Handle successful authentication
-    console.log('User authenticated:', user)
   }
 
-  const handleLinkClick = (link: { label: string; href: string }, e: React.MouseEvent) => {
+  const handleLinkClick = (link: { label: string; href: string }, sectionTitle: string, e: React.MouseEvent) => {
     if (link.label === "Nuevos en FemFuel") {
       e.preventDefault()
       setAuthMode("signup")
       setShowAuthModal(true)
       return
     }
+
+    if (link.label === "Únete como Profesional") {
+      e.preventDefault()
+      window.open("https://femfuel-beauty-web-vendor.vercel.app/how-it-works", "_blank")
+      return
+    }
+
+    // Handle "Servicios Populares" section like homepage categories
+    if (sectionTitle === "Servicios Populares") {
+      e.preventDefault()
+
+      // Map service labels to category IDs (same as homepage categories)
+      const serviceSlugMap: { [key: string]: string } = {
+        "Manicure y Pedicure": "nails",
+        "Maquillaje": "makeup",
+        "Tratamientos Faciales": "facial",
+        "Peinados": "hair",
+        "Spa y Masajes": "spa"
+      }
+
+      const categoryId = serviceSlugMap[link.label]
+      if (categoryId) {
+        router.push(`/services?category=${categoryId}`)
+      } else {
+        // Fallback to original href if no mapping found
+        router.push(link.href)
+      }
+      return
+    }
+
     // For regular links, let the default behavior happen
   }
 
@@ -77,7 +108,7 @@ export function CustomerFooter() {
                     <li key={linkIndex}>
                       <a
                         href={link.href}
-                        onClick={(e) => handleLinkClick(link, e)}
+                        onClick={(e) => handleLinkClick(link, section.title, e)}
                         className="text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:scale-[1.02] hover:-translate-y-0.5 hover:px-3 hover:py-1 hover:rounded-lg hover:shadow-sm transition-all duration-300 text-sm block cursor-pointer"
                       >
                         {link.label}

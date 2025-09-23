@@ -14,6 +14,7 @@ import { ChatButton } from "@/components/ui/chat-button"
 import { UserMenu } from "@/components/user-menu"
 import { categories } from "@/data/shared/mock-data"
 import { getMarketplaceServices } from "@/lib/vendors-api"
+import { formatPrice } from "@/lib/price-utils"
 
 interface MarketplaceService {
   id: string
@@ -60,7 +61,6 @@ export default function ServicesPage() {
         setServices(marketplaceServices)
         setFilteredServices(marketplaceServices)
       } catch (error) {
-        console.error('Error loading services:', error)
       } finally {
         setLoading(false)
       }
@@ -148,35 +148,10 @@ export default function ServicesPage() {
     setFavorites(newFavorites)
   }
 
-  const formatPrice = (price: number) => {
-    return `RD$${price.toLocaleString()}`
-  }
 
   // Return JSX
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={handleBack}>
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <h1 className="text-base md:text-lg font-semibold text-femfuel-dark">Servicios de Belleza</h1>
-            </div>
-            <UserMenu />
-          </div>
-          
-          {/* Smart Search Bar */}
-          <SmartSearch
-            items={services}
-            onSearch={handleSmartSearch}
-            onSuggestionSelect={handleSuggestionSelect}
-            placeholder="Buscar servicios..."
-          />
-        </div>
-      </header>
 
       <div className="flex flex-col md:flex-row gap-6 p-4 max-w-7xl mx-auto">
         {/* Filters Sidebar - Desktop */}
@@ -290,7 +265,7 @@ export default function ServicesPage() {
 
                       {/* Price Badge */}
                       <div className="absolute bottom-3 left-3">
-                        <div className="bg-white/90 backdrop-blur-sm text-femfuel-dark px-3 py-1 rounded-full text-sm font-semibold">
+                        <div className="bg-white/90 backdrop-blur-sm text-black px-3 py-1 rounded-full text-sm font-semibold">
                           {service.price}
                         </div>
                       </div>
@@ -319,7 +294,7 @@ export default function ServicesPage() {
                           <Clock className="h-3 w-3" />
                           <span>{service.avgDuration} min promedio</span>
                         </div>
-                        <div className="font-semibold text-femfuel-rose">
+                        <div className="font-semibold text-black">
                           {service.price}
                         </div>
                       </div>

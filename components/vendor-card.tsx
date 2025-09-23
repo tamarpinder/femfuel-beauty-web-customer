@@ -103,7 +103,7 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
                     {vendor.availability.todayAvailable ? vendor.availability.nextSlot : "Cerrado hoy"}
                   </span>
                 </div>
-                <div className="text-xs font-medium text-femfuel-rose">
+                <div className="text-xs font-medium text-black">
                   {formatPriceRange()}
                 </div>
               </div>
@@ -194,14 +194,14 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
                 {vendor.availability.todayAvailable ? vendor.availability.nextSlot : "Cerrado"}
               </span>
             </div>
-            <div className="text-sm font-bold text-femfuel-rose">
+            <div className="text-sm font-bold text-black">
               {formatPriceRange()}
             </div>
           </div>
 
           {/* Action Button */}
           <Button 
-            className="w-full mt-4 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+            className="w-full mt-4 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
             onClick={(e) => {
               e.stopPropagation()
               handleViewVendor()

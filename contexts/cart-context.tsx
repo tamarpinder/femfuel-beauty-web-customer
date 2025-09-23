@@ -63,7 +63,6 @@ export function CartProvider({ children }: CartProviderProps) {
           setUserLocation(JSON.parse(savedLocation))
         }
       } catch (error) {
-        console.error("Error initializing cart:", error)
       } finally {
         setIsLoading(false)
       }
@@ -204,7 +203,6 @@ export function CartProvider({ children }: CartProviderProps) {
       
       toast.success(`${product.name} agregado al carrito`)
     } catch (error) {
-      console.error("Error adding to cart:", error)
       toast.error("Error al agregar producto al carrito")
     }
   }, [cart, userLocation, createNewCart, updateCartTotals])
@@ -229,7 +227,6 @@ export function CartProvider({ children }: CartProviderProps) {
         toast.success(`${product.name} removido del carrito`)
       }
     } catch (error) {
-      console.error("Error removing from cart:", error)
       toast.error("Error al remover producto del carrito")
     }
   }, [cart, updateCartTotals])
@@ -269,7 +266,6 @@ export function CartProvider({ children }: CartProviderProps) {
       updatedCart = updateCartTotals(updatedCart)
       setCart(updatedCart)
     } catch (error) {
-      console.error("Error updating quantity:", error)
       toast.error("Error al actualizar cantidad")
     }
   }, [cart, removeFromCart, updateCartTotals])
@@ -281,7 +277,6 @@ export function CartProvider({ children }: CartProviderProps) {
       localStorage.removeItem(CART_STORAGE_KEY)
       toast.success("Carrito vaciado")
     } catch (error) {
-      console.error("Error clearing cart:", error)
       toast.error("Error al vaciar carrito")
     }
   }, [])

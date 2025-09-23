@@ -158,7 +158,7 @@ export function NearbyBeauty({
                   <p className="font-medium text-femfuel-dark text-sm">{location.featuredService.name}</p>
                   <div className="flex justify-between text-xs text-femfuel-medium mt-1">
                     <span>{location.featuredService.duration}</span>
-                    <span className="font-bold text-femfuel-rose">{location.featuredService.price}</span>
+                    <span className="font-bold text-black">{location.featuredService.price}</span>
                   </div>
                 </div>
 
@@ -180,7 +180,7 @@ export function NearbyBeauty({
                 <div className="space-y-2 mt-auto">
                   <Button
                     onClick={() => onBookLocation?.(location.id)}
-                    className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-femfuel-rose/25 active:scale-95"
+                    className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-femfuel-rose/25 active:scale-95"
                     disabled={!location.openNow}
                   >
                     {location.openNow ? "Reservar Ahora" : "Ver Horarios"}

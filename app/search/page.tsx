@@ -131,7 +131,6 @@ export default function SearchPage() {
 
         setFilteredServices(filtered)
       } catch (error) {
-        console.error('Error loading services:', error)
         setFilteredServices([])
       }
     }
@@ -140,7 +139,6 @@ export default function SearchPage() {
   }, [searchQuery, filters])
 
   const handleBookService = (serviceId: string) => {
-    console.log("Book service:", serviceId)
     // TODO: Implement booking flow
   }
 
@@ -149,26 +147,7 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-3 mb-3">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-lg font-semibold text-femfuel-dark">Buscar Servicios</h1>
-          </div>
-          <div className="relative">
-            <Input
-              placeholder="Buscar servicios o salones..."
-              value={searchInput}
-              onChange={handleSearchInput}
-              className="h-12 rounded-xl border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)]"
-            />
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">{/* Search page content relies on SmartHeader from layout */}
 
       <div className="flex flex-col md:flex-row gap-6 p-4 max-w-7xl mx-auto">
         {/* Filters Sidebar */}

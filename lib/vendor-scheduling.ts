@@ -292,6 +292,59 @@ export const vendorSchedules: Record<string, VendorSchedule> = {
     lunchBreak: { start: '12:00', end: '13:30' },
     bufferMinutes: 15,
     maxDailyBookings: 28
+  },
+
+  // Additional vendor schedules for missing vendors
+  'glamour-studio-makeup': {
+    vendorId: 'glamour-studio-makeup',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '09:00', end: '19:00' },
+    lunchBreak: { start: '13:00', end: '14:00' },
+    bufferMinutes: 20,
+    maxDailyBookings: 16
+  },
+
+  'salon-elite-hair': {
+    vendorId: 'salon-elite-hair',
+    type: 'salon_chain',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '08:30', end: '19:30' },
+    lunchBreak: { start: '13:00', end: '14:00' },
+    bufferMinutes: 30,
+    maxDailyBookings: 20
+  },
+
+  'claudia-nail-artist': {
+    vendorId: 'claudia-nail-artist',
+    type: 'independent',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '10:00', end: '18:00' },
+    bufferMinutes: 15,
+    maxDailyBookings: 14
+  },
+
+  'lashes-studio-premium': {
+    vendorId: 'lashes-studio-premium',
+    type: 'independent',
+    workingDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
+    workingHours: { start: '09:30', end: '18:30' },
+    lunchBreak: { start: '13:30', end: '14:30' },
+    bufferMinutes: 20,
+    maxDailyBookings: 12
+  },
+
+  'maria-spa-wellness': {
+    vendorId: 'maria-spa-wellness',
+    type: 'independent',
+    workingDays: [1, 2, 3, 4, 5, 6, 0], // Mon-Sun
+    workingHours: { start: '09:00', end: '19:00' },
+    lunchBreak: { start: '13:00', end: '14:00' },
+    bufferMinutes: 30,
+    maxDailyBookings: 18,
+    personalTimeBlocks: [
+      { day: 0, start: '10:00', end: '17:00', reason: 'Sunday reduced hours' }
+    ]
   }
 }
 

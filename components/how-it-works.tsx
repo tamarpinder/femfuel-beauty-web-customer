@@ -1,16 +1,35 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Search, Calendar, Star, Heart, UserPlus } from "lucide-react"
 import { AuthModal } from "@/components/auth-modal"
+import { useAuth } from "@/contexts/auth-context"
 
 export function HowItWorks() {
+  const router = useRouter()
+  const { user, isAuthenticated } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("signup")
 
   const handleAuthClick = (mode: "login" | "signup") => {
     setAuthMode(mode)
     setShowAuthModal(true)
+  }
+
+  const handleCTAClick = () => {
+    if (isAuthenticated) {
+      // Navigate to services page for logged-in users
+      router.push("/services")
+    } else {
+      // Show auth modal for logged-out users
+      handleAuthClick("signup")
+    }
+  }
+
+  // Extract first name from user's full name
+  const getFirstName = (fullName: string) => {
+    return fullName.split(' ')[0]
   }
   const steps = [
     {
@@ -80,12 +99,21 @@ export function HowItWorks() {
 
         {/* CTA */}
         <div className="text-center mt-12">
-          <button 
-            onClick={() => handleAuthClick("signup")}
+          <button
+            onClick={handleCTAClick}
             className="femfuel-button-lg"
           >
-            <UserPlus className="h-4 w-4" />
-            <span>Comenzar</span>
+            {isAuthenticated ? (
+              <>
+                <Calendar className="h-4 w-4" />
+                <span>Hola {user?.name ? getFirstName(user.name) : 'hermosa'}, reserva tu próxima cita</span>
+              </>
+            ) : (
+              <>
+                <UserPlus className="h-4 w-4" />
+                <span>Comenzar</span>
+              </>
+            )}
           </button>
         </div>
       </div>

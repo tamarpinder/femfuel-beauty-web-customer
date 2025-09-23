@@ -173,7 +173,7 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
 
             {/* Price */}
             <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold text-femfuel-rose">
+              <span className="text-3xl font-bold text-black">
                 {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
@@ -225,7 +225,7 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
 
               <Button
                 onClick={handleAddToCart}
-                className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white text-lg py-6"
+                className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white text-lg py-6"
                 disabled={!product.availability.inStock}
               >
                 <ShoppingCart className="h-5 w-5 mr-2" />

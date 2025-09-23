@@ -12,7 +12,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { BookingSkeletonList } from "@/components/booking-skeleton"
 import { ChatButton } from "@/components/ui/chat-button"
-import { UserFlowHeader } from "@/components/user-flow-header"
 import { useAuth } from "@/contexts/auth-context"
 import { useBooking } from "@/contexts/booking-context"
 import { useRouter } from "next/navigation"
@@ -172,12 +171,10 @@ export default function BookingsPage() {
   }
 
   const handleChat = (booking: Booking) => {
-    console.log("Open chat with vendor:", booking.vendor.id)
     router.push(`/chat/${booking.vendor.id}?booking=${booking.id}`)
   }
 
   const handleReview = (bookingId: string) => {
-    console.log("Leave review for booking:", bookingId)
     // TODO: Implement review functionality
   }
 
@@ -234,11 +231,6 @@ export default function BookingsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <UserFlowHeader 
-        title="Mis Citas" 
-        onBack={handleBack}
-      />
 
       <div className="px-2 sm:px-4 py-4 max-w-4xl mx-auto overflow-hidden">
         {/* Search and Filters */}
@@ -317,7 +309,7 @@ export default function BookingsPage() {
                           </div>
                           <div className="flex flex-col items-end gap-1 ml-2">
                             <Badge className={`${getStatusColor(booking.status)} text-xs`}>{getStatusText(booking.status)}</Badge>
-                            <span className="font-bold text-femfuel-rose text-sm sm:text-base">{booking.service.price}</span>
+                            <span className="font-bold text-black text-sm sm:text-base">{booking.service.price}</span>
                           </div>
                         </div>
 
@@ -388,56 +380,66 @@ export default function BookingsPage() {
                 </Card>
               ))
             ) : (
-              <div className="text-center py-12">
-                <Calendar className="h-12 w-12 mx-auto text-femfuel-medium mb-4" />
-                <h3 className="text-lg font-medium text-femfuel-dark mb-2">No tienes reservas próximas</h3>
-                <p className="text-femfuel-medium mb-4">
-                  ¡Es hora de consentirte! Explora nuestros servicios de belleza premium
-                </p>
-                
-                {/* Personalized Recommendations */}
-                <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-6">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => router.push("/category/unas")}
-                    className="flex flex-col items-center p-3 h-auto"
+              <div className="py-16 md:py-24 px-4">
+                <div className="max-w-lg mx-auto text-center">
+                  {/* Icon and Text */}
+                  <div className="mb-8 md:mb-12">
+                    <Calendar className="h-16 w-16 md:h-20 md:w-20 mx-auto text-gray-300 mb-6" />
+                    <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-3">
+                      No tienes reservas próximas
+                    </h3>
+                    <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                      ¡Es hora de consentirte! Reserva tu próximo servicio de belleza
+                    </p>
+                  </div>
+
+                  {/* Service Cards - Modern 2x2 Grid */}
+                  <div className="grid grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
+                    <div
+                      onClick={() => router.push("/category/unas")}
+                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                    >
+                      <Hand className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <h4 className="font-semibold text-gray-900 mb-2">Manicure</h4>
+                      <p className="text-sm text-gray-500">Uñas perfectas</p>
+                    </div>
+
+                    <div
+                      onClick={() => router.push("/category/spa")}
+                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                    >
+                      <Flower2 className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <h4 className="font-semibold text-gray-900 mb-2">Facial</h4>
+                      <p className="text-sm text-gray-500">Cuidado de la piel</p>
+                    </div>
+
+                    <div
+                      onClick={() => router.push("/category/maquillaje")}
+                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                    >
+                      <Palette className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <h4 className="font-semibold text-gray-900 mb-2">Maquillaje</h4>
+                      <p className="text-sm text-gray-500">Look perfecto</p>
+                    </div>
+
+                    <div
+                      onClick={() => router.push("/category/peinados")}
+                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                    >
+                      <Scissors className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <h4 className="font-semibold text-gray-900 mb-2">Peinado</h4>
+                      <p className="text-sm text-gray-500">Estilo único</p>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <Button
+                    onClick={() => router.push("/")}
+                    className="w-full md:w-auto bg-femfuel-rose hover:bg-femfuel-rose/90 text-white px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all"
                   >
-                    <Hand className="h-5 w-5 mb-1 text-femfuel-medium" />
-                    <span className="text-xs">Manicure</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => router.push("/category/spa")}
-                    className="flex flex-col items-center p-3 h-auto"
-                  >
-                    <Flower2 className="h-5 w-5 mb-1 text-femfuel-medium" />
-                    <span className="text-xs">Facial</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => router.push("/category/maquillaje")}
-                    className="flex flex-col items-center p-3 h-auto"
-                  >
-                    <Palette className="h-5 w-5 mb-1 text-femfuel-medium" />
-                    <span className="text-xs">Maquillaje</span>
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => router.push("/category/peinados")}
-                    className="flex flex-col items-center p-3 h-auto"
-                  >
-                    <Scissors className="h-5 w-5 mb-1 text-femfuel-medium" />
-                    <span className="text-xs">Peinado</span>
+                    Explorar Todos los Servicios
                   </Button>
                 </div>
-
-                <Button className="bg-femfuel-rose hover:bg-[#9f1853]" onClick={() => router.push("/")}>
-                  Ver Todos los Servicios
-                </Button>
               </div>
             )}
           </TabsContent>
@@ -463,7 +465,7 @@ export default function BookingsPage() {
                           </div>
                           <div className="flex flex-col items-end gap-1 ml-2">
                             <Badge className={`${getStatusColor(booking.status)} text-xs`}>{getStatusText(booking.status)}</Badge>
-                            <span className="font-bold text-femfuel-rose text-sm sm:text-base">{booking.service.price}</span>
+                            <span className="font-bold text-black text-sm sm:text-base">{booking.service.price}</span>
                           </div>
                         </div>
 
@@ -551,7 +553,7 @@ export default function BookingsPage() {
                   </div>
                 </div>
 
-                <Button className="bg-femfuel-rose hover:bg-[#9f1853]" onClick={() => router.push("/")}>
+                <Button className="bg-femfuel-rose hover:bg-femfuel-rose-hover" onClick={() => router.push("/")}>
                   Reservar Mi Primera Cita
                 </Button>
               </div>
@@ -671,7 +673,7 @@ export default function BookingsPage() {
                     setShowRescheduleModal(false)
                     setSelectedBooking(null)
                   }}
-                  className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                  className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
                 >
                   <Calendar className="h-4 w-4 mr-2" />
                   Reagendar Cita

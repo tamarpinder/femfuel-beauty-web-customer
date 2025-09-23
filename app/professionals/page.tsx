@@ -6,124 +6,14 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { CustomerFooter } from "@/components/customer-footer"
 import { MobileNavigation } from "@/components/mobile-navigation"
+import { getAllProfessionals, Professional } from "@/lib/getAllProfessionals"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
 
-interface Professional {
-  id: number
-  name: string
-  salon: string
-  location: string
-  rating: number
-  reviews: number
-  specialties: string[]
-  experience: string
-  image: string
-  isTopRated: boolean
-  isRising: boolean
-  completedServices: number
-  responseTime: string
-  priceRange: string
-}
-
-const mockProfessionals: Professional[] = [
-  {
-    id: 1,
-    name: "María González",
-    salon: "Beauty Studio RD",
-    location: "Piantini, Santo Domingo",
-    rating: 4.9,
-    reviews: 234,
-    specialties: ["Manicure", "Nail Art", "Extensiones"],
-    experience: "8 años",
-    image: "/maria-gonzalez.jpg",
-    isTopRated: true,
-    isRising: false,
-    completedServices: 1200,
-    responseTime: "< 30 min",
-    priceRange: "RD$800 - RD$2,500"
-  },
-  {
-    id: 2,
-    name: "Carmen Rodríguez",
-    salon: "Glamour House",
-    location: "Naco, Santo Domingo",
-    rating: 4.8,
-    reviews: 189,
-    specialties: ["Maquillaje", "Novias", "Eventos"],
-    experience: "12 años",
-    image: "/carmen-rodriguez.jpg",
-    isTopRated: true,
-    isRising: false,
-    completedServices: 950,
-    responseTime: "< 1 hora",
-    priceRange: "RD$1,500 - RD$5,000"
-  },
-  {
-    id: 3,
-    name: "Ana Martínez",
-    salon: "Spa Paradise",
-    location: "Zona Colonial, Santo Domingo",
-    rating: 4.7,
-    reviews: 167,
-    specialties: ["Tratamientos Faciales", "Spa", "Relajación"],
-    experience: "6 años",
-    image: "/ana-martinez.jpg",
-    isTopRated: false,
-    isRising: true,
-    completedServices: 780,
-    responseTime: "< 45 min",
-    priceRange: "RD$2,000 - RD$4,500"
-  },
-  {
-    id: 4,
-    name: "Isabella Cruz",
-    salon: "Lash Studio DR",
-    location: "Bella Vista, Santo Domingo",
-    rating: 4.9,
-    reviews: 156,
-    specialties: ["Pestañas", "Cejas", "Microblading"],
-    experience: "5 años",
-    image: "/isabella-cruz.jpg",
-    isTopRated: true,
-    isRising: true,
-    completedServices: 890,
-    responseTime: "< 20 min",
-    priceRange: "RD$1,200 - RD$3,000"
-  },
-  {
-    id: 5,
-    name: "Sofía López",
-    salon: "Hair Salon Elite",
-    location: "Gazcue, Santo Domingo",
-    rating: 4.6,
-    reviews: 298,
-    specialties: ["Corte", "Color", "Tratamientos"],
-    experience: "10 años",
-    image: "/sofia-lopez.jpg",
-    isTopRated: false,
-    isRising: false,
-    completedServices: 1450,
-    responseTime: "< 2 horas",
-    priceRange: "RD$1,000 - RD$3,500"
-  },
-  {
-    id: 6,
-    name: "Gabriela Herrera",
-    salon: "Relax Nails",
-    location: "Blue Mall, Santo Domingo",
-    rating: 4.8,
-    reviews: 134,
-    specialties: ["Pedicure", "Uñas", "Diseños"],
-    experience: "7 años",
-    image: "/gabriela-herrera.jpg",
-    isTopRated: false,
-    isRising: true,
-    completedServices: 670,
-    responseTime: "< 40 min",
-    priceRange: "RD$900 - RD$2,200"
-  }
-]
+const allProfessionals = getAllProfessionals()
 
 export default function TopProfessionalsPage() {
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedSpecialty, setSelectedSpecialty] = useState("all")
   const [filterType, setFilterType] = useState("all") // all, topRated, rising
@@ -140,20 +30,30 @@ export default function TopProfessionalsPage() {
     "Spa"
   ]
 
-  const filteredProfessionals = mockProfessionals.filter(professional => {
+  const filteredProfessionals = allProfessionals.filter(professional => {
     const matchesSearch = professional.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         professional.salon.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         professional.vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          professional.specialties.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()))
-    
-    const matchesSpecialty = selectedSpecialty === "all" || 
+
+    const matchesSpecialty = selectedSpecialty === "all" ||
                             professional.specialties.some(s => s.toLowerCase().includes(selectedSpecialty.toLowerCase()))
-    
-    const matchesFilter = filterType === "all" || 
+
+    const matchesFilter = filterType === "all" ||
                          (filterType === "topRated" && professional.isTopRated) ||
-                         (filterType === "rising" && professional.isRising)
-    
+                         (filterType === "rising" && professional.rating >= 4.8)
+
     return matchesSearch && matchesSpecialty && matchesFilter
   })
+
+  const handleViewProfile = (professional: Professional) => {
+    // Convert professional name to slug format
+    const slug = professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+    router.push(`/professional/${slug}`)
+  }
+
+  const handleContact = (professional: Professional) => {
+    // TODO: Implement contact functionality
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
@@ -293,7 +193,7 @@ export default function TopProfessionalsPage() {
                       Top Rated
                     </div>
                   )}
-                  {professional.isRising && (
+                  {professional.rating >= 4.8 && !professional.isTopRated && (
                     <div className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                       <Zap className="h-3 w-3" />
                       En Ascenso
@@ -303,38 +203,50 @@ export default function TopProfessionalsPage() {
                 
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-rose-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl font-bold text-purple-600">
-                        {professional.name.split(' ').map(n => n[0]).join('')}
-                      </span>
+                    <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0">
+                      {professional.image ? (
+                        <Image
+                          src={professional.image}
+                          alt={professional.name}
+                          fill
+                          className="object-cover"
+                          sizes="80px"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-purple-100 to-rose-100 flex items-center justify-center">
+                          <span className="text-2xl font-bold text-purple-600">
+                            {professional.name.split(' ').map(n => n[0]).join('')}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    
+
                     <div className="flex-1">
                       <div className="mb-3">
                         <h3 className="text-lg font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors">
                           {professional.name}
                         </h3>
-                        <p className="text-purple-600 font-medium text-sm">{professional.salon}</p>
+                        <p className="text-purple-600 font-medium text-sm">{professional.vendor.name}</p>
                         <div className="flex items-center gap-2 text-sm text-femfuel-medium">
                           <MapPin className="h-4 w-4" />
-                          <span>{professional.location}</span>
+                          <span>{professional.vendor.location.district}, {professional.vendor.location.city}</span>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-4 mb-3">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                           <span className="font-bold text-femfuel-dark">{professional.rating}</span>
-                          <span className="text-sm text-femfuel-medium">({professional.reviews} reseñas)</span>
+                          <span className="text-sm text-femfuel-medium">({professional.reviewCount} reseñas)</span>
                         </div>
                         <div className="text-sm text-femfuel-medium">
-                          🏆 {professional.experience}
+                          🏆 {professional.yearsExperience} años
                         </div>
                       </div>
 
                       <div className="flex flex-wrap gap-2 mb-4">
                         {professional.specialties.slice(0, 3).map((specialty, index) => (
-                          <span 
+                          <span
                             key={index}
                             className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full"
                           >
@@ -350,25 +262,33 @@ export default function TopProfessionalsPage() {
 
                       <div className="grid grid-cols-2 gap-4 text-sm text-femfuel-medium mb-4">
                         <div>
-                          <span className="block font-medium text-femfuel-dark">Servicios completados</span>
-                          <span>{professional.completedServices.toLocaleString()}</span>
+                          <span className="block font-medium text-femfuel-dark">Servicios mensuales</span>
+                          <span>{professional.monthlyBookings}</span>
                         </div>
                         <div>
-                          <span className="block font-medium text-femfuel-dark">Tiempo de respuesta</span>
-                          <span>{professional.responseTime}</span>
+                          <span className="block font-medium text-femfuel-dark">Próxima cita</span>
+                          <span>{professional.nextAvailable || 'Consultar'}</span>
                         </div>
                       </div>
 
-                      <div className="text-sm text-femfuel-medium mb-4">
-                        <span className="font-medium text-femfuel-dark">Rango de precios: </span>
-                        <span className="text-purple-600 font-medium">{professional.priceRange}</span>
-                      </div>
+                      {professional.bio && (
+                        <div className="text-sm text-femfuel-medium mb-4">
+                          <span className="font-medium text-femfuel-dark">Bio: </span>
+                          <span className="text-black">{professional.bio.length > 80 ? professional.bio.substring(0, 80) + '...' : professional.bio}</span>
+                        </div>
+                      )}
 
                       <div className="flex gap-3">
-                        <button className="glassmorphism-button flex-1">
+                        <button
+                          onClick={() => handleViewProfile(professional)}
+                          className="glassmorphism-button flex-1"
+                        >
                           Ver Perfil
                         </button>
-                        <button className="femfuel-button-lg">
+                        <button
+                          onClick={() => handleContact(professional)}
+                          className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
+                        >
                           Contactar
                         </button>
                       </div>

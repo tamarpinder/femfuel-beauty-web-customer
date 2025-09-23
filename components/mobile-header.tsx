@@ -31,7 +31,6 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
         const allServices = await getAllServices()
         setServices(allServices)
       } catch (error) {
-        console.error('Error loading services:', error)
       }
     }
     loadServices()
@@ -39,7 +38,6 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
 
   const handleSmartSearch = (query: string, suggestions: SearchSuggestion[]) => {
     // Just handle suggestions display, no navigation
-    console.log('Searching:', query, 'Found:', suggestions.length, 'results')
   }
 
   const handleSuggestionSelect = (suggestion: SearchSuggestion) => {

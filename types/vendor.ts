@@ -71,6 +71,7 @@ export interface ServiceAddon {
 export interface Professional {
   id: string
   name: string
+  slug?: string
   image?: string
   rating: number
   reviewCount: number
@@ -81,6 +82,44 @@ export interface Professional {
   bio?: string
   isTopRated?: boolean
   nextAvailable?: string
+  vendorId?: string
+  vendorName?: string
+  vendorSlug?: string
+  position?: string
+  socialMedia?: {
+    instagram?: string
+    facebook?: string
+    tiktok?: string
+  }
+  portfolio?: {
+    images: string[]
+    videos?: string[]
+    beforeAfter?: Array<{
+      before: string
+      after: string
+      title: string
+      category: string
+      date?: string
+    }>
+    signature?: {
+      serviceName: string
+      description: string
+      price: string
+      duration: number
+    }
+    certifications?: string[]
+    awards?: string[]
+    clientTestimonials?: Array<{
+      id: string
+      clientName: string
+      clientImage?: string
+      text: string
+      rating: number
+      serviceCategory: string
+      date: string
+      isVerified?: boolean
+    }>
+  }
   personalSchedule?: {
     workingDays: number[] // 0 = Sunday, 1 = Monday, etc.
     workingHours: { start: string; end: string }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft, Star, MapPin, Phone, Clock, Users, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -44,7 +44,6 @@ export default function VendorPage() {
         const vendorData = await getVendorBySlug(vendorSlug)
         setVendor(vendorData || null)
       } catch (error) {
-        console.error('Error fetching vendor:', error)
         setVendor(null)
       } finally {
         setIsLoading(false)
@@ -95,10 +94,18 @@ export default function VendorPage() {
   }
 
   const handleBookingComplete = (booking: any) => {
-    console.log("Booking completed:", booking)
+    // Booking completed successfully
+  }
+
+    // BookingModal and ProcessingOverlay are already closed by this point
+    // Just handle cleanup and navigation
     setShowBookingModal(false)
     setSelectedService(null)
+
+    // Navigation is now handled directly by ProcessingOverlay
+    // User chooses where to go next through the integrated navigation buttons
   }
+
 
   const formatPrice = (price: number) => {
     return `RD$${price.toLocaleString()}`
@@ -154,7 +161,7 @@ export default function VendorPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-femfuel-dark mb-4">Proveedor no encontrado</h1>
           <p className="text-femfuel-medium mb-6">El proveedor "{vendorSlug}" no existe.</p>
-          <Button onClick={() => router.push("/")} className="bg-femfuel-rose hover:bg-[#9f1853] text-white">
+          <Button onClick={() => router.push("/")} className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white">
             Volver al Inicio
           </Button>
         </div>
@@ -163,12 +170,7 @@ export default function VendorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <UserFlowHeader 
-        title={vendor.name} 
-        onBack={handleBack}
-      />
+    <div className="min-h-screen bg-white">{/* Vendor profile page relies on SmartHeader from layout */}
 
       {/* Cover Image */}
       <div className="relative h-64 md:h-80">
@@ -190,7 +192,7 @@ export default function VendorPage() {
           >
             💬 Chat
           </ChatButton>
-          <Button size="sm" className="bg-femfuel-rose hover:bg-[#9f1853] text-white shadow-lg">
+          <Button size="sm" className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white shadow-lg">
             <Phone className="h-4 w-4 mr-2" />
             Llamar
           </Button>
@@ -351,7 +353,7 @@ export default function VendorPage() {
                               <Badge variant="secondary" className="text-xs mt-1">Popular</Badge>
                             )}
                           </div>
-                          <span className="font-bold text-femfuel-rose ml-2">
+                          <span className="font-bold text-black ml-2">
                             {formatPrice(service.price)}
                           </span>
                         </div>
@@ -378,7 +380,7 @@ export default function VendorPage() {
                         <div className="flex items-center gap-2">
                           <Button
                             size="sm"
-                            className="flex-1 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                            className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
                             onClick={() => handleServiceBook(service.id)}
                           >
                             Reservar
@@ -462,6 +464,7 @@ export default function VendorPage() {
           images={getServiceDetailImages(galleryService.name)}
         />
       )}
+
     </div>
   )
 }

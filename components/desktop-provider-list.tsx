@@ -256,7 +256,7 @@ export function DesktopProviderList({
                   {/* Right: Price Box */}
                   {vendorService && (
                     <div className="text-right bg-femfuel-purple rounded-lg p-3 min-w-[120px]">
-                      <div className="text-xl font-bold text-femfuel-rose">
+                      <div className="text-xl font-bold text-black">
                         {formatPrice(vendorService.price)}
                       </div>
                       <div className="text-sm text-femfuel-medium">
@@ -323,7 +323,7 @@ export function DesktopProviderList({
                       e.stopPropagation()
                       onBookNow(vendor)
                     }}
-                    className="bg-femfuel-rose hover:bg-[#9f1853] text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
+                    className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
                   >
                     Reservar
                   </Button>

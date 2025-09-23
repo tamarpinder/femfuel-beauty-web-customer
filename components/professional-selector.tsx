@@ -231,7 +231,7 @@ export function ProfessionalSelector({
                       {!isSelected && (
                         <Button
                           size="sm"
-                          className="bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                          className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
                           onClick={(e) => {
                             e.stopPropagation()
                             onProfessionalSelect(professional)

@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { formatPrice } from "@/lib/price-utils"
 
 export interface SearchFilters {
   serviceTypes: string[]
@@ -109,9 +110,9 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
             step={100}
             className="mb-2"
           />
-          <div className="flex justify-between text-sm text-femfuel-medium">
-            <span>RD${filters.priceRange[0].toLocaleString()}</span>
-            <span>RD${filters.priceRange[1].toLocaleString()}</span>
+          <div className="flex justify-between text-sm text-black">
+            <span>{formatPrice(filters.priceRange[0])}</span>
+            <span>{formatPrice(filters.priceRange[1])}</span>
           </div>
         </div>
       </div>
@@ -128,7 +129,7 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
               key={option.value}
               variant={filters.distance === option.value ? "default" : "outline"}
               size="sm"
-              className={filters.distance === option.value ? "bg-femfuel-rose hover:bg-[#9f1853]" : ""}
+              className={filters.distance === option.value ? "bg-femfuel-rose hover:bg-femfuel-rose-hover" : ""}
               onClick={() => updateFilters({ distance: option.value })}
             >
               {option.label}
@@ -149,7 +150,7 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
               key={rating}
               variant={filters.rating === rating ? "default" : "outline"}
               size="sm"
-              className={`${filters.rating === rating ? "bg-femfuel-rose hover:bg-[#9f1853]" : ""} p-2`}
+              className={`${filters.rating === rating ? "bg-femfuel-rose hover:bg-femfuel-rose-hover" : ""} p-2`}
               onClick={() => updateFilters({ rating })}
             >
               {rating === 0 ? "Todas" : `${rating}+`}
@@ -170,7 +171,7 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
               key={option.value}
               variant={filters.availability === option.value ? "default" : "outline"}
               size="sm"
-              className={`w-full justify-start ${filters.availability === option.value ? "bg-femfuel-rose hover:bg-[#9f1853]" : ""}`}
+              className={`w-full justify-start ${filters.availability === option.value ? "bg-femfuel-rose hover:bg-femfuel-rose-hover" : ""}`}
               onClick={() => updateFilters({ availability: option.value })}
             >
               {option.label}
@@ -237,8 +238,8 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
             </Badge>
           ))}
           {(filters.priceRange[0] > 0 || filters.priceRange[1] < 10000) && (
-            <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
-              RD${filters.priceRange[0].toLocaleString()} - RD${filters.priceRange[1].toLocaleString()}
+            <Badge variant="secondary" className="bg-femfuel-purple text-black">
+              {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
               <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => updateFilters({ priceRange: [0, 10000] })} />
             </Badge>
           )}

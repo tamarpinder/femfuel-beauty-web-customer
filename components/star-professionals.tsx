@@ -30,9 +30,10 @@ interface Professional {
 interface StarProfessionalsProps {
   professionals: Professional[]
   onViewVendor?: (professionalId: number) => void
+  onViewPortfolio?: (professionalId: number) => void
 }
 
-export function StarProfessionals({ professionals, onViewVendor }: StarProfessionalsProps) {
+export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio }: StarProfessionalsProps) {
   const [selectedProfessional, setSelectedProfessional] = useState(0)
 
   if (!professionals.length) return null
@@ -118,13 +119,13 @@ export function StarProfessionals({ professionals, onViewVendor }: StarProfessio
                   <div className="bg-white/50 rounded-lg p-3 mb-6">
                     <p className="text-xs text-femfuel-medium mb-1">Especialidad Exclusiva</p>
                     <p className="font-medium text-femfuel-dark text-sm">{current.signature}</p>
-                    <p className="text-femfuel-rose font-bold text-lg">{current.price}</p>
+                    <p className="text-black font-bold text-lg">{current.price}</p>
                   </div>
 
                   {/* Action Button */}
                   <div>
                     <Button
-                      onClick={() => onViewVendor?.(current.id)}
+                      onClick={() => onViewPortfolio?.(current.id)}
                       className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
                     >
                       Ver Portafolio
@@ -140,7 +141,7 @@ export function StarProfessionals({ professionals, onViewVendor }: StarProfessio
                     <div
                       key={index}
                       className="aspect-square relative overflow-hidden group cursor-pointer"
-                      onClick={() => onViewVendor?.(current.id)}
+                      onClick={() => onViewPortfolio?.(current.id)}
                     >
                       <OptimizedImage
                         key={`${current.id}-portfolio-${index}`}

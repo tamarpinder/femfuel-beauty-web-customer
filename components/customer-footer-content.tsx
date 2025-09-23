@@ -3,6 +3,7 @@ export const customerFooterSections = [
     title: "Descubre",
     links: [
       { label: "Buscar Servicios", href: "/services" },
+      { label: "Todos los Salones", href: "/vendors" },
       { label: "Salones Cercanos", href: "/nearby" },
       { label: "Profesionales Top", href: "/professionals" },
       { label: "Nuevos en FemFuel", href: "#" },
@@ -22,9 +23,7 @@ export const customerFooterSections = [
     title: "Mi Cuenta",
     links: [
       { label: "Mis Reservas", href: "/bookings" },
-      { label: "Favoritos", href: "/favorites" },
-      { label: "Historial", href: "/history" },
-      { label: "Recompensas", href: "/rewards" },
+      { label: "Favoritos", href: "/profile?section=favoritos" },
       { label: "Configuración", href: "/settings" },
     ],
   },
@@ -34,8 +33,8 @@ export const customerFooterSections = [
       { label: "Centro de Ayuda", href: "/help" },
       { label: "Cómo Reservar", href: "/how-to-book" },
       { label: "Cancelaciones", href: "/cancellation-policy" },
-      { label: "Contacto", href: "/contact" },
-      { label: "FAQs", href: "/faqs" },
+      { label: "Contacto", href: "/help#contacto" },
+      { label: "FAQs", href: "/help#faqs" },
     ],
   },
   {
@@ -44,7 +43,6 @@ export const customerFooterSections = [
       { label: "Sobre Nosotros", href: "/about" },
       { label: "Únete como Profesional", href: "/become-vendor" },
       { label: "Blog de Belleza", href: "/blog" },
-      { label: "Prensa", href: "/press" },
       { label: "Carreras", href: "/careers" },
     ],
   },

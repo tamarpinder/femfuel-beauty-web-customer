@@ -77,22 +77,7 @@ export default function CartPage() {
     .slice(0, 4)
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-lg font-bold text-femfuel-dark">
-                Tu Carrito {itemCount > 0 && `(${itemCount})`}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50">{/* Cart page content relies on SmartHeader from layout */}
 
       <div className="max-w-4xl mx-auto px-4 py-6">
         {cartItems.length === 0 ? (
@@ -107,7 +92,7 @@ export default function CartPage() {
             </p>
             <Button
               onClick={handleContinueShopping}
-              className="bg-femfuel-rose hover:bg-[#9f1853] text-white px-8 py-3"
+              className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white px-8 py-3"
             >
               Explorar Productos
             </Button>
@@ -272,7 +257,7 @@ export default function CartPage() {
                               
                               {/* Total Price */}
                               <div className="text-right">
-                                <p className="text-lg font-bold text-femfuel-rose">
+                                <p className="text-lg font-bold text-black">
                                   {formatPrice(item.product.price * item.quantity)}
                                 </p>
                                 {item.product.originalPrice && (
@@ -322,7 +307,7 @@ export default function CartPage() {
                       
                       <div className="flex justify-between text-lg">
                         <span className="font-semibold text-femfuel-dark">Total</span>
-                        <span className="font-bold text-femfuel-rose">{formatPrice(total)}</span>
+                        <span className="font-bold text-black">{formatPrice(total)}</span>
                       </div>
                     </div>
 
@@ -359,7 +344,7 @@ export default function CartPage() {
                       <Button
                         onClick={handleCheckout}
                         disabled={!isDeliveryAvailable}
-                        className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white py-3 font-semibold"
+                        className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white py-3 font-semibold"
                       >
                         {isDeliveryAvailable ? "Proceder al pago" : "Entrega no disponible"}
                       </Button>

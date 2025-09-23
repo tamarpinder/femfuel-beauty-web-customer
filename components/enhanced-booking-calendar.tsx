@@ -48,10 +48,16 @@ export function EnhancedBookingCalendar({
 
   // Load availability for the next 30 days
   useEffect(() => {
-    const monthlyAvailability = professionalId
-      ? getProfessionalMultiDayAvailability(vendorId, professionalId, serviceDuration, new Date(), 30)
-      : getMultiDayAvailability(vendorId, serviceDuration, new Date(), 30)
-    setAvailability(monthlyAvailability)
+    try {
+      const monthlyAvailability = professionalId
+        ? getProfessionalMultiDayAvailability(vendorId, professionalId, serviceDuration, new Date(), 30)
+        : getMultiDayAvailability(vendorId, serviceDuration, new Date(), 30)
+      setAvailability(monthlyAvailability)
+    } catch (error) {
+      console.error('Error loading monthly availability:', error)
+      // Set empty availability on error
+      setAvailability([])
+    }
   }, [vendorId, professionalId, serviceDuration])
 
   // Load time slots when date is selected
@@ -60,10 +66,16 @@ export function EnhancedBookingCalendar({
       setIsLoadingTimeSlots(true)
       // Simulate loading delay for realism
       setTimeout(() => {
-        const dayAvailability = professionalId
-          ? getProfessionalDayAvailability(vendorId, professionalId, serviceDuration, selectedDate)
-          : getDayAvailability(vendorId, serviceDuration, selectedDate)
-        setCurrentDateAvailability(dayAvailability)
+        try {
+          const dayAvailability = professionalId
+            ? getProfessionalDayAvailability(vendorId, professionalId, serviceDuration, selectedDate)
+            : getDayAvailability(vendorId, serviceDuration, selectedDate)
+          setCurrentDateAvailability(dayAvailability)
+        } catch (error) {
+          console.error('Error loading day availability:', error)
+          // Set null on error
+          setCurrentDateAvailability(null)
+        }
         setIsLoadingTimeSlots(false)
       }, 300)
     } else {
@@ -97,19 +109,20 @@ export function EnhancedBookingCalendar({
   // Quick availability suggestions
   const quickSuggestions = useMemo(() => {
     const suggestions = availability
-      .filter(day => day.status === 'available' && day.availableSlots > 5)
+      .filter(day => day.status === 'available' && day.availableSlots > 0)
       .slice(0, 3)
       .map(day => {
         const availableTimes = day.timeSlots
           .filter(slot => slot.available)
-          .slice(0, 2)
+          .slice(0, 3)
           .map(slot => slot.time)
-        
+
         return {
           date: day.date,
           availableTimes
         }
       })
+      .filter(suggestion => suggestion.availableTimes.length > 0)
 
     return suggestions
   }, [availability])
@@ -159,30 +172,63 @@ export function EnhancedBookingCalendar({
         </div>
         
         {quickSuggestions.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
             {quickSuggestions.map((suggestion, index) => (
-              <Button
+              <div
                 key={index}
-                variant="outline"
-                size="sm"
-                className="flex flex-col items-start h-auto p-3 bg-white hover:bg-femfuel-rose hover:text-white transition-colors"
-                onClick={() => handleDateSelect(suggestion.date)}
+                className="bg-white rounded-xl border border-femfuel-rose/20 p-4 lg:p-5 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-femfuel-rose/40"
               >
-                <span className="font-medium text-xs">
-                  {format(suggestion.date, 'EEE d MMM')}
-                </span>
-                <div className="flex gap-1 mt-1">
+                {/* Date Header */}
+                <div className="flex items-center gap-2 mb-3 lg:mb-4">
+                  <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
+                  <h5 className="font-semibold text-femfuel-dark text-sm lg:text-base">
+                    {format(suggestion.date, 'EEE d MMM')}
+                  </h5>
+                </div>
+
+                {/* Time Slots */}
+                <div className="space-y-2">
                   {suggestion.availableTimes.map(time => (
-                    <Badge key={time} variant="secondary" className="text-xs px-1">
-                      {time}
-                    </Badge>
+                    <Button
+                      key={time}
+                      variant="ghost"
+                      size="sm"
+                      className="w-full justify-start h-8 lg:h-9 px-3 bg-femfuel-light/30 hover:bg-femfuel-rose hover:text-white text-femfuel-dark border border-femfuel-rose/20 hover:border-femfuel-rose transition-all duration-200"
+                      onClick={() => {
+                        handleDateSelect(suggestion.date)
+                        // Auto-select the clicked time
+                        setTimeout(() => onTimeSelect(time), 100)
+                      }}
+                    >
+                      <Clock className="h-3 w-3 mr-2" />
+                      <span className="font-medium text-xs lg:text-sm">{time}</span>
+                    </Button>
                   ))}
                 </div>
-              </Button>
+
+                {/* Quick Select Button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full mt-3 lg:mt-4 h-8 lg:h-9 border-femfuel-rose/30 text-femfuel-rose hover:bg-femfuel-rose hover:text-white transition-all duration-200 text-xs lg:text-sm"
+                  onClick={() => handleDateSelect(suggestion.date)}
+                >
+                  Ver más horarios
+                </Button>
+              </div>
             ))}
           </div>
         ) : (
-          <p className="text-femfuel-medium text-sm">Cargando disponibilidad...</p>
+          <div className="flex items-center justify-center py-4">
+            <div className="text-center">
+              <div className="animate-pulse flex space-x-1 mb-2">
+                <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
+                <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
+                <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
+              </div>
+              <p className="text-femfuel-medium text-sm">Cargando disponibilidad...</p>
+            </div>
+          </div>
         )}
       </div>
 
@@ -223,25 +269,19 @@ export function EnhancedBookingCalendar({
             disabled={(date) => date < startOfDay(new Date())} // Only disable past dates
             className="rounded-md border w-full max-w-full"
             modifiers={calendarModifiers}
-            modifiersStyles={{
-              available: {
-                position: 'relative',
-                backgroundColor: '#f0fdf4'
-              },
-              limited: {
-                position: 'relative',
-                backgroundColor: '#fffbeb'
-              },
-              full: {
-                position: 'relative',
-                backgroundColor: '#fef2f2',
-                color: '#9ca3af'
-              },
-              closed: {
-                position: 'relative',
-                backgroundColor: '#f9fafb',
-                color: '#9ca3af'
-              }
+            modifiersClassNames={{
+              available: "bg-green-50 text-green-800 ring-1 ring-green-200",
+              limited: "bg-yellow-50 text-yellow-800 ring-1 ring-yellow-200",
+              full: "bg-red-50 text-red-600 ring-1 ring-red-200",
+              closed: "bg-gray-100 text-gray-500 ring-1 ring-gray-200"
+            }}
+            classNames={{
+              day_button: cn(
+                "transition-all duration-200",
+                "data-[selected-single=true]:bg-femfuel-rose data-[selected-single=true]:text-white",
+                "data-[selected-single=true]:ring-2 data-[selected-single=true]:ring-femfuel-rose",
+                "data-[selected-single=true]:ring-offset-1"
+              )
             }}
           />
 
@@ -325,7 +365,7 @@ export function EnhancedBookingCalendar({
                     disabled={!slot.available}
                     className={cn(
                       "relative",
-                      selectedTime === slot.time ? "bg-femfuel-rose hover:bg-[#9f1853] text-white" : "",
+                      selectedTime === slot.time ? "bg-femfuel-rose hover:bg-femfuel-rose-hover text-white" : "",
                       !slot.available && "opacity-50 cursor-not-allowed"
                     )}
                     onClick={() => slot.available && handleTimeSelect(slot.time)}

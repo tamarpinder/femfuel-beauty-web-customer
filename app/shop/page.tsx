@@ -36,10 +36,7 @@ const categories: Array<{ id: ProductCategory; name: string }> = [
   { id: "makeup", name: "Maquillaje" },
   { id: "haircare", name: "Cuidado Capilar" },
   { id: "nailcare", name: "Cuidado Uñas" },
-  { id: "fragrance", name: "Fragancias" },
-  { id: "bodycare", name: "Cuidado Corporal" },
-  { id: "tools", name: "Herramientas" },
-  { id: "accessories", name: "Accesorios" }
+  { id: "tools", name: "Herramientas" }
 ]
 
 const sortOptions = [
@@ -169,63 +166,10 @@ export default function ShopPage() {
 
   const handleAddToCart = (productId: string) => {
     // Cart functionality is handled in ProductCard component
-    console.log("Added to cart:", productId)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={handleBack}>
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <div>
-                <h1 className="text-lg font-bold text-femfuel-dark">FemFuel Tienda</h1>
-                {userLocation && (
-                  <div className="flex items-center gap-1 text-xs text-femfuel-medium">
-                    <MapPin className="h-3 w-3" />
-                    <span>{userLocation.district}</span>
-                    {userLocation.isServiceable ? (
-                      <Badge variant="secondary" className="text-xs bg-green-100 text-green-800">
-                        <Truck className="h-3 w-3 mr-1" />
-                        Disponible
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary" className="text-xs bg-red-100 text-red-800">
-                        No disponible
-                      </Badge>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <ExpandableSearch onSearch={setSearchQuery} />
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowLocationModal(true)}
-              >
-                <MapPin className="h-4 w-4" />
-              </Button>
-              <CartDrawer>
-                <Button variant="ghost" size="sm" className="relative">
-                  <ShoppingCart className="h-4 w-4" />
-                  {itemCount > 0 && (
-                    <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-femfuel-rose">
-                      {itemCount}
-                    </Badge>
-                  )}
-                </Button>
-              </CartDrawer>
-              <UserMenu />
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50">{/* Shop page content relies on SmartHeader from layout */}
 
       <div className="px-4 py-4 max-w-7xl mx-auto">
         {/* Hero Section */}

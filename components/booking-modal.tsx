@@ -1,27 +1,31 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
-import { Calendar, Clock, MapPin, Phone, CreditCard, Check, MessageCircle, Navigation, Star, User, Gift, AlertCircle, Plus, Smartphone, Wallet } from "lucide-react"
+import { useState, useEffect, useCallback, useMemo, useRef } from "react"
+import { useRouter } from "next/navigation"
+import { Calendar, Clock, Star, ArrowLeft, Smartphone, CreditCard, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { EnhancedBookingCalendar } from "@/components/enhanced-booking-calendar"
 import { ProfessionalSelector } from "@/components/professional-selector"
 import { BookingConfiguration } from "@/components/booking-configuration"
-import { getMultiDayAvailability } from "@/lib/vendor-scheduling"
-import { format } from "date-fns"
 import { VendorAdapter } from "@/lib/vendor-adapter"
 import type { VendorService, Professional, ServiceAddon } from "@/types/vendor"
 import type { MarketplaceService } from "@/components/service-card"
 import { useAuth } from "@/contexts/auth-context"
 import { useBooking } from "@/contexts/booking-context"
 import { ProcessingOverlay } from "@/components/processing-overlay"
-import { getVendorLogo } from "@/lib/image-mappings"
+import { formatPrice } from "@/lib/price-utils"
+import {
+  BookingStep,
+  BookingData,
+  calculatePricing,
+  getServiceProfessionals,
+  loadQuickAvailability,
+  createBookingForContext
+} from "./booking/booking-utils"
 
 interface BookingModalProps {
   isOpen: boolean
@@ -30,21 +34,13 @@ interface BookingModalProps {
   vendorName?: string
   vendorRating?: number
   vendorId?: string
+  professionalName?: string
+  professionalId?: string
   onBookingComplete?: (booking: any) => void
 }
 
-type BookingStep = "professional" | "configuration" | "details" | "payment" | "confirmation"
-
-interface BookingData {
-  date: Date | undefined
-  time: string
-  professional: Professional | null
-  selectedAddons: ServiceAddon[]
-  notes: string
-  paymentMethod: "card" | "cash" | "apple_pay"
-}
-
-export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, vendorId, onBookingComplete }: BookingModalProps) {
+export function BookingModal({ isOpen, onClose, service, vendorName, vendorRating, vendorId, professionalName, professionalId, onBookingComplete }: BookingModalProps) {
+  const router = useRouter()
   const { user, getDefaultPaymentMethod } = useAuth()
   const { addBooking } = useBooking()
   const [currentStep, setCurrentStep] = useState<BookingStep>("professional")
@@ -54,101 +50,67 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     professional: null,
     selectedAddons: [],
     notes: "",
-    paymentMethod: "card",
+    paymentMethod: "cash"
   })
   const [isLoading, setIsLoading] = useState(false)
   const [showProcessingOverlay, setShowProcessingOverlay] = useState(false)
-  const [completedBooking, setCompletedBooking] = useState<any>(null)
   const [quickAvailability, setQuickAvailability] = useState<Array<{date: Date, time: string}>>([])
   const [error, setError] = useState<string | null>(null)
+  const [showAddCardModal, setShowAddCardModal] = useState(false)
+  const [selectedCardId, setSelectedCardId] = useState<string>('')
+  const [completedBooking, setCompletedBooking] = useState<any>(null)
 
-  // Error boundary and validation
+  // Use ref to avoid stale closures with booking data
+  const completedBookingRef = useRef<any>(null)
+
+  // Auto-select default payment method when modal opens
   useEffect(() => {
-    if (isOpen && !service) {
-      setError("No se pudo cargar la información del servicio")
-      console.error("❌ BookingModal opened without service data")
-    } else if (isOpen && !vendorId && !vendorName) {
-      setError("No se pudo identificar el proveedor")
-      console.error("❌ BookingModal opened without vendor identification")
-    } else {
-      setError(null)
-    }
-  }, [isOpen, service, vendorId, vendorName])
-
-  // Get vendor data using unified adapter (handles both data sources)
-  const vendor = vendorId ? VendorAdapter.findVendor(vendorId) : null
-  
-  // Set error if vendor not found
-  useEffect(() => {
-    if (isOpen && vendorId && !vendor) {
-      setError(`No se pudo encontrar el proveedor (ID: ${vendorId})`)
-    }
-  }, [isOpen, vendorId, vendor])
-  
-  const professionals = vendor?.professionals || []
-  
-  // Additional service-specific professional filtering
-  const serviceProfessionals = useMemo(() => {
-    if (!professionals.length || !service) return professionals
-    
-    // Filter professionals who have specialties matching the service
-    const serviceName = service.name || ""
-    const relevantProfessionals = professionals.filter(prof => {
-      if (!prof.specialties || prof.specialties.length === 0) return true // Include if no specialties defined
-      
-      // Check if professional has specialties relevant to the service
-      const hasRelevantSpecialty = prof.specialties.some(specialty => 
-        serviceName.toLowerCase().includes(specialty.toLowerCase()) ||
-        specialty.toLowerCase().includes("keratina") ||
-        specialty.toLowerCase().includes("tratamiento") ||
-        specialty.toLowerCase().includes("alisado")
-      )
-      
-      return hasRelevantSpecialty
-    })
-    
-    // If no professionals match specialties, return all (avoid empty list)
-    return relevantProfessionals.length > 0 ? relevantProfessionals : professionals
-  }, [professionals, service])
-
-  // Calculate pricing
-  const basePrice = typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString() || '0')
-  const totalAddonPrice = bookingData.selectedAddons.reduce((sum, addon) => sum + addon.price, 0)
-  const totalAddonDuration = bookingData.selectedAddons.reduce((sum, addon) => sum + (addon.duration || 0), 0)
-  const serviceDuration = typeof service?.duration === 'number' ? service.duration : parseInt(service?.duration?.toString() || '60')
-  const totalDuration = serviceDuration + totalAddonDuration
-  const totalPrice = basePrice + totalAddonPrice
-
-  // Load quick availability preview
-  useEffect(() => {
-    
-    if (service && vendorId) {
-      const serviceDuration = typeof service.duration === 'number' ? service.duration : parseInt(service.duration?.toString() || '60')
-      
-      const availability = getMultiDayAvailability(vendorId, serviceDuration, new Date(), 7)
-      
-      const quickSlots: Array<{date: Date, time: string}> = []
-      
-      for (const day of availability) {
-        if (day.status === 'available' && day.availableSlots > 0) {
-          const availableTimes = day.timeSlots
-            .filter(slot => slot.available)
-            .slice(0, 2) // Take first 2 available times
-          
-          availableTimes.forEach(slot => {
-            quickSlots.push({
-              date: day.date,
-              time: slot.time
-            })
-          })
-          
-          if (quickSlots.length >= 3) break // Stop after 3 quick options
-        }
+    if (isOpen && user?.paymentMethods) {
+      const defaultCard = user.paymentMethods.find(pm => pm.type === 'card' && pm.isDefault)
+      if (defaultCard) {
+        setSelectedCardId(defaultCard.id)
+        setBookingData(prev => ({ ...prev, paymentMethod: 'card' }))
       }
-      
-      setQuickAvailability(quickSlots)
     }
-  }, [service, vendorId])
+  }, [isOpen, user?.paymentMethods])
+
+  // Improved vendor ID resolution with fallbacks
+  const resolvedVendorId = vendorId || (service as any)?.featuredProvider?.id || 'beauty-studio-rd'
+  const vendor = VendorAdapter.findVendor(resolvedVendorId)
+  const professionals = vendor?.professionals || []
+  const serviceProfessionals = getServiceProfessionals(professionals, service)
+
+  const pricing = calculatePricing(service, bookingData.selectedAddons)
+  const { basePrice, totalPrice, serviceDuration, totalDuration, subtotal, commission, itbis } = pricing
+
+  useEffect(() => {
+    // Only load availability when modal is actually open
+    if (!isOpen || !service?.id || !resolvedVendorId || quickAvailability.length > 0) return
+
+    const availability = loadQuickAvailability(service, resolvedVendorId)
+    setQuickAvailability(availability)
+  }, [isOpen, service?.id, resolvedVendorId, quickAvailability.length])
+
+  // Reset state when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setQuickAvailability([])
+      setCurrentStep("professional")
+      setBookingData({
+        date: undefined,
+        time: "",
+        professional: null,
+        selectedAddons: [],
+        notes: "",
+        paymentMethod: "cash"
+      })
+      setError(null)
+      setIsLoading(false)
+      setShowProcessingOverlay(false)
+      setCompletedBooking(null)
+      completedBookingRef.current = null
+    }
+  }, [isOpen])
 
   const handleDateSelect = (date: Date | undefined) => {
     setBookingData((prev) => ({ ...prev, date }))
@@ -177,7 +139,6 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
       handleBooking()
     }
 
-    // Scroll to top of modal on step change
     setTimeout(() => {
       const dialogContent = document.querySelector('[role="dialog"]')
       if (dialogContent) {
@@ -193,8 +154,6 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
       setCurrentStep("configuration")
     } else if (currentStep === "payment") {
       setCurrentStep("details")
-    } else if (currentStep === "confirmation") {
-      onClose()
     }
   }
 
@@ -204,1001 +163,587 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     setIsLoading(true)
     setShowProcessingOverlay(true)
 
-    // Let the processing animation play
-    await new Promise((resolve) => setTimeout(resolve, 2200))
+    // Wait for ProcessingOverlay to progress before creating booking
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     try {
-      // Get the selected payment method
-      const selectedPaymentMethod = bookingData.paymentMethod === "card" ?
-        getDefaultPaymentMethod() || {
-          id: "cash-payment",
-          type: "cash" as const,
-          cardNumber: undefined,
-          expiryDate: undefined,
-          cardHolderName: undefined,
-          brand: undefined,
-          isDefault: true
-        } : {
-          id: bookingData.paymentMethod === "cash" ? "cash-payment" : "apple-pay",
-          type: bookingData.paymentMethod as "cash" | "apple_pay",
-          cardNumber: undefined,
-          expiryDate: undefined,
-          cardHolderName: undefined,
-          brand: undefined,
-          isDefault: false
-        }
+      const bookingForContext = createBookingForContext(
+        service,
+        bookingData,
+        totalDuration,
+        totalPrice,
+        vendorId,
+        vendorName,
+        vendorRating,
+        vendor,
+        getDefaultPaymentMethod
+      )
 
-      // Create booking data for BookingContext
-      const finalVendorName = vendorName || vendor?.name || 'Salon de Belleza'
-      const bookingForContext = {
-        serviceId: service.id,
-        serviceName: service.name,
-        serviceImage: 'image' in service ? service.image : undefined,
-        vendorId: vendorId || 'default-vendor',
-        vendorName: finalVendorName,
-        vendorLogo: getVendorLogo(finalVendorName),
-        vendorRating: vendorRating || vendor?.rating,
-        professionalId: bookingData.professional?.id,
-        professionalName: bookingData.professional?.name,
-        date: bookingData.date,
-        time: bookingData.time,
-        duration: totalDuration,
-        price: totalPrice,
-        addons: bookingData.selectedAddons,
-        paymentMethod: selectedPaymentMethod,
-        notes: bookingData.notes,
-        status: "confirmed" as const
-      }
+      await addBooking(bookingForContext)
 
-      // Add booking to context (this will generate ID and reference automatically)
-      const createdBooking = addBooking(bookingForContext)
+      // Store in both ref and state to avoid stale closure issues and trigger re-renders
+      completedBookingRef.current = bookingForContext
+      setCompletedBooking(bookingForContext)
 
-      // Store the booking for when processing completes
-      setCompletedBooking(createdBooking)
+      // ProcessingOverlay will handle the rest via onComplete
     } catch (error) {
-      console.error("Booking error:", error)
-      setShowProcessingOverlay(false)
+      console.error('❌ Booking error:', error)
+      setError("Error al procesar la reserva. Por favor, intenta de nuevo.")
       setIsLoading(false)
+      setShowProcessingOverlay(false)
     }
   }
 
-  const handleProcessingComplete = () => {
+  // Memoize processing overlay booking data to prevent restarts
+  const processingBookingData = useMemo(() => ({
+    serviceName: service?.name,
+    vendorName: vendorName || vendor?.name,
+    date: bookingData.date?.toLocaleDateString('es-DO', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }),
+    time: bookingData.time,
+    price: totalPrice,
+    bookingReference: completedBookingRef.current?.bookingId || completedBookingRef.current?.bookingReference
+  }), [service?.name, vendorName, vendor?.name, bookingData.date, bookingData.time, totalPrice])
+
+  // Handler for integrated ProcessingOverlay navigation
+  const handleProcessingNavigation = useCallback((destination: 'bookings' | 'home' | 'new-booking') => {
+
+    // Close processing overlay and reset modal
     setShowProcessingOverlay(false)
-    setCurrentStep("confirmation")
     setIsLoading(false)
-    onBookingComplete?.(completedBooking)
-  }
 
-  const handleWhatsAppConfirmation = () => {
-    if (!service || !bookingData.date || !bookingData.time) return
-
-    const message = `Hola! He reservado el servicio "${service.name}" ${'featuredProvider' in service && service.featuredProvider ? `con ${service.featuredProvider.name}` : ''} para el ${bookingData.date.toLocaleDateString("es-DO")} a las ${bookingData.time}. ¡Gracias!`
-    const whatsappUrl = `https://wa.me/18095550123?text=${encodeURIComponent(message)}`
-    window.open(whatsappUrl, "_blank")
-  }
-
-  const handleAddToCalendar = () => {
-    if (!service || !bookingData.date || !bookingData.time) return
-
-    const startDate = new Date(bookingData.date)
-    const [hours, minutes] = bookingData.time.split(":").map(Number)
-    startDate.setHours(hours, minutes)
-
-    const endDate = new Date(startDate)
-    const durationMinutes = typeof service.duration === 'string' ? parseInt(service.duration) : service.duration
-    endDate.setMinutes(endDate.getMinutes() + durationMinutes)
-
-    const event = {
-      title: `${service.name}${'featuredProvider' in service && service.featuredProvider ? ` - ${service.featuredProvider.name}` : ''}`,
-      start: startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
-      end: endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
-      description: `Servicio de belleza reservado a través de FemFuel Beauty`,
+    // Pass booking data to parent and close modal
+    const bookingData = completedBookingRef.current
+    if (bookingData) {
+      onBookingComplete?.(bookingData)
     }
 
-    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}`
-    window.open(calendarUrl, "_blank")
-  }
-
-  const resetModal = () => {
-    setCurrentStep("professional")
-    setBookingData({
-      date: undefined,
-      time: "",
-      professional: null,
-      selectedAddons: [],
-      notes: "",
-      paymentMethod: "card",
-    })
-  }
-
-  const handleClose = () => {
-    resetModal()
+    // Close the booking modal
     onClose()
+
+    // Handle the actual navigation
+    if (destination === 'bookings') {
+      router.push('/bookings')
+    } else if (destination === 'home') {
+      router.push('/')
+    }
+  }, [router, onBookingComplete, onClose])
+
+  // Fallback handler for old ProcessingOverlay behavior (if no navigation provided)
+  const handleProcessingComplete = useCallback(() => {
+    setShowProcessingOverlay(false)
+    setIsLoading(false)
+
+    const bookingData = completedBookingRef.current
+    if (bookingData) {
+      onBookingComplete?.(bookingData)
+    }
+  }, [onBookingComplete])
+
+
+  const canContinue = () => {
+    if (currentStep === "professional") {
+      return bookingData.professional !== null
+    } else if (currentStep === "configuration") {
+      return bookingData.date && bookingData.time
+    } else if (currentStep === "details") {
+      return true
+    } else if (currentStep === "payment") {
+      return bookingData.paymentMethod !== null
+    }
+    return false
+  }
+
+  const getStepLabel = () => {
+    const stepLabels = {
+      professional: "Seleccionar Profesional",
+      configuration: "Fecha y Hora",
+      details: "Detalles de la Reserva",
+      payment: "Método de Pago",
+      confirmation: "Confirmación"
+    }
+    return stepLabels[currentStep]
   }
 
   if (!service) return null
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-1rem)] max-w-[96vw] sm:max-w-4xl max-h-[90vh] overflow-y-auto mx-auto px-3 sm:px-6">
-        <DialogHeader className="space-y-2">
-          <DialogTitle className="text-lg sm:text-xl font-bold text-femfuel-dark">
-            {currentStep === "confirmation" ? "¡Reserva Confirmada!" : "Reservar Servicio"}
-          </DialogTitle>
-          <DialogDescription className="text-sm sm:text-base text-femfuel-medium">
-            {currentStep === "confirmation" 
-              ? "Tu cita ha sido programada exitosamente" 
-              : "Selecciona tu profesional preferido y programa tu cita"}
-          </DialogDescription>
-        </DialogHeader>
-
-        {/* Progress Bar - Only show when not in confirmation step */}
-        {currentStep !== "confirmation" && (
-          <div className="mb-6 px-1 sm:px-0">
-            {/* Mobile: Compact centered step info */}
-            <div className="sm:hidden text-center mb-4">
-              <div className="text-sm font-medium text-femfuel-dark mb-2">
-                Paso {currentStep === "professional" ? "1" : currentStep === "configuration" ? "2" : currentStep === "details" ? "3" : "4"} de 4
-              </div>
-              <div className="text-xs text-femfuel-medium mb-1">
-                {currentStep === "professional" ? "Profesional" : currentStep === "configuration" ? "Fecha y Hora" : currentStep === "details" ? "Detalles" : "Pago"}
-              </div>
-            </div>
-
-            {/* Desktop: Horizontal layout */}
-            <div className="hidden sm:flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-femfuel-dark">
-                  Paso {currentStep === "professional" ? "1" : currentStep === "configuration" ? "2" : currentStep === "details" ? "3" : "4"} de 4
-                </span>
-                <span className="text-xs text-femfuel-medium">
-                  {currentStep === "professional" ? "Profesional" : currentStep === "configuration" ? "Fecha y Hora" : currentStep === "details" ? "Detalles" : "Pago"}
-                </span>
-              </div>
-              <span className="text-xs text-femfuel-medium">
-                {currentStep === "professional" ? "25%" : currentStep === "configuration" ? "50%" : currentStep === "details" ? "75%" : "100%"}
-              </span>
-            </div>
-
-            {/* Progress bar with dots for mobile, continuous bar for desktop */}
-            <div className="relative">
-              {/* Desktop continuous bar */}
-              <div className="hidden sm:block">
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden shadow-inner">
-                  <div
-                    className="h-full bg-gradient-to-r from-femfuel-rose via-pink-500 to-purple-500 rounded-full transition-all duration-700 ease-in-out shadow-sm"
-                    style={{
-                      width: currentStep === "professional" ? "25%" :
-                             currentStep === "configuration" ? "50%" :
-                             currentStep === "details" ? "75%" : "100%"
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Mobile: Enhanced progress bar with gradient */}
-              <div className="sm:hidden">
-                <div className="max-w-64 mx-auto">
-                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden shadow-inner">
-                    <div
-                      className="h-full bg-gradient-to-r from-femfuel-rose via-pink-500 to-purple-500 rounded-full transition-all duration-700 ease-in-out shadow-sm"
-                      style={{
-                        width: currentStep === "professional" ? "25%" :
-                               currentStep === "configuration" ? "50%" :
-                               currentStep === "details" ? "75%" : "100%"
-                      }}
-                    />
-                  </div>
-                  <div className="flex justify-between mt-2 text-xs text-femfuel-medium px-1">
-                    <span className={currentStep === "professional" ? "text-femfuel-rose font-bold" : ""}>1</span>
-                    <span className={currentStep === "configuration" ? "text-femfuel-rose font-bold" : ""}>2</span>
-                    <span className={currentStep === "details" ? "text-femfuel-rose font-bold" : ""}>3</span>
-                    <span className={currentStep === "payment" ? "text-femfuel-rose font-bold" : ""}>4</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Error Display */}
-        {error && (
-          <Card className="mb-6 border-red-200 bg-red-50 mx-1 sm:mx-0">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-red-800">Error</h4>
-                  <p className="text-red-700">{error}</p>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={handleClose}
-                    className="mt-2 border-red-300 text-red-700 hover:bg-red-100"
-                  >
-                    Cerrar
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Service Summary */}
-        <Card className="mb-6 border-femfuel-rose/10 shadow-md mx-1 sm:mx-0">
-          <CardContent className="p-4 sm:p-5">
-            {/* Enhanced Vendor Header - Centered and Compact */}
-            <div className="text-center mb-3 pb-2 border-b border-femfuel-light">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <div className="w-2 h-2 bg-femfuel-rose rounded-full"></div>
-                <span className="text-sm font-medium text-femfuel-dark">
-                  {vendorName || "Beauty Studio"}
-                </span>
-                {vendorRating && (
-                  <Badge className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 text-xs ml-2">
-                    <Star className="h-3 w-3 mr-1 fill-current" />
-                    {vendorRating}
-                  </Badge>
-                )}
-              </div>
-            </div>
-
-            {/* Service Info - Centered */}
-            <div className="mb-4 text-center">
-              <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-2 line-clamp-2 break-words">{service.name}</h3>
-              <p className="text-xs sm:text-sm text-femfuel-medium mb-3 line-clamp-2 break-words">
-                Manicure profesional con cuidado de cutículas
-              </p>
-              <div className="flex flex-col items-center gap-2">
-                <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark text-xs sm:text-sm">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {service.duration} min
-                </Badge>
-                <span className="text-lg sm:text-xl font-bold text-femfuel-rose break-words">
-                  {typeof service.price === 'number' ? `RD$${service.price.toLocaleString()}` : service.price}
-                </span>
-              </div>
-            </div>
-
-          </CardContent>
-        </Card>
-
-        {/* Step Content */}
-        {currentStep === "professional" && (
-          <ProfessionalSelector
-            professionals={serviceProfessionals}
-            selectedProfessionalId={bookingData.professional?.id}
-            onProfessionalSelect={handleProfessionalSelect}
-          />
-        )}
-
-        {currentStep === "configuration" && (
-          <BookingConfiguration
-            selectedProfessional={bookingData.professional}
-            vendorId={vendorId || 'beauty-studio-rd'}
-            serviceDuration={typeof service?.duration === 'number' ? service.duration : parseInt(service?.duration?.toString() || '60')}
-            basePrice={typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString() || '0')}
-            selectedDate={bookingData.date}
-            selectedTime={bookingData.time}
-            selectedAddons={bookingData.selectedAddons}
-            onDateSelect={handleDateSelect}
-            onTimeSelect={handleTimeSelect}
-            onAddonsChange={handleAddonsChange}
-            onProfessionalChange={() => setCurrentStep("professional")}
-          />
-        )}
-
-        {currentStep === "details" && (
-          <div className="space-y-4 sm:space-y-6">
-            <div className="text-center space-y-2">
-              <h3 className="text-lg sm:text-xl font-bold text-femfuel-dark">
-                Detalles de tu Reserva
-              </h3>
-              <p className="text-sm sm:text-base text-femfuel-medium">
-                Revisa y confirma todos los detalles de tu cita
-              </p>
-            </div>
-
-            {/* Vendor Information */}
-            <Card className="border-femfuel-rose/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                  {vendorName || vendor?.name || "Salon & Ubicación"}
-                  {vendorRating && (
-                    <Badge className="bg-yellow-100 text-yellow-800">
-                      <Star className="h-3 w-3 mr-1 fill-current" />
-                      {vendorRating}
-                    </Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-start gap-2 text-xs sm:text-sm">
-                        <MapPin className="h-4 w-4 text-femfuel-medium flex-shrink-0 mt-0.5" />
-                        <span className="text-femfuel-dark line-clamp-2">
-                          {vendor?.location?.address || "Av. Winston Churchill 1234"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Navigation className="h-4 w-4 text-femfuel-medium" />
-                        <span className="text-femfuel-medium">
-                          {vendor?.location?.district || "Piantini"} • {vendor?.location?.distance || "1.2km"}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Phone className="h-4 w-4 text-femfuel-medium" />
-                        <span className="text-femfuel-medium">
-                          {vendor?.contact?.phone || "+1 809-555-0123"}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col gap-2">
-                      <button 
-                        className="glassmorphism-button-perfect flex items-center gap-2 text-sm"
-                        onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(vendor?.location?.address || "Av. Winston Churchill 1234, Santo Domingo")}`, '_blank')}
-                      >
-                        <MapPin className="h-4 w-4" />
-                        Ver en Mapa
-                      </button>
-                      <Button 
-                        size="sm" 
-                        className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white"
-                        onClick={() => window.open(`https://wa.me/${vendor?.contact?.whatsapp?.replace(/[^\d]/g, '') || "18095550123"}?text=Hola, tengo una cita reservada`, '_blank')}
-                      >
-                        <MessageCircle className="h-4 w-4" />
-                        Chat
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Selected Professional - Compact Design */}
-            {bookingData.professional && (
-              <Card className="border-femfuel-purple/20">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <Avatar className="h-10 w-10 border border-femfuel-light">
-                        <AvatarImage
-                          src={bookingData.professional.image}
-                          alt={bookingData.professional.name}
-                        />
-                        <AvatarFallback className="bg-femfuel-light text-femfuel-rose text-sm font-bold">
-                          {bookingData.professional.name.split(' ').map(n => n[0]).join('')}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-bold text-femfuel-dark text-sm truncate">{bookingData.professional.name}</h4>
-                          <div className="flex items-center gap-1 text-xs text-femfuel-medium">
-                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                            <span>{bookingData.professional.rating}</span>
-                            <span>•</span>
-                            <span>{bookingData.professional.yearsExperience}+ años</span>
-                          </div>
-                        </div>
-                        <div className="text-xs text-femfuel-medium truncate">
-                          {bookingData.professional.specialties.slice(0, 2).join(', ')}
-                        </div>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-xs px-2 py-1 h-7"
-                      onClick={() => setCurrentStep("professional")}
-                    >
-                      Cambiar
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Appointment Details */}
-            <Card className="border-green-200 bg-green-50">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg text-green-800">
-                  <Check className="h-5 w-5" />
-                  Cita Confirmada
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-green-600" />
-                        <span className="font-medium text-green-800">
-                          {bookingData.date?.toLocaleDateString("es-DO", {
-                            weekday: "long",
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-green-600" />
-                        <span className="font-medium text-green-800">
-                          {bookingData.time} - {
-                            // Calculate end time
-                            (() => {
-                              if (!bookingData.time) return ''
-                              const [hours, minutes] = bookingData.time.split(':').map(Number)
-                              const endMinutes = hours * 60 + minutes + totalDuration
-                              const endHours = Math.floor(endMinutes / 60)
-                              const endMins = endMinutes % 60
-                              return `${endHours.toString().padStart(2, '0')}:${endMins.toString().padStart(2, '0')}`
-                            })()
-                          }
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div className="text-right">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => {
-                          if (!bookingData.date || !bookingData.time) return
-                          const startDate = new Date(bookingData.date)
-                          const [hours, minutes] = bookingData.time.split(":").map(Number)
-                          startDate.setHours(hours, minutes)
-                          const endDate = new Date(startDate)
-                          endDate.setMinutes(endDate.getMinutes() + totalDuration)
-                          
-                          const event = {
-                            title: `${service?.name}${bookingData.professional ? ` - ${bookingData.professional.name}` : ''}`,
-                            start: startDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
-                            end: endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z",
-                            description: `Servicio de belleza reservado a través de FemFuel Beauty`,
-                          }
-                          
-                          const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}`
-                          window.open(calendarUrl, "_blank")
-                        }}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Agregar al calendario
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Services & Add-ons */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center justify-between text-lg">
-                  Servicios y Complementos
-                  <Button 
-                    variant="outline" 
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-4xl lg:max-w-5xl max-h-[90vh] overflow-y-auto p-0">
+          <DialogHeader className="p-6 pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                {currentStep !== "professional" && (
+                  <Button
+                    variant="ghost"
                     size="sm"
-                    onClick={() => setCurrentStep("configuration")}
+                    onClick={handleBack}
+                    className="p-2"
                   >
-                    Modificar
+                    <ArrowLeft className="h-4 w-4" />
                   </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {/* Base Service */}
-                  <div className="flex items-center justify-between p-3 bg-femfuel-light/30 rounded-lg">
-                    <div>
-                      <h5 className="font-medium text-femfuel-dark">{service?.name}</h5>
-                      <p className="text-sm text-femfuel-medium">{serviceDuration} minutos</p>
-                    </div>
-                    <span className="font-bold text-femfuel-rose">
-                      RD${basePrice.toLocaleString()}
-                    </span>
-                  </div>
-
-                  {/* Add-ons */}
-                  {bookingData.selectedAddons.map((addon) => (
-                    <div key={addon.id} className="flex items-center justify-between p-3 border border-femfuel-purple/20 rounded-lg">
-                      <div className="flex items-center gap-2">
-                        <Gift className="h-4 w-4 text-femfuel-purple" />
-                        <div>
-                          <h6 className="font-medium text-femfuel-dark">{addon.name}</h6>
-                          <p className="text-sm text-femfuel-medium">
-                            +{addon.duration || 0} min
-                            {bookingData.professional && bookingData.professional.recommendedAddons.some(ra => ra.id === addon.id) && 
-                              <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                                ⭐ Recomendado por {bookingData.professional.name}
-                              </span>
-                            }
-                          </p>
-                        </div>
-                      </div>
-                      <span className="font-bold text-femfuel-purple">
-                        +RD${addon.price.toLocaleString()}
-                      </span>
-                    </div>
-                  ))}
-
-                  {/* Total */}
-                  <div className="border-t pt-4">
-                    <div className="flex items-center justify-between text-lg">
-                      <div>
-                        <span className="font-bold text-femfuel-dark">Total</span>
-                        <p className="text-sm text-femfuel-medium">
-                          Duración total: {totalDuration} minutos
-                        </p>
-                      </div>
-                      <span className="font-bold text-femfuel-rose text-xl">
-                        RD${totalPrice.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Notes */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Solicitudes Especiales</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  id="notes"
-                  placeholder="Alergias, preferencias de color, estilo específico, etc."
-                  value={bookingData.notes}
-                  onChange={(e) => setBookingData((prev) => ({ ...prev, notes: e.target.value }))}
-                  className="min-h-[100px]"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Preparation Tips */}
-            <Card className="border-blue-200 bg-blue-50">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg text-blue-800">
-                  <AlertCircle className="h-5 w-5" />
-                  Preparación Recomendada
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 text-sm text-blue-700">
-                  <div className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
-                    <span>Retira el esmalte anterior si lo tienes</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
-                    <span>Llega 5 minutos antes de tu cita</span>
-                  </div>
-                  {bookingData.selectedAddons.some(addon => addon.name.toLowerCase().includes('art')) && (
-                    <div className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
-                      <span>Trae fotos de referencia para nail art si tienes ideas específicas</span>
-                    </div>
-                  )}
-                  <div className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2"></div>
-                    <span>Hidrата tus cutículas la noche anterior</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Cancellation Policy */}
-            <Card className="border-orange-200 bg-orange-50">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm">
-                    <p className="font-semibold text-orange-800 mb-1">Política de cancelación:</p>
-                    <p className="text-orange-700">
-                      Puedes cancelar o reprogramar tu cita hasta 24 horas antes sin costo. 
-                      Cancelaciones con menos de 24 horas de anticipación pueden tener un cargo del 50%.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {currentStep === "payment" && (
-          <div className="space-y-4 sm:space-y-6">
-            <div className="text-center mb-4 sm:mb-6">
-              <h3 className="text-lg sm:text-xl font-bold text-femfuel-dark mb-2">Métodos de Pago</h3>
-              <p className="text-sm text-femfuel-medium">Elige tu forma de pago preferida</p>
-            </div>
-
-            {/* Saved Payment Methods */}
-            {user?.paymentMethods && user.paymentMethods.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="font-medium text-femfuel-dark">Tus tarjetas guardadas</h4>
-                {user.paymentMethods.map((paymentMethod) => (
-                  <div
-                    key={paymentMethod.id}
-                    className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
-                      bookingData.paymentMethod === "card"
-                        ? "ring-2 ring-femfuel-rose shadow-xl"
-                        : "hover:shadow-lg"
-                    }`}
-                    onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "card" }))}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl backdrop-blur-sm"></div>
-                    <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-lg">
-                            💳
-                          </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-semibold text-femfuel-dark text-sm sm:text-base">
-                                {paymentMethod.brand === 'visa' ? 'Visa' :
-                                 paymentMethod.brand === 'mastercard' ? 'Mastercard' :
-                                 paymentMethod.brand === 'amex' ? 'American Express' :
-                                 paymentMethod.brand === 'discover' ? 'Discover' : 'Tarjeta'} ••••{paymentMethod.cardNumber}
-                              </p>
-                              {paymentMethod.isDefault && (
-                                <Badge variant="secondary" className="bg-femfuel-rose/10 text-femfuel-rose text-xs">
-                                  Principal
-                                </Badge>
-                              )}
-                            </div>
-                            <p className="text-xs sm:text-sm text-femfuel-medium">
-                              {paymentMethod.cardHolderName} • Vence {paymentMethod.expiryDate}
-                            </p>
-                          </div>
-                        </div>
-                        {bookingData.paymentMethod === "card" && (
-                          <div className="w-8 h-8 bg-femfuel-rose rounded-full flex items-center justify-center">
-                            <Check className="h-5 w-5 text-white" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Other Payment Methods */}
-            <div className="space-y-2 sm:space-y-3">
-              {(!user?.paymentMethods || user.paymentMethods.length === 0) && (
-                <>
-                  <h4 className="font-medium text-femfuel-dark">Métodos de pago disponibles</h4>
-                  {/* Credit/Debit Card with Glassmorphism */}
-                  <div
-                    className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
-                      bookingData.paymentMethod === "card"
-                        ? "ring-2 ring-femfuel-rose shadow-xl"
-                        : "hover:shadow-lg"
-                    }`}
-                    onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "card" }))}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl backdrop-blur-sm"></div>
-                    <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3 sm:gap-4">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <CreditCard className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-femfuel-dark text-sm sm:text-base">Tarjeta Crédito/Débito</p>
-                            <div className="flex flex-wrap items-center gap-1 sm:gap-2 mt-1">
-                              <span className="text-xs bg-blue-100 text-blue-700 px-1.5 sm:px-2 py-0.5 rounded">Visa</span>
-                              <span className="text-xs bg-red-100 text-red-700 px-1.5 sm:px-2 py-0.5 rounded">Mastercard</span>
-                              <span className="text-xs bg-gray-100 text-gray-700 px-1.5 sm:px-2 py-0.5 rounded">Amex</span>
-                            </div>
-                          </div>
-                        </div>
-                        {bookingData.paymentMethod === "card" && (
-                          <div className="w-8 h-8 bg-femfuel-rose rounded-full flex items-center justify-center">
-                            <Check className="h-5 w-5 text-white" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* Apple Pay */}
-              <div
-                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
-                  bookingData.paymentMethod === "apple_pay"
-                    ? "ring-2 ring-femfuel-rose shadow-xl"
-                    : "hover:shadow-lg"
-                }`}
-                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "apple_pay" }))}
-              >
-                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-gray-500 to-slate-600 rounded-lg flex items-center justify-center">
-                        <Smartphone className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-femfuel-dark text-sm sm:text-base">Apple Pay</p>
-                        <p className="text-xs sm:text-sm text-femfuel-medium">Pago instantáneo y seguro</p>
-                      </div>
-                    </div>
-                    {bookingData.paymentMethod === "apple_pay" && (
-                      <div className="w-8 h-8 bg-femfuel-rose rounded-full flex items-center justify-center">
-                        <Check className="h-5 w-5 text-white" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Pay at Salon with Glassmorphism */}
-              <div
-                className={`relative cursor-pointer transition-all duration-300 transform hover:scale-[1.01] ${
-                  bookingData.paymentMethod === "cash"
-                    ? "ring-2 ring-green-500 shadow-xl"
-                    : "hover:shadow-lg"
-                }`}
-                onClick={() => setBookingData((prev) => ({ ...prev, paymentMethod: "cash" }))}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl backdrop-blur-sm"></div>
-                <div className="relative bg-white/60 backdrop-blur-md border border-white/20 rounded-xl p-3 sm:p-5">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 sm:gap-4">
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                        <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-femfuel-dark text-sm sm:text-base">Pagar en el Salón</p>
-                        <p className="text-xs sm:text-sm text-femfuel-medium">Efectivo o tarjeta física</p>
-                      </div>
-                    </div>
-                    {bookingData.paymentMethod === "cash" && (
-                      <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <Check className="h-5 w-5 text-white" />
-                      </div>
-                    )}
-                  </div>
+                )}
+                <div>
+                  <DialogTitle className="text-xl font-bold text-femfuel-dark">
+                    {getStepLabel()}
+                  </DialogTitle>
+                  <DialogDescription className="text-femfuel-medium">
+                    Completa los detalles de tu reserva
+                  </DialogDescription>
                 </div>
               </div>
             </div>
+          </DialogHeader>
 
-            {/* Modern Price Breakdown */}
-            <Card className="bg-gradient-to-br from-gray-50 to-white border-gray-200 shadow-xl">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center justify-between">
-                  <span>Resumen de Pago</span>
-                  <Badge variant="outline" className="text-xs">
-                    <AlertCircle className="h-3 w-3 mr-1" />
-                    Incluye impuestos
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {/* Service Base Price */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-femfuel-medium">Servicio base</span>
-                    <span className="text-femfuel-dark font-medium">
-                      RD${typeof service?.price === 'number' ? service.price.toLocaleString() : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0').toLocaleString()}
-                    </span>
-                  </div>
-                  
-                  {/* Platform Commission */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-femfuel-medium flex items-center gap-1">
-                      Comisión plataforma
-                      <span className="text-xs bg-femfuel-purple text-femfuel-rose px-1.5 py-0.5 rounded">8%</span>
-                    </span>
-                    <span className="text-femfuel-dark">
-                      RD${Math.round((typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0')) * 0.08).toLocaleString()}
-                    </span>
-                  </div>
-                  
-                  {/* ITBIS Tax */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-femfuel-medium flex items-center gap-1">
-                      ITBIS
-                      <span className="text-xs bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">18%</span>
-                    </span>
-                    <span className="text-femfuel-dark">
-                      RD${Math.round((typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0')) * 1.08 * 0.18).toLocaleString()}
-                    </span>
-                  </div>
-                  
-                  {/* Addons if any */}
-                  {bookingData.selectedAddons.length > 0 && (
-                    <>
-                      <Separator className="my-2" />
-                      {bookingData.selectedAddons.map((addon, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-femfuel-medium text-sm">+ {addon.name}</span>
-                          <span className="text-femfuel-dark text-sm">
-                            RD${addon.price.toLocaleString()}
-                          </span>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                  
-                  <Separator className="my-3" />
-                  
-                  {/* Total */}
-                  <div className="flex justify-between items-center pt-2">
-                    <span className="text-lg font-bold text-femfuel-dark">Total a pagar</span>
-                    <div className="text-right">
-                      <span className="text-2xl font-bold text-femfuel-rose">
-                        RD${Math.round(
-                          ((typeof service?.price === 'number' ? service.price : parseInt(service?.price?.toString().replace(/[^\d]/g, '') || '0')) * 1.08 * 1.18) +
-                          bookingData.selectedAddons.reduce((sum, addon) => sum + addon.price, 0)
-                        ).toLocaleString()}
-                      </span>
-                      <p className="text-xs text-femfuel-medium mt-1">
-                        {bookingData.paymentMethod === "apple_pay" ? "Pago instantáneo" : 
-                         bookingData.paymentMethod === "card" ? "Pago seguro" : 
-                         "Pagar al llegar"}
+          <div className="p-6 space-y-6">
+            {/* Service Information */}
+            <Card className="border-femfuel-rose/20 bg-gradient-to-r from-femfuel-light/30 to-white">
+              <CardContent className="p-6">
+                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="w-16 h-16 bg-femfuel-rose/10 rounded-xl flex items-center justify-center">
+                      <Clock className="h-8 w-8 text-femfuel-rose" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-femfuel-dark mb-1">
+                        {service.name}
+                      </h3>
+                      <p className="text-sm text-femfuel-medium line-clamp-2">
+                        {service.description || "Manicure profesional con cuidado de cutículas"}
                       </p>
                     </div>
                   </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {serviceDuration} min
+                    </Badge>
+                    <span className="text-xl font-bold text-black">
+                      {formatPrice(basePrice)}
+                    </span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Security Badge */}
-            <div className="flex items-center justify-center gap-2 text-xs text-femfuel-medium">
-              <Check className="h-3 w-3 text-green-500" />
-              <span>Pago 100% seguro y encriptado</span>
-            </div>
-          </div>
-        )}
+            {/* Step Content */}
+            {currentStep === "professional" && (
+              <ProfessionalSelector
+                professionals={serviceProfessionals}
+                selectedProfessionalId={bookingData.professional?.id}
+                onProfessionalSelect={handleProfessionalSelect}
+              />
+            )}
 
-        {currentStep === "confirmation" && (
-          <div className="text-center space-y-6 animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
-            {/* Success Animation */}
-            <div className="relative">
-              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl animate-in zoom-in-75 duration-700">
-                <Check className="h-10 w-10 text-white animate-in zoom-in-50 duration-1000 delay-300" />
-              </div>
-              {/* Celebration rings */}
-              <div className="absolute inset-0 w-20 h-20 mx-auto bg-green-300/30 rounded-full animate-ping"></div>
-              <div className="absolute inset-0 w-20 h-20 mx-auto bg-green-300/20 rounded-full animate-ping animation-delay-150"></div>
-            </div>
+            {currentStep === "configuration" && (
+              <BookingConfiguration
+                selectedProfessional={bookingData.professional}
+                vendorId={resolvedVendorId}
+                serviceDuration={serviceDuration}
+                basePrice={basePrice}
+                selectedDate={bookingData.date}
+                selectedTime={bookingData.time}
+                selectedAddons={bookingData.selectedAddons}
+                onDateSelect={handleDateSelect}
+                onTimeSelect={handleTimeSelect}
+                onAddonsChange={handleAddonsChange}
+                onProfessionalChange={() => setCurrentStep("professional")}
+              />
+            )}
 
-            {/* Success Message */}
-            <div className="animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-200">
-              <h3 className="text-2xl font-bold text-femfuel-dark mb-3">¡Reserva Confirmada!</h3>
-              <p className="text-femfuel-medium text-lg">
-                Tu cita ha sido reservada exitosamente.
-              </p>
-              <p className="text-sm text-femfuel-medium/80 mt-2">
-                Recibirás una confirmación por WhatsApp y email
-              </p>
-            </div>
+            {/* Details Step - Booking Summary */}
+            {currentStep === "details" && (
+              <div className="space-y-4">
+                <Card className="border-gray-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg">Resumen de tu Reserva</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Professional Info */}
+                    {bookingData.professional && (
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage src={bookingData.professional.image} />
+                          <AvatarFallback>{bookingData.professional.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <p className="font-semibold text-femfuel-dark">{bookingData.professional.name}</p>
+                          <p className="text-sm text-femfuel-medium">{bookingData.professional.specialties?.join(', ')}</p>
+                        </div>
+                      </div>
+                    )}
 
-            {/* Booking Details Card */}
-            <Card className="shadow-xl border-green-200 bg-gradient-to-br from-green-50 to-white animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-400">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-green-800 flex items-center justify-center gap-2">
-                  <Gift className="h-5 w-5" />
-                  Detalles de tu Cita
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 gap-3 text-left">
-                  <div className="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                    <span className="text-femfuel-medium font-medium">Servicio:</span>
-                    <span className="text-femfuel-dark font-semibold">{service.name}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                    <span className="text-femfuel-medium font-medium">Proveedor:</span>
-                    <span className="text-femfuel-dark font-semibold">
-                      {vendorName || vendor?.name || 'Salon de Belleza'}
-                    </span>
-                  </div>
-                  {bookingData.professional && (
-                    <div className="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                      <span className="text-femfuel-medium font-medium">Profesional:</span>
-                      <span className="text-femfuel-dark font-semibold">{bookingData.professional.name}</span>
+                    {/* Date & Time */}
+                    <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
+                      <Calendar className="h-5 w-5 text-femfuel-rose" />
+                      <div className="flex-1">
+                        <p className="text-sm text-femfuel-medium">Fecha y Hora</p>
+                        <p className="font-semibold text-femfuel-dark">
+                          {bookingData.date ? bookingData.date.toLocaleDateString('es-DO', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          }) : ''} - {bookingData.time}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                    <span className="text-femfuel-medium font-medium">Fecha:</span>
-                    <span className="text-femfuel-dark font-semibold">
-                      {bookingData.date?.toLocaleDateString("es-DO", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-white/50 rounded-lg">
-                    <span className="text-femfuel-medium font-medium">Hora:</span>
-                    <span className="text-femfuel-dark font-semibold">{bookingData.time}</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 bg-femfuel-rose/10 rounded-lg border border-femfuel-rose/20">
-                    <span className="text-femfuel-rose font-medium">Total Pagado:</span>
-                    <span className="text-femfuel-rose font-bold text-lg">RD${totalPrice.toLocaleString()}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+
+                    {/* Service & Addons */}
+                    <div className="space-y-2 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-semibold text-femfuel-dark">{service.name}</p>
+                          <p className="text-sm text-femfuel-medium">{serviceDuration} min</p>
+                        </div>
+                        <span className="font-semibold text-black">{formatPrice(basePrice)}</span>
+                      </div>
+
+                      {bookingData.selectedAddons.length > 0 && (
+                        <div className="pt-2 mt-2 border-t border-gray-200">
+                          <p className="text-sm font-semibold text-femfuel-dark mb-2">Servicios adicionales:</p>
+                          {bookingData.selectedAddons.map((addon) => (
+                            <div key={addon.id} className="flex justify-between items-center py-1">
+                              <span className="text-sm text-femfuel-medium">{addon.name}</span>
+                              <span className="text-sm font-semibold text-black">+{formatPrice(addon.price)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Subtotal (Service + Add-ons only) */}
+                    <div className="flex justify-between items-center p-3 bg-femfuel-rose/5 rounded-lg border border-femfuel-rose/20">
+                      <div>
+                        <p className="text-lg font-bold text-femfuel-dark">Subtotal Servicios</p>
+                        <p className="text-sm text-femfuel-medium">Duración: {totalDuration} min</p>
+                      </div>
+                      <span className="text-2xl font-bold text-black">{formatPrice(subtotal)}</span>
+                    </div>
+
+                    {/* Tax Notice */}
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-800">
+                        <span className="font-medium">Nota:</span> Los impuestos y comisiones se mostrarán en el siguiente paso de pago.
+                      </p>
+                    </div>
+
+                    {/* Notes */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-femfuel-dark">Notas adicionales (opcional)</label>
+                      <textarea
+                        className="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-femfuel-rose"
+                        rows={3}
+                        placeholder="¿Alguna solicitud especial o información que debamos saber?"
+                        value={bookingData.notes}
+                        onChange={(e) => setBookingData(prev => ({ ...prev, notes: e.target.value }))}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Payment Step */}
+            {currentStep === "payment" && (
+              <div className="space-y-4">
+                <Card className="border-gray-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg">Método de Pago</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      {/* Saved Cards Section - Show first if available */}
+                      {user?.paymentMethods && user.paymentMethods.filter(pm => pm.type === 'card').length > 0 && (
+                        <div className="space-y-3">
+                          <h4 className="font-medium text-black text-sm">Tarjetas Guardadas</h4>
+                          {user.paymentMethods.filter(pm => pm.type === 'card').map(card => (
+                            <label key={card.id} className="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50"
+                              style={{ borderColor: bookingData.paymentMethod === 'card' && selectedCardId === card.id ? 'var(--femfuel-rose)' : '#e5e7eb' }}>
+                              <input
+                                type="radio"
+                                name="payment"
+                                value="card"
+                                checked={bookingData.paymentMethod === 'card' && selectedCardId === card.id}
+                                onChange={() => {
+                                  setBookingData(prev => ({ ...prev, paymentMethod: 'card' }))
+                                  setSelectedCardId(card.id)
+                                }}
+                                className="mr-3"
+                              />
+                              <div className="flex items-center justify-between flex-1">
+                                <div className="flex items-center gap-3">
+                                  <CreditCard className="h-6 w-6 text-gray-600" />
+                                  <div>
+                                    <p className="font-medium text-black">•••• {card.cardNumber}</p>
+                                    <p className="text-sm text-gray-500">{card.brand ? (card.brand.charAt(0).toUpperCase() + card.brand.slice(1)) : 'Tarjeta'} - Expira {card.expiryDate}</p>
+                                  </div>
+                                </div>
+                                {card.isDefault && (
+                                  <Badge className="bg-femfuel-light text-femfuel-dark text-xs">Predeterminada</Badge>
+                                )}
+                              </div>
+                            </label>
+                          ))}
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="w-full border-dashed border-gray-300 text-black hover:bg-gray-50 mt-2"
+                            onClick={() => setShowAddCardModal(true)}
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Agregar nueva tarjeta
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* Add New Card Option - Show if no cards available */}
+                      {(!user?.paymentMethods || user.paymentMethods.filter(pm => pm.type === 'card').length === 0) && (
+                        <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50"
+                          style={{ borderColor: bookingData.paymentMethod === 'card' ? 'var(--femfuel-rose)' : '#e5e7eb' }}>
+                          <input
+                            type="radio"
+                            name="payment"
+                            value="card"
+                            checked={bookingData.paymentMethod === 'card'}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, paymentMethod: e.target.value as any }))}
+                            className="mr-3"
+                          />
+                          <div className="flex items-center justify-between flex-1">
+                            <div>
+                              <p className="font-semibold text-black">Tarjeta de Crédito/Débito</p>
+                              <p className="text-sm text-gray-600">Pago seguro con tarjeta</p>
+                            </div>
+                            <CreditCard className="h-8 w-8 text-gray-700" />
+                          </div>
+                        </label>
+                      )}
+
+                      {/* Show add card button when card is selected but no card chosen */}
+                      {bookingData.paymentMethod === 'card' && (!user?.paymentMethods || user.paymentMethods.filter(pm => pm.type === 'card').length === 0) && (
+                        <div className="ml-8 mt-3">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="w-full border-dashed border-gray-300 text-black hover:bg-gray-50"
+                            onClick={() => setShowAddCardModal(true)}
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Agregar tarjeta
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* Cash Option */}
+                      <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50"
+                        style={{ borderColor: bookingData.paymentMethod === 'cash' ? 'var(--femfuel-rose)' : '#e5e7eb' }}>
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="cash"
+                          checked={bookingData.paymentMethod === 'cash'}
+                          onChange={(e) => setBookingData(prev => ({ ...prev, paymentMethod: e.target.value as any }))}
+                          className="mr-3"
+                        />
+                        <div className="flex items-center justify-between flex-1">
+                          <div>
+                            <p className="font-semibold text-black">Efectivo</p>
+                            <p className="text-sm text-gray-600">Pagar en el establecimiento</p>
+                          </div>
+                          <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                          </svg>
+                        </div>
+                      </label>
+
+                      {/* Apple Pay Option */}
+                      <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50"
+                        style={{ borderColor: bookingData.paymentMethod === 'apple_pay' ? 'var(--femfuel-rose)' : '#e5e7eb' }}>
+                        <input
+                          type="radio"
+                          name="payment"
+                          value="apple_pay"
+                          checked={bookingData.paymentMethod === 'apple_pay'}
+                          onChange={(e) => setBookingData(prev => ({ ...prev, paymentMethod: e.target.value as any }))}
+                          className="mr-3"
+                        />
+                        <div className="flex items-center justify-between flex-1">
+                          <div>
+                            <p className="font-semibold text-black">Apple Pay</p>
+                            <p className="text-sm text-gray-600">Pago rápido y seguro</p>
+                          </div>
+                          <Smartphone className="h-8 w-8 text-femfuel-dark" />
+                        </div>
+                      </label>
+                    </div>
+
+                    {/* Summary */}
+                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">Subtotal</span>
+                        <span className="font-semibold text-black">{formatPrice(subtotal)}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">Comisión (8%)</span>
+                        <span className="font-semibold text-black">{formatPrice(commission)}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">ITBIS (18%)</span>
+                        <span className="font-semibold text-black">{formatPrice(itbis)}</span>
+                      </div>
+                      <div className="pt-2 mt-2 border-t border-gray-300 flex justify-between items-center">
+                        <span className="text-lg font-bold text-black">Total</span>
+                        <span className="text-xl font-bold text-black">{formatPrice(totalPrice)}</span>
+                      </div>
+                    </div>
+
+                    {/* Terms */}
+                    <div className="text-xs text-femfuel-medium text-center">
+                      Al confirmar tu reserva, aceptas nuestros
+                      <button className="text-femfuel-rose hover:underline mx-1">términos y condiciones</button>
+                      y
+                      <button className="text-femfuel-rose hover:underline mx-1">política de cancelación</button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 px-2 sm:px-0 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 delay-600">
+            <div className="flex justify-between pt-4 border-t border-gray-200">
+              <div></div>
               <Button
-                variant="outline"
-                className="flex-1 bg-green-50 border-green-200 hover:bg-green-100 text-green-700 min-h-[44px]"
-                onClick={handleWhatsAppConfirmation}
+                onClick={handleNext}
+                disabled={!canContinue() || isLoading}
+                className="bg-femfuel-rose hover:bg-femfuel-rose/90 px-8"
               >
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Confirmar por WhatsApp
-              </Button>
-              <Button
-                variant="outline"
-                className="flex-1 bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700 min-h-[44px]"
-                onClick={handleAddToCalendar}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Agregar al Calendario
+                {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
               </Button>
             </div>
 
-            {/* Success Footer */}
-            <div className="text-center p-4 bg-gradient-to-r from-femfuel-purple/10 to-femfuel-rose/10 rounded-lg animate-in fade-in-0 duration-500 delay-800">
-              <p className="text-sm text-femfuel-medium">
-                🎉 ¡Gracias por elegir FemFuel Beauty!
-              </p>
-              <p className="text-xs text-femfuel-medium/80 mt-1">
-                Puedes ver todas tus citas en la sección "Mis Citas"
-              </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Card Modal */}
+      <Dialog open={showAddCardModal} onOpenChange={setShowAddCardModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Agregar Nueva Tarjeta</DialogTitle>
+            <DialogDescription>
+              Ingresa los detalles de tu tarjeta de crédito o débito
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <label htmlFor="cardNumber" className="block text-sm font-medium text-black mb-1">
+                Número de tarjeta
+              </label>
+              <input
+                id="cardNumber"
+                type="text"
+                placeholder="1234 5678 9012 3456"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-femfuel-rose"
+                maxLength={19}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="expiry" className="block text-sm font-medium text-black mb-1">
+                  Fecha de vencimiento
+                </label>
+                <input
+                  id="expiry"
+                  type="text"
+                  placeholder="MM/AA"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-femfuel-rose"
+                  maxLength={5}
+                />
+              </div>
+              <div>
+                <label htmlFor="cvv" className="block text-sm font-medium text-black mb-1">
+                  CVV
+                </label>
+                <input
+                  id="cvv"
+                  type="text"
+                  placeholder="123"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-femfuel-rose"
+                  maxLength={4}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="cardholderName" className="block text-sm font-medium text-black mb-1">
+                Nombre del titular
+              </label>
+              <input
+                id="cardholderName"
+                type="text"
+                placeholder="Juan Pérez"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-femfuel-rose"
+              />
+            </div>
+
+            <div className="flex items-center">
+              <input
+                id="setDefault"
+                type="checkbox"
+                className="h-4 w-4 text-femfuel-rose border-gray-300 rounded focus:ring-femfuel-rose"
+              />
+              <label htmlFor="setDefault" className="ml-2 text-sm text-gray-600">
+                Establecer como tarjeta predeterminada
+              </label>
+            </div>
+
+            <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>Tu información está segura y encriptada</span>
             </div>
           </div>
-        )}
 
-        {/* Action Buttons */}
-        {currentStep !== "confirmation" && (
-          <div className="flex flex-col sm:flex-row justify-between gap-3 pt-6 px-2 sm:px-0">
-            <Button variant="outline" className="min-h-[44px] w-full sm:w-auto" onClick={currentStep === "professional" ? handleClose : handleBack}>
-              {currentStep === "professional" ? "Cancelar" : "Atrás"}
+          <div className="flex justify-end space-x-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowAddCardModal(false)}
+            >
+              Cancelar
             </Button>
             <Button
-              className="bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px] w-full sm:w-auto"
-              onClick={handleNext}
-              disabled={(currentStep === "configuration" && (!bookingData.date || !bookingData.time)) || isLoading}
+              className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white"
+              onClick={() => {
+                // TODO: Add card logic
+                setShowAddCardModal(false)
+                // Show success message
+              }}
             >
-              {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
+              Guardar Tarjeta
             </Button>
           </div>
-        )}
+        </DialogContent>
+      </Dialog>
 
-        {currentStep === "confirmation" && (
-          <div className="pt-6 px-2 sm:px-0">
-            <Button className="w-full bg-femfuel-rose hover:bg-[#9f1853] min-h-[44px]" onClick={handleClose}>
-              Cerrar
-            </Button>
-          </div>
-        )}
-      </DialogContent>
-
-      {/* Processing Overlay */}
-      <ProcessingOverlay
-        isVisible={showProcessingOverlay}
-        onComplete={handleProcessingComplete}
-        bookingData={{
-          serviceName: service?.name,
-          vendorName: vendorName,
-          date: bookingData.date ? format(bookingData.date, 'dd MMM yyyy') : undefined,
-          time: bookingData.time,
-          price: service?.price ? (Number(service.price) + bookingData.selectedAddons.reduce((sum, addon) => sum + addon.price, 0)) : undefined,
-          bookingReference: completedBooking?.bookingReference
-        }}
-      />
-    </Dialog>
+      {showProcessingOverlay && (
+        <ProcessingOverlay
+          isVisible={showProcessingOverlay}
+          onComplete={handleProcessingComplete}
+          bookingData={processingBookingData}
+          fullBookingData={completedBooking}
+          onNavigate={handleProcessingNavigation}
+        />
+      )}
+    </>
   )
 }

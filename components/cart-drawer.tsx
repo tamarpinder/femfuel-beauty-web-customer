@@ -12,6 +12,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image"
 import { useCart } from "@/contexts/cart-context"
 import { LocationModal } from "@/components/location-modal"
 import { UserLocation } from "@/types/delivery"
+import { formatPrice } from "@/lib/price-utils"
 
 interface CartDrawerProps {
   children: React.ReactNode
@@ -38,9 +39,6 @@ export function CartDrawer({ children }: CartDrawerProps) {
   const [showLocationModal, setShowLocationModal] = useState(false)
   const cartItems = getCartItems()
 
-  const formatPrice = (price: number) => {
-    return `RD$${price.toLocaleString()}`
-  }
 
   const handleQuantityChange = async (productId: string, newQuantity: number) => {
     await updateQuantity(productId, newQuantity)
@@ -118,7 +116,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                         setIsCartOpen(false)
                         router.push("/shop")
                       }}
-                      className="bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                      className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
                     >
                       Explorar Productos
                     </Button>
@@ -157,7 +155,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                           variant="ghost"
                           size="sm"
                           onClick={() => setShowLocationModal(true)}
-                          className="text-xs text-femfuel-rose hover:text-[#9f1853]"
+                          className="text-xs text-femfuel-rose hover:text-femfuel-rose-hover"
                         >
                           Cambiar
                         </Button>
@@ -237,7 +235,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                                   </div>
                                   
                                   <div className="text-right">
-                                    <p className="font-semibold text-femfuel-rose">
+                                    <p className="font-semibold text-black">
                                       {formatPrice(item.product.price * item.quantity)}
                                     </p>
                                     {item.quantity > 1 && (
@@ -286,7 +284,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                       
                       <div className="flex justify-between">
                         <span className="font-semibold text-femfuel-dark">Total</span>
-                        <span className="font-bold text-femfuel-rose text-lg">{formatPrice(total)}</span>
+                        <span className="font-bold text-black text-lg">{formatPrice(total)}</span>
                       </div>
                     </div>
 
@@ -320,7 +318,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                       <Button
                         onClick={handleCheckout}
                         disabled={!isDeliveryAvailable}
-                        className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white py-3 font-semibold"
+                        className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white py-3 font-semibold"
                       >
                         {isDeliveryAvailable ? "Proceder al pago" : "Entrega no disponible"}
                       </Button>

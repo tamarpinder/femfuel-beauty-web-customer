@@ -105,7 +105,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
               {/* Price and Actions */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-femfuel-rose text-sm">
+                  <span className="font-bold text-black text-sm">
                     {formatPrice(product.price)}
                   </span>
                   {product.originalPrice && (
@@ -117,7 +117,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
                 <Button
                   size="sm"
                   onClick={handleAddToCart}
-                  className="bg-femfuel-rose hover:bg-[#9f1853] text-white text-xs px-3 py-1"
+                  className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white text-xs px-3 py-1"
                 >
                   <ShoppingCart className="h-3 w-3 mr-1" />
                   Agregar
@@ -234,7 +234,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
 
           {/* Price */}
           <div className="flex items-center gap-2">
-            <span className="font-bold text-femfuel-rose">
+            <span className="font-bold text-black">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (

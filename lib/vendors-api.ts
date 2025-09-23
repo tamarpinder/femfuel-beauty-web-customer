@@ -155,7 +155,6 @@ export async function getVendors(filters: VendorFilters = {}) {
 
     return transformedVendors
   } catch (error) {
-    console.error('Error processing vendor data:', error)
     return []
   }
 }
@@ -174,7 +173,6 @@ export async function getVendorById(id: string) {
     const vendor = VendorAdapter.findVendor(id)
     return vendor
   } catch (error) {
-    console.error('Error fetching vendor by id:', error)
     return null
   }
 }
@@ -243,7 +241,6 @@ export async function searchServices(searchTerm: string, limit = 50) {
       .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, limit)
   } catch (error) {
-    console.error('Error searching services:', error)
     return []
   }
 }
@@ -295,7 +292,6 @@ export async function getAllServices() {
     
     return allServices
   } catch (error) {
-    console.error('Error getting all services:', error)
     return []
   }
 }
@@ -392,7 +388,6 @@ export async function getMarketplaceServices(filters: VendorFilters = {}) {
     
     return marketplaceServices
   } catch (error) {
-    console.error('Error getting marketplace services:', error)
     return []
   }
 }

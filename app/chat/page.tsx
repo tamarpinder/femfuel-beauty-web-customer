@@ -117,19 +117,7 @@ export default function ChatMessagesPage() {
   return (
     <>
       {/* Mobile Layout */}
-      <div className="md:hidden min-h-screen bg-white">
-        {/* Header */}
-        <UserFlowHeader 
-          title="Mis Conversaciones" 
-          onBack={handleBack}
-          rightElement={
-            getTotalUnreadCount() > 0 && (
-              <Badge variant="destructive" className="bg-red-500 text-white rounded-full min-w-[20px] h-5 flex items-center justify-center text-xs">
-                {getTotalUnreadCount()}
-              </Badge>
-            )
-          }
-        />
+      <div className="md:hidden min-h-screen bg-white">{/* Mobile chat page relies on SmartHeader */}
 
         {/* Search */}
         <div className="p-4 border-b border-gray-100">
@@ -220,18 +208,7 @@ export default function ChatMessagesPage() {
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden md:block min-h-screen bg-white">
-        <UserFlowHeader 
-          title="Mis Conversaciones" 
-          onBack={handleBack}
-          rightElement={
-            getTotalUnreadCount() > 0 && (
-              <Badge variant="destructive" className="bg-red-500 text-white rounded-full min-w-[20px] h-5 flex items-center justify-center text-xs">
-                {getTotalUnreadCount()}
-              </Badge>
-            )
-          }
-        />
+      <div className="hidden md:block min-h-screen bg-white">{/* Desktop chat page relies on SmartHeader */}
         
         <div className="max-w-4xl mx-auto p-6">
           {/* Search */}

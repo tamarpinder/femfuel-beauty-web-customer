@@ -61,7 +61,7 @@ export default function ProductDetailPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-femfuel-dark mb-4">Producto no encontrado</h1>
           <p className="text-femfuel-medium mb-6">El producto "{productSlug}" no existe.</p>
-          <Button onClick={() => router.push("/shop")} className="bg-femfuel-rose hover:bg-[#9f1853] text-white">
+          <Button onClick={() => router.push("/shop")} className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white">
             Ir a la Tienda
           </Button>
         </div>
@@ -83,7 +83,7 @@ export default function ProductDetailPage() {
                 <ProductCard
                   key={relatedProduct.id}
                   product={relatedProduct}
-                  onAddToCart={() => console.log("Add to cart:", relatedProduct.id)}
+                  onAddToCart={() => {}}
                 />
               ))}
             </div>

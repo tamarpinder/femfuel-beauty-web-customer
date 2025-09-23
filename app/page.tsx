@@ -7,8 +7,6 @@ import { getMarketplaceServices, getVendors } from "@/lib/vendors-api"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type MarketplaceService } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
-import { MobileHeader } from "@/components/mobile-header"
-import { DesktopHeader } from "@/components/desktop-header"
 import { MobileNavigation } from "@/components/mobile-navigation"
 import { HeroSection } from "@/components/hero-section"
 import { HowItWorks } from "@/components/how-it-works"
@@ -66,7 +64,7 @@ export default function HomePage() {
         setNearbyVendors(allVendorData.slice(0, 6))
         
       } catch (error) {
-        console.error('Error loading featured services:', error)
+        setFeaturedServices([]);
         setFeaturedServices([])
         setNearbyVendors([])
         setAllVendors([])
@@ -118,101 +116,102 @@ export default function HomePage() {
   ]
 
   // Generate transformations from real mock data - ALL 8 transformation sets
+  // Now mapped to actual marketplace services instead of synthetic ones
   const transformations = [
     {
       id: 1,
       name: "Isabella Martínez",
-      service: "Balayage Dorado Caribeño",
+      service: "Balayage", // Real marketplace service
       vendor: "Hair Salon Elite",
       beforeImage: "/transformations/before/hair-transformation-1-before.png",
       afterImage: "/transformations/after/hair-transformation-1-after.png",
       rating: 5.0,
       testimonial: "¡Increíble! Me siento como una nueva persona. El balayage quedó perfecto y el corte me favorece muchísimo.",
-      serviceId: "service-001",
+      serviceId: "balayage",
       lookName: "Balayage Dorado Caribeño"
     },
     {
       id: 2,
       name: "María José Peña",
-      service: "Glamour Tropical Night",
+      service: "Maquillaje de Gala", // Real marketplace service
       vendor: "Beauty Studio RD",
       beforeImage: "/transformations/before/makeup-transformation-3-before.png",
       afterImage: "/transformations/after/makeup-transformation-1-after.png",
       rating: 4.9,
       testimonial: "El maquillaje duró toda la noche. Recibí tantos cumplidos en la fiesta. Definitivamente regreso.",
-      serviceId: "service-002",
+      serviceId: "maquillaje-de-gala",
       lookName: "Glamour Tropical Night"
     },
     {
       id: 3,
       name: "Carmen Delgado",
-      service: "Dominican Blowout Perfecto",
+      service: "Alisado Dominicano", // Real marketplace service (exact match!)
       vendor: "Cabello y Estilo",
       beforeImage: "/transformations/before/dominican-blowout-before.png",
       afterImage: "/transformations/after/dominican-blowout-after.png",
       rating: 4.8,
       testimonial: "Mi cabello nunca se había visto tan liso y brillante. El blowout dominicano es increíble!",
-      serviceId: "service-003",
-      lookName: "Dominican Silk Blowout"
+      serviceId: "alisado-dominicano",
+      lookName: "Alisado Dominicano"
     },
     {
       id: 4,
       name: "Sophia Ramírez",
-      service: "Tropical Nail Art",
+      service: "Arte de Uñas Tropical", // Real marketplace service
       vendor: "Luxury Nails Spa",
       beforeImage: "/transformations/before/nail-transformation-before.png",
       afterImage: "/transformations/after/nail-transformation-after.png",
       rating: 5.0,
       testimonial: "Las uñas más hermosas que he tenido. El arte tropical es perfecto para el verano caribeño!",
-      serviceId: "service-004",
+      serviceId: "arte-de-unas-tropical",
       lookName: "Caribbean Paradise Nails"
     },
     {
       id: 5,
       name: "Alejandra Santos",
-      service: "Maquillaje Natural Día",
+      service: "Maquillaje Natural", // Real marketplace service
       vendor: "Makeup Studio Pro",
       beforeImage: "/transformations/before/makeup-transformation-2-before.png",
       afterImage: "/transformations/after/makeup-transformation-2-after.png",
       rating: 4.9,
       testimonial: "Perfecto para el día a día. Se ve natural pero me hace lucir radiante. Exactamente lo que buscaba.",
-      serviceId: "service-005",
+      serviceId: "maquillaje-natural",
       lookName: "Natural Daytime Glow"
     },
     {
       id: 6,
       name: "Valentina Cruz",
-      service: "Tratamiento Facial Renovador",
+      service: "Facial de Lujo", // Real marketplace service
       vendor: "Spa Serenity",
       beforeImage: "/transformations/before/spa-transformation-1-before.png",
       afterImage: "/transformations/after/spa-transformation-1-after.png",
       rating: 5.0,
       testimonial: "Mi piel se ve completamente renovada. Los resultados son visibles desde la primera sesión.",
-      serviceId: "service-006",
+      serviceId: "facial-de-lujo",
       lookName: "Skin Renewal Treatment"
     },
     {
       id: 7,
       name: "Camila Herrera",
-      service: "Extensiones de Pestañas Volumen",
+      service: "Extensiones de Pestañas", // Real marketplace service
       vendor: "Lash Studio DR",
       beforeImage: "/transformations/before/lash-transformation-1-before.png",
       afterImage: "/transformations/after/lash-transformation-1-after.png",
       rating: 4.8,
       testimonial: "Mis pestañas se ven increíbles! Duran mucho tiempo y me ahorro maquillaje todos los días.",
-      serviceId: "service-007",
+      serviceId: "extensiones-de-pestanas",
       lookName: "Volume Lash Extensions"
     },
     {
       id: 8,
       name: "Daniela Morales",
-      service: "Maquillaje Elegante Premium",
+      service: "Maquillaje de Novia", // Real marketplace service (most premium)
       vendor: "Belleza Natural",
       beforeImage: "/transformations/before/makeup-transformation-3-before.png",
       afterImage: "/transformations/after/makeup-transformation-3-after.png",
       rating: 4.9,
       testimonial: "Un look sofisticado y elegante. Me sentí como una modelo profesional en mi evento especial.",
-      serviceId: "service-008",
+      serviceId: "maquillaje-de-novia",
       lookName: "Elegant Premium Look"
     }
   ]
@@ -359,11 +358,11 @@ export default function HomePage() {
   const handleSearch = useCallback((query: string) => {
     // No longer navigate on search - headers now use SmartSearch
     // which handles suggestions and navigation separately
-    console.log('Search query received:', query)
+    // Search query received
   }, [])
 
   const handleBookService = (serviceId: string) => {
-    console.log("Book service:", serviceId)
+    // Book service functionality
   }
 
   const handleViewProviders = (serviceId: string) => {
@@ -385,108 +384,118 @@ export default function HomePage() {
     router.push(`/services?category=${categoryId}`)
   }
 
-  const handleGetThisLook = (serviceId: string, lookName: string, vendorName: string) => {
-    console.log("Get this look clicked:", { serviceId, lookName, vendorName, allVendorsCount: allVendors.length })
-    
-    // Find the exact vendor from the transformation
-    const vendor = allVendors.find(v => v.name === vendorName)
-    
-    if (!vendor) {
-      console.error("Could not find transformation vendor:", vendorName)
-      toast.error("Lo sentimos, no pudimos encontrar este proveedor. Por favor, intenta más tarde.")
-      return
+  const handleGetThisLook = async (serviceId: string, lookName: string, vendorName: string) => {
+    try {
+      // Find the real marketplace service by name (since serviceId is slug-based)
+      const allServices = await getMarketplaceServices()
+      const transformation = transformations.find(t => t.serviceId === serviceId)
+
+      if (!transformation) {
+        toast.error("No pudimos encontrar este servicio")
+        return
+      }
+
+      // Find the marketplace service by name
+      const marketplaceService = allServices.find(s => s.name === transformation.service)
+
+      if (!marketplaceService) {
+        toast.error("Este servicio no está disponible en este momento")
+        return
+      }
+
+      // Find a vendor that offers this service from our vendor list
+      const serviceVendor = allVendors.find(v =>
+        v.services.some(s => s.name === transformation.service)
+      )
+
+      if (!serviceVendor) {
+        toast.error("No hay proveedores disponibles para este servicio")
+        return
+      }
+
+      // Get the actual service from the vendor
+      const vendorService = serviceVendor.services.find(s => s.name === transformation.service)
+
+      if (!vendorService) {
+        toast.error("Servicio no encontrado")
+        return
+      }
+
+      // Open the booking modal with the real service and vendor
+      setSelectedVendor(serviceVendor)
+      setSelectedService(vendorService)
+      setShowBookingModal(true)
+      toast.success(`¡Perfecto! Reserva tu ${lookName}`)
+
+    } catch (error) {
+      toast.error("Error al cargar el servicio. Inténtalo de nuevo.")
     }
-    
-    // Create a custom service based on the transformation data
-    const transformationServiceMap: Record<string, { category: string, price: number, duration: number }> = {
-      "Balayage Dorado Caribeño": { category: "hair", price: 4500, duration: 180 },
-      "Glamour Tropical Night": { category: "makeup", price: 3200, duration: 120 },
-      "Dominican Blowout Perfecto": { category: "hair", price: 1800, duration: 90 },
-      "Caribbean Paradise Nails": { category: "nails", price: 2500, duration: 120 },
-      "Natural Daytime Glow": { category: "makeup", price: 2800, duration: 90 },
-      "Skin Renewal Treatment": { category: "spa", price: 3500, duration: 90 },
-      "Volume Lash Extensions": { category: "lashes", price: 3800, duration: 150 },
-      "Elegant Premium Look": { category: "makeup", price: 3500, duration: 120 }
-    }
-    
-    const serviceData = transformationServiceMap[lookName]
-    
-    if (!serviceData) {
-      console.error("Unknown transformation service:", lookName)
-      toast.error("Lo sentimos, no pudimos encontrar este servicio. Por favor, intenta más tarde.")
-      return
-    }
-    
-    // Create the exact transformation service
-    const transformationService: VendorService = {
-      id: `transformation-${serviceId}`,
-      name: lookName, // Exact transformation service name
-      description: `Servicio especializado de transformación: ${lookName}`,
-      category: serviceData.category,
-      price: serviceData.price,
-      duration: serviceData.duration,
-      isPopular: true,
-      image: "/service-placeholder.jpg"
-    }
-    
-    console.log("Created transformation service:", transformationService.name, "for vendor:", vendor.name)
-    setSelectedVendor(vendor)
-    setSelectedService(transformationService)
-    setShowBookingModal(true)
-    toast.success(`¡Perfecto! Reserva tu ${transformationService.name} con ${vendor.name}`)
   }
 
   const handleBookProfessional = (professionalId: number) => {
-    console.log("Book professional:", professionalId)
+    // Book professional functionality
     router.push(`/booking/professional/${professionalId}`)
   }
 
   const handleViewVendor = (professionalId: number) => {
-    console.log("View vendor for professional:", professionalId)
+    // View vendor for professional
     const professional = professionals.find(p => p.id === professionalId)
     if (professional?.vendorId) {
       router.push(`/vendor/${professional.vendorId}`)
     }
   }
 
+  const handleViewPortfolio = (professionalId: number) => {
+    // Navigate to professional portfolio page
+    router.push(`/professional/${professionalId}`)
+  }
+
   const handleGetDirections = (locationId: string) => {
-    console.log("Get directions to:", locationId)
+    // Get directions functionality
     // TODO: Integrate with maps service
   }
 
   const handleCallLocation = (phone: string) => {
-    console.log("Call location:", phone)
+    // Call location functionality
     window.open(`tel:${phone}`)
   }
 
   const handleBookLocation = (locationId: string) => {
-    console.log("Book location called with ID:", locationId, "Type:", typeof locationId)
-    console.log("Available nearby vendors:", nearbyVendors.map(v => ({ id: v.id, name: v.name })))
+    // Book location functionality
     
     const vendor = nearbyVendors.find(v => v.id === locationId)
-    console.log("Found vendor:", vendor ? vendor.name : "None")
+    // Found vendor check
     
     if (vendor && vendor.services.length > 0) {
-      console.log("Setting booking modal with vendor:", vendor.name, "Service:", vendor.services[0].name)
+      // Setting booking modal
       setSelectedVendor(vendor)
       setSelectedService(vendor.services[0])
       setShowBookingModal(true)
     } else {
-      console.log("No vendor found or vendor has no services")
+      // No vendor found or vendor has no services
     }
   }
   
   const handleBookingComplete = (booking: any) => {
-    console.log("Booking completed:", booking)
+    // Booking completed successfully
+  }
+
+    // BookingModal and ProcessingOverlay are already closed by this point
+    // Just handle cleanup and navigation
     setShowBookingModal(false)
     setSelectedVendor(null)
     setSelectedService(null)
-    router.push('/bookings')
+
+    // Navigation is now handled directly by ProcessingOverlay
+    // User chooses where to go next through the integrated navigation buttons
   }
 
-  const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile" | "chat") => {
+
+  const handleTabChange = (tab: "home" | "search" | "blog" | "bookings" | "shop" | "profile" | "chat") => {
     if (tab === "search") {
       router.push("/services")
+    } else if (tab === "blog") {
+      router.push("/blog")
     } else if (tab === "shop") {
       router.push("/shop")
     } else if (tab === "bookings") {
@@ -498,9 +507,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Headers */}
-      <MobileHeader />
-      <DesktopHeader />
 
       {/* Hero Section */}
       <HeroSection />
@@ -527,9 +533,10 @@ export default function HomePage() {
       />
 
       {/* Star Professionals */}
-      <StarProfessionals 
+      <StarProfessionals
         professionals={professionals}
         onViewVendor={handleViewVendor}
+        onViewPortfolio={handleViewPortfolio}
       />
 
       {/* Nearby Beauty */}
@@ -624,6 +631,7 @@ export default function HomePage() {
           onBookingComplete={handleBookingComplete}
         />
       )}
+
     </div>
   )
 }

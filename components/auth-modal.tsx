@@ -88,7 +88,6 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
       }
     } catch (error: any) {
       setError(error.message || "Error de conexión")
-      console.error("Auth error:", error)
     } finally {
       setIsLoading(false)
     }
@@ -104,7 +103,6 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
       setError(`${provider === "google" ? "Google" : "Facebook"} login no está disponible aún. Usa email y contraseña.`)
     } catch (error: any) {
       setError(error.message || "Error con login social")
-      console.error("Social login error:", error)
     } finally {
       setIsLoading(false)
     }
@@ -249,7 +247,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                     placeholder="Tu nombre completo"
                     value={formData.name}
                     onChange={(e) => handleInputChange("name", e.target.value)}
-                    className={`pl-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                    className={`pl-10 border-gray-200 focus:border-femfuel-rose focus:ring-femfuel-rose ${
                       isMobile ? "h-10 text-sm" : "h-12"
                     }`}
                     required
@@ -272,7 +270,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                   placeholder="tu@email.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className={`pl-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                  className={`pl-10 border-gray-200 focus:border-femfuel-rose focus:ring-femfuel-rose ${
                     isMobile ? "h-10 text-sm" : "h-12"
                   }`}
                   required
@@ -295,7 +293,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                     placeholder="+1 809 555 0123"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
-                    className={`pl-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                    className={`pl-10 border-gray-200 focus:border-femfuel-rose focus:ring-femfuel-rose ${
                       isMobile ? "h-10 text-sm" : "h-12"
                     }`}
                     required
@@ -318,7 +316,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
-                  className={`pl-10 pr-10 border-gray-200 focus:border-[var(--femfuel-rose)] focus:ring-[var(--femfuel-rose)] ${
+                  className={`pl-10 pr-10 border-gray-200 focus:border-femfuel-rose focus:ring-femfuel-rose ${
                     isMobile ? "h-10 text-sm" : "h-12"
                   }`}
                   required
@@ -335,7 +333,7 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode = "login
 
             <Button
               type="submit"
-              className={`w-full bg-femfuel-rose hover:bg-[#9f1853] text-white ${
+              className={`w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white ${
                 isMobile ? "h-10 text-sm" : "h-12"
               }`}
               disabled={isLoading}

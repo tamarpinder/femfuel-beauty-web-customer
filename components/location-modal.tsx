@@ -162,7 +162,7 @@ export function LocationModal({ isOpen, onClose, onLocationUpdate, currentLocati
             <Button
               onClick={handleDetectLocation}
               disabled={isDetectingLocation}
-              className="w-full bg-femfuel-rose hover:bg-[#9f1853] text-white"
+              className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
             >
               <MapPin className="h-4 w-4 mr-2" />
               {isDetectingLocation ? "Detectando ubicación..." : "Usar mi ubicación actual"}
@@ -293,7 +293,7 @@ export function LocationModal({ isOpen, onClose, onLocationUpdate, currentLocati
             <Button
               onClick={handleConfirmLocation}
               disabled={!selectedLocation}
-              className="flex-1 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+              className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
             >
               Confirmar ubicación
             </Button>

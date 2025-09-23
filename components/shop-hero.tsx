@@ -136,7 +136,7 @@ export function ShopHero() {
                     {/* Actions */}
                     <div className="flex gap-3">
                       <Button
-                        className="flex-1 bg-femfuel-rose hover:bg-[#9f1853] text-white"
+                        className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
                         onClick={(e) => handleAddToCart(currentProduct, e)}
                       >
                         <ShoppingCart className="h-4 w-4 mr-2" />

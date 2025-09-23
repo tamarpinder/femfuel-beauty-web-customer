@@ -50,3 +50,13 @@ export function getAllProfessionals(): ProfessionalWithVendor[] {
 
   return professionals
 }
+
+export function getProfessionalBySlug(slug: string): ProfessionalWithVendor | null {
+  const allProfessionals = getAllProfessionals()
+
+  // Find professional by matching slug generated from name
+  return allProfessionals.find(professional => {
+    const professionalSlug = professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+    return professionalSlug === slug
+  }) || null
+}

@@ -13,9 +13,15 @@ import { ChatButton } from "@/components/ui/chat-button"
 import { BookingModal } from "@/components/booking-modal"
 import { CustomerFooter } from "@/components/customer-footer"
 import { getPortfolioForProfessional } from "@/lib/portfolio-mapping"
+import { getProfessionalBySlug } from "@/lib/getAllProfessionals"
 import type { Professional, VendorService } from "@/types/vendor"
 
 interface ProfessionalProfile extends Professional {
+  position?: string
+  socialMedia?: {
+    instagram?: string
+    tiktok?: string
+  }
   portfolio: {
     images: string[]
     videos?: string[]
@@ -127,6 +133,55 @@ function getAwards(specialty: string, name: string): string[] {
   return awardTemplates[specialty] || awardTemplates.nails
 }
 
+// Helper function to determine specialty category from professional specialties
+function getSpecialtyCategory(specialties: string[]): string {
+  const specialtyMappings: Record<string, string[]> = {
+    nails: ['manicure', 'pedicure', 'nail', 'uñas', 'gel', 'acrílicas'],
+    hair: ['corte', 'color', 'peinado', 'keratina', 'alisado', 'balayage', 'mechas', 'cabello'],
+    makeup: ['maquillaje', 'makeup', 'cejas', 'novias', 'gala'],
+    spa: ['masaje', 'facial', 'spa', 'relajante', 'tratamiento', 'terapia']
+  }
+
+  for (const [category, keywords] of Object.entries(specialtyMappings)) {
+    for (const specialty of specialties) {
+      if (keywords.some(keyword => specialty.toLowerCase().includes(keyword))) {
+        return category
+      }
+    }
+  }
+  return 'nails' // Default fallback
+}
+
+// Generate testimonials based on professional's name and specialties
+function generateTestimonials(professionalName: string, specialties: string[]): Array<{
+  id: string
+  clientName: string
+  clientImage?: string
+  text: string
+  rating: number
+  serviceCategory: string
+  date: string
+  isVerified?: boolean
+}> {
+  const firstName = professionalName.split(' ')[0]
+  const clientNames = ['María González', 'Carmen Reyes', 'Ana Martínez', 'Rosa Santos', 'Sofia López']
+  const testimonialTemplates = [
+    `${firstName} es increíble! Mis ${specialties[0].toLowerCase()} nunca habían lucido tan hermosos. Su atención al detalle es impresionante.`,
+    `Excelente profesional, muy creativa y dedicada. Siempre logra superar mis expectativas con ${specialties[0].toLowerCase()}.`,
+    `${firstName} tiene un talento natural. Mi experiencia con ${specialties[0].toLowerCase()} fue excepcional.`
+  ]
+
+  return specialties.slice(0, 3).map((specialty, index) => ({
+    id: (index + 1).toString(),
+    clientName: clientNames[index],
+    text: testimonialTemplates[index],
+    rating: 5,
+    serviceCategory: specialty,
+    date: new Date(Date.now() - (index + 1) * 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+    isVerified: true
+  }))
+}
+
 export default function ProfessionalPortfolioPage() {
   const params = useParams()
   const router = useRouter()
@@ -140,66 +195,30 @@ export default function ProfessionalPortfolioPage() {
   const [selectedService, setSelectedService] = useState<VendorService | null>(null)
 
   useEffect(() => {
-    // Mock professional data - replace with API call
-    // For demo purposes, we'll map by professional ID to specific portfolios
-    const professionalMappings: Record<string, { name: string; specialty: string; bio: string; specialties: string[]; position: string }> = {
-      "patricia-lopez": {
-        name: "Patricia López",
-        specialty: "nails",
-        bio: "Especialista en nail art con 8 años de experiencia. Me apasiona crear diseños únicos que reflejen la personalidad de cada cliente. Certificada en técnicas avanzadas de gel y especialista en extensiones de uñas.",
-        specialties: ["Manicure Gel", "Nail Art", "Extensiones"],
-        position: "Nail Artist Principal"
-      },
-      "carla-rodriguez": {
-        name: "Carla Rodríguez",
-        specialty: "hair",
-        bio: "Estilista profesional especializada en cortes modernos y técnicas de coloración avanzada. Con más de 10 años de experiencia creando looks únicos para cada cliente.",
-        specialties: ["Corte y Color", "Peinados", "Tratamientos Capilares"],
-        position: "Hair Stylist Senior"
-      },
-      "alejandra-santos": {
-        name: "Alejandra Santos",
-        specialty: "makeup",
-        bio: "Maquilladora profesional especializada en maquillaje de novias y eventos especiales. Certificada en técnicas internacionales de maquillaje.",
-        specialties: ["Maquillaje de Novia", "Maquillaje de Gala", "Maquillaje Editorial"],
-        position: "Makeup Artist Principal"
-      },
-      "gabriela-mendez": {
-        name: "Gabriela Méndez",
-        specialty: "spa",
-        bio: "Terapeuta especializada en tratamientos faciales y relajación. Más de 6 años ayudando a clientes a encontrar el bienestar y la belleza natural.",
-        specialties: ["Tratamientos Faciales", "Masajes Relajantes", "Terapias Anti-edad"],
-        position: "Spa Therapist Senior"
-      }
+    // Load actual professional data from the system
+    const professionalData = getProfessionalBySlug(professionalId)
+
+    if (!professionalData) {
+      setProfessional(null)
+      setLoading(false)
+      return
     }
 
-    const professionalData = professionalMappings[professionalId] || professionalMappings["patricia-lopez"]
+    // Determine specialty category for portfolio generation
+    const specialtyCategory = getSpecialtyCategory(professionalData.specialties)
 
     // Get portfolio images using the mapping system
     const portfolioData = getPortfolioForProfessional(
       professionalId,
-      professionalData.specialty,
+      specialtyCategory,
       professionalData.name
     )
 
-    const mockProfessional: ProfessionalProfile = {
-      id: professionalId,
-      name: professionalData.name,
+    // Create professional profile with dynamic data
+    const professionalProfile: ProfessionalProfile = {
+      ...professionalData,
       slug: professionalId,
-      image: "/professionals/portraits/nail-artist-patricia.png",
-      rating: 4.9,
-      reviewCount: 127,
-      yearsExperience: 8,
-      monthlyBookings: 95,
-      specialties: professionalData.specialties,
-      recommendedAddons: [],
-      bio: professionalData.bio,
-      isTopRated: true,
-      nextAvailable: "Hoy 3:00 PM",
-      vendorId: "vendor-profile-001",
-      vendorName: "Beauty Studio RD",
-      vendorSlug: "beauty-studio-rd",
-      position: professionalData.position,
+      position: `${professionalData.specialties[0]} Specialist`,
       socialMedia: {
         instagram: `@${professionalData.name.toLowerCase().replace(' ', '_')}_rd`,
         tiktok: `@${professionalData.name.toLowerCase().replace(' ', '_')}`
@@ -209,37 +228,17 @@ export default function ProfessionalPortfolioPage() {
         beforeAfter: portfolioData.beforeAfter,
         signature: {
           serviceName: `${professionalData.specialties[0]} Premium ${professionalData.name.split(' ')[0]}`,
-          description: getSignatureServiceDescription(professionalData.specialty),
-          price: getSignatureServicePrice(professionalData.specialty),
-          duration: getSignatureServiceDuration(professionalData.specialty)
+          description: getSignatureServiceDescription(specialtyCategory),
+          price: getSignatureServicePrice(specialtyCategory),
+          duration: getSignatureServiceDuration(specialtyCategory)
         },
-        certifications: getCertifications(professionalData.specialty),
-        awards: getAwards(professionalData.specialty, professionalData.name),
-        clientTestimonials: [
-          {
-            id: "1",
-            clientName: "María González",
-            clientImage: "/clients/avatars/maria-g.jpg",
-            text: "Patricia es increíble! Mis uñas nunca habían lucido tan hermosas. Su atención al detalle es impresionante.",
-            rating: 5,
-            serviceCategory: "Manicure Gel",
-            date: "2024-12-05",
-            isVerified: true
-          },
-          {
-            id: "2",
-            clientName: "Carmen Reyes",
-            text: "Excelente profesional, muy creativa y dedicada. Siempre logra superar mis expectativas.",
-            rating: 5,
-            serviceCategory: "Nail Art",
-            date: "2024-12-02",
-            isVerified: true
-          }
-        ]
+        certifications: getCertifications(specialtyCategory),
+        awards: getAwards(specialtyCategory, professionalData.name),
+        clientTestimonials: generateTestimonials(professionalData.name, professionalData.specialties)
       }
     }
 
-    setProfessional(mockProfessional)
+    setProfessional(professionalProfile)
     setLoading(false)
   }, [professionalId])
 

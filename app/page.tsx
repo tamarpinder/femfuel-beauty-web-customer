@@ -221,21 +221,26 @@ export default function HomePage() {
   const getStarProfessionals = useCallback(() => {
     const allProfessionals = getAllProfessionals()
 
-    // Portfolio image structure - keep existing images
+
+    // Portfolio structure mapped to real professionals with correct names and slugs
     const portfolioStructure = [
       {
+        name: "Ana Rodríguez",
+        slug: "ana-rodrguez", // Correct slug with accents
         category: "hair",
         portfolioImages: [
-          "/professionals/portfolios/carla-rodriguez/carla-portfolio-1.png",
-          "/professionals/portfolios/carla-rodriguez/carla-portfolio-2.png",
-          "/professionals/portfolios/carla-rodriguez/carla-portfolio-3.png",
-          "/professionals/portfolios/carla-rodriguez/carla-portfolio-4.png"
+          "/professionals/portfolios/ana-rodrguez/carla-portfolio-1.png",
+          "/professionals/portfolios/ana-rodrguez/carla-portfolio-2.png",
+          "/professionals/portfolios/ana-rodrguez/carla-portfolio-3.png",
+          "/professionals/portfolios/ana-rodrguez/carla-portfolio-4.png"
         ],
         avatar: "/professionals/portraits/hair-colorist-lucia.png",
         signature: "Balayage Dorado Caribeño",
         price: "RD$4,500"
       },
       {
+        name: "Alejandra Santos",
+        slug: "alejandra-santos",
         category: "makeup",
         portfolioImages: [
           "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
@@ -248,24 +253,28 @@ export default function HomePage() {
         price: "RD$3,500"
       },
       {
+        name: "Isabella Martínez",
+        slug: "isabella-martnez", // Correct slug with accents
         category: "spa",
         portfolioImages: [
-          "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-1.png",
-          "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-2.png",
-          "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-3.png",
-          "/professionals/portfolios/gabriela-mendez/gabriela-portfolio-4.png"
+          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-1.png",
+          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-2.png",
+          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-3.png",
+          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-4.png"
         ],
         avatar: "/professionals/portraits/wellness-therapist-isabella.png",
         signature: "Piel Radiante Caribeña",
         price: "RD$4,200"
       },
       {
+        name: "Maria Rodriguez",
+        slug: "maria-rodriguez",
         category: "nails",
         portfolioImages: [
-          "/professionals/portfolios/patricia-lopez/patricia-portfolio-1.png",
-          "/professionals/portfolios/patricia-lopez/patricia-portfolio-2.png",
-          "/professionals/portfolios/patricia-lopez/patricia-portfolio-3.png",
-          "/professionals/portfolios/patricia-lopez/patricia-portfolio-4.png"
+          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-1.png",
+          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-2.png",
+          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-3.png",
+          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-4.png"
         ],
         avatar: "/professionals/portraits/nail-artist-sofia.png",
         signature: "Tropical Nail Art",
@@ -273,113 +282,40 @@ export default function HomePage() {
       }
     ]
 
-    // Helper function to find professional by specialty
-    const findProfessionalBySpecialty = (specialtyKeywords: string[]) => {
+    // Find real professionals by exact name matching
+    const findProfessionalByName = (targetName: string) => {
       return allProfessionals.find(prof =>
-        prof.specialties && prof.specialties.some(specialty =>
-          specialtyKeywords.some(keyword =>
-            specialty.toLowerCase().includes(keyword.toLowerCase())
-          )
-        )
+        prof.name === targetName
       )
     }
 
-    // Find real professionals by specialty categories
-    const hairColorist = findProfessionalBySpecialty(['Coloración', 'Balayage', 'Color'])
-    const makeupArtist = findProfessionalBySpecialty(['Maquillaje', 'Makeup'])
-    const spaTherapist = findProfessionalBySpecialty(['Tratamientos Faciales', 'Facial', 'Spa'])
-    const nailArtist = findProfessionalBySpecialty(['Nail Art', 'Manicure', 'Uñas'])
-
     // Build result using real professionals mapped to portfolio structure
-    const starProfessionals = []
+    const starProfessionals: any[] = []
 
-    if (hairColorist) {
-      const slug = hairColorist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-      starProfessionals.push({
-        id: slug,
-        name: hairColorist.name,
-        specialty: hairColorist.specialties?.[0] || "Especialista en Color",
-        salon: hairColorist.vendor.name,
-        vendorId: hairColorist.vendor.slug,
-        location: hairColorist.vendor.location.district,
-        rating: hairColorist.rating,
-        reviewCount: hairColorist.reviewCount,
-        yearsExperience: hairColorist.yearsExperience,
-        avatar: portfolioStructure[0].avatar,
-        portfolioImages: portfolioStructure[0].portfolioImages,
-        specialties: hairColorist.specialties,
-        availableToday: true,
-        nextAvailable: hairColorist.nextAvailable || "Hoy 2:00 PM",
-        signature: portfolioStructure[0].signature,
-        price: portfolioStructure[0].price
-      })
-    }
+    portfolioStructure.forEach(portfolioItem => {
+      const realProfessional = findProfessionalByName(portfolioItem.name)
 
-    if (makeupArtist) {
-      const slug = makeupArtist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-      starProfessionals.push({
-        id: slug,
-        name: makeupArtist.name,
-        specialty: makeupArtist.specialties?.[0] || "Maquilladora Profesional",
-        salon: makeupArtist.vendor.name,
-        vendorId: makeupArtist.vendor.slug,
-        location: makeupArtist.vendor.location.district,
-        rating: makeupArtist.rating,
-        reviewCount: makeupArtist.reviewCount,
-        yearsExperience: makeupArtist.yearsExperience,
-        avatar: portfolioStructure[1].avatar,
-        portfolioImages: portfolioStructure[1].portfolioImages,
-        specialties: makeupArtist.specialties,
-        availableToday: false,
-        nextAvailable: makeupArtist.nextAvailable || "Mañana 10:00 AM",
-        signature: portfolioStructure[1].signature,
-        price: portfolioStructure[1].price
-      })
-    }
-
-    if (spaTherapist) {
-      const slug = spaTherapist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-      starProfessionals.push({
-        id: slug,
-        name: spaTherapist.name,
-        specialty: spaTherapist.specialties?.[0] || "Terapeuta Facial",
-        salon: spaTherapist.vendor.name,
-        vendorId: spaTherapist.vendor.slug,
-        location: spaTherapist.vendor.location.district,
-        rating: spaTherapist.rating,
-        reviewCount: spaTherapist.reviewCount,
-        yearsExperience: spaTherapist.yearsExperience,
-        avatar: portfolioStructure[2].avatar,
-        portfolioImages: portfolioStructure[2].portfolioImages,
-        specialties: spaTherapist.specialties,
-        availableToday: true,
-        nextAvailable: spaTherapist.nextAvailable || "Hoy 4:30 PM",
-        signature: portfolioStructure[2].signature,
-        price: portfolioStructure[2].price
-      })
-    }
-
-    if (nailArtist) {
-      const slug = nailArtist.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-      starProfessionals.push({
-        id: slug,
-        name: nailArtist.name,
-        specialty: nailArtist.specialties?.[0] || "Nail Artist",
-        salon: nailArtist.vendor.name,
-        vendorId: nailArtist.vendor.slug,
-        location: nailArtist.vendor.location.district,
-        rating: nailArtist.rating,
-        reviewCount: nailArtist.reviewCount,
-        yearsExperience: nailArtist.yearsExperience,
-        avatar: portfolioStructure[3].avatar,
-        portfolioImages: portfolioStructure[3].portfolioImages,
-        specialties: nailArtist.specialties,
-        availableToday: true,
-        nextAvailable: nailArtist.nextAvailable || "Hoy 1:00 PM",
-        signature: portfolioStructure[3].signature,
-        price: portfolioStructure[3].price
-      })
-    }
+      if (realProfessional) {
+        starProfessionals.push({
+          id: portfolioItem.slug,
+          name: realProfessional.name,
+          specialty: realProfessional.specialties?.[0] || portfolioItem.category,
+          salon: realProfessional.vendor.name,
+          vendorId: realProfessional.vendor.slug,
+          location: realProfessional.vendor.location.district,
+          rating: realProfessional.rating,
+          reviewCount: realProfessional.reviewCount,
+          yearsExperience: realProfessional.yearsExperience,
+          avatar: portfolioItem.avatar,
+          portfolioImages: portfolioItem.portfolioImages,
+          specialties: realProfessional.specialties,
+          availableToday: portfolioItem.category === 'makeup' ? false : true,
+          nextAvailable: realProfessional.nextAvailable || (portfolioItem.category === 'makeup' ? "Mañana 10:00 AM" : "Hoy 2:00 PM"),
+          signature: portfolioItem.signature,
+          price: portfolioItem.price
+        })
+      }
+    })
 
     return starProfessionals
   }, [])

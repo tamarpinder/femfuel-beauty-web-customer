@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 
 interface Professional {
-  id: number
+  id: number | string
   name: string
   specialty: string
   salon: string
@@ -29,8 +29,8 @@ interface Professional {
 
 interface StarProfessionalsProps {
   professionals: Professional[]
-  onViewVendor?: (professionalId: number) => void
-  onViewPortfolio?: (professionalId: number) => void
+  onViewVendor?: (professionalId: number | string) => void
+  onViewPortfolio?: (professionalId: number | string) => void
 }
 
 export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio }: StarProfessionalsProps) {

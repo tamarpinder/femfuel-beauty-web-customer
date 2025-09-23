@@ -94,9 +94,6 @@ export default function VendorPage() {
   }
 
   const handleBookingComplete = (booking: any) => {
-    // Booking completed successfully
-  }
-
     // BookingModal and ProcessingOverlay are already closed by this point
     // Just handle cleanup and navigation
     setShowBookingModal(false)

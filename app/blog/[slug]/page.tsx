@@ -378,7 +378,7 @@ export default function BlogArticlePage() {
       <CustomerFooter />
 
       {/* Mobile Navigation */}
-      <MobileNavigation activeTab="blog" />
+      <MobileNavigation activeTab="shop" />
     </div>
   )
 }

@@ -343,7 +343,7 @@ export default function BlogPage() {
       <CustomerFooter />
 
       {/* Mobile Navigation */}
-      <MobileNavigation activeTab="blog" />
+      <MobileNavigation activeTab="shop" />
     </div>
   )
 }

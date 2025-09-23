@@ -503,11 +503,9 @@ export default function HomePage() {
   }
 
 
-  const handleTabChange = (tab: "home" | "search" | "blog" | "bookings" | "shop" | "profile" | "chat") => {
+  const handleTabChange = (tab: "home" | "search" | "bookings" | "shop" | "profile" | "chat") => {
     if (tab === "search") {
       router.push("/services")
-    } else if (tab === "blog") {
-      router.push("/blog")
     } else if (tab === "shop") {
       router.push("/shop")
     } else if (tab === "bookings") {

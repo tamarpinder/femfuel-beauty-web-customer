@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, Star, MapPin, Calendar, Award, Instagram, Phone, MessageCircle, Share2, Video, Trophy, ShieldCheck, Clock, Heart } from "lucide-react"
+import { ArrowLeft, Star, MapPin, Calendar, Award, Instagram, Phone, MessageCircle, Share2, Video, Trophy, ShieldCheck, Clock, Heart, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,15 @@ import type { Professional, VendorService } from "@/types/vendor"
 
 interface ProfessionalProfile extends Professional {
   position?: string
+  vendor?: {
+    name: string
+    slug: string
+    location: {
+      address: string
+      district: string
+      city: string
+    }
+  }
   socialMedia?: {
     instagram?: string
     tiktok?: string
@@ -269,8 +278,8 @@ export default function ProfessionalPortfolioPage() {
   }
 
   const handleVendorVisit = () => {
-    if (professional?.vendorSlug) {
-      router.push(`/vendor/${professional.vendorSlug}`)
+    if (professional?.vendor?.slug) {
+      router.push(`/vendor/${professional.vendor.slug}`)
     }
   }
 
@@ -391,14 +400,39 @@ export default function ProfessionalPortfolioPage() {
                 </div>
               </div>
 
-              <button
-                onClick={handleVendorVisit}
-                className="text-sm text-femfuel-rose font-medium"
-              >
-                {professional.vendorName} →
-              </button>
             </div>
           </div>
+
+          {/* Vendor Card */}
+          <Card
+            className="mb-6 cursor-pointer transition-all duration-200 hover:shadow-md border-femfuel-rose/20 hover:border-femfuel-rose/40"
+            onClick={handleVendorVisit}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-femfuel-light rounded-lg flex items-center justify-center">
+                  <Award className="h-6 w-6 text-femfuel-rose" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-femfuel-dark">{professional.vendor?.name || professional.vendorName}</h3>
+                    <ChevronRight className="h-4 w-4 text-femfuel-medium" />
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-femfuel-medium">
+                    <MapPin className="h-3 w-3" />
+                    <span>{professional.vendor?.location?.district || "Santo Domingo"}</span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs font-medium text-femfuel-dark">{professional.rating || 4.8}</span>
+                    </div>
+                    <span className="text-xs text-femfuel-medium">• Salon de Belleza</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Specialties */}
           <div className="flex flex-wrap gap-2 mb-6">
@@ -622,32 +656,6 @@ export default function ProfessionalPortfolioPage() {
           )}
         </div>
 
-        {/* Bottom Action Bar */}
-        <div className="fixed bottom-20 left-0 right-0 p-4 bg-white border-t border-gray-100">
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              size="icon"
-              className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light"
-            >
-              <MessageCircle className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light"
-            >
-              <Phone className="h-5 w-5" />
-            </Button>
-            <Button
-              onClick={handleBookNow}
-              className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
-            >
-              Reservar Cita
-            </Button>
-          </div>
-        </div>
-
         {/* Mobile Navigation */}
         <MobileNavigation activeTab="search" />
       </div>
@@ -784,14 +792,39 @@ export default function ProfessionalPortfolioPage() {
                         </div>
                       </div>
 
-                      <button
-                        onClick={handleVendorVisit}
-                        className="text-femfuel-rose font-medium hover:underline"
-                      >
-                        {professional.vendorName} →
-                      </button>
                     </div>
                   </div>
+
+                  {/* Vendor Card */}
+                  <Card
+                    className="mb-6 cursor-pointer transition-all duration-200 hover:shadow-md border-femfuel-rose/20 hover:border-femfuel-rose/40"
+                    onClick={handleVendorVisit}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-femfuel-light rounded-lg flex items-center justify-center">
+                          <Award className="h-6 w-6 text-femfuel-rose" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-semibold text-femfuel-dark">{professional.vendor?.name || professional.vendorName}</h3>
+                            <ChevronRight className="h-4 w-4 text-femfuel-medium" />
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-femfuel-medium">
+                            <MapPin className="h-3 w-3" />
+                            <span>{professional.vendor?.location?.district || "Santo Domingo"}</span>
+                          </div>
+                          <div className="flex items-center gap-2 mt-1">
+                            <div className="flex items-center gap-1">
+                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                              <span className="text-xs font-medium text-femfuel-dark">{professional.rating || 4.8}</span>
+                            </div>
+                            <span className="text-xs text-femfuel-medium">• Salon de Belleza</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
                   {/* Specialties */}
                   <div className="flex flex-wrap gap-2 mb-6">

@@ -1,10 +1,4 @@
-import { peinadosVendors } from "@/data/vendors/peinados"
-import { maquillajeVendors } from "@/data/vendors/maquillaje"
-import { unasBasicVendors } from "@/data/vendors/unas-basic"
-import { mixedVendors } from "@/data/vendors/mixed"
-import { spaVendors } from "@/data/vendors/spa"
-import { pestanasVendors } from "@/data/vendors/pestanas"
-import { unasLuxuryVendors } from "@/data/vendors/unas-luxury"
+import { VendorAdapter } from "@/lib/vendor-adapter"
 import { Professional } from "@/types/vendor"
 
 export interface ProfessionalWithVendor extends Professional {
@@ -20,16 +14,8 @@ export interface ProfessionalWithVendor extends Professional {
 }
 
 export function getAllProfessionals(): ProfessionalWithVendor[] {
-  // Aggregate all vendor data
-  const allVendors = [
-    ...peinadosVendors,
-    ...maquillajeVendors,
-    ...unasBasicVendors,
-    ...mixedVendors,
-    ...spaVendors,
-    ...pestanasVendors,
-    ...unasLuxuryVendors
-  ]
+  // Get all vendors using VendorAdapter which includes generated professionals
+  const allVendors = VendorAdapter.getAllVendors()
 
   const professionals: ProfessionalWithVendor[] = []
 

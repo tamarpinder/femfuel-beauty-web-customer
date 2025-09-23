@@ -20,6 +20,7 @@ export interface ProfessionalWithVendor extends Professional {
 }
 
 export function getAllProfessionals(): ProfessionalWithVendor[] {
+  // Aggregate all vendor data
   const allVendors = [
     ...peinadosVendors,
     ...maquillajeVendors,

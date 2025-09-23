@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { CustomerFooter } from "@/components/customer-footer"
 import { MobileNavigation } from "@/components/mobile-navigation"
-import { getAllProfessionals, Professional } from "@/lib/getAllProfessionals"
+import { getAllProfessionals, ProfessionalWithVendor } from "@/lib/getAllProfessionals"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
@@ -45,13 +45,13 @@ export default function TopProfessionalsPage() {
     return matchesSearch && matchesSpecialty && matchesFilter
   })
 
-  const handleViewProfile = (professional: Professional) => {
+  const handleViewProfile = (professional: ProfessionalWithVendor) => {
     // Convert professional name to slug format
     const slug = professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
     router.push(`/professional/${slug}`)
   }
 
-  const handleContact = (professional: Professional) => {
+  const handleContact = (professional: ProfessionalWithVendor) => {
     // TODO: Implement contact functionality
   }
 

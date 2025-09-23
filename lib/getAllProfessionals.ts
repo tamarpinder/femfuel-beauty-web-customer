@@ -5,19 +5,9 @@ import { mixedVendors } from "@/data/vendors/mixed"
 import { spaVendors } from "@/data/vendors/spa"
 import { pestanasVendors } from "@/data/vendors/pestanas"
 import { unasLuxuryVendors } from "@/data/vendors/unas-luxury"
+import { Professional } from "@/types/vendor"
 
-export interface Professional {
-  id: string
-  name: string
-  image?: string
-  rating: number
-  reviewCount: number
-  yearsExperience: number
-  monthlyBookings: number
-  specialties: string[]
-  isTopRated?: boolean
-  nextAvailable?: string
-  bio?: string
+export interface ProfessionalWithVendor extends Professional {
   vendor: {
     name: string
     slug: string
@@ -29,7 +19,7 @@ export interface Professional {
   }
 }
 
-export function getAllProfessionals(): Professional[] {
+export function getAllProfessionals(): ProfessionalWithVendor[] {
   const allVendors = [
     ...peinadosVendors,
     ...maquillajeVendors,
@@ -40,7 +30,7 @@ export function getAllProfessionals(): Professional[] {
     ...unasLuxuryVendors
   ]
 
-  const professionals: Professional[] = []
+  const professionals: ProfessionalWithVendor[] = []
 
   allVendors.forEach(vendor => {
     if (vendor.professionals) {

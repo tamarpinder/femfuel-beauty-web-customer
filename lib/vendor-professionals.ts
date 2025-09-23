@@ -1,6 +1,6 @@
-import { getAllProfessionals, Professional } from "@/lib/getAllProfessionals"
+import { getAllProfessionals, ProfessionalWithVendor } from "@/lib/getAllProfessionals"
 
-export function getProfessionalsForVendor(vendorName: string): Professional[] {
+export function getProfessionalsForVendor(vendorName: string): ProfessionalWithVendor[] {
   const allProfessionals = getAllProfessionals()
 
   return allProfessionals.filter(professional =>
@@ -8,7 +8,7 @@ export function getProfessionalsForVendor(vendorName: string): Professional[] {
   )
 }
 
-export function getProfessionalsByVendorSlug(vendorSlug: string): Professional[] {
+export function getProfessionalsByVendorSlug(vendorSlug: string): ProfessionalWithVendor[] {
   const allProfessionals = getAllProfessionals()
 
   // Direct slug matching - much more reliable

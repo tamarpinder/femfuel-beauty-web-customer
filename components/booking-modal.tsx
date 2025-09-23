@@ -618,16 +618,37 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
 
             {/* Action Buttons */}
-            <div className="flex justify-between pt-4 border-t border-gray-200">
+            <div className={`${
+              currentStep === "configuration" && bookingData.date && bookingData.time
+                ? "sticky bottom-0 bg-white border-t-2 border-femfuel-rose/20 shadow-lg z-10"
+                : ""
+            } flex justify-between pt-4 px-6 -mx-6 border-t border-gray-200`}>
               <div></div>
               <Button
                 onClick={handleNext}
                 disabled={!canContinue() || isLoading}
-                className="bg-femfuel-rose hover:bg-femfuel-rose/90 px-8"
+                className={`bg-femfuel-rose hover:bg-femfuel-rose/90 px-8 ${
+                  currentStep === "configuration" && bookingData.date && bookingData.time
+                    ? "animate-pulse shadow-lg"
+                    : ""
+                }`}
               >
                 {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
               </Button>
             </div>
+
+            {/* Mobile Sticky Continue Button for Configuration Step */}
+            {currentStep === "configuration" && bookingData.date && bookingData.time && (
+              <div className="block sm:hidden fixed bottom-20 left-4 right-4 z-50">
+                <Button
+                  onClick={handleNext}
+                  disabled={!canContinue() || isLoading}
+                  className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 h-12 text-base font-semibold shadow-xl border-2 border-white animate-bounce"
+                >
+                  ✅ Continuar con la Reserva
+                </Button>
+              </div>
+            )}
 
           </div>
         </DialogContent>

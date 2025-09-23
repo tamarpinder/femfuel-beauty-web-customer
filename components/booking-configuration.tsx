@@ -274,13 +274,13 @@ export function BookingConfiguration({
 
           {/* Booking Summary - Ultra Compact */}
           {selectedDate && selectedTime && (
-            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg">
+            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-lg" data-booking-summary>
               <h5 className="font-medium text-green-800 mb-1 sm:mb-2 text-xs sm:text-sm">
-                Resumen de tu cita:
+                ✅ Resumen de tu cita:
               </h5>
               <div className="space-y-0.5 sm:space-y-1 text-xs text-green-700">
-                <div className="text-xs">{format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
-                <div className="text-xs">{selectedTime} - {
+                <div className="text-xs font-medium">{format(selectedDate, 'EEEE, d MMMM yyyy')}</div>
+                <div className="text-xs font-medium">{selectedTime} - {
                   // Calculate end time
                   (() => {
                     const [hours, minutes] = selectedTime.split(':').map(Number)
@@ -293,7 +293,7 @@ export function BookingConfiguration({
                 {selectedProfessional && (
                   <div className="text-xs">Con {selectedProfessional.name}</div>
                 )}
-                <div className="font-medium text-xs">Total: RD${totalPrice.toLocaleString()}</div>
+                <div className="font-medium text-xs bg-green-100 px-2 py-1 rounded">Total: RD${totalPrice.toLocaleString()}</div>
               </div>
             </div>
           )}

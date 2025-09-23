@@ -308,17 +308,20 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
                   onClick={() => {
                     onNavigate?.('bookings')
                   }}
-                  className="relative z-10 w-full bg-white/20 hover:bg-femfuel-rose-hover backdrop-blur-md
-                           border border-white/30 hover:border-femfuel-rose-hover rounded-xl p-3 sm:p-4
+                  className="relative z-10 w-full bg-white/20 hover:bg-femfuel-rose backdrop-blur-md
+                           border border-white/30 hover:border-femfuel-rose rounded-xl p-3 sm:p-4
                            text-white font-semibold transition-all duration-300 ease-out
                            hover:scale-105 hover:shadow-2xl hover:shadow-femfuel-rose/50
-                           active:scale-95 group transform
-                           focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2"
+                           active:scale-95 group transform cursor-pointer
+                           focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2
+                           hover:brightness-110"
                 >
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
                     <Calendar className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
                     <span className="text-sm sm:text-base group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-bold">Ver Mis Citas</span>
                   </div>
+                  {/* Enhanced hover feedback */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-femfuel-rose/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
 
                 {/* Secondary Action - Inicio */}
@@ -326,18 +329,28 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
                   onClick={() => {
                     onNavigate?.('home')
                   }}
-                  className="relative z-10 w-full bg-white/15 hover:bg-white/50 backdrop-blur-md
+                  className="relative z-10 w-full bg-white/15 hover:bg-white/40 backdrop-blur-md
                            border border-white/20 hover:border-white/80 rounded-xl p-3 sm:p-4
                            text-white font-medium transition-all duration-300 ease-out
                            hover:scale-105 hover:shadow-xl hover:shadow-white/50
-                           active:scale-95 group transform
-                           focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2"
+                           active:scale-95 group transform cursor-pointer
+                           focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2
+                           hover:brightness-110"
                 >
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
                     <Home className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />
                     <span className="text-sm sm:text-base group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-semibold">Volver al Inicio</span>
                   </div>
+                  {/* Enhanced hover feedback */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-blue-300/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
+
+                {/* Loading states for button interactions */}
+                <div className="text-center mt-2">
+                  <p className="text-white/60 text-xs">
+                    Toca cualquier botón para continuar
+                  </p>
+                </div>
               </div>
             </div>
           )}

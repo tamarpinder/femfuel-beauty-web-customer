@@ -188,22 +188,40 @@ export function EnhancedBookingCalendar({
 
                 {/* Time Slots */}
                 <div className="space-y-2">
-                  {suggestion.availableTimes.map(time => (
-                    <Button
-                      key={time}
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start h-8 lg:h-9 px-3 bg-femfuel-light/30 hover:bg-femfuel-rose hover:text-white text-femfuel-dark border border-femfuel-rose/20 hover:border-femfuel-rose transition-all duration-200"
-                      onClick={() => {
-                        handleDateSelect(suggestion.date)
-                        // Auto-select the clicked time
-                        setTimeout(() => onTimeSelect(time), 100)
-                      }}
-                    >
-                      <Clock className="h-3 w-3 mr-2" />
-                      <span className="font-medium text-xs lg:text-sm">{time}</span>
-                    </Button>
-                  ))}
+                  {suggestion.availableTimes.map(time => {
+                    const isSelectedTime = selectedTime === time && selectedDate && isSameDay(selectedDate, suggestion.date)
+                    return (
+                      <Button
+                        key={time}
+                        variant={isSelectedTime ? "default" : "ghost"}
+                        size="sm"
+                        className={cn(
+                          "w-full justify-start h-8 lg:h-9 px-3 border transition-all duration-200",
+                          isSelectedTime
+                            ? "bg-femfuel-rose text-white border-femfuel-rose shadow-md"
+                            : "bg-femfuel-light/30 hover:bg-femfuel-rose hover:text-white text-femfuel-dark border-femfuel-rose/20 hover:border-femfuel-rose"
+                        )}
+                        onClick={() => {
+                          handleDateSelect(suggestion.date)
+                          // Instant time selection - no timeout
+                          onTimeSelect(time)
+                          // Smooth scroll to booking summary after selection
+                          setTimeout(() => {
+                            const summaryElement = document.querySelector('[data-booking-summary]')
+                            if (summaryElement) {
+                              summaryElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                            }
+                          }, 200)
+                        }}
+                      >
+                        <Clock className="h-3 w-3 mr-2" />
+                        <span className="font-medium text-xs lg:text-sm">{time}</span>
+                        {isSelectedTime && (
+                          <span className="ml-auto text-xs">✓</span>
+                        )}
+                      </Button>
+                    )
+                  })}
                 </div>
 
                 {/* Quick Select Button */}

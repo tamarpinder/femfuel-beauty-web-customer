@@ -269,7 +269,7 @@ export default function VendorPage() {
                   vendorId={vendor.id}
                   vendorName={vendor.name}
                   variant="inline"
-                  size="default"
+                  size="md"
                   className="bg-green-500 hover:bg-green-600 text-white shadow-lg backdrop-blur-sm"
                 >
                   💬 Chat
@@ -349,7 +349,7 @@ export default function VendorPage() {
                   vendorName={vendor.name}
                   serviceContext={contextService.name}
                   variant="inline"
-                  size="default"
+                  size="md"
                   className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
                 >
                   💬 Preguntar

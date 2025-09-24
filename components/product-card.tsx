@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Star, ShoppingCart, Heart, Eye } from "lucide-react"
+import { Star, ShoppingCart, Heart, Eye, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -26,6 +26,12 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
   }
 
   const handleAddToCart = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    await addToCart(product.id, 1)
+    onAddToCart?.(product.id)
+  }
+
+  const handleQuickAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation()
     await addToCart(product.id, 1)
     onAddToCart?.(product.id)
@@ -203,6 +209,16 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110 transition-all duration-200 shadow-md"
           >
             <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-gray-600 hover:text-red-500"}`} />
+          </Button>
+
+          {/* Quick Add to Cart Button */}
+          <Button
+            size="sm"
+            onClick={handleQuickAddToCart}
+            className="absolute bottom-2 right-2 h-10 w-10 p-0 rounded-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 z-10 min-h-[40px] min-w-[40px]"
+            title="Agregar al carrito"
+          >
+            <Plus className="h-5 w-5" />
           </Button>
         </div>
 

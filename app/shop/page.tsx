@@ -169,7 +169,44 @@ export default function ShopPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">{/* Shop page content relies on SmartHeader from layout */}
+    <div className="min-h-screen bg-gray-50">
+      {/* Custom Shop Header */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Back Button and Title */}
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleBack}
+                className="p-2"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <div>
+                <h1 className="text-xl font-bold text-femfuel-dark">Tienda</h1>
+                <p className="text-sm text-femfuel-medium">Productos de belleza premium</p>
+              </div>
+            </div>
+
+            {/* Cart and User Actions */}
+            <div className="flex items-center gap-2">
+              <CartDrawer>
+                <Button variant="ghost" size="sm" className="relative">
+                  <ShoppingCart className="h-5 w-5" />
+                  {itemCount > 0 && (
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-femfuel-rose text-white text-xs flex items-center justify-center p-0">
+                      {itemCount}
+                    </Badge>
+                  )}
+                </Button>
+              </CartDrawer>
+              <UserMenu />
+            </div>
+          </div>
+        </div>
+      </header>
 
       <div className="px-4 py-4 max-w-7xl mx-auto">
         {/* Hero Section */}

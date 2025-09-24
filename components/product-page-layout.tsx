@@ -70,16 +70,18 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
               <Button variant="ghost" size="sm">
                 <Share2 className="h-4 w-4" />
               </Button>
-              <CartDrawer>
-                <Button variant="ghost" size="sm" className="relative">
-                  <ShoppingBag className="h-4 w-4" />
-                  {itemCount > 0 && (
-                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-femfuel-rose text-white text-xs flex items-center justify-center p-0">
-                      {itemCount}
-                    </Badge>
-                  )}
-                </Button>
-              </CartDrawer>
+              <div className="hidden md:block">
+                <CartDrawer>
+                  <Button variant="ghost" size="sm" className="relative">
+                    <ShoppingBag className="h-4 w-4" />
+                    {itemCount > 0 && (
+                      <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-femfuel-rose text-white text-xs flex items-center justify-center p-0">
+                        {itemCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </CartDrawer>
+              </div>
             </div>
           </div>
         </div>

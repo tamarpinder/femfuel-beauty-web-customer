@@ -19,11 +19,11 @@ export const routeHeaderConfigs: Record<string, HeaderConfig> = {
     variant: 'full'
   },
 
-  // Pages with no header
+  // Pages with product search
   '/shop': {
-    showSearch: false,
-    searchType: 'none',
-    variant: 'none'
+    showSearch: true,
+    searchType: 'product',
+    variant: 'full'
   },
   '/professionals': {
     showSearch: false, // Will use professional-specific filters instead

@@ -4,11 +4,14 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Search, User, UserPlus } from "lucide-react"
+import { Search, User, UserPlus, ShoppingCart } from "lucide-react"
 import { SmartSearch } from "@/components/smart-search"
 import { AuthModal } from "@/components/auth-modal"
 import { UserMenu } from "@/components/user-menu"
+import { CartDrawer } from "@/components/cart-drawer"
+import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/auth-context"
+import { useCart } from "@/contexts/cart-context"
 import { getAllServices } from "@/lib/vendors-api"
 import type { SearchSuggestion } from "@/lib/search-utils"
 
@@ -18,6 +21,7 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ onSearch }: MobileHeaderProps) {
   const { isAuthenticated } = useAuth()
+  const { itemCount } = useCart()
   const router = useRouter()
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"login" | "signup">("login")
@@ -77,9 +81,26 @@ export function MobileHeader({ onSearch }: MobileHeaderProps) {
                 >
                   <Search className="h-4 w-4" />
                 </button>
-                
+
+                {/* Cart Button */}
+                <CartDrawer>
+                  <button
+                    className="icon-button-mobile relative"
+                    aria-label="Carrito"
+                  >
+                    <ShoppingCart className="h-4 w-4" />
+                    {itemCount > 0 && (
+                      <Badge
+                        className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center bg-femfuel-rose text-white text-xs font-bold"
+                      >
+                        {itemCount}
+                      </Badge>
+                    )}
+                  </button>
+                </CartDrawer>
+
                 {!isAuthenticated ? (
-                  <button 
+                  <button
                     onClick={() => handleAuthClick("login")}
                     className="glassmorphism-button-mobile"
                   >

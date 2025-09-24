@@ -206,6 +206,13 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             </h3>
           </div>
 
+          {/* Product Description */}
+          {product.shortDescription && (
+            <p className="text-xs text-femfuel-medium line-clamp-2 leading-relaxed">
+              {product.shortDescription}
+            </p>
+          )}
+
           {/* Rating */}
           <div className="flex items-center gap-1">
             <div className="flex items-center">

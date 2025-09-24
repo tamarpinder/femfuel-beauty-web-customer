@@ -195,9 +195,9 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
         </div>
 
         {/* Product Info */}
-        <div className="p-3 space-y-2">
-          {/* Brand and Name */}
-          <div>
+        <div className="p-3 space-y-3">
+          {/* Brand and Name - Centered on Mobile */}
+          <div className="text-center md:text-left">
             <p className="text-xs text-femfuel-medium uppercase tracking-wide">
               {product.brand}
             </p>
@@ -206,30 +206,30 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             </h3>
           </div>
 
-          {/* Product Description */}
+          {/* Product Description - Centered on Mobile */}
           {product.shortDescription && (
-            <p className="text-xs text-femfuel-medium line-clamp-2 leading-relaxed">
+            <p className="text-xs text-femfuel-medium line-clamp-2 leading-relaxed text-center md:text-left">
               {product.shortDescription}
             </p>
           )}
 
-          {/* Rating */}
-          <div className="flex items-center gap-1">
-            <div className="flex items-center">
+          {/* Rating - Centered on Mobile */}
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <div className="flex items-center gap-1">
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-              <span className="text-xs font-medium ml-1">{product.rating}</span>
+              <span className="text-xs font-medium">{product.rating}</span>
+              <span className="text-xs text-femfuel-light">({product.reviewCount})</span>
             </div>
-            <span className="text-xs text-femfuel-light">({product.reviewCount})</span>
             {product.isPopular && (
-              <Badge variant="secondary" className="text-xs ml-auto">
+              <Badge variant="secondary" className="text-xs">
                 Popular
               </Badge>
             )}
           </div>
 
-          {/* Price */}
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-black">
+          {/* Price - Centered and More Prominent on Mobile */}
+          <div className="flex items-center justify-center md:justify-start gap-2">
+            <span className="font-bold text-black text-base md:text-sm">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
@@ -239,16 +239,16 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             )}
           </div>
 
-          {/* Stock Status */}
+          {/* Stock Status - Centered on Mobile */}
           {product.availability.stockQuantity <= product.availability.lowStockThreshold && (
-            <p className="text-xs text-orange-600">
+            <p className="text-xs text-orange-600 text-center md:text-left">
               ¡Solo quedan {product.availability.stockQuantity}!
             </p>
           )}
 
-          {/* Volume/Size */}
+          {/* Volume/Size - Centered on Mobile */}
           {product.volume && (
-            <p className="text-xs text-femfuel-medium">
+            <p className="text-xs text-femfuel-medium text-center md:text-left">
               {product.volume}
             </p>
           )}

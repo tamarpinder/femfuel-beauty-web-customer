@@ -148,24 +148,24 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
 
           {/* Product Info */}
           <div className="space-y-6">
-            {/* Brand & Title */}
-            <div>
-              <p className="text-sm text-femfuel-medium uppercase tracking-wide mb-1">
+            {/* Brand & Title - Centered on Mobile */}
+            <div className="text-center md:text-left">
+              <p className="text-sm text-femfuel-medium uppercase tracking-wide mb-2">
                 {product.brand}
               </p>
-              <h1 className="text-2xl sm:text-3xl font-bold text-femfuel-dark leading-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-femfuel-dark leading-tight">
                 {product.name}
               </h1>
               {product.volume && (
-                <p className="text-sm text-femfuel-light mt-1">{product.volume}</p>
+                <p className="text-sm text-femfuel-light mt-2">{product.volume}</p>
               )}
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center gap-3">
+            {/* Rating - Centered on Mobile */}
+            <div className="flex items-center justify-center md:justify-start gap-3">
               <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="font-medium">{product.rating}</span>
+                <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                <span className="font-medium text-lg md:text-base">{product.rating}</span>
                 <span className="text-femfuel-light">({product.reviewCount} reseñas)</span>
               </div>
               {product.isPopular && (
@@ -173,21 +173,21 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
               )}
             </div>
 
-            {/* Price */}
-            <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold text-black">
+            {/* Price - Centered and More Prominent on Mobile */}
+            <div className="flex items-center justify-center md:justify-start gap-3">
+              <span className="text-4xl md:text-3xl font-bold text-black">
                 {formatPrice(product.price)}
               </span>
               {product.originalPrice && (
-                <span className="text-lg text-femfuel-light line-through">
+                <span className="text-xl md:text-lg text-femfuel-light line-through">
                   {formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>
 
-            {/* Stock Status */}
+            {/* Stock Status - Centered on Mobile */}
             {product.availability.stockQuantity <= product.availability.lowStockThreshold && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-center md:text-left">
                 <p className="text-sm text-orange-700 font-medium">
                   ¡Solo quedan {product.availability.stockQuantity}!
                 </p>
@@ -196,9 +196,9 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
 
             {/* Note: Variants functionality will be added in Phase 2 */}
 
-            {/* Quantity & Add to Cart */}
+            {/* Quantity & Add to Cart - Centered on Mobile */}
             <div className="space-y-4">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center md:justify-start gap-4">
                 <div className="flex items-center border border-gray-300 rounded-lg">
                   <Button
                     variant="ghost"

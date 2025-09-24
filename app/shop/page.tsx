@@ -170,8 +170,8 @@ export default function ShopPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Custom Shop Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+      {/* Custom Shop Header - Desktop Only */}
+      <header className="hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Back Button and Title */}

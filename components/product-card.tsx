@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Star, ShoppingCart, Heart, Plus } from "lucide-react"
+import { Star, ShoppingCart, Heart, Eye, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -19,6 +19,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
   const router = useRouter()
   const { addToCart } = useCart()
   const [isLiked, setIsLiked] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   const handleViewProduct = () => {
     router.push(`/shop/product/${product.slug}`)
@@ -140,6 +141,8 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
     <Card
       className="cursor-pointer hover:shadow-2xl hover:shadow-femfuel-rose/10 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 overflow-hidden group bg-white border border-gray-100 hover:border-femfuel-rose/20"
       onClick={handleViewProduct}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <CardContent className="p-0">
         {/* Product Image */}
@@ -172,6 +175,31 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             )}
           </div>
 
+          {/* Actions Container - No overlay, just buttons */}
+          <div className={`absolute bottom-4 left-0 right-0 transition-all duration-300 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}>
+            <div className="flex items-center justify-center gap-2 px-4">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleViewProduct()
+                }}
+                className="shadow-lg bg-white/95 backdrop-blur-sm hover:bg-white"
+              >
+                <Eye className="h-4 w-4 mr-1" />
+                Ver
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleAddToCart}
+                className="bg-femfuel-rose/95 backdrop-blur-sm hover:bg-femfuel-rose text-white shadow-lg"
+              >
+                <ShoppingCart className="h-4 w-4 mr-1" />
+                Agregar
+              </Button>
+            </div>
+          </div>
 
           {/* Like Button */}
           <Button

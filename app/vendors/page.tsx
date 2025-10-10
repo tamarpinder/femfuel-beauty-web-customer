@@ -271,7 +271,7 @@ export default function VendorsPage() {
                 return (
                   <div
                     key={cat.key}
-                    ref={el => sectionRefs.current[cat.key] = el}
+                    ref={el => { sectionRefs.current[cat.key] = el }}
                     data-category={cat.key}
                     className="mb-16"
                   >

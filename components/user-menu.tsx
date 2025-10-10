@@ -76,7 +76,6 @@ export function UserMenu() {
           </Avatar>
           <div className="hidden md:block text-left">
             <p className="text-sm font-medium text-femfuel-dark">{user?.name}</p>
-            <p className="text-xs text-femfuel-medium">{user?.email}</p>
           </div>
           <ChevronDown className="h-4 w-4 text-femfuel-medium" />
         </Button>

@@ -131,8 +131,7 @@ export default function VendorsPage() {
           </h1>
 
           <p className="text-xl text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
-            Explora los mejores salones de belleza en República Dominicana.
-            Encuentra el lugar perfecto para tu próximo servicio de belleza.
+            Descubre los mejores salones de belleza en República Dominicana y vive una experiencia única en tu próximo servicio
           </p>
 
           <div className="max-w-md mx-auto mb-6">
@@ -397,7 +396,7 @@ export default function VendorsPage() {
         <div className="max-w-4xl mx-auto text-center">
           <Award className="h-12 w-12 text-purple-600 mx-auto mb-6" />
           <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
-            ¿Tienes un Salón de Belleza?
+            Tienes un Salón de Belleza?
           </h2>
           <p className="text-lg text-femfuel-medium mb-8 max-w-2xl mx-auto">
             Únete a FemFuel Beauty y conecta con miles de clientes. Aumenta tus ingresos

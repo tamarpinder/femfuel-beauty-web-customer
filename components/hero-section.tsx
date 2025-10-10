@@ -22,7 +22,7 @@ export function HeroSection() {
             />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-2">
-            Descubre tu belleza con los mejores profesionales de RD
+            Vive la experiencia de belleza exclusiva junto a los mejores especialistas de República Dominicana
           </h1>
           <p className="text-lg text-femfuel-medium mb-4">
             Reserva servicios de belleza verificados al instante

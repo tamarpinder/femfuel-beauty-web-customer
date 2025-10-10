@@ -102,8 +102,8 @@ export default function BlogPage() {
             Blog de <span className="text-yellow-300">Belleza</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
-            Descubre las últimas tendencias, tips de expertos y secretos de belleza
-            inspirados en la cultura dominicana
+            Descubre las últimas tendencias, consejos de expertos y secretos de belleza
+            inspirados en la cultura dominicana.
           </p>
 
           {/* Search Bar */}

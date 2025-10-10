@@ -146,8 +146,7 @@ export default function NearbySalonsPage() {
           </h1>
           
           <p className="text-xl text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
-            Descubre los mejores salones de belleza en tu área. Reserva citas en segundos 
-            y encuentra profesionales verificados cerca de ti.
+            Encuentra tu salón de belleza ideal en segundos. Reserva fácil y accede a expertos verificados en tu área.
           </p>
           
           <div className="max-w-md mx-auto mb-6">

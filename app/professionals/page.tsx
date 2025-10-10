@@ -72,12 +72,11 @@ export default function TopProfessionalsPage() {
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-femfuel-dark mb-6 leading-tight">
-            Profesionales <span className="text-purple-600">Top</span>
+            Profesionales <span className="text-purple-600">Estrella</span>
           </h1>
           
           <p className="text-xl text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
-            Descubre los mejores profesionales de belleza en República Dominicana. 
-            Conecta con expertos verificados y con las mejores reseñas.
+            Encuentra los mejores profesionales de belleza. Conéctate con expertos de confianza, recomendados y con las mejores reseñas.
           </p>
           
           <div className="max-w-md mx-auto mb-6">

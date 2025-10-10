@@ -92,7 +92,7 @@ export function CustomerFooter() {
               <span className="text-2xl font-bold text-gray-900">FemFuel Beauty</span>
             </div>
             <p className="text-gray-600 text-lg max-w-md">
-              La plataforma líder de belleza en República Dominicana conectando clientes con los mejores profesionales.
+              La plataforma líder de belleza en la República Dominicana, que conecta a los clientes con los mejores profesionales.
             </p>
           </div>
 

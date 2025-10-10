@@ -5,7 +5,7 @@ export const customerFooterSections = [
       { label: "Buscar Servicios", href: "/services" },
       { label: "Todos los Salones", href: "/vendors" },
       { label: "Salones Cercanos", href: "/nearby" },
-      { label: "Profesionales Top", href: "/professionals" },
+      { label: "Profesionales Estrella", href: "/professionals" },
       { label: "Nuevos en FemFuel", href: "#" },
     ],
   },
@@ -24,7 +24,7 @@ export const customerFooterSections = [
     links: [
       { label: "Mis Reservas", href: "/bookings" },
       { label: "Favoritos", href: "/profile?section=favoritos" },
-      { label: "Configuración", href: "/settings" },
+      { label: "Configuración", href: "/profile?section=settings" },
     ],
   },
   {

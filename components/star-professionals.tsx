@@ -145,7 +145,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
                         instant={true}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                      {index === 5 && current.portfolio.images.length > 6 && (
+                      {index === 5 && current.portfolio?.images && current.portfolio.images.length > 6 && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                           <span className="text-white font-bold text-lg">+{current.portfolio.images.length - 6}</span>
                         </div>

@@ -93,29 +93,29 @@ const standardHours: BusinessHours = {
 
 // Vendor business names and specialties
 const vendorBusinessData = [
-  { name: 'Glamour House', categories: ['makeup', 'hair'], specialties: ['Bridal Makeup', 'Color Correction'] },
-  { name: 'Nails Paradise', categories: ['nails'], specialties: ['Gel Extensions', 'Nail Art'] },
-  { name: 'Hair Salon Elite', categories: ['hair'], specialties: ['Balayage', 'Keratin Treatments'] },
-  { name: 'Spa Serenity', categories: ['spa'], specialties: ['Hot Stone Massage', 'Anti-aging Facials'] },
-  { name: 'Lash Studio DR', categories: ['lashes'], specialties: ['Volume Lashes', 'Microblading'] },
-  { name: 'Beauty Studio RD', categories: ['nails', 'makeup'], specialties: ['Party Looks', 'Gel Manicures'] },
-  { name: 'Cabello y Estilo', categories: ['hair'], specialties: ['Natural Hair Care', 'Dominican Blowouts'] },
-  { name: 'Luxury Nails Spa', categories: ['nails'], specialties: ['French Manicures', 'Pedicures'] },
-  { name: 'Makeup Studio Pro', categories: ['makeup'], specialties: ['Editorial Makeup', 'Special Effects'] },
-  { name: 'Trendy Hair', categories: ['hair'], specialties: ['Curly Hair Cuts', 'Deep Conditioning'] },
-  { name: 'Zen Wellness Spa', categories: ['spa'], specialties: ['Aromatherapy', 'Body Wraps'] },
-  { name: 'Lashes & Brows', categories: ['lashes'], specialties: ['Brow Lamination', 'Lash Lifts'] },
-  { name: 'Belleza Natural', categories: ['makeup', 'nails'], specialties: ['Tropical Themes', 'Beach Looks'] },
-  { name: 'Hair Revolution', categories: ['hair'], specialties: ['Hair Extensions', 'Color Transformations'] },
-  { name: 'Luxury Nails Studio', categories: ['nails'], specialties: ['Luxury Treatments', 'Nail Jewelry'] },
-  { name: 'Glow Spa & Beauty', categories: ['spa', 'makeup'], specialties: ['Skin Rejuvenation', 'Glowing Makeup'] },
-  { name: 'Modern Hair Co.', categories: ['hair'], specialties: ['Modern Cuts', 'Hair Styling'] },
-  { name: 'Blissful Beauty', categories: ['spa', 'nails'], specialties: ['Relaxation Treatments', 'Spa Manicures'] },
-  { name: 'Chic Makeup Studio', categories: ['makeup'], specialties: ['Fashion Makeup', 'Photo Shoots'] },
-  { name: 'Hair & Soul', categories: ['hair'], specialties: ['Spiritual Hair Care', 'Natural Products'] },
-  { name: 'Crystal Clear Spa', categories: ['spa'], specialties: ['Crystal Healing', 'Clear Skin Facials'] },
-  { name: 'Lash Extensions Pro', categories: ['lashes'], specialties: ['Mega Volume', 'Colored Lashes'] },
-  { name: 'Dominican Beauty House', categories: ['hair', 'makeup', 'nails'], specialties: ['Full Service', 'Dominican Techniques'] }
+  { name: 'Glamour House', categories: ['makeup', 'hair'], specialties: ['Maquillaje de Novia', 'Corrección de Color'] },
+  { name: 'Nails Paradise', categories: ['nails'], specialties: ['Extensiones de Gel', 'Arte de Uñas'] },
+  { name: 'Hair Salon Elite', categories: ['hair'], specialties: ['Balayage', 'Tratamientos de Keratina'] },
+  { name: 'Spa Serenity', categories: ['spa'], specialties: ['Masaje con Piedras Calientes', 'Faciales Anti-edad'] },
+  { name: 'Lash Studio DR', categories: ['lashes'], specialties: ['Pestañas Volumen', 'Microblading'] },
+  { name: 'Beauty Studio RD', categories: ['nails', 'makeup'], specialties: ['Looks de Fiesta', 'Manicure de Gel'] },
+  { name: 'Cabello y Estilo', categories: ['hair'], specialties: ['Cuidado Capilar Natural', 'Alisado Dominicano'] },
+  { name: 'Luxury Nails Spa', categories: ['nails'], specialties: ['Manicure Francesa', 'Pedicure'] },
+  { name: 'Makeup Studio Pro', categories: ['makeup'], specialties: ['Maquillaje Editorial', 'Efectos Especiales'] },
+  { name: 'Trendy Hair', categories: ['hair'], specialties: ['Corte de Cabello Rizado', 'Tratamiento Profundo'] },
+  { name: 'Zen Wellness Spa', categories: ['spa'], specialties: ['Aromaterapia', 'Envolturas Corporales'] },
+  { name: 'Lashes & Brows', categories: ['lashes'], specialties: ['Laminado de Cejas', 'Lifting de Pestañas'] },
+  { name: 'Belleza Natural', categories: ['makeup', 'nails'], specialties: ['Temas Tropicales', 'Looks Playeros'] },
+  { name: 'Hair Revolution', categories: ['hair'], specialties: ['Extensiones de Cabello', 'Transformaciones de Color'] },
+  { name: 'Luxury Nails Studio', categories: ['nails'], specialties: ['Tratamientos de Lujo', 'Joyería de Uñas'] },
+  { name: 'Glow Spa & Beauty', categories: ['spa', 'makeup'], specialties: ['Rejuvenecimiento de Piel', 'Maquillaje Luminoso'] },
+  { name: 'Modern Hair Co.', categories: ['hair'], specialties: ['Cortes Modernos', 'Peinados'] },
+  { name: 'Blissful Beauty', categories: ['spa', 'nails'], specialties: ['Tratamientos de Relajación', 'Manicure Spa'] },
+  { name: 'Chic Makeup Studio', categories: ['makeup'], specialties: ['Maquillaje de Moda', 'Sesiones Fotográficas'] },
+  { name: 'Hair & Soul', categories: ['hair'], specialties: ['Cuidado Capilar Espiritual', 'Productos Naturales'] },
+  { name: 'Crystal Clear Spa', categories: ['spa'], specialties: ['Sanación con Cristales', 'Faciales Piel Clara'] },
+  { name: 'Lash Extensions Pro', categories: ['lashes'], specialties: ['Mega Volumen', 'Pestañas de Colores'] },
+  { name: 'Dominican Beauty House', categories: ['hair', 'makeup', 'nails'], specialties: ['Servicio Completo', 'Técnicas Dominicanas'] }
 ]
 
 // Generate Vendor Profiles (23 vendors)
@@ -124,7 +124,7 @@ export const vendorProfiles: VendorProfile[] = vendorUsers.slice(0, 23).map((use
   userId: user.id,
   user,
   businessName: vendorBusinessData[i].name,
-  description: `Professional beauty services in ${dominicanLocations[i % dominicanLocations.length].district}. Specialized in ${vendorBusinessData[i].specialties.join(', ')}.`,
+  description: `Servicios profesionales de belleza en ${dominicanLocations[i % dominicanLocations.length].district}. Especializados en ${vendorBusinessData[i].specialties.join(', ')}.`,
   categories: vendorBusinessData[i].categories,
   location: {
     address: `${100 + i} Calle Principal`,
@@ -780,9 +780,7 @@ curatedServices.forEach(serviceData => {
     vendorId: serviceData.vendorId,
     vendor,
     name: serviceData.name,
-    description: serviceData.name === 'Alisado Dominicano' 
-      ? `Servicio profesional de alisado dominicano en ${vendor.businessName}. Cuidado experto con atención al detalle.`
-      : `Professional ${serviceData.name.toLowerCase()} service at ${vendor.businessName}. Expert care with attention to detail.`,
+    description: `Servicio profesional de ${serviceData.name.toLowerCase()} en ${vendor.businessName}. Cuidado experto con atención al detalle.`,
     category: serviceData.category,
     price: serviceData.price,
     duration: serviceData.duration,

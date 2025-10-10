@@ -1,36 +1,24 @@
 "use client"
 
 import { useState } from "react"
-import { Star, MapPin, Calendar, Award, ChevronLeft, ChevronRight } from "lucide-react"
+import { MapPin, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { OptimizedImage } from "@/components/ui/optimized-image"
-
-interface Professional {
-  id: number | string
-  name: string
-  specialty: string
-  salon: string
-  vendorId: string
-  location: string
-  rating: number
-  reviewCount: number
-  yearsExperience: number
-  avatar: string
-  portfolioImages: string[]
-  specialties: string[]
-  availableToday: boolean
-  nextAvailable: string
-  signature: string
-  price: string
-}
+import type { Professional } from "@/types/vendor"
+import {
+  ProfessionalRating,
+  ProfessionalExperience,
+  ProfessionalAvailability,
+  ProfessionalSpecialties,
+  AvailableTodayBadge
+} from "@/lib/professional-ui-utils"
 
 interface StarProfessionalsProps {
   professionals: Professional[]
-  onViewVendor?: (professionalId: number | string) => void
-  onViewPortfolio?: (professionalId: number | string) => void
+  onViewVendor?: (professionalId: string) => void
+  onViewPortfolio?: (professionalId: string) => void
 }
 
 export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio }: StarProfessionalsProps) {
@@ -39,6 +27,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
   if (!professionals.length) return null
 
   const current = professionals[selectedProfessional]
+  const availableToday = current.nextAvailable?.toLowerCase().includes('hoy')
 
   const nextProfessional = () => {
     setSelectedProfessional((prev) => (prev + 1) % professionals.length)
@@ -64,63 +53,64 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
               <div className="md:w-1/3 p-6 md:p-8 bg-gradient-to-br from-femfuel-light to-pink-50">
                 <div className="text-center">
                   <Avatar className="w-24 h-24 mx-auto mb-4">
-                    <AvatarImage src={current.avatar} alt={current.name} />
+                    <AvatarImage src={current.image} alt={current.name} />
                     <AvatarFallback className="bg-femfuel-rose text-white text-2xl">
                       {current.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
-                  
+
                   <h3 className="text-xl font-bold text-femfuel-dark mb-1">{current.name}</h3>
-                  <p className="text-femfuel-medium mb-2">{current.specialty}</p>
-                  <p className="text-sm text-femfuel-medium mb-4">{current.salon}</p>
-                  
+                  <p className="text-femfuel-medium mb-2">{current.specialties[0]}</p>
+                  <p className="text-sm text-femfuel-medium mb-4">{current.vendorName}</p>
+
                   {/* Rating */}
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${i < Math.floor(current.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm font-medium text-femfuel-dark">{current.rating}</span>
-                    <span className="text-xs text-femfuel-medium">({current.reviewCount})</span>
+                  <div className="flex items-center justify-center mb-4">
+                    <ProfessionalRating
+                      rating={current.rating}
+                      reviewCount={current.reviewCount}
+                      variant="full"
+                    />
                   </div>
 
                   {/* Specialties */}
                   <div className="flex flex-wrap gap-2 justify-center mb-4">
-                    {current.specialties.map((specialty) => (
-                      <Badge key={specialty} variant="secondary" className="text-xs">
-                        {specialty}
-                      </Badge>
-                    ))}
+                    <ProfessionalSpecialties
+                      specialties={current.specialties}
+                      maxShow={current.specialties.length}
+                      variant="badge"
+                    />
                   </div>
 
                   {/* Experience & Location */}
                   <div className="space-y-2 text-sm text-femfuel-medium mb-6">
-                    <div className="flex items-center justify-center gap-2">
-                      <Award className="h-4 w-4" />
-                      <span>{current.yearsExperience} años de experiencia</span>
+                    <div className="flex items-center justify-center">
+                      <ProfessionalExperience
+                        years={current.yearsExperience}
+                        showIcon={true}
+                      />
                     </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{current.location}</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span className={current.availableToday ? "text-green-600 font-medium" : ""}>
-                        {current.availableToday ? "Disponible hoy" : `Próxima cita: ${current.nextAvailable}`}
-                      </span>
+                    {current.vendorSlug && (
+                      <div className="flex items-center justify-center gap-2">
+                        <MapPin className="h-4 w-4" />
+                        <span>{current.vendorName}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center">
+                      <ProfessionalAvailability
+                        nextAvailable={current.nextAvailable}
+                        showIcon={true}
+                      />
                     </div>
                   </div>
 
                   {/* Signature Service */}
-                  <div className="bg-white/50 rounded-lg p-3 mb-6">
-                    <p className="text-xs text-femfuel-medium mb-1">Especialidad Exclusiva</p>
-                    <p className="font-medium text-femfuel-dark text-sm">{current.signature}</p>
-                    <p className="text-black font-bold text-lg">{current.price}</p>
-                  </div>
+                  {current.portfolio?.signature && (
+                    <div className="bg-white/50 rounded-lg p-3 mb-6">
+                      <p className="text-xs text-femfuel-medium mb-1">Especialidad Exclusiva</p>
+                      <p className="font-medium text-femfuel-dark text-sm">{current.portfolio.signature.serviceName}</p>
+                      <p className="text-black font-bold text-lg">{current.portfolio.signature.price}</p>
+                    </div>
+                  )}
 
                   {/* Action Button */}
                   <div>
@@ -137,7 +127,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
               {/* Portfolio Gallery */}
               <div className="md:w-2/3 relative">
                 <div className="grid grid-cols-2 md:grid-cols-3 h-full">
-                  {current.portfolioImages.slice(0, 6).map((image, index) => (
+                  {current.portfolio?.images && current.portfolio.images.slice(0, 6).map((image, index) => (
                     <div
                       key={index}
                       className="aspect-square relative overflow-hidden group cursor-pointer"
@@ -155,9 +145,9 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
                         instant={true}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                      {index === 5 && current.portfolioImages.length > 6 && (
+                      {index === 5 && current.portfolio.images.length > 6 && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <span className="text-white font-bold text-lg">+{current.portfolioImages.length - 6}</span>
+                          <span className="text-white font-bold text-lg">+{current.portfolio.images.length - 6}</span>
                         </div>
                       )}
                     </div>
@@ -188,40 +178,43 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
 
         {/* Other Professionals Preview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {professionals.map((professional, index) => (
-            <Card
-              key={professional.id}
-              className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
-                index === selectedProfessional ? 'ring-2 ring-femfuel-rose' : ''
-              }`}
-              onClick={() => setSelectedProfessional(index)}
-            >
-              <CardContent className="p-4">
-                <div className="text-center">
-                  <Avatar className="w-16 h-16 mx-auto mb-3">
-                    <AvatarImage src={professional.avatar} alt={professional.name} />
-                    <AvatarFallback className="bg-femfuel-rose text-white">
-                      {professional.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
-                  
-                  <h4 className="font-medium text-femfuel-dark text-sm mb-1">{professional.name}</h4>
-                  <p className="text-xs text-femfuel-medium mb-2">{professional.specialty}</p>
-                  
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                    <span className="text-xs font-medium">{professional.rating}</span>
-                  </div>
+          {professionals.map((professional, index) => {
+            const isAvailableToday = professional.nextAvailable?.toLowerCase().includes('hoy')
 
-                  {professional.availableToday && (
-                    <Badge className="bg-green-100 text-green-800 text-xs">
-                      Disponible hoy
-                    </Badge>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+            return (
+              <Card
+                key={professional.id}
+                className={`cursor-pointer transition-all hover:shadow-lg hover:scale-105 ${
+                  index === selectedProfessional ? 'ring-2 ring-femfuel-rose' : ''
+                }`}
+                onClick={() => setSelectedProfessional(index)}
+              >
+                <CardContent className="p-4">
+                  <div className="text-center">
+                    <Avatar className="w-16 h-16 mx-auto mb-3">
+                      <AvatarImage src={professional.image} alt={professional.name} />
+                      <AvatarFallback className="bg-femfuel-rose text-white">
+                        {professional.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <h4 className="font-medium text-femfuel-dark text-sm mb-1">{professional.name}</h4>
+                    <p className="text-xs text-femfuel-medium mb-2">{professional.specialties[0]}</p>
+
+                    <div className="flex items-center justify-center mb-2">
+                      <ProfessionalRating
+                        rating={professional.rating}
+                        reviewCount={professional.reviewCount}
+                        variant="compact"
+                      />
+                    </div>
+
+                    {isAvailableToday && <AvailableTodayBadge />}
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

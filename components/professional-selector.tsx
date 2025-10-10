@@ -5,9 +5,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Star, Clock, Users, Award, ChevronRight, Check } from "lucide-react"
+import { Star, Clock, Users, ChevronRight, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Professional } from "@/types/vendor"
+import {
+  ProfessionalRating,
+  ProfessionalAvatar,
+  ProfessionalSpecialties
+} from "@/lib/professional-ui-utils"
 
 interface ProfessionalSelectorProps {
   professionals: Professional[]
@@ -123,15 +128,14 @@ export function ProfessionalSelector({
               <CardContent className="p-4 sm:p-6">
                 <div className="flex items-start gap-3 sm:gap-4">
                   {/* Professional Avatar */}
-                  <Avatar className="h-12 w-12 sm:h-16 sm:w-16 border-2 border-femfuel-light">
-                    <AvatarImage 
-                      src={professional.image} 
-                      alt={professional.name}
+                  <div className="h-12 w-12 sm:h-16 sm:w-16 border-2 border-femfuel-light rounded-full overflow-hidden">
+                    <ProfessionalAvatar
+                      name={professional.name}
+                      image={professional.image}
+                      size={64}
+                      rounded="full"
                     />
-                    <AvatarFallback className="bg-femfuel-light text-femfuel-rose text-lg font-bold">
-                      {professional.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </Avatar>
+                  </div>
 
                   <div className="flex-1 space-y-3">
                     {/* Name and Rating */}
@@ -140,15 +144,17 @@ export function ProfessionalSelector({
                         <h4 className="text-lg font-bold text-femfuel-dark flex items-center gap-2">
                           {professional.name}
                           {professional.isTopRated && (
-                            <Award className="h-4 w-4 text-yellow-500" />
+                            <Check className="h-4 w-4 text-yellow-500 bg-yellow-100 rounded-full p-0.5" />
                           )}
                         </h4>
-                        <div className="flex items-center gap-1 text-sm text-femfuel-medium">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium">{professional.rating}</span>
-                          <span>({professional.reviewCount} reseñas)</span>
+                        <div className="flex items-center gap-1 text-sm">
+                          <ProfessionalRating
+                            rating={professional.rating}
+                            reviewCount={professional.reviewCount}
+                            variant="compact"
+                          />
                           <span className="text-femfuel-medium mx-2">•</span>
-                          <span>{professional.yearsExperience}+ años exp.</span>
+                          <span className="text-femfuel-medium">{professional.yearsExperience}+ años exp.</span>
                         </div>
                       </div>
                       

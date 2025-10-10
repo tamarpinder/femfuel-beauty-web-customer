@@ -1,19 +1,35 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Star, MapPin, Clock, Users } from "lucide-react"
+import { Star, MapPin, Clock, Users, Heart, Crown, Zap, Store } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { Vendor } from "@/types/vendor"
+import Image from "next/image"
 
 interface VendorCardProps {
   vendor: Vendor
-  layout?: "horizontal" | "vertical"
+  layout?: "horizontal" | "vertical" | "list" | "nearby"
+  showFavorites?: boolean
+  showBadges?: boolean
+  showDistance?: boolean
+  showOpenStatus?: boolean
+  isFavorite?: boolean
+  onToggleFavorite?: (vendorId: string) => void
 }
 
-export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
+export function VendorCard({
+  vendor,
+  layout = "horizontal",
+  showFavorites = false,
+  showBadges = false,
+  showDistance = false,
+  showOpenStatus = false,
+  isFavorite = false,
+  onToggleFavorite
+}: VendorCardProps) {
   const router = useRouter()
 
   const handleViewVendor = () => {
@@ -24,6 +40,187 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
     return `RD$${vendor.priceRange.min.toLocaleString()} - RD$${vendor.priceRange.max.toLocaleString()}`
   }
 
+  // List/Nearby mode (used in vendors and nearby pages)
+  if (layout === "list" || layout === "nearby") {
+    return (
+      <Card
+        className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden cursor-pointer"
+        onClick={handleViewVendor}
+      >
+        {/* Badges */}
+        {showBadges && (
+          <div className="absolute top-4 right-4 flex gap-2 z-10">
+            {vendor.rating >= 4.5 && (
+              <div className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <Crown className="h-3 w-3" />
+                Mejor Calificado
+              </div>
+            )}
+            {vendor.reviewCount < 50 && (
+              <div className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <Zap className="h-3 w-3" />
+                Nuevo
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Favorite Button */}
+        {showFavorites && onToggleFavorite && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleFavorite(vendor.id)
+            }}
+            className="absolute top-4 left-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors z-10"
+          >
+            <Heart
+              className={`h-4 w-4 ${
+                isFavorite
+                  ? "fill-femfuel-rose text-femfuel-rose"
+                  : "text-gray-600"
+              }`}
+            />
+          </button>
+        )}
+
+        {/* Open/Closed Status (for nearby mode) */}
+        {showOpenStatus && (
+          <div className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-medium z-10 ${
+            vendor.availability.isOpen
+              ? 'bg-green-100 text-green-700'
+              : 'bg-red-100 text-red-700'
+          }`}>
+            {vendor.availability.isOpen ? 'Abierto' : 'Cerrado'}
+          </div>
+        )}
+
+        <CardContent className="p-6">
+          <div className="flex items-start gap-4">
+            {/* Logo */}
+            <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0">
+              {vendor.logo ? (
+                <Image
+                  src={vendor.logo}
+                  alt={vendor.name}
+                  fill
+                  className="object-cover"
+                  sizes="80px"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-purple-100 to-rose-100 flex items-center justify-center">
+                  <Store className="h-8 w-8 text-purple-600" />
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1">
+              {/* Name and Location */}
+              <div className="mb-3">
+                <h3 className="text-lg font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors">
+                  {vendor.name}
+                </h3>
+                <div className="flex items-center gap-2 text-sm text-femfuel-medium">
+                  <MapPin className="h-4 w-4" />
+                  <span>{vendor.location.district}, {vendor.location.city}</span>
+                </div>
+              </div>
+
+              {/* Rating and Stats */}
+              <div className="flex items-center gap-4 mb-3">
+                <div className="flex items-center gap-1">
+                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <span className="font-bold text-femfuel-dark">{vendor.rating}</span>
+                  <span className="text-sm text-femfuel-medium">({vendor.reviewCount} reseñas)</span>
+                </div>
+                {showDistance && vendor.location.distance && (
+                  <div className="text-sm text-femfuel-medium flex items-center gap-1">
+                    <MapPin className="h-4 w-4" />
+                    {vendor.location.distance}
+                  </div>
+                )}
+                {!showDistance && (
+                  <div className="text-sm text-femfuel-medium">
+                    {vendor.serviceCount} servicios
+                  </div>
+                )}
+              </div>
+
+              {/* Categories */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {vendor.categories?.slice(0, 3).map((category, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full"
+                  >
+                    {category}
+                  </span>
+                ))}
+                {vendor.categories && vendor.categories.length > 3 && (
+                  <span className="text-xs text-femfuel-medium">
+                    +{vendor.categories.length - 3} más
+                  </span>
+                )}
+              </div>
+
+              {/* Business Hours / Phone */}
+              {layout === "nearby" ? (
+                <div className="flex items-center gap-4 text-sm text-femfuel-medium mb-4">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4" />
+                    <span>
+                      {vendor.businessHours?.monday?.open || "9:00"} - {vendor.businessHours?.monday?.close || "18:00"}
+                    </span>
+                  </div>
+                  {vendor.contact.phone && (
+                    <span>{vendor.contact.phone}</span>
+                  )}
+                </div>
+              ) : (
+                vendor.businessHours && (
+                  <div className="flex items-center gap-2 text-sm text-femfuel-medium mb-4">
+                    <Clock className="h-4 w-4" />
+                    <span>
+                      {vendor.businessHours.monday?.open || "9:00"} - {vendor.businessHours.monday?.close || "18:00"}
+                    </span>
+                  </div>
+                )
+              )}
+
+              {/* Description */}
+              <p className="text-sm text-femfuel-medium mb-4 line-clamp-2">
+                {vendor.description}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <button
+                  className="glassmorphism-button flex-1"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleViewVendor()
+                  }}
+                >
+                  {layout === "nearby" ? "Ver Servicios" : "Ver Salón"}
+                </button>
+                <button
+                  className="femfuel-button-lg"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    // TODO: Implement contact
+                  }}
+                >
+                  {layout === "nearby" ? "Reservar Ahora" : "Contactar"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Horizontal mode (original compact view)
   if (layout === "horizontal") {
     return (
       <Card className="shadow-sm border-0 hover:shadow-md transition-shadow cursor-pointer" onClick={handleViewVendor}>
@@ -200,7 +397,7 @@ export function VendorCard({ vendor, layout = "horizontal" }: VendorCardProps) {
           </div>
 
           {/* Action Button */}
-          <Button 
+          <Button
             className="w-full mt-4 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
             onClick={(e) => {
               e.stopPropagation()

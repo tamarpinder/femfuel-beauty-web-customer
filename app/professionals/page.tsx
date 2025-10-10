@@ -1,13 +1,14 @@
 'use client'
 
-import { useState } from "react"
-import { Star, MapPin, Award, TrendingUp, Users, Filter, Search, Crown, Zap } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState, useEffect, useRef } from "react"
+import { Award, TrendingUp, Users, Filter, Search, Crown, Zap } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { CustomerFooter } from "@/components/customer-footer"
 import { MobileNavigation } from "@/components/mobile-navigation"
+import { ProfessionalCard } from "@/components/professional-card"
 import { getAllProfessionals, ProfessionalWithVendor } from "@/lib/getAllProfessionals"
-import Image from "next/image"
+import { groupProfessionalsByVendorWithinCategory } from "@/lib/professional-utils"
+import { categoryConfig, type CategoryKey } from "@/lib/category-utils"
 import { useRouter } from "next/navigation"
 
 const allProfessionals = getAllProfessionals()
@@ -17,6 +18,9 @@ export default function TopProfessionalsPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedSpecialty, setSelectedSpecialty] = useState("all")
   const [filterType, setFilterType] = useState("all") // all, topRated, rising
+  const [activeSection, setActiveSection] = useState<CategoryKey | null>(null)
+
+  const sectionRefs = useRef<{ [key in CategoryKey]?: HTMLElement | null }>({})
   
   const specialties = [
     "all",
@@ -45,19 +49,48 @@ export default function TopProfessionalsPage() {
     return matchesSearch && matchesSpecialty && matchesFilter
   })
 
-  const handleViewProfile = (professional: ProfessionalWithVendor) => {
-    // Convert professional name to slug format
-    const slug = professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-    router.push(`/professional/${slug}`)
+  const scrollToSection = (categoryKey: CategoryKey) => {
+    const element = sectionRefs.current[categoryKey]
+    if (element) {
+      const yOffset = -120 // Offset for sticky header
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    }
   }
+
+  // Intersection observer for active section tracking
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '-120px 0px -70% 0px',
+      threshold: 0
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const categoryKey = entry.target.getAttribute('data-category') as CategoryKey
+          if (categoryKey) {
+            setActiveSection(categoryKey)
+          }
+        }
+      })
+    }, options)
+
+    Object.values(sectionRefs.current).forEach(ref => {
+      if (ref) observer.observe(ref)
+    })
+
+    return () => observer.disconnect()
+  }, [filteredProfessionals])
 
   const handleContact = (professional: ProfessionalWithVendor) => {
     // TODO: Implement contact functionality
   }
 
-  const handleVendorClick = (vendorSlug: string) => {
-    router.push(`/vendor/${vendorSlug}`)
-  }
+  // Group professionals for section view
+  const groupedProfessionals = groupProfessionalsByVendorWithinCategory(filteredProfessionals)
+  const showSections = filterType === "all" && !searchTerm && selectedSpecialty === "all"
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
@@ -135,7 +168,7 @@ export default function TopProfessionalsPage() {
                 }`}
               >
                 <Crown className="h-4 w-4" />
-                Top Rated
+                Mejor Calificados
               </button>
               <button
                 onClick={() => setFilterType("rising")}
@@ -175,140 +208,143 @@ export default function TopProfessionalsPage() {
         </div>
       </section>
 
+      {/* Sticky Category Navigation - Only show when viewing all */}
+      {showSections && (
+        <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 py-4">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+              <span className="text-sm text-femfuel-medium whitespace-nowrap mr-2">Ir a:</span>
+              {categoryConfig.map((cat) => {
+                const vendorsInCategory = groupedProfessionals[cat.key]
+                const count = Object.values(vendorsInCategory).reduce((sum, vendor) => sum + vendor.professionals.length, 0)
+                if (count === 0) return null
+
+                return (
+                  <button
+                    key={cat.key}
+                    onClick={() => scrollToSection(cat.key)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                      activeSection === cat.key
+                        ? 'bg-femfuel-rose text-white shadow-md'
+                        : 'bg-gray-100 text-femfuel-dark hover:bg-gray-200'
+                    }`}
+                  >
+                    {cat.name} ({count})
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Professionals List */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
-              {filteredProfessionals.length} Profesionales Encontrados
-            </h2>
-            <p className="text-femfuel-medium">Ordenados por calificación y reseñas</p>
-          </div>
+          {!showSections && (
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
+                {filteredProfessionals.length} Profesionales Encontrados
+              </h2>
+              <p className="text-femfuel-medium">Ordenados por calificación y reseñas</p>
+            </div>
+          )}
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            {filteredProfessionals.map((professional) => (
-              <Card key={professional.id} className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
-                {/* Badges */}
-                <div className="absolute top-4 right-4 flex gap-2 z-10">
-                  {professional.isTopRated && (
-                    <div className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                      <Crown className="h-3 w-3" />
-                      Top Rated
-                    </div>
-                  )}
-                  {professional.rating >= 4.8 && !professional.isTopRated && (
-                    <div className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                      <Zap className="h-3 w-3" />
-                      En Ascenso
-                    </div>
-                  )}
-                </div>
-                
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0">
-                      {professional.image ? (
-                        <Image
-                          src={professional.image}
-                          alt={professional.name}
-                          fill
-                          className="object-cover"
-                          sizes="80px"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-purple-100 to-rose-100 flex items-center justify-center">
-                          <span className="text-2xl font-bold text-purple-600">
-                            {professional.name.split(' ').map(n => n[0]).join('')}
-                          </span>
-                        </div>
-                      )}
+          {showSections ? (
+            // Render sections when viewing all
+            <>
+              {categoryConfig.map((cat) => {
+                const vendorsInCategory = groupedProfessionals[cat.key]
+                const vendorEntries = Object.entries(vendorsInCategory)
+
+                // Skip if no vendors in this category
+                if (vendorEntries.length === 0) return null
+
+                // Calculate total professionals in this category
+                const totalProfessionals = vendorEntries.reduce(
+                  (sum, [_, vendor]) => sum + vendor.professionals.length,
+                  0
+                )
+
+                if (totalProfessionals === 0) return null
+
+                return (
+                  <div
+                    key={cat.key}
+                    ref={el => sectionRefs.current[cat.key] = el}
+                    data-category={cat.key}
+                    className="mb-16"
+                  >
+                    {/* Category Header */}
+                    <div className="mb-8">
+                      <h2 className="text-3xl font-bold text-femfuel-dark mb-1">
+                        {cat.name}
+                      </h2>
+                      <p className="text-femfuel-medium">
+                        {totalProfessionals} profesionales en {vendorEntries.length} {vendorEntries.length === 1 ? 'salón' : 'salones'}
+                      </p>
                     </div>
 
-                    <div className="flex-1">
-                      <div className="mb-3">
-                        <h3 className="text-lg font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors">
-                          {professional.name}
-                        </h3>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleVendorClick(professional.vendor.slug)
-                          }}
-                          className="text-purple-600 hover:text-purple-800 font-medium text-sm underline transition-colors cursor-pointer text-left"
-                        >
-                          {professional.vendor.name}
-                        </button>
-                        <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                          <MapPin className="h-4 w-4" />
-                          <span>{professional.vendor.location.district}, {professional.vendor.location.city}</span>
-                        </div>
-                      </div>
+                    {/* Vendors within category */}
+                    {vendorEntries.map(([vendorSlug, vendorData]) => {
+                      if (vendorData.professionals.length === 0) return null
 
-                      <div className="flex items-center gap-4 mb-3">
-                        <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-bold text-femfuel-dark">{professional.rating}</span>
-                          <span className="text-sm text-femfuel-medium">({professional.reviewCount} reseñas)</span>
-                        </div>
-                        <div className="text-sm text-femfuel-medium">
-                          🏆 {professional.yearsExperience} años
-                        </div>
-                      </div>
+                      return (
+                        <div key={vendorSlug} className="mb-10">
+                          {/* Vendor Header */}
+                          <div className="mb-4 flex items-center justify-between">
+                            <div>
+                              <h3
+                                className="text-xl font-semibold text-femfuel-dark cursor-pointer hover:text-femfuel-rose transition-colors"
+                                onClick={() => router.push(`/vendor/${vendorSlug}`)}
+                              >
+                                {vendorData.vendorName}
+                              </h3>
+                              <p className="text-sm text-femfuel-medium">
+                                {vendorData.professionals.length} {vendorData.professionals.length === 1 ? 'profesional' : 'profesionales'}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => router.push(`/vendor/${vendorSlug}`)}
+                              className="text-sm text-femfuel-rose hover:underline"
+                            >
+                              Ver salón →
+                            </button>
+                          </div>
 
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {professional.specialties.slice(0, 3).map((specialty, index) => (
-                          <span
-                            key={index}
-                            className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full"
-                          >
-                            {specialty}
-                          </span>
-                        ))}
-                        {professional.specialties.length > 3 && (
-                          <span className="text-xs text-femfuel-medium">
-                            +{professional.specialties.length - 3} más
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4 text-sm text-femfuel-medium mb-4">
-                        <div>
-                          <span className="block font-medium text-femfuel-dark">Servicios mensuales</span>
-                          <span>{professional.monthlyBookings}</span>
+                          {/* Professionals from this vendor */}
+                          <div className="grid lg:grid-cols-2 gap-6">
+                            {vendorData.professionals.map((professional) => (
+                              <ProfessionalCard
+                                key={professional.id}
+                                professional={professional}
+                                layout="list"
+                                showBadges={true}
+                                onContact={handleContact}
+                              />
+                            ))}
+                          </div>
                         </div>
-                        <div>
-                          <span className="block font-medium text-femfuel-dark">Próxima cita</span>
-                          <span>{professional.nextAvailable || 'Consultar'}</span>
-                        </div>
-                      </div>
-
-                      {professional.bio && (
-                        <div className="text-sm text-femfuel-medium mb-4">
-                          <span className="font-medium text-femfuel-dark">Bio: </span>
-                          <span className="text-black">{professional.bio.length > 80 ? professional.bio.substring(0, 80) + '...' : professional.bio}</span>
-                        </div>
-                      )}
-
-                      <div className="flex gap-3">
-                        <button
-                          onClick={() => handleViewProfile(professional)}
-                          className="glassmorphism-button flex-1"
-                        >
-                          Ver Perfil
-                        </button>
-                        <button
-                          onClick={() => handleContact(professional)}
-                          className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
-                        >
-                          Contactar
-                        </button>
-                      </div>
-                    </div>
+                      )
+                    })}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                )
+              })}
+            </>
+          ) : (
+            // Render flat list when filtering
+            <div className="grid lg:grid-cols-2 gap-6">
+              {filteredProfessionals.map((professional) => (
+                <ProfessionalCard
+                  key={professional.id}
+                  professional={professional}
+                  layout="list"
+                  showBadges={true}
+                  onContact={handleContact}
+                />
+              ))}
+            </div>
+          )}
 
           {/* No Results */}
           {filteredProfessionals.length === 0 && (

@@ -100,7 +100,7 @@ export async function getVendors(filters: VendorFilters = {}) {
       return {
         id: vendor.id,
         name: vendor.businessName,
-        slug: vendor.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+        slug: vendor.businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
         logo: getVendorLogo(vendor.businessName),
         coverImage: getVendorCover(vendor.businessName),
         description: vendor.description,

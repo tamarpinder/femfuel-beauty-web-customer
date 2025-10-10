@@ -8,29 +8,33 @@ export class VendorAdapter {
   
   // Get vendor from either data source with fallback
   static findVendor(vendorId: string): Vendor | null {
-    // First try vendors.ts (full vendor objects)
-    let vendor = mockVendors.find(v => 
-      v.id === vendorId || 
-      String(v.id) === String(vendorId) ||
-      v.id.toLowerCase() === vendorId.toLowerCase()
-    )
-    
+    // First try vendors.ts (full vendor objects) - match by ID or slug
+    let vendor = mockVendors.find(v => {
+      const vendorSlug = v.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+      return v.id === vendorId ||
+        String(v.id) === String(vendorId) ||
+        v.id.toLowerCase() === vendorId.toLowerCase() ||
+        vendorSlug === vendorId.toLowerCase()
+    })
+
     if (vendor) {
       return vendor
     }
-    
-    // Fallback to mock-data.ts (vendor profiles)
-    const vendorProfile = mockData.vendorProfiles.find(v => 
-      v.id === vendorId ||
-      String(v.id) === String(vendorId) ||
-      v.id.toLowerCase() === vendorId.toLowerCase()
-    )
-    
+
+    // Fallback to mock-data.ts (vendor profiles) - match by ID or slug
+    const vendorProfile = mockData.vendorProfiles.find(v => {
+      const profileSlug = v.businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+      return v.id === vendorId ||
+        String(v.id) === String(vendorId) ||
+        v.id.toLowerCase() === vendorId.toLowerCase() ||
+        profileSlug === vendorId.toLowerCase()
+    })
+
     if (vendorProfile) {
       // Transform mock-data vendor to full vendor format
       return this.transformVendorProfile(vendorProfile)
     }
-    
+
     return null
   }
   
@@ -56,7 +60,7 @@ export class VendorAdapter {
     return {
       id: vendorProfile.id,
       name: vendorProfile.businessName,
-      slug: vendorProfile.id.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+      slug: vendorProfile.businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
       logo: getVendorLogo(vendorProfile.businessName),
       coverImage: getVendorCover(vendorProfile.businessName),
       description: vendorProfile.description,

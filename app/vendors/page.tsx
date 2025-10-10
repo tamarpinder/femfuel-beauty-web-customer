@@ -1,36 +1,25 @@
 'use client'
 
-import { useState, useEffect } from "react"
-import { Star, MapPin, Award, TrendingUp, Users, Filter, Search, Crown, Zap, Store, Clock, Heart } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState, useEffect, useRef } from "react"
+import { Award, TrendingUp, Filter, Search, Crown, Zap, Store } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { CustomerFooter } from "@/components/customer-footer"
 import { MobileNavigation } from "@/components/mobile-navigation"
+import { VendorCard } from "@/components/vendor-card"
 import { getVendors } from "@/lib/vendors-api"
+import { categoryConfig, groupVendorsByCategory, type CategoryKey } from "@/lib/category-utils"
 import type { Vendor } from "@/types/vendor"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
 
 export default function VendorsPage() {
-  const router = useRouter()
   const [vendors, setVendors] = useState<Vendor[]>([])
   const [filteredVendors, setFilteredVendors] = useState<Vendor[]>([])
   const [searchTerm, setSearchTerm] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
   const [filterType, setFilterType] = useState("all") // all, topRated, new
   const [loading, setLoading] = useState(true)
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
+  const [activeSection, setActiveSection] = useState<CategoryKey | null>(null)
 
-  const categories = [
-    "all",
-    "Hair",
-    "Nails",
-    "Makeup",
-    "Spa",
-    "Facial",
-    "Lashes",
-    "Barbería"
-  ]
+  const sectionRefs = useRef<{ [key in CategoryKey]?: HTMLElement | null }>({})
 
   useEffect(() => {
     async function loadVendors() {
@@ -62,18 +51,10 @@ export default function VendorsPage() {
       )
     }
 
-    // Apply category filter
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter(vendor =>
-        vendor.categories?.some(cat => cat.toLowerCase().includes(selectedCategory.toLowerCase()))
-      )
-    }
-
     // Apply type filter
     if (filterType === "topRated") {
       filtered = filtered.filter(vendor => vendor.rating >= 4.5)
     } else if (filterType === "new") {
-      // For demo, consider vendors with fewer reviews as "new"
       filtered = filtered.filter(vendor => vendor.reviewCount < 50)
     }
 
@@ -81,7 +62,42 @@ export default function VendorsPage() {
     filtered.sort((a, b) => b.rating - a.rating)
 
     setFilteredVendors(filtered)
-  }, [vendors, searchTerm, selectedCategory, filterType])
+  }, [vendors, searchTerm, filterType])
+
+  const scrollToSection = (categoryKey: CategoryKey) => {
+    const element = sectionRefs.current[categoryKey]
+    if (element) {
+      const yOffset = -120 // Offset for sticky header
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+      window.scrollTo({ top: y, behavior: 'smooth' })
+    }
+  }
+
+  // Intersection observer for active section tracking
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '-120px 0px -70% 0px',
+      threshold: 0
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const categoryKey = entry.target.getAttribute('data-category') as CategoryKey
+          if (categoryKey) {
+            setActiveSection(categoryKey)
+          }
+        }
+      })
+    }, options)
+
+    Object.values(sectionRefs.current).forEach(ref => {
+      if (ref) observer.observe(ref)
+    })
+
+    return () => observer.disconnect()
+  }, [filteredVendors])
 
   const toggleFavorite = (vendorId: string) => {
     const newFavorites = new Set(favorites)
@@ -91,10 +107,6 @@ export default function VendorsPage() {
       newFavorites.add(vendorId)
     }
     setFavorites(newFavorites)
-  }
-
-  const handleVendorClick = (vendor: Vendor) => {
-    router.push(`/vendor/${vendor.slug || vendor.id}`)
   }
 
   if (loading) {
@@ -113,6 +125,9 @@ export default function VendorsPage() {
       </div>
     )
   }
+
+  const groupedVendors = groupVendorsByCategory(filteredVendors)
+  const showSections = filterType === "all" && !searchTerm
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
@@ -164,217 +179,142 @@ export default function VendorsPage() {
       {/* Filters */}
       <section className="py-8 px-4 bg-femfuel-light/50">
         <div className="max-w-6xl mx-auto">
-          {/* Filter Type */}
-          <div className="mb-6">
-            <div className="flex items-center gap-4 mb-4">
-              <Filter className="h-5 w-5 text-femfuel-medium" />
-              <span className="text-femfuel-dark font-medium">Filtrar por:</span>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => setFilterType("all")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  filterType === "all"
-                    ? 'bg-femfuel-rose text-white shadow-lg'
-                    : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-gray-200'
-                }`}
-              >
-                Todos
-              </button>
-              <button
-                onClick={() => setFilterType("topRated")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-                  filterType === "topRated"
-                    ? 'bg-amber-500 text-white shadow-lg'
-                    : 'bg-white text-femfuel-medium hover:bg-amber-50 hover:text-amber-600 border border-gray-200'
-                }`}
-              >
-                <Crown className="h-4 w-4" />
-                Top Rated
-              </button>
-              <button
-                onClick={() => setFilterType("new")}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
-                  filterType === "new"
-                    ? 'bg-purple-500 text-white shadow-lg'
-                    : 'bg-white text-femfuel-medium hover:bg-purple-50 hover:text-purple-600 border border-gray-200'
-                }`}
-              >
-                <Zap className="h-4 w-4" />
-                Nuevos
-              </button>
-            </div>
+          <div className="flex items-center gap-4 mb-4">
+            <Filter className="h-5 w-5 text-femfuel-medium" />
+            <span className="text-femfuel-dark font-medium">Filtrar por:</span>
           </div>
-
-          {/* Category Filter */}
-          <div>
-            <div className="flex items-center gap-4 mb-4">
-              <span className="text-femfuel-dark font-medium">Categoría:</span>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    selectedCategory === category
-                      ? 'bg-femfuel-rose text-white shadow-lg'
-                      : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-gray-200'
-                  }`}
-                >
-                  {category === "all" ? "Todas" : category}
-                </button>
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setFilterType("all")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                filterType === "all"
+                  ? 'bg-femfuel-rose text-white shadow-lg'
+                  : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-gray-200'
+              }`}
+            >
+              Todos
+            </button>
+            <button
+              onClick={() => setFilterType("topRated")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                filterType === "topRated"
+                  ? 'bg-amber-500 text-white shadow-lg'
+                  : 'bg-white text-femfuel-medium hover:bg-amber-50 hover:text-amber-600 border border-gray-200'
+              }`}
+            >
+              <Crown className="h-4 w-4" />
+              Mejor Calificados
+            </button>
+            <button
+              onClick={() => setFilterType("new")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                filterType === "new"
+                  ? 'bg-purple-500 text-white shadow-lg'
+                  : 'bg-white text-femfuel-medium hover:bg-purple-50 hover:text-purple-600 border border-gray-200'
+              }`}
+            >
+              <Zap className="h-4 w-4" />
+              Nuevos
+            </button>
           </div>
         </div>
       </section>
 
+      {/* Sticky Category Navigation - Only show when viewing all */}
+      {showSections && (
+        <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 py-4">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+              <span className="text-sm text-femfuel-medium whitespace-nowrap mr-2">Ir a:</span>
+              {categoryConfig.map((cat) => {
+                const count = groupedVendors[cat.key].length
+                if (count === 0) return null
+
+                return (
+                  <button
+                    key={cat.key}
+                    onClick={() => scrollToSection(cat.key)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                      activeSection === cat.key
+                        ? 'bg-femfuel-rose text-white shadow-md'
+                        : 'bg-gray-100 text-femfuel-dark hover:bg-gray-200'
+                    }`}
+                  >
+                    {cat.name} ({count})
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Vendors List */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
-              {filteredVendors.length} Salones Encontrados
-            </h2>
-            <p className="text-femfuel-medium">Ordenados por calificación y reseñas</p>
-          </div>
+          {!showSections && (
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
+                {filteredVendors.length} Salones Encontrados
+              </h2>
+              <p className="text-femfuel-medium">Ordenados por calificación y reseñas</p>
+            </div>
+          )}
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            {filteredVendors.map((vendor) => (
-              <Card
-                key={vendor.id}
-                className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden cursor-pointer"
-                onClick={() => handleVendorClick(vendor)}
-              >
-                {/* Badges */}
-                <div className="absolute top-4 right-4 flex gap-2 z-10">
-                  {vendor.rating >= 4.5 && (
-                    <div className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                      <Crown className="h-3 w-3" />
-                      Top Rated
+          {showSections ? (
+            // Render sections when viewing all
+            <>
+              {categoryConfig.map((cat) => {
+                const vendors = groupedVendors[cat.key]
+                if (vendors.length === 0) return null
+
+                return (
+                  <div
+                    key={cat.key}
+                    ref={el => sectionRefs.current[cat.key] = el}
+                    data-category={cat.key}
+                    className="mb-16"
+                  >
+                    <div className="mb-8">
+                      <h2 className="text-3xl font-bold text-femfuel-dark mb-1">
+                        {cat.name}
+                      </h2>
+                      <p className="text-femfuel-medium">{vendors.length} salones disponibles</p>
                     </div>
-                  )}
-                  {vendor.reviewCount < 50 && (
-                    <div className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                      <Zap className="h-3 w-3" />
-                      Nuevo
-                    </div>
-                  )}
-                </div>
 
-                {/* Favorite Button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    toggleFavorite(vendor.id)
-                  }}
-                  className="absolute top-4 left-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors z-10"
-                >
-                  <Heart
-                    className={`h-4 w-4 ${
-                      favorites.has(vendor.id)
-                        ? "fill-femfuel-rose text-femfuel-rose"
-                        : "text-gray-600"
-                    }`}
-                  />
-                </button>
-
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0">
-                      {vendor.logo ? (
-                        <Image
-                          src={vendor.logo}
-                          alt={vendor.name}
-                          fill
-                          className="object-cover"
-                          sizes="80px"
+                    <div className="grid lg:grid-cols-2 gap-6">
+                      {vendors.map((vendor) => (
+                        <VendorCard
+                          key={vendor.id}
+                          vendor={vendor}
+                          layout="list"
+                          showFavorites={true}
+                          showBadges={true}
+                          isFavorite={favorites.has(vendor.id)}
+                          onToggleFavorite={toggleFavorite}
                         />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-purple-100 to-rose-100 flex items-center justify-center">
-                          <Store className="h-8 w-8 text-purple-600" />
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="mb-3">
-                        <h3 className="text-lg font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors">
-                          {vendor.name}
-                        </h3>
-                        <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                          <MapPin className="h-4 w-4" />
-                          <span>{vendor.location.district}, {vendor.location.city}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 mb-3">
-                        <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-bold text-femfuel-dark">{vendor.rating}</span>
-                          <span className="text-sm text-femfuel-medium">({vendor.reviewCount} reseñas)</span>
-                        </div>
-                        <div className="text-sm text-femfuel-medium">
-                          {vendor.serviceCount} servicios
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {vendor.categories?.slice(0, 3).map((category, index) => (
-                          <span
-                            key={index}
-                            className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full"
-                          >
-                            {category}
-                          </span>
-                        ))}
-                        {vendor.categories && vendor.categories.length > 3 && (
-                          <span className="text-xs text-femfuel-medium">
-                            +{vendor.categories.length - 3} más
-                          </span>
-                        )}
-                      </div>
-
-                      {vendor.businessHours && (
-                        <div className="flex items-center gap-2 text-sm text-femfuel-medium mb-4">
-                          <Clock className="h-4 w-4" />
-                          <span>
-                            {vendor.businessHours.monday?.open || "9:00"} - {vendor.businessHours.monday?.close || "18:00"}
-                          </span>
-                        </div>
-                      )}
-
-                      <p className="text-sm text-femfuel-medium mb-4 line-clamp-2">
-                        {vendor.description}
-                      </p>
-
-                      <div className="flex gap-3">
-                        <button
-                          className="glassmorphism-button flex-1"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleVendorClick(vendor)
-                          }}
-                        >
-                          Ver Salón
-                        </button>
-                        <button
-                          className="femfuel-button-lg"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            // TODO: Implement contact
-                          }}
-                        >
-                          Contactar
-                        </button>
-                      </div>
+                      ))}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                )
+              })}
+            </>
+          ) : (
+            // Render flat list when filtering
+            <div className="grid lg:grid-cols-2 gap-6">
+              {filteredVendors.map((vendor) => (
+                <VendorCard
+                  key={vendor.id}
+                  vendor={vendor}
+                  layout="list"
+                  showFavorites={true}
+                  showBadges={true}
+                  isFavorite={favorites.has(vendor.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
+              ))}
+            </div>
+          )}
 
           {/* No Results */}
           {filteredVendors.length === 0 && (

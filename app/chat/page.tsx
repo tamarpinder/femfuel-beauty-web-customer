@@ -36,7 +36,7 @@ export default function ChatMessagesPage() {
     const mockConversations: ChatConversation[] = [
       {
         id: "chat-001",
-        vendorId: "vendor-profile-001",
+        vendorId: "glamour-house",
         vendorName: "Glamour House",
         vendorLogo: "/vendors/logos/vendor-1-logo.png",
         serviceContext: "Maquillaje de Novia",
@@ -49,8 +49,8 @@ export default function ChatMessagesPage() {
         isOnline: true
       },
       {
-        id: "chat-002", 
-        vendorId: "vendor-profile-002",
+        id: "chat-002",
+        vendorId: "nails-paradise",
         vendorName: "Nails Paradise",
         vendorLogo: "/vendors/logos/vendor-2-logo.png",
         serviceContext: "Manicure de Gel",
@@ -64,7 +64,7 @@ export default function ChatMessagesPage() {
       },
       {
         id: "chat-003",
-        vendorId: "vendor-profile-005", 
+        vendorId: "lash-studio-dr",
         vendorName: "Lash Studio DR",
         vendorLogo: "/vendors/logos/vendor-5-logo.png",
         serviceContext: "Extensiones de Pestañas",

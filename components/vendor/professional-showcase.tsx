@@ -1,25 +1,18 @@
 'use client'
 
 import { useState } from "react"
-import { Star, Award, Calendar, Users, ChevronLeft, ChevronRight } from "lucide-react"
+import { Award, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import Image from "next/image"
-
-interface Professional {
-  id: string
-  name: string
-  image?: string
-  rating: number
-  reviewCount: number
-  yearsExperience: number
-  monthlyBookings: number
-  specialties: string[]
-  isTopRated?: boolean
-  nextAvailable?: string
-  bio?: string
-}
+import type { Professional } from "@/types/vendor"
+import {
+  ProfessionalRating,
+  ProfessionalExperience,
+  ProfessionalAvailability,
+  ProfessionalSpecialties,
+  TopRatedBadge,
+  ProfessionalAvatar
+} from "@/lib/professional-ui-utils"
 
 interface ProfessionalShowcaseProps {
   professionals: Professional[]
@@ -105,23 +98,13 @@ export function ProfessionalShowcase({
               <CardContent className="p-6">
                 {/* Header with photo and basic info */}
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                    {professional.image ? (
-                      <Image
-                        src={professional.image}
-                        alt={professional.name}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-purple-100 to-rose-100 flex items-center justify-center">
-                        <span className="text-lg font-bold text-purple-600">
-                          {professional.name.split(' ').map(n => n[0]).join('')}
-                        </span>
-                      </div>
-                    )}
-
+                  <div className="relative flex-shrink-0">
+                    <ProfessionalAvatar
+                      name={professional.name}
+                      image={professional.image}
+                      size={64}
+                      rounded="xl"
+                    />
                     {/* Status indicator */}
                     <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
@@ -133,39 +116,30 @@ export function ProfessionalShowcase({
                           {professional.name}
                         </h3>
                         {professional.isTopRated && (
-                          <Badge variant="secondary" className="text-xs mt-1 bg-amber-100 text-amber-800">
-                            <Award className="h-3 w-3 mr-1" />
-                            Top Rated
-                          </Badge>
+                          <div className="mt-1">
+                            <TopRatedBadge variant="full" />
+                          </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1 mb-2">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-semibold text-femfuel-dark">{professional.rating}</span>
-                      <span className="text-sm text-femfuel-medium">({professional.reviewCount})</span>
+                    <div className="mb-2">
+                      <ProfessionalRating
+                        rating={professional.rating}
+                        reviewCount={professional.reviewCount}
+                        variant="single"
+                      />
                     </div>
                   </div>
                 </div>
 
                 {/* Specialties */}
                 <div className="mb-4">
-                  <div className="flex flex-wrap gap-2">
-                    {professional.specialties.slice(0, 3).map((specialty, index) => (
-                      <span
-                        key={index}
-                        className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full font-medium"
-                      >
-                        {specialty}
-                      </span>
-                    ))}
-                    {professional.specialties.length > 3 && (
-                      <span className="text-xs text-femfuel-medium font-medium">
-                        +{professional.specialties.length - 3} más
-                      </span>
-                    )}
-                  </div>
+                  <ProfessionalSpecialties
+                    specialties={professional.specialties}
+                    maxShow={3}
+                    variant="chip"
+                  />
                 </div>
 
                 {/* Stats */}

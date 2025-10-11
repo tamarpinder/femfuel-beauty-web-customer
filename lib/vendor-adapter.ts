@@ -115,39 +115,59 @@ export class VendorAdapter {
     }
   }
 
+  // Track which curated portfolios have been assigned
+  private static usedCuratedPortfolios = {
+    hair: false,
+    makeup: false,
+    spa: false,
+    nails: false
+  }
+
+  // Detect category from specialties (shared logic for consistency)
+  static detectCategory(specialties: string[]): 'hair' | 'makeup' | 'spa' | 'nails' {
+    const specialtyLower = specialties[0]?.toLowerCase() || ''
+
+    if (specialtyLower.includes('corte') || specialtyLower.includes('color') || specialtyLower.includes('keratina') || specialtyLower.includes('alisado') || specialtyLower.includes('balayage') || specialtyLower.includes('peinado')) {
+      return 'hair'
+    } else if (specialtyLower.includes('maquillaje') || specialtyLower.includes('makeup') || specialtyLower.includes('novia')) {
+      return 'makeup'
+    } else if (specialtyLower.includes('nail') || specialtyLower.includes('manicure') || specialtyLower.includes('pedicure')) {
+      return 'nails'
+    } else if (specialtyLower.includes('masaje') || specialtyLower.includes('facial') || specialtyLower.includes('spa') || specialtyLower.includes('terapia')) {
+      return 'spa'
+    }
+
+    return 'nails' // default
+  }
+
   // Get portfolio images for professional
-  static getPortfolioImages(name: string, specialties: string[]): string[] {
-    // Star professionals with curated portfolios
-    const starProfessionals: Record<string, string[]> = {
-      'Ana Rodríguez': [
+  static getPortfolioImages(name: string, specialties: string[], professionalId: string): string[] {
+    // Curated portfolio images by category (for star professionals)
+    const curatedPortfolios: Record<string, string[]> = {
+      hair: [
         "/professionals/portfolios/ana-rodrguez/carla-portfolio-1.png",
         "/professionals/portfolios/ana-rodrguez/carla-portfolio-2.png",
         "/professionals/portfolios/ana-rodrguez/carla-portfolio-3.png",
         "/professionals/portfolios/ana-rodrguez/carla-portfolio-4.png"
       ],
-      'Alejandra Santos': [
+      makeup: [
         "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
         "/professionals/portfolios/alejandra-santos/alejandra-portfolio-2.png",
         "/professionals/portfolios/alejandra-santos/alejandra-portfolio-3.png",
         "/professionals/portfolios/alejandra-santos/alejandra-portfolio-4.png"
       ],
-      'Isabella Martínez': [
+      spa: [
         "/professionals/portfolios/isabella-martnez/gabriela-portfolio-1.png",
         "/professionals/portfolios/isabella-martnez/gabriela-portfolio-2.png",
         "/professionals/portfolios/isabella-martnez/gabriela-portfolio-3.png",
         "/professionals/portfolios/isabella-martnez/gabriela-portfolio-4.png"
       ],
-      'Maria Rodriguez': [
+      nails: [
         "/professionals/portfolios/maria-rodriguez/patricia-portfolio-1.png",
         "/professionals/portfolios/maria-rodriguez/patricia-portfolio-2.png",
         "/professionals/portfolios/maria-rodriguez/patricia-portfolio-3.png",
         "/professionals/portfolios/maria-rodriguez/patricia-portfolio-4.png"
       ]
-    }
-
-    // Check if this is a star professional
-    if (starProfessionals[name]) {
-      return starProfessionals[name]
     }
 
     // Generic portfolio images by category
@@ -178,21 +198,17 @@ export class VendorAdapter {
       ]
     }
 
-    // Determine category from specialties
-    const specialtyLower = specialties[0]?.toLowerCase() || ''
+    // Determine category from specialties using shared logic
+    const category = this.detectCategory(specialties)
 
-    if (specialtyLower.includes('corte') || specialtyLower.includes('color') || specialtyLower.includes('keratina') || specialtyLower.includes('alisado') || specialtyLower.includes('balayage')) {
-      return genericPortfolios.hair
-    } else if (specialtyLower.includes('maquillaje') || specialtyLower.includes('makeup') || specialtyLower.includes('novia')) {
-      return genericPortfolios.makeup
-    } else if (specialtyLower.includes('nail') || specialtyLower.includes('manicure') || specialtyLower.includes('pedicure')) {
-      return genericPortfolios.nails
-    } else if (specialtyLower.includes('masaje') || specialtyLower.includes('facial') || specialtyLower.includes('spa') || specialtyLower.includes('terapia')) {
-      return genericPortfolios.spa
+    // Assign curated portfolio to first professional of each category
+    if (!this.usedCuratedPortfolios[category]) {
+      this.usedCuratedPortfolios[category] = true
+      return curatedPortfolios[category]
     }
 
-    // Default fallback
-    return genericPortfolios.nails
+    // Use generic portfolios for other professionals
+    return genericPortfolios[category]
   }
 
   // Generate professionals for vendor based on services
@@ -209,12 +225,12 @@ export class VendorAdapter {
       const random = this.seededRandom(professionalId)
       
       // Separate names by gender
-      const femaleNames = ['María', 'Carmen', 'Ana', 'Rosa', 'Lucía', 'Patricia', 'Sofia', 'Gabriela']
+      const femaleNames = ['María', 'Carmen', 'Ana', 'Rosa', 'Lucía', 'Patricia', 'Sofia', 'Gabriela', 'Alejandra', 'Isabella', 'Maria']
       const maleNames = ['Ricardo', 'Carlos', 'Diego', 'Eduardo', 'Andrés', 'Gabriel', 'Jean Carlos']
 
       const lastNames = [
         'García', 'Rodríguez', 'Martínez', 'López', 'González', 'Pérez', 'Sánchez', 'Torres',
-        'Flores', 'Rivera', 'Morales', 'Jiménez', 'Cruz', 'Valdez', 'Herrera'
+        'Flores', 'Rivera', 'Morales', 'Jiménez', 'Cruz', 'Valdez', 'Herrera', 'Rodriguez', 'Santos'
       ]
 
       // Separate portraits by gender
@@ -282,7 +298,7 @@ export class VendorAdapter {
       const bioExperience = Math.floor(random() * 10) + 3
 
       // Get portfolio images for this professional
-      const portfolioImages = this.getPortfolioImages(name, specialties)
+      const portfolioImages = this.getPortfolioImages(name, specialties, professionalId)
 
       professionals.push({
         id: professionalId,
@@ -442,22 +458,38 @@ export class VendorAdapter {
     return selectedAddons
   }
   
+  // Reset portfolio tracking (call before generating all vendors)
+  static resetPortfolioTracking() {
+    this.usedCuratedPortfolios = {
+      hair: false,
+      makeup: false,
+      spa: false,
+      nails: false
+    }
+  }
+
   // Get all vendors from both sources
   static getAllVendors(): Vendor[] {
+    // Reset portfolio tracking to ensure curated portfolios are assigned fresh
+    this.resetPortfolioTracking()
+
     const allVendors: Vendor[] = [...mockVendors]
-    
+
     // Add transformed vendors from mock-data that aren't already in vendors.ts
     mockData.vendorProfiles.forEach(vendorProfile => {
-      const existsInVendors = mockVendors.some(v => 
-        v.id === vendorProfile.id || 
+      const existsInVendors = mockVendors.some(v =>
+        v.id === vendorProfile.id ||
         v.name === vendorProfile.businessName
       )
-      
+
       if (!existsInVendors) {
         allVendors.push(this.transformVendorProfile(vendorProfile))
       }
     })
-    
+
+    // Sort vendors alphabetically by name to ensure consistent order
+    allVendors.sort((a, b) => a.name.localeCompare(b.name, 'es-ES'))
+
     return allVendors
   }
 }

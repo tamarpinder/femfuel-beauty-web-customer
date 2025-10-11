@@ -61,7 +61,12 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
 
                   <h3 className="text-xl font-bold text-femfuel-dark mb-1">{current.name}</h3>
                   <p className="text-femfuel-medium mb-2">{current.specialties[0]}</p>
-                  <p className="text-sm text-femfuel-medium mb-4">{current.vendorName}</p>
+                  <p
+                    className="text-sm text-femfuel-medium mb-4 cursor-pointer hover:text-femfuel-rose hover:underline transition-colors"
+                    onClick={() => current.vendorId && onViewVendor?.(current.vendorId)}
+                  >
+                    {current.vendorName}
+                  </p>
 
                   {/* Rating */}
                   <div className="flex items-center justify-center mb-4">

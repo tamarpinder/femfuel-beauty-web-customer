@@ -36,14 +36,16 @@ interface NearbyBeautyProps {
   onGetDirections?: (locationId: string) => void
   onCallLocation?: (phone: string) => void
   onBookLocation?: (locationId: string) => void
+  onViewVendor?: (locationId: string) => void
 }
 
-export function NearbyBeauty({ 
-  locations, 
+export function NearbyBeauty({
+  locations,
   userLocation = "Tu ubicación",
-  onGetDirections, 
-  onCallLocation, 
-  onBookLocation 
+  onGetDirections,
+  onCallLocation,
+  onBookLocation,
+  onViewVendor
 }: NearbyBeautyProps) {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null)
 
@@ -113,7 +115,12 @@ export function NearbyBeauty({
 
               <CardContent className="p-4 flex flex-col flex-grow">
                 <div className="mb-3">
-                  <h3 className="font-bold text-femfuel-dark mb-1">{location.name}</h3>
+                  <h3
+                    className="font-bold text-femfuel-dark mb-1 cursor-pointer hover:text-femfuel-rose hover:underline transition-colors"
+                    onClick={() => onViewVendor?.(location.id)}
+                  >
+                    {location.name}
+                  </h3>
                   <p className="text-sm text-femfuel-medium mb-2">{location.type}</p>
                   
                   {/* Location Info */}

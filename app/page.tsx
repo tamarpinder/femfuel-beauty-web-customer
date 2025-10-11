@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState, useCallback } from "react"
 import { toast } from "sonner"
 import { getMarketplaceServices, getVendors } from "@/lib/vendors-api"
-import { getAllProfessionals, ProfessionalWithVendor } from "@/lib/getAllProfessionals"
+import { starProfessionals } from "@/data/star-professionals"
 import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
 import { ServiceCard, type MarketplaceService } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
@@ -217,68 +217,8 @@ export default function HomePage() {
     }
   ]
 
-  // Get Star Professionals from real VendorAdapter professionals
-  const getStarProfessionals = useCallback(() => {
-    const allProfessionals = getAllProfessionals()
-
-    // Star professionals names and their signature services
-    const starProfessionalData = {
-      'Ana Rodríguez': {
-        signature: "Balayage Dorado Caribeño",
-        price: "RD$4,500"
-      },
-      'Alejandra Santos': {
-        signature: "Glamour Tropical Night",
-        price: "RD$3,500"
-      },
-      'Isabella Martínez': {
-        signature: "Piel Radiante Caribeña",
-        price: "RD$4,200"
-      },
-      'Maria Rodriguez': {
-        signature: "Tropical Nail Art",
-        price: "RD$1,800"
-      }
-    }
-
-    // Find and map star professionals with their data
-    const starProfessionals = allProfessionals
-      .filter(prof => prof.name in starProfessionalData)
-      .map(professional => {
-        const signatureData = starProfessionalData[professional.name as keyof typeof starProfessionalData]
-
-        return {
-          id: professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
-          name: professional.name,
-          image: professional.image,
-          rating: professional.rating,
-          reviewCount: professional.reviewCount,
-          yearsExperience: professional.yearsExperience,
-          monthlyBookings: professional.monthlyBookings,
-          specialties: professional.specialties,
-          recommendedAddons: professional.recommendedAddons || [],
-          bio: professional.bio,
-          isTopRated: professional.isTopRated,
-          nextAvailable: professional.nextAvailable || "Hoy 3:15 PM",
-          vendorId: professional.vendor.slug,
-          vendorName: professional.vendor.name,
-          vendorSlug: professional.vendor.slug,
-          portfolio: {
-            images: professional.portfolio?.images || [],
-            signature: {
-              serviceName: signatureData.signature,
-              price: signatureData.price,
-              description: `Especialidad exclusiva de ${professional.name}`,
-              duration: 120
-            }
-          }
-        }
-      })
-
-    return starProfessionals
-  }, [])
-
-  const professionals = getStarProfessionals()
+  // Star Professionals - static data with curated portfolios
+  const professionals = starProfessionals
 
   // Transform real vendor data to NearbyLocation format
   const transformVendorToNearbyLocation = (vendor: Vendor, index: number) => {
@@ -508,12 +448,13 @@ export default function HomePage() {
       />
 
       {/* Nearby Beauty */}
-      <NearbyBeauty 
+      <NearbyBeauty
         locations={nearbyLocations}
         userLocation="Piantini, Santo Domingo"
         onGetDirections={handleGetDirections}
         onCallLocation={handleCallLocation}
         onBookLocation={handleBookLocation}
+        onViewVendor={(locationId) => router.push(`/vendor/${locationId}`)}
       />
 
       {/* Featured Services - Redesigned Premium Section */}
@@ -538,7 +479,13 @@ export default function HomePage() {
               {/* Mobile Layout - Enhanced Cards */}
               <div className="md:hidden space-y-6">
                 {featuredServices.slice(0, 4).map((service) => (
-                  <ServiceCard key={service.id} service={service} layout="horizontal" onViewProviders={handleViewProviders} />
+                  <ServiceCard
+                    key={service.id}
+                    service={service}
+                    layout="horizontal"
+                    onViewProviders={handleViewProviders}
+                    onViewVendor={(vendorId) => router.push(`/vendor/${vendorId}`)}
+                  />
                 ))}
                 <div className="text-center pt-6">
                   <button className="glassmorphism-button-lg" onClick={() => router.push('/services')}>
@@ -551,7 +498,13 @@ export default function HomePage() {
               <div className="hidden md:block">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {featuredServices.slice(0, 6).map((service) => (
-                    <ServiceCard key={service.id} service={service} layout="vertical" onViewProviders={handleViewProviders} />
+                    <ServiceCard
+                      key={service.id}
+                      service={service}
+                      layout="vertical"
+                      onViewProviders={handleViewProviders}
+                      onViewVendor={(vendorId) => router.push(`/vendor/${vendorId}`)}
+                    />
                   ))}
                 </div>
                 <div className="text-center mt-12">

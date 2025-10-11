@@ -55,9 +55,10 @@ interface ServiceCardProps {
   vendorRating?: number
   onViewProviders?: (serviceId: string) => void
   onBook?: (serviceId: string) => void
+  onViewVendor?: (vendorId: string) => void
 }
 
-export function ServiceCard({ service, layout = "vertical", vendorId, vendorName, vendorRating, onViewProviders, onBook }: ServiceCardProps) {
+export function ServiceCard({ service, layout = "vertical", vendorId, vendorName, vendorRating, onViewProviders, onBook, onViewVendor }: ServiceCardProps) {
   const [showBookingModal, setShowBookingModal] = useState(false)
 
   // Use explicit vendor props or fallback to service featuredProvider
@@ -99,7 +100,15 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
                   <h3 className="font-bold text-femfuel-dark text-sm sm:text-lg mb-1 sm:mb-2 line-clamp-2 break-words">{service.name}</h3>
                   {service.featuredProvider && (
                     <div className="mb-2">
-                      <p className="text-xs sm:text-sm font-semibold text-femfuel-dark mb-1 line-clamp-1 break-words">{service.featuredProvider.name}</p>
+                      <p
+                        className="text-xs sm:text-sm font-semibold text-femfuel-dark mb-1 line-clamp-1 break-words cursor-pointer hover:text-femfuel-rose hover:underline transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onViewVendor?.(service.featuredProvider!.id)
+                        }}
+                      >
+                        {service.featuredProvider.name}
+                      </p>
                       <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs min-w-0">
                         <div className="flex items-center gap-1 shrink-0">
                           <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
@@ -189,7 +198,15 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
 
               {service.featuredProvider && (
                 <div className="mb-4">
-                  <p className="text-sm sm:text-base font-semibold text-femfuel-dark mb-2 line-clamp-1 break-words">{service.featuredProvider.name}</p>
+                  <p
+                    className="text-sm sm:text-base font-semibold text-femfuel-dark mb-2 line-clamp-1 break-words cursor-pointer hover:text-femfuel-rose hover:underline transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onViewVendor?.(service.featuredProvider!.id)
+                    }}
+                  >
+                    {service.featuredProvider.name}
+                  </p>
                   <div className="flex flex-wrap items-center gap-2 text-sm min-w-0">
                     <div className="flex items-center gap-1 shrink-0">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />

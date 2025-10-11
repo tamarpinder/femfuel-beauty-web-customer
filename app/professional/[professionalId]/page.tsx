@@ -216,12 +216,22 @@ export default function ProfessionalPortfolioPage() {
     // Determine specialty category for portfolio generation
     const specialtyCategory = getSpecialtyCategory(professionalData.specialties)
 
-    // Get portfolio images using the mapping system
-    const portfolioData = getPortfolioForProfessional(
-      professionalId,
-      specialtyCategory,
-      professionalData.name
-    )
+    // Use existing portfolio images if available (for star professionals), otherwise generate
+    let portfolioData
+    if (professionalData.portfolio?.images && professionalData.portfolio.images.length > 0) {
+      // Use existing portfolio from star professionals data
+      portfolioData = {
+        images: professionalData.portfolio.images,
+        beforeAfter: [] // Star professionals don't have before/after yet
+      }
+    } else {
+      // Get portfolio images using the mapping system for generated professionals
+      portfolioData = getPortfolioForProfessional(
+        professionalId,
+        specialtyCategory,
+        professionalData.name
+      )
+    }
 
     // Create professional profile with dynamic data
     const professionalProfile: ProfessionalProfile = {
@@ -347,7 +357,7 @@ export default function ProfessionalPortfolioPage() {
               src={professional.portfolio.images[selectedGalleryIndex] || professional.image || "/professional-placeholder.png"}
               alt={`${professional.name} portfolio`}
               fill
-              sizes="100vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
               priority
             />

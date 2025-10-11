@@ -299,20 +299,28 @@ export default function HomePage() {
         starProfessionals.push({
           id: portfolioItem.slug,
           name: realProfessional.name,
-          specialty: realProfessional.specialties?.[0] || portfolioItem.category,
-          salon: realProfessional.vendor.name,
-          vendorId: realProfessional.vendor.slug,
-          location: realProfessional.vendor.location.district,
+          image: portfolioItem.avatar,
           rating: realProfessional.rating,
           reviewCount: realProfessional.reviewCount,
           yearsExperience: realProfessional.yearsExperience,
-          avatar: portfolioItem.avatar,
-          portfolioImages: portfolioItem.portfolioImages,
+          monthlyBookings: realProfessional.monthlyBookings,
           specialties: realProfessional.specialties,
-          availableToday: portfolioItem.category === 'makeup' ? false : true,
+          recommendedAddons: realProfessional.recommendedAddons || [],
+          bio: realProfessional.bio,
+          isTopRated: realProfessional.isTopRated,
           nextAvailable: realProfessional.nextAvailable || (portfolioItem.category === 'makeup' ? "Mañana 10:00 AM" : "Hoy 2:00 PM"),
-          signature: portfolioItem.signature,
-          price: portfolioItem.price
+          vendorId: realProfessional.vendor.slug,
+          vendorName: realProfessional.vendor.name,
+          vendorSlug: realProfessional.vendor.slug,
+          portfolio: {
+            images: portfolioItem.portfolioImages,
+            signature: {
+              serviceName: portfolioItem.signature,
+              price: portfolioItem.price,
+              description: `Especialidad exclusiva de ${realProfessional.name}`,
+              duration: 120
+            }
+          }
         })
       }
     })

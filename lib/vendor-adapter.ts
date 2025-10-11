@@ -108,11 +108,91 @@ export class VendorAdapter {
       hash = ((hash << 5) - hash) + char;
       hash = hash & hash; // Convert to 32bit integer
     }
-    
+
     return function() {
       hash = ((hash * 1103515245) + 12345) & 0x7fffffff;
       return hash / 0x7fffffff;
     }
+  }
+
+  // Get portfolio images for professional
+  static getPortfolioImages(name: string, specialties: string[]): string[] {
+    // Star professionals with curated portfolios
+    const starProfessionals: Record<string, string[]> = {
+      'Ana Rodríguez': [
+        "/professionals/portfolios/ana-rodrguez/carla-portfolio-1.png",
+        "/professionals/portfolios/ana-rodrguez/carla-portfolio-2.png",
+        "/professionals/portfolios/ana-rodrguez/carla-portfolio-3.png",
+        "/professionals/portfolios/ana-rodrguez/carla-portfolio-4.png"
+      ],
+      'Alejandra Santos': [
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-2.png",
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-3.png",
+        "/professionals/portfolios/alejandra-santos/alejandra-portfolio-4.png"
+      ],
+      'Isabella Martínez': [
+        "/professionals/portfolios/isabella-martnez/gabriela-portfolio-1.png",
+        "/professionals/portfolios/isabella-martnez/gabriela-portfolio-2.png",
+        "/professionals/portfolios/isabella-martnez/gabriela-portfolio-3.png",
+        "/professionals/portfolios/isabella-martnez/gabriela-portfolio-4.png"
+      ],
+      'Maria Rodriguez': [
+        "/professionals/portfolios/maria-rodriguez/patricia-portfolio-1.png",
+        "/professionals/portfolios/maria-rodriguez/patricia-portfolio-2.png",
+        "/professionals/portfolios/maria-rodriguez/patricia-portfolio-3.png",
+        "/professionals/portfolios/maria-rodriguez/patricia-portfolio-4.png"
+      ]
+    }
+
+    // Check if this is a star professional
+    if (starProfessionals[name]) {
+      return starProfessionals[name]
+    }
+
+    // Generic portfolio images by category
+    const genericPortfolios: Record<string, string[]> = {
+      hair: [
+        "/professionals/portfolios/hair-portfolio-1.png",
+        "/professionals/portfolios/hair-portfolio-2.png",
+        "/professionals/portfolios/hair-portfolio-3.png",
+        "/professionals/portfolios/hair-portfolio-4.webp"
+      ],
+      makeup: [
+        "/professionals/portfolios/makeup-portfolio-1.png",
+        "/professionals/portfolios/makeup-portfolio-2.png",
+        "/professionals/portfolios/makeup-portfolio-3.png",
+        "/professionals/portfolios/makeup-portfolio-4.webp"
+      ],
+      spa: [
+        "/professionals/portfolios/spa-portfolio-1.png",
+        "/professionals/portfolios/spa-portfolio-2.png",
+        "/professionals/portfolios/spa-portfolio-3.png",
+        "/professionals/portfolios/spa-portfolio-4.webp"
+      ],
+      nails: [
+        "/professionals/portfolios/nails-portfolio-1.png",
+        "/professionals/portfolios/nails-portfolio-2.png",
+        "/professionals/portfolios/nails-portfolio-3.png",
+        "/professionals/portfolios/nails-portfolio-4.webp"
+      ]
+    }
+
+    // Determine category from specialties
+    const specialtyLower = specialties[0]?.toLowerCase() || ''
+
+    if (specialtyLower.includes('corte') || specialtyLower.includes('color') || specialtyLower.includes('keratina') || specialtyLower.includes('alisado') || specialtyLower.includes('balayage')) {
+      return genericPortfolios.hair
+    } else if (specialtyLower.includes('maquillaje') || specialtyLower.includes('makeup') || specialtyLower.includes('novia')) {
+      return genericPortfolios.makeup
+    } else if (specialtyLower.includes('nail') || specialtyLower.includes('manicure') || specialtyLower.includes('pedicure')) {
+      return genericPortfolios.nails
+    } else if (specialtyLower.includes('masaje') || specialtyLower.includes('facial') || specialtyLower.includes('spa') || specialtyLower.includes('terapia')) {
+      return genericPortfolios.spa
+    }
+
+    // Default fallback
+    return genericPortfolios.nails
   }
 
   // Generate professionals for vendor based on services
@@ -200,7 +280,10 @@ export class VendorAdapter {
       const monthlyBookings = Math.floor(random() * 80) + 40
       const isTopRated = random() > 0.6
       const bioExperience = Math.floor(random() * 10) + 3
-      
+
+      // Get portfolio images for this professional
+      const portfolioImages = this.getPortfolioImages(name, specialties)
+
       professionals.push({
         id: professionalId,
         name,
@@ -213,7 +296,10 @@ export class VendorAdapter {
         isTopRated,
         nextAvailable: "Hoy 3:15 PM",
         bio: `${specialties[0]} especialista con ${bioExperience} años de experiencia.`,
-        recommendedAddons: this.generateRecommendedAddons(specialties, professionalId, random)
+        recommendedAddons: this.generateRecommendedAddons(specialties, professionalId, random),
+        portfolio: {
+          images: portfolioImages
+        }
       })
     }
     

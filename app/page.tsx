@@ -221,109 +221,59 @@ export default function HomePage() {
   const getStarProfessionals = useCallback(() => {
     const allProfessionals = getAllProfessionals()
 
-
-    // Portfolio structure mapped to real professionals with correct names and slugs
-    const portfolioStructure = [
-      {
-        name: "Ana Rodríguez",
-        slug: "ana-rodrguez", // Correct slug with accents
-        category: "hair",
-        portfolioImages: [
-          "/professionals/portfolios/ana-rodrguez/carla-portfolio-1.png",
-          "/professionals/portfolios/ana-rodrguez/carla-portfolio-2.png",
-          "/professionals/portfolios/ana-rodrguez/carla-portfolio-3.png",
-          "/professionals/portfolios/ana-rodrguez/carla-portfolio-4.png"
-        ],
-        avatar: "/professionals/portraits/hair-colorist-lucia.png",
+    // Star professionals names and their signature services
+    const starProfessionalData = {
+      'Ana Rodríguez': {
         signature: "Balayage Dorado Caribeño",
         price: "RD$4,500"
       },
-      {
-        name: "Alejandra Santos",
-        slug: "alejandra-santos",
-        category: "makeup",
-        portfolioImages: [
-          "/professionals/portfolios/alejandra-santos/alejandra-portfolio-1.png",
-          "/professionals/portfolios/alejandra-santos/alejandra-portfolio-2.png",
-          "/professionals/portfolios/alejandra-santos/alejandra-portfolio-3.png",
-          "/professionals/portfolios/alejandra-santos/alejandra-portfolio-4.png"
-        ],
-        avatar: "/professionals/portraits/bridal-makeup-artist-valentina.png",
+      'Alejandra Santos': {
         signature: "Glamour Tropical Night",
         price: "RD$3,500"
       },
-      {
-        name: "Isabella Martínez",
-        slug: "isabella-martnez", // Correct slug with accents
-        category: "spa",
-        portfolioImages: [
-          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-1.png",
-          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-2.png",
-          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-3.png",
-          "/professionals/portfolios/isabella-martnez/gabriela-portfolio-4.png"
-        ],
-        avatar: "/professionals/portraits/wellness-therapist-isabella.png",
+      'Isabella Martínez': {
         signature: "Piel Radiante Caribeña",
         price: "RD$4,200"
       },
-      {
-        name: "Maria Rodriguez",
-        slug: "maria-rodriguez",
-        category: "nails",
-        portfolioImages: [
-          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-1.png",
-          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-2.png",
-          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-3.png",
-          "/professionals/portfolios/maria-rodriguez/patricia-portfolio-4.png"
-        ],
-        avatar: "/professionals/portraits/nail-artist-sofia.png",
+      'Maria Rodriguez': {
         signature: "Tropical Nail Art",
         price: "RD$1,800"
       }
-    ]
-
-    // Find real professionals by exact name matching
-    const findProfessionalByName = (targetName: string) => {
-      return allProfessionals.find(prof =>
-        prof.name === targetName
-      )
     }
 
-    // Build result using real professionals mapped to portfolio structure
-    const starProfessionals: any[] = []
+    // Find and map star professionals with their data
+    const starProfessionals = allProfessionals
+      .filter(prof => prof.name in starProfessionalData)
+      .map(professional => {
+        const signatureData = starProfessionalData[professional.name as keyof typeof starProfessionalData]
 
-    portfolioStructure.forEach(portfolioItem => {
-      const realProfessional = findProfessionalByName(portfolioItem.name)
-
-      if (realProfessional) {
-        starProfessionals.push({
-          id: portfolioItem.slug,
-          name: realProfessional.name,
-          image: portfolioItem.avatar,
-          rating: realProfessional.rating,
-          reviewCount: realProfessional.reviewCount,
-          yearsExperience: realProfessional.yearsExperience,
-          monthlyBookings: realProfessional.monthlyBookings,
-          specialties: realProfessional.specialties,
-          recommendedAddons: realProfessional.recommendedAddons || [],
-          bio: realProfessional.bio,
-          isTopRated: realProfessional.isTopRated,
-          nextAvailable: realProfessional.nextAvailable || (portfolioItem.category === 'makeup' ? "Mañana 10:00 AM" : "Hoy 2:00 PM"),
-          vendorId: realProfessional.vendor.slug,
-          vendorName: realProfessional.vendor.name,
-          vendorSlug: realProfessional.vendor.slug,
+        return {
+          id: professional.name.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
+          name: professional.name,
+          image: professional.image,
+          rating: professional.rating,
+          reviewCount: professional.reviewCount,
+          yearsExperience: professional.yearsExperience,
+          monthlyBookings: professional.monthlyBookings,
+          specialties: professional.specialties,
+          recommendedAddons: professional.recommendedAddons || [],
+          bio: professional.bio,
+          isTopRated: professional.isTopRated,
+          nextAvailable: professional.nextAvailable || "Hoy 3:15 PM",
+          vendorId: professional.vendor.slug,
+          vendorName: professional.vendor.name,
+          vendorSlug: professional.vendor.slug,
           portfolio: {
-            images: portfolioItem.portfolioImages,
+            images: professional.portfolio?.images || [],
             signature: {
-              serviceName: portfolioItem.signature,
-              price: portfolioItem.price,
-              description: `Especialidad exclusiva de ${realProfessional.name}`,
+              serviceName: signatureData.signature,
+              price: signatureData.price,
+              description: `Especialidad exclusiva de ${professional.name}`,
               duration: 120
             }
           }
-        })
-      }
-    })
+        }
+      })
 
     return starProfessionals
   }, [])

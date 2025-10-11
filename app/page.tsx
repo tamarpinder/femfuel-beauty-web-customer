@@ -461,11 +461,11 @@ export default function HomePage() {
       <section className="px-4 py-16 bg-gradient-to-br from-gray-50 via-white to-femfuel-light/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">
               Recomendaciones para ti
             </h2>
-            <p className="text-lg text-femfuel-medium max-w-2xl mx-auto">
-              Descubre los servicios más populares con la experiencia de nuestros mejores especialistas
+            <p className="text-base text-femfuel-medium max-w-2xl mx-auto">
+              Descubre los servicios más populares con nuestros mejores especialistas
             </p>
           </div>
 

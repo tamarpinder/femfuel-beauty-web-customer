@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Star, Clock, Crown, Users } from "lucide-react"
+import { Star, Clock, Crown, Users, TrendingUp, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -45,6 +45,10 @@ export interface MarketplaceService {
     max: number
   }
   slug?: string
+  // Phase 7: Personalization fields
+  badge?: 'trending' | 'top-rated' | 'new'
+  bookingsToday?: number
+  slotsAvailable?: number
 }
 
 interface ServiceCardProps {
@@ -66,6 +70,32 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
   const effectiveVendorName = vendorName || service.featuredProvider?.name
   const effectiveVendorRating = vendorRating || service.rating
 
+  // Badge configuration
+  const getBadgeConfig = (badgeType: string) => {
+    switch (badgeType) {
+      case 'trending':
+        return {
+          icon: TrendingUp,
+          label: 'Tendencia',
+          className: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+        }
+      case 'top-rated':
+        return {
+          icon: Star,
+          label: 'Top Rated',
+          className: 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+        }
+      case 'new':
+        return {
+          icon: Sparkles,
+          label: 'Nuevo',
+          className: 'bg-gradient-to-r from-green-500 to-teal-500 text-white'
+        }
+      default:
+        return null
+    }
+  }
+
   const handleViewProviders = () => {
     onViewProviders?.(service.id)
   }
@@ -81,7 +111,7 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
   if (layout === "horizontal") {
     return (
       <>
-        <Card className="overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:border-femfuel-rose/20 bg-white">
+        <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 bg-white rounded-2xl">
           <CardContent className="p-0">
             <div className="flex items-center gap-3 p-3">
               {/* Service Image - Fixed 90px square */}
@@ -130,11 +160,12 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
                 </div>
 
                 <button
-                  className="glassmorphism-button-perfect w-full h-9 text-sm"
+                  className="w-full min-h-[44px] text-sm px-4 py-2 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleViewProviders()
                   }}
+                  aria-label={`Reservar ${service.name}`}
                 >
                   Reservar Ahora
                 </button>
@@ -158,9 +189,9 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
 
   return (
     <>
-      <Card className="overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:border-femfuel-rose/20 hover:-translate-y-1 bg-white group">
+      <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-105 bg-white group rounded-2xl">
         <CardContent className="p-0">
-          {/* Image with Floating Price Badge */}
+          {/* Image with Floating Price Badge and Status Badge */}
           <div className="relative w-full aspect-[4/3] overflow-hidden">
             <OptimizedImage
               src={service.image || "/services/hair/modern-haircut.png"}
@@ -171,52 +202,95 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
               context={service.category || "service"}
               priority={false}
             />
+
+            {/* Service Badge (Trending, Top Rated, New) */}
+            {service.badge && (() => {
+              const badgeConfig = getBadgeConfig(service.badge)
+              if (!badgeConfig) return null
+              const BadgeIcon = badgeConfig.icon
+              return (
+                <div className={`absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-xl ${badgeConfig.className} animate-pulse`}>
+                  <BadgeIcon className="h-3.5 w-3.5" />
+                  <span className="text-xs font-semibold">{badgeConfig.label}</span>
+                </div>
+              )
+            })()}
+
             {/* Glassmorphism Price Badge */}
-            <div className="absolute top-3 right-3 backdrop-blur-md bg-white/90 px-3 py-1.5 rounded-full shadow-lg">
+            <div className="absolute top-3 right-3 backdrop-blur-md bg-white/90 px-3 py-1.5 rounded-full shadow-xl border border-femfuel-rose/10">
               <p className="text-sm font-bold text-femfuel-dark">{service.price}</p>
             </div>
           </div>
 
           {/* Content */}
-          <div className="p-4 space-y-2">
-            <h3 className="font-semibold text-femfuel-dark text-base line-clamp-2">{service.name}</h3>
+          <div className="p-3 md:p-4 flex flex-col min-h-[280px]">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-femfuel-dark text-sm md:text-base line-clamp-2">{service.name}</h3>
 
-            {service.featuredProvider && (
-              <p
-                className="text-xs text-femfuel-medium hover:text-femfuel-rose hover:underline transition-colors cursor-pointer truncate"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onViewVendor?.(service.featuredProvider!.id)
-                }}
-              >
-                {service.featuredProvider.name}
-              </p>
-            )}
+              {service.featuredProvider && (
+                <p
+                  className="text-xs text-femfuel-medium hover:text-femfuel-rose hover:underline transition-colors cursor-pointer truncate"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onViewVendor?.(service.featuredProvider!.id)
+                  }}
+                >
+                  {service.featuredProvider.name}
+                </p>
+              )}
 
-            {/* Rating + Specialists Combined */}
-            <div className="flex items-center gap-2 text-xs text-femfuel-medium">
-              <div className="flex items-center gap-1">
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                <span className="font-medium">4.9</span>
+              {/* Rating + Specialists Combined */}
+              <div className="flex items-center gap-2 text-xs text-femfuel-medium">
+                <div className="flex items-center gap-1">
+                  <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                  <span className="font-medium">4.9</span>
+                </div>
+                <span>•</span>
+                <span>{service.availableProviders} especialistas</span>
               </div>
-              <span>•</span>
-              <span>{service.availableProviders} especialistas</span>
+
+              {/* Duration */}
+              <div className="flex items-center gap-1 text-xs text-femfuel-medium">
+                <Clock className="h-3 w-3" />
+                <span>{service.duration} minutos</span>
+              </div>
+
+              {/* Urgency Indicators */}
+              {(service.bookingsToday || service.slotsAvailable) && (
+                <div className="space-y-1.5 pt-2 border-t border-gray-100">
+                  {service.bookingsToday && (
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <Users className="h-3.5 w-3.5 text-purple-600" />
+                      <span className="text-purple-600 font-medium">
+                        {service.bookingsToday} personas reservaron hoy
+                      </span>
+                    </div>
+                  )}
+                  {service.slotsAvailable && service.slotsAvailable <= 5 && (
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <Clock className="h-3.5 w-3.5 text-orange-600" />
+                      <span className="text-orange-600 font-medium">
+                        Solo {service.slotsAvailable} slots disponibles hoy
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* Duration */}
-            <div className="flex items-center gap-1 text-xs text-femfuel-medium">
-              <Clock className="h-3 w-3" />
-              <span>{service.duration} minutos</span>
-            </div>
+            {/* Spacer to push button to bottom */}
+            <div className="flex-1" />
 
+            {/* Enhanced CTA with Hover State */}
             <button
-              className="glassmorphism-button-perfect w-full h-10 text-sm mt-3"
+              className="w-full min-h-[48px] text-sm mt-3 px-4 py-2 bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/30 hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 active:bg-gradient-to-r active:from-femfuel-rose active:to-pink-600 text-femfuel-dark hover:text-white active:text-white hover:border-transparent font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg active:shadow-lg active:scale-95"
               onClick={(e) => {
                 e.stopPropagation()
                 handleViewProviders()
               }}
+              aria-label={`Reservar ${service.name}`}
             >
-              Ver Este Servicio
+              Reservar Ahora
             </button>
           </div>
         </CardContent>

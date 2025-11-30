@@ -88,15 +88,15 @@ export default function BlogArticlePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded mb-4 w-1/4"></div>
-            <div className="h-12 bg-gray-200 rounded mb-4"></div>
-            <div className="h-80 bg-gray-200 rounded-2xl mb-8"></div>
+            <div className="h-8 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl mb-4 w-1/4 shadow-sm"></div>
+            <div className="h-12 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl mb-4 shadow-sm"></div>
+            <div className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl mb-8 shadow-lg"></div>
             <div className="space-y-4">
               {Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} className="h-4 bg-gray-200 rounded"></div>
+                <div key={i} className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded shadow-sm"></div>
               ))}
             </div>
           </div>
@@ -107,15 +107,21 @@ export default function BlogArticlePage() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-femfuel-dark mb-4">
+      <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 flex items-center justify-center p-4">
+        <div className="text-center bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/20 rounded-2xl p-8 max-w-md shadow-xl">
+          <div className="w-20 h-20 bg-femfuel-light rounded-full mx-auto mb-6 flex items-center justify-center">
+            <span className="text-4xl">📝</span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">
             Artículo no encontrado
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-femfuel-medium mb-6">
             El artículo que buscas no existe o ha sido movido.
           </p>
-          <Button onClick={() => router.push('/blog')}>
+          <Button
+            onClick={() => router.push('/blog')}
+            className="min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold rounded-full px-8 py-3 shadow-lg hover:shadow-xl active:scale-95 transition-all"
+          >
             Volver al Blog
           </Button>
         </div>
@@ -126,28 +132,27 @@ export default function BlogArticlePage() {
   const categoryInfo = blogCategories[article.category]
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Breadcrumb Section */}
-      <div className="border-b border-gray-100 bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">
+      {/* Breadcrumb Section - Enhanced */}
+      <div className="border-b-2 border-femfuel-rose/10 bg-white/90 backdrop-blur-md shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
-              size="sm"
               onClick={() => router.back()}
-              className="flex items-center gap-2"
+              className="min-h-[44px] flex items-center gap-2 hover:bg-femfuel-light active:bg-femfuel-light rounded-full transition-all duration-300"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Volver</span>
+              <span className="hidden sm:inline font-medium">Volver</span>
             </Button>
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-gray-600">
+            <nav className="flex items-center gap-2 text-sm font-medium text-gray-600">
               <Link href="/blog" className="hover:text-femfuel-rose transition-colors">
                 Blog
               </Link>
               <ChevronRight className="h-4 w-4" />
-              <span className={`px-2 py-1 rounded text-xs ${getCategoryColor(article.category)}`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-bold ${getCategoryColor(article.category)} shadow-sm`}>
                 {categoryInfo?.name}
               </span>
             </nav>
@@ -196,22 +201,22 @@ export default function BlogArticlePage() {
             {article.excerpt}
           </p>
 
-          {/* Actions */}
-          <div className="flex items-center gap-4">
+          {/* Actions - Enhanced */}
+          <div className="flex items-center gap-3">
             <Button
-              variant="outline"
-              size="sm"
               onClick={handleLike}
-              className={`flex items-center gap-2 ${isLiked ? 'text-red-600 border-red-600' : ''}`}
+              className={`min-h-[44px] flex items-center gap-2 border-2 rounded-full font-bold shadow-sm hover:shadow-md transition-all duration-300 active:scale-95 ${
+                isLiked
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white border-red-600'
+                  : 'bg-white border-femfuel-rose/20 text-gray-700 hover:border-red-500'
+              }`}
             >
               <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
               <span>{article.likes + (isLiked ? 1 : 0)}</span>
             </Button>
             <Button
-              variant="outline"
-              size="sm"
               onClick={handleShare}
-              className="flex items-center gap-2"
+              className="min-h-[44px] flex items-center gap-2 bg-white border-2 border-femfuel-rose/20 text-gray-700 hover:border-femfuel-rose hover:bg-femfuel-light active:bg-femfuel-light rounded-full font-bold shadow-sm hover:shadow-md transition-all duration-300 active:scale-95"
             >
               <Share2 className="h-4 w-4" />
               Compartir
@@ -219,8 +224,8 @@ export default function BlogArticlePage() {
           </div>
         </header>
 
-        {/* Featured Image */}
-        <div className="relative aspect-[16/9] rounded-3xl overflow-hidden mb-12">
+        {/* Featured Image - Enhanced */}
+        <div className="relative aspect-[16/9] rounded-3xl overflow-hidden mb-12 shadow-2xl border-2 border-femfuel-rose/10">
           <OptimizedImage
             src={article.featuredImage}
             alt={article.title}
@@ -229,7 +234,7 @@ export default function BlogArticlePage() {
             className="object-cover"
             context="blog"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
         </div>
 
         {/* Article Content */}
@@ -307,13 +312,18 @@ export default function BlogArticlePage() {
         </div>
       </article>
 
-      {/* Related Articles */}
+      {/* Related Articles - Enhanced */}
       {relatedArticles.length > 0 && (
-        <section className="bg-gray-50 py-16">
+        <section className="bg-gradient-to-br from-white via-femfuel-light/10 to-pink-50/20 border-t-2 border-femfuel-rose/10 py-16">
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-2xl font-bold text-femfuel-dark mb-8 text-center">
-              Artículos Relacionados
-            </h2>
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-3">
+                Artículos Relacionados
+              </h2>
+              <p className="text-femfuel-medium">
+                Más contenido que te puede interesar
+              </p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedArticles.slice(0, 3).map((relatedArticle) => (
                 <Link
@@ -321,7 +331,7 @@ export default function BlogArticlePage() {
                   href={`/blog/${relatedArticle.slug}`}
                   className="group block"
                 >
-                  <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                  <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 active:scale-95">
                     <div className="aspect-[16/10] relative overflow-hidden">
                       <OptimizedImage
                         src={relatedArticle.featuredImage}

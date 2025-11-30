@@ -236,12 +236,7 @@ export const optimizeImageProps = (config: ImageConfig) => {
     alt: config.alt,
     width: config.width,
     height: config.height,
-    loading: config.priority ? 'eager' : 'lazy',
-    onError: (e: any) => {
-      if (config.fallback) {
-        e.target.src = config.fallback
-      }
-    }
+    loading: config.priority ? 'eager' : 'lazy'
   }
 }
 

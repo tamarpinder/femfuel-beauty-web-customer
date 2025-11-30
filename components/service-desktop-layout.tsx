@@ -65,13 +65,13 @@ export function ServiceDesktopLayout({
   onBookNow
 }: ServiceDesktopLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-[1600px] mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 lg:pt-24 pb-12">
+      <div className="max-w-[1600px] mx-auto px-6">
         {/* Split Screen Layout */}
-        <div className="grid grid-cols-5 gap-6 h-screen">
+        <div className="grid grid-cols-5 gap-8 min-h-[calc(100vh-8rem)]">
           {/* Left Panel - Service Information */}
-          <div className="col-span-2 bg-white border-r border-gray-200 overflow-y-auto">
-            <div className="p-6 space-y-6">
+          <div className="col-span-2 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border-2 border-femfuel-rose/10 overflow-y-auto">
+            <div className="p-8 space-y-10">
               {/* Gallery */}
               <DesktopGallery
                 serviceName={service.name}
@@ -92,7 +92,7 @@ export function ServiceDesktopLayout({
           </div>
 
           {/* Right Panel - Provider Selection */}
-          <div className="col-span-3 bg-white">
+          <div className="col-span-3 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border-2 border-femfuel-rose/10 overflow-y-auto">
             <DesktopProviderList
               providers={providers}
               serviceName={service.name}

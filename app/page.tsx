@@ -5,11 +5,13 @@ import { useEffect, useState, useCallback } from "react"
 import { toast } from "sonner"
 import { getMarketplaceServices, getVendors } from "@/lib/vendors-api"
 import { starProfessionals } from "@/data/star-professionals"
-import { Hand, Palette, User, Flower2, Scissors, Eye } from "lucide-react"
+import { categories } from "@/data/shared/mock-data"
+import { Hand, Palette, User, Flower2, Scissors, Eye, TrendingUp } from "lucide-react"
 import { ServiceCard, type MarketplaceService } from "@/components/service-card"
 import { CategoryCard, type Category } from "@/components/category-card"
+import { CategoriesGridV2, type CategoryV2 } from "@/components/categories-grid-v2"
 import { MobileNavigation } from "@/components/mobile-navigation"
-import { HeroSection } from "@/components/hero-section"
+import { HeroSectionV2 } from "@/components/hero-section-v2"
 import { HowItWorks } from "@/components/how-it-works"
 import { TransformationsShowcase } from "@/components/transformations-showcase"
 import { StarProfessionals } from "@/components/star-professionals"
@@ -18,9 +20,11 @@ import { CustomerFooter } from "@/components/customer-footer"
 import { ChatButton } from "@/components/ui/chat-button"
 import { BookingModal } from "@/components/booking-modal"
 import type { Vendor, VendorService } from "@/types/vendor"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function HomePage() {
   const router = useRouter()
+  const { isAuthenticated, user } = useAuth()
   const [featuredServices, setFeaturedServices] = useState<MarketplaceService[]>([])
   const [nearbyVendors, setNearbyVendors] = useState<Vendor[]>([])
   const [allVendors, setAllVendors] = useState<Vendor[]>([])
@@ -28,6 +32,7 @@ export default function HomePage() {
   const [showBookingModal, setShowBookingModal] = useState(false)
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
   const [selectedService, setSelectedService] = useState<VendorService | null>(null)
+  const [selectedProfessionalId, setSelectedProfessionalId] = useState<string | undefined>(undefined)
 
   // Load marketplace services on component mount
   useEffect(() => {
@@ -35,10 +40,10 @@ export default function HomePage() {
       try {
         // Get marketplace services with popular ones prioritized
         const marketplaceServices = await getMarketplaceServices({ limit: 6 })
-        
+
         // Transform to match Service interface
         const featuredServices: MarketplaceService[] = marketplaceServices
-          .filter(service => service.isPopular)
+          .slice(0, 6) // Take first 6 services
           .map(service => ({
             id: service.id,
             name: service.name,
@@ -56,8 +61,58 @@ export default function HomePage() {
             priceRange: service.priceRange
           }))
 
+        // Add Phase 7 sample data to showcase new features
+        if (featuredServices.length >= 3) {
+          // Service 1: Trending badge with high bookings
+          featuredServices[0] = {
+            ...featuredServices[0],
+            badge: 'trending',
+            bookingsToday: 12,
+            slotsAvailable: 3,
+            duration: 90
+          }
+
+          // Service 2: Top Rated badge
+          featuredServices[1] = {
+            ...featuredServices[1],
+            badge: 'top-rated',
+            bookingsToday: 8,
+            duration: 60
+          }
+
+          // Service 3: New badge with low availability
+          featuredServices[2] = {
+            ...featuredServices[2],
+            badge: 'new',
+            slotsAvailable: 2,
+            duration: 120
+          }
+
+          // Services 4-5: Add realistic durations (if they exist)
+          if (featuredServices.length > 3) {
+            featuredServices[3] = {
+              ...featuredServices[3],
+              duration: 45
+            }
+          }
+
+          if (featuredServices.length > 4) {
+            featuredServices[4] = {
+              ...featuredServices[4],
+              duration: 75
+            }
+          }
+
+          if (featuredServices.length > 5) {
+            featuredServices[5] = {
+              ...featuredServices[5],
+              duration: 30
+            }
+          }
+        }
+
         setFeaturedServices(featuredServices)
-        
+
         // Get all vendors
         const allVendorData = await getVendors()
         setAllVendors(allVendorData)
@@ -77,44 +132,30 @@ export default function HomePage() {
     loadFeaturedServices()
   }, [])
 
-  const categories: Category[] = [
-    {
-      name: "Uñas",
-      icon: Hand,
-      count: "37",
-      bannerImage: "/categories/banners/nailcare-banner.png"
-    },
-    {
-      name: "Maquillaje",
-      icon: Palette,
-      count: "36",
-      bannerImage: "/categories/banners/makeup-banner.png"
-    },
-    {
-      name: "Cuerpo",
-      icon: User,
-      count: "0",
-      bannerImage: "/categories/banners/bodycare-banner.png"
-    },
-    {
-      name: "Spa",
-      icon: Flower2,
-      count: "26",
-      bannerImage: "/categories/banners/skincare-banner.png"
-    },
-    {
-      name: "Peinados",
-      icon: Scissors,
-      count: "53",
-      bannerImage: "/categories/banners/haircare-banner.png"
-    },
-    {
-      name: "Pestañas",
-      icon: Eye,
-      count: "35",
-      bannerImage: "/categories/lashes-category-banner.png"
-    },
-  ]
+  // Transform categories from data source to include UI properties
+  const categoryIconMap: Record<string, any> = {
+    'nails': Hand,
+    'makeup': Palette,
+    'spa': Flower2,
+    'hair': Scissors,
+    'lashes': Eye
+  }
+
+  const categoryBannerMap: Record<string, string> = {
+    'nails': '/categories/banners/nailcare-banner.png',
+    'makeup': '/categories/banners/makeup-banner.png',
+    'spa': '/categories/banners/skincare-banner.png',
+    'hair': '/categories/banners/haircare-banner.png',
+    'lashes': '/categories/lashes-category-banner.png'
+  }
+
+  const categoriesWithUI: CategoryV2[] = categories.map(cat => ({
+    id: cat.id,
+    name: cat.name,
+    icon: categoryIconMap[cat.id] || Hand,
+    count: cat.serviceCount?.toString() || '0',
+    bannerImage: categoryBannerMap[cat.id] || '/categories/banners/default-banner.png'
+  }))
 
   // Generate transformations from real mock data - ALL 8 transformation sets
   // Now mapped to actual marketplace services instead of synthetic ones
@@ -228,15 +269,21 @@ export default function HomePage() {
       price: 1000,
       duration: 60
     }
-    
+
+    // Calculate real service count and starting price
+    const serviceCount = vendor.services.length
+    const startingPrice = vendor.services.length > 0
+      ? Math.min(...vendor.services.map(s => s.price))
+      : featuredService.price
+
     // Generate realistic distance and travel time based on neighborhoods
     const distances = ["0.8 km", "1.2 km", "2.1 km", "1.5 km", "2.8 km", "1.1 km"]
     const travelTimes = ["3", "5", "7", "4", "9", "4"]
-    
+
     return {
       id: vendor.id,
       name: vendor.name,
-      type: vendor.categories.includes("hair") ? "Salon de Belleza" : 
+      type: vendor.categories.includes("hair") ? "Salon de Belleza" :
             vendor.categories.includes("makeup") ? "Estudio de Maquillaje" :
             vendor.categories.includes("spa") ? "Spa & Wellness" :
             vendor.categories.includes("nails") ? "Nail Art Studio" :
@@ -257,6 +304,8 @@ export default function HomePage() {
         price: `RD$${featuredService.price.toLocaleString()}`,
         duration: `${Math.round(featuredService.duration / 60)} hrs`
       },
+      serviceCount: serviceCount,
+      startingPrice: `RD$${startingPrice.toLocaleString()}`,
       localSpecialty: vendor.description || "Servicios de belleza profesionales"
     }
   }
@@ -363,6 +412,78 @@ export default function HomePage() {
     }
   }
 
+  const handleBookFromProfessional = (professionalId: number | string, serviceName?: string) => {
+    // Find the professional
+    const professional = professionals.find(p => p.id === professionalId)
+    if (!professional) return
+
+    // Create a mock vendor for this professional (star professionals reference non-existent vendors)
+    const mockVendor: Vendor = {
+      id: professional.vendorId || `vendor-${professional.id}`,
+      name: professional.vendorName || "Beauty Salon",
+      slug: professional.vendorSlug || `vendor-${professional.id}`,
+      description: `Home of ${professional.name}`,
+      coverImage: professional.image,
+      rating: professional.rating,
+      reviewCount: professional.reviewCount,
+      serviceCount: 0,
+      categories: [professional.specialties[0]],
+      location: {
+        address: "Santo Domingo",
+        district: "Piantini",
+        city: "Santo Domingo",
+        coordinates: { lat: 18.4671, lng: -69.9404 }
+      },
+      contact: {
+        phone: "+1 809 555 0100",
+        email: "contact@femfuel.com"
+      },
+      popularServices: [],
+      availability: {
+        isOpen: true,
+        todayAvailable: true
+      },
+      professionalCount: 1,
+      priceRange: {
+        min: 500,
+        max: 5000
+      },
+      services: [],
+      businessHours: {
+        monday: { open: "9:00 AM", close: "7:00 PM" },
+        tuesday: { open: "9:00 AM", close: "7:00 PM" },
+        wednesday: { open: "9:00 AM", close: "7:00 PM" },
+        thursday: { open: "9:00 AM", close: "7:00 PM" },
+        friday: { open: "9:00 AM", close: "7:00 PM" },
+        saturday: { open: "9:00 AM", close: "6:00 PM" },
+        sunday: { open: "9:00 AM", close: "5:00 PM", isClosed: true }
+      },
+      professionals: [professional]
+    }
+
+    // Create service from professional's signature service
+    const signatureService = professional.portfolio?.signature
+    if (!signatureService) return
+
+    const mockService: VendorService = {
+      id: `service-${professional.id}`,
+      name: signatureService.serviceName,
+      description: signatureService.description,
+      price: parseInt(signatureService.price.replace(/[^\d]/g, "")),
+      duration: signatureService.duration,
+      category: professional.specialties[0],
+      isPopular: true
+    }
+
+    mockVendor.services = [mockService]
+
+    // Open booking modal with mock vendor and service
+    setSelectedVendor(mockVendor)
+    setSelectedService(mockService)
+    setSelectedProfessionalId(professional.id as string)
+    setShowBookingModal(true)
+  }
+
   const handleGetDirections = (locationId: string) => {
     // Get directions functionality
     // TODO: Integrate with maps service
@@ -395,6 +516,7 @@ export default function HomePage() {
     setShowBookingModal(false)
     setSelectedVendor(null)
     setSelectedService(null)
+    setSelectedProfessionalId(undefined)
 
     // Navigation is now handled directly by ProcessingOverlay
     // User chooses where to go next through the integrated navigation buttons
@@ -417,35 +539,31 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
 
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSectionV2 />
 
-      {/* How It Works */}
-      <HowItWorks />
+      {/* Categories Grid V2 - Position #2 */}
+      <div id="categories-section">
+        <CategoriesGridV2 categories={categoriesWithUI} />
+      </div>
 
-      {/* Service Categories */}
-      <section className="px-4 py-12 bg-femfuel-purple">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-femfuel-dark mb-8 text-center">Categorías Populares</h2>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-            {categories.map((category) => (
-              <CategoryCard key={category.name} category={category} onClick={handleCategoryClick} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Transformations Showcase - Position #3 */}
+      <div id="transformations-section">
+        <TransformationsShowcase
+          transformations={transformations}
+          onGetThisLook={handleGetThisLook}
+        />
+      </div>
 
-      {/* Transformations Showcase */}
-      <TransformationsShowcase 
-        transformations={transformations}
-        onGetThisLook={handleGetThisLook}
-      />
-
-      {/* Star Professionals */}
+      {/* Star Professionals - Position #4 */}
       <StarProfessionals
         professionals={professionals}
         onViewVendor={handleViewVendor}
         onViewPortfolio={handleViewPortfolio}
+        onBook={handleBookFromProfessional}
       />
+
+      {/* How It Works - Position #5 (moved down) */}
+      <HowItWorks />
 
       {/* Nearby Beauty */}
       <NearbyBeauty
@@ -461,11 +579,21 @@ export default function HomePage() {
       <section className="px-4 py-16 bg-gradient-to-br from-gray-50 via-white to-femfuel-light/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">
-              Recomendaciones para ti
-            </h2>
+            {/* Dynamic Title Based on Auth Status */}
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <TrendingUp className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose animate-pulse" />
+              <h2 className="text-2xl md:text-3xl font-bold text-femfuel-dark">
+                {isAuthenticated && user?.name
+                  ? `Para Ti, ${user.name.split(' ')[0]}`
+                  : "Tendencias Esta Semana"
+                }
+              </h2>
+            </div>
             <p className="text-base text-femfuel-medium max-w-2xl mx-auto">
-              Descubre los servicios más populares con nuestros mejores especialistas
+              {isAuthenticated
+                ? "Servicios seleccionados especialmente para tu estilo"
+                : "Descubre los servicios más populares con nuestros mejores especialistas"
+              }
             </p>
           </div>
 
@@ -535,6 +663,7 @@ export default function HomePage() {
       <ChatButton
         variant="floating"
         className="shadow-lg hover:shadow-xl"
+        unreadCount={3}
       />
 
       {/* Mobile Navigation */}
@@ -548,6 +677,7 @@ export default function HomePage() {
           vendorName={selectedVendor.name}
           vendorRating={selectedVendor.rating}
           vendorId={selectedVendor.id}
+          professionalId={selectedProfessionalId}
           onClose={() => setShowBookingModal(false)}
           onBookingComplete={handleBookingComplete}
         />

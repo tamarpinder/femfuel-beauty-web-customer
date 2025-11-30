@@ -78,20 +78,20 @@ export function CustomerFooter() {
 
   return (
     <>
-      <footer className="hidden md:block bg-gradient-to-b from-gray-50 to-rose-50/10">
+      <footer className="hidden md:block bg-gradient-to-b from-white to-rose-50/30">
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-6 py-16">
           {/* Logo and Brand */}
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-4">
-              <img 
-                src="/femfuel-logo.png" 
+              <img
+                src="/femfuel-logo.png"
                 alt="FemFuel Beauty"
-                className="w-10 h-10 object-contain hover:scale-105 transition-transform duration-300"
+                className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-300 drop-shadow-lg"
               />
-              <span className="text-2xl font-bold text-gray-900">FemFuel Beauty</span>
+              <span className="text-3xl font-bold bg-gradient-to-r from-femfuel-rose via-pink-600 to-femfuel-rose bg-clip-text text-transparent font-serif">FemFuel Beauty</span>
             </div>
-            <p className="text-gray-600 text-lg max-w-md">
+            <p className="text-femfuel-medium text-base md:text-lg max-w-md leading-relaxed font-medium">
               La plataforma líder de belleza en la República Dominicana, que conecta a los clientes con los mejores profesionales.
             </p>
           </div>
@@ -100,16 +100,16 @@ export function CustomerFooter() {
           <div className="grid grid-cols-5 gap-8 mb-12">
             {customerFooterSections.map((section, index) => (
               <div key={index}>
-                <h3 className="text-gray-800 font-semibold text-sm uppercase tracking-wide mb-4">
+                <h3 className="text-femfuel-dark font-bold text-sm uppercase tracking-wide mb-4 font-serif">
                   {section.title}
                 </h3>
-                <ul className="space-y-2">
+                <ul className="space-y-2.5">
                   {section.links.map((link, linkIndex) => (
                     <li key={linkIndex}>
                       <a
                         href={link.href}
                         onClick={(e) => handleLinkClick(link, section.title, e)}
-                        className="text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:scale-[1.02] hover:-translate-y-0.5 hover:px-3 hover:py-1 hover:rounded-lg hover:shadow-sm transition-all duration-300 text-sm block cursor-pointer"
+                        className="text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:scale-[1.02] hover:-translate-y-0.5 hover:px-3 hover:py-1.5 hover:rounded-xl hover:shadow-md transition-all duration-300 text-sm block cursor-pointer font-medium"
                       >
                         {link.label}
                       </a>
@@ -122,12 +122,12 @@ export function CustomerFooter() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-200 bg-gray-100">
+        <div className="border-t border-femfuel-rose/10 bg-gradient-to-r from-gray-50 to-rose-50/20">
           <div className="max-w-7xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between">
               {/* Left Side - Copyright and Legal */}
               <div className="flex items-center gap-6">
-                <span className="text-gray-500 text-sm">
+                <span className="text-femfuel-medium text-sm font-medium">
                   © 2025 FemFuel Beauty RD
                 </span>
                 <div className="flex items-center gap-4">
@@ -135,7 +135,7 @@ export function CustomerFooter() {
                     <a
                       key={index}
                       href={link.href}
-                      className="text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:px-2 hover:py-1 hover:rounded transition-all duration-300 text-sm"
+                      className="text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-1.5 hover:rounded-xl hover:shadow-md hover:scale-105 transition-all duration-300 text-sm font-bold"
                     >
                       {link.label}
                     </a>
@@ -147,7 +147,7 @@ export function CustomerFooter() {
               <div className="flex items-center gap-6">
                 {/* Language Toggle */}
                 <div className="relative">
-                  <button className="flex items-center gap-2 text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-lg transition-all duration-300 text-sm">
+                  <button className="flex items-center gap-2 text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-xl hover:shadow-md hover:scale-105 transition-all duration-300 text-sm font-bold">
                     <span className="text-base">🌐</span>
                     Español (DR)
                     <ChevronDown className="w-4 h-4" />
@@ -156,7 +156,7 @@ export function CustomerFooter() {
 
                 {/* Currency Toggle */}
                 <div className="relative">
-                  <button className="flex items-center gap-2 text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-lg transition-all duration-300 text-sm">
+                  <button className="flex items-center gap-2 text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-xl hover:shadow-md hover:scale-105 transition-all duration-300 text-sm font-bold">
                     <span className="text-base">💰</span>
                     RD$
                     <ChevronDown className="w-4 h-4" />
@@ -171,7 +171,7 @@ export function CustomerFooter() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-9 h-9 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 hover:text-white hover:bg-femfuel-rose hover:scale-110 hover:shadow-md transition-all duration-300"
+                      className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-femfuel-medium hover:text-white hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:scale-110 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-2 border-femfuel-rose/20"
                       aria-label={social.label}
                     >
                       <social.icon className="w-4 h-4" />

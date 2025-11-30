@@ -81,16 +81,15 @@ export function CartDrawer({ children }: CartDrawerProps) {
             {/* Header */}
             <SheetHeader className="px-4 py-4 border-b">
               <div className="flex items-center justify-between">
-                <SheetTitle className="flex items-center gap-2">
-                  <ShoppingBag className="h-5 w-5" />
+                <SheetTitle className="flex items-center gap-2 text-base md:text-lg">
+                  <ShoppingBag className="h-5 w-5 flex-shrink-0" />
                   Tu Carrito ({itemCount})
                 </SheetTitle>
                 {cartItems.length > 0 && (
                   <Button
                     variant="ghost"
-                    size="sm"
                     onClick={handleClearCart}
-                    className="text-red-600 hover:text-red-700"
+                    className="min-h-[44px] text-red-600 hover:text-red-700 active:text-red-700 hover:bg-red-50 active:bg-red-50 text-sm"
                   >
                     Vaciar
                   </Button>
@@ -116,7 +115,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                         setIsCartOpen(false)
                         router.push("/shop")
                       }}
-                      className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                      className="min-h-[44px] bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
                     >
                       Explorar Productos
                     </Button>
@@ -153,9 +152,8 @@ export function CartDrawer({ children }: CartDrawerProps) {
                         )}
                         <Button
                           variant="ghost"
-                          size="sm"
                           onClick={() => setShowLocationModal(true)}
-                          className="text-xs text-femfuel-rose hover:text-femfuel-rose-hover"
+                          className="min-h-[44px] text-xs text-femfuel-rose hover:text-femfuel-rose-hover active:text-femfuel-rose-hover"
                         >
                           Cambiar
                         </Button>
@@ -200,11 +198,11 @@ export function CartDrawer({ children }: CartDrawerProps) {
                                   </div>
                                   <Button
                                     variant="ghost"
-                                    size="sm"
                                     onClick={() => handleRemoveItem(item.productId)}
-                                    className="p-1 text-red-500 hover:text-red-700 hover:bg-red-50"
+                                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-red-500 hover:text-red-700 active:text-red-700 hover:bg-red-50 active:bg-red-50"
+                                    aria-label="Eliminar producto"
                                   >
-                                    <Trash2 className="h-4 w-4" />
+                                    <Trash2 className="h-5 w-5" />
                                   </Button>
                                 </div>
 
@@ -213,24 +211,24 @@ export function CartDrawer({ children }: CartDrawerProps) {
                                   <div className="flex items-center border border-gray-200 rounded-md">
                                     <Button
                                       variant="ghost"
-                                      size="sm"
                                       onClick={() => handleQuantityChange(item.productId, item.quantity - 1)}
                                       disabled={item.quantity <= 1}
-                                      className="px-2 py-1 h-8"
+                                      className="min-w-[44px] min-h-[44px] flex items-center justify-center"
+                                      aria-label="Disminuir cantidad"
                                     >
-                                      <Minus className="h-3 w-3" />
+                                      <Minus className="h-4 w-4" />
                                     </Button>
                                     <span className="px-3 py-1 text-sm font-medium min-w-[2rem] text-center">
                                       {item.quantity}
                                     </span>
                                     <Button
                                       variant="ghost"
-                                      size="sm"
                                       onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}
                                       disabled={item.quantity >= item.product.availability.stockQuantity}
-                                      className="px-2 py-1 h-8"
+                                      className="min-w-[44px] min-h-[44px] flex items-center justify-center"
+                                      aria-label="Aumentar cantidad"
                                     >
-                                      <Plus className="h-3 w-3" />
+                                      <Plus className="h-4 w-4" />
                                     </Button>
                                   </div>
                                   
@@ -310,15 +308,15 @@ export function CartDrawer({ children }: CartDrawerProps) {
                       <Button
                         onClick={handleViewCart}
                         variant="outline"
-                        className="w-full"
+                        className="w-full min-h-[44px]"
                       >
                         Ver carrito completo
                       </Button>
-                      
+
                       <Button
                         onClick={handleCheckout}
                         disabled={!isDeliveryAvailable}
-                        className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white py-3 font-semibold"
+                        className="w-full min-h-[48px] bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-semibold active:scale-95 transition-transform"
                       >
                         {isDeliveryAvailable ? "Proceder al pago" : "Entrega no disponible"}
                       </Button>

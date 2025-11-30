@@ -163,7 +163,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative lg:pt-32 pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-6xl mx-auto relative">
@@ -193,12 +193,12 @@ export default function AboutPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="femfuel-button-lg"
+                  className="femfuel-button-lg min-h-[48px]"
                 >
                   <Heart className="h-5 w-5" />
                   Únete a la Revolución
                 </button>
-                <button className="glassmorphism-button-lg">
+                <button className="glassmorphism-button-lg min-h-[48px]">
                   <Play className="h-5 w-5" />
                   Ver Su Historia
                 </button>
@@ -585,7 +585,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleJoinPlatform}
-              className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3 justify-center"
+              className="min-h-[48px] bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 active:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-3 justify-center"
             >
               <Sparkles className="h-5 w-5" />
               Explorar Servicios
@@ -593,7 +593,7 @@ export default function AboutPage() {
             </button>
             <button
               onClick={handleBecomeProfessional}
-              className="border-2 border-white/30 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition-all duration-300 flex items-center gap-3 justify-center"
+              className="min-h-[48px] border-2 border-white/30 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 active:bg-white/20 transition-all duration-300 active:scale-95 flex items-center gap-3 justify-center"
             >
               <Crown className="h-5 w-5" />
               Ser Profesional

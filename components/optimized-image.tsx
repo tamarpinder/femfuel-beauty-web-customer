@@ -20,14 +20,14 @@ interface OptimizedImageProps {
 export function OptimizedImage({
   src,
   alt,
-  width = 400,
-  height = 300,
+  width = 800,
+  height = 600,
   className = "",
   priority = false,
   fallback,
   fill = false,
   sizes,
-  quality = 85
+  quality = 95
 }: OptimizedImageProps) {
   const [imgSrc, setImgSrc] = useState(src)
   const [isLoading, setIsLoading] = useState(true)
@@ -115,12 +115,13 @@ export function VendorLogo({ vendorId, vendorName, size = 80 }: {
 }) {
   return (
     <OptimizedImage
-      src={`/vendors/logos/${vendorId}-logo.webp`}
+      src={`/vendors/logos/${vendorId}-logo.png`}
       alt={`${vendorName} logo`}
       width={size}
       height={size}
       className="rounded-lg"
       fallback="/placeholder-logo.svg"
+      quality={100}
     />
   )
 }
@@ -133,15 +134,16 @@ export function ServiceImage({ category, serviceName, className = "" }: {
   const serviceSlug = serviceName.toLowerCase()
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-')
-  
+
   return (
     <OptimizedImage
-      src={`/services/${category}/${serviceSlug}.webp`}
+      src={`/services/${category}/${serviceSlug}.png`}
       alt={`${serviceName} service`}
-      width={300}
-      height={200}
+      width={600}
+      height={400}
       className={`rounded-xl ${className}`}
       fallback="/placeholder.svg"
+      quality={95}
     />
   )
 }
@@ -153,29 +155,31 @@ export function ProfessionalAvatar({ professionalId, professionalName, size = 60
 }) {
   return (
     <OptimizedImage
-      src={`/professionals/portraits/${professionalId}-avatar.webp`}
+      src={`/professionals/portraits/${professionalId}-avatar.png`}
       alt={`${professionalName} avatar`}
       width={size}
       height={size}
       className="rounded-full"
       fallback="/placeholder-user.jpg"
+      quality={100}
     />
   )
 }
 
-export function ProductImage({ productSlug, productName, size = 200 }: {
+export function ProductImage({ productSlug, productName, size = 400 }: {
   productSlug: string
   productName: string
   size?: number
 }) {
   return (
     <OptimizedImage
-      src={`/products/${productSlug}.webp`}
+      src={`/products/${productSlug}.png`}
       alt={productName}
       width={size}
       height={size}
       className="rounded-lg"
       fallback="/placeholder.svg"
+      quality={95}
     />
   )
 }

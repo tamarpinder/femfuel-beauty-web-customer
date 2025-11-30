@@ -1,82 +1,54 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import { useRouter } from "next/navigation"
-import { ArrowLeft, Search, Filter, ShoppingCart, MapPin, Truck } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MobileNavigation } from "@/components/mobile-navigation"
-import { ProductCard } from "@/components/product-card"
-import { LocationModal } from "@/components/location-modal"
-import { CartDrawer } from "@/components/cart-drawer"
-import { CategoryCarousel } from "@/components/category-carousel"
-import { ShopHero } from "@/components/shop-hero"
-import { FeaturedCollections } from "@/components/featured-collections"
-import { UserMenu } from "@/components/user-menu"
-import { ExpandableSearch } from "@/components/expandable-search"
+import { ShopHeader } from "@/components/shop/shop-header"
+import { ShopHeroEnhanced } from "@/components/shop/shop-hero-enhanced"
+import { HairExtensionsSpotlight } from "@/components/shop/hair-extensions-spotlight"
+import { HairExtensionsGrid } from "@/components/shop/hair-extensions-grid"
+import { FlashSaleBanner } from "@/components/shop/flash-sale-banner"
+import { ProductCarousel } from "@/components/shop/product-carousel"
+import { BestSellersGrid } from "@/components/shop/best-sellers-grid"
+import { NewArrivalsCarousel } from "@/components/shop/new-arrivals-carousel"
+import { CuratedRoutines } from "@/components/shop/curated-routines"
+import { QuickViewModal } from "@/components/shop/quick-view-modal"
+import { ShopRecommendations } from "@/components/shop/shop-recommendations"
 import { useCart } from "@/contexts/cart-context"
-import { 
-  mockProducts, 
-  getProductsByCategory, 
-  getFeaturedProducts,
-  getPopularProducts,
-  getNewArrivals,
+import { toast } from "sonner"
+import {
+  mockProducts,
+  searchProducts,
   getProductsOnSale,
-  searchProducts
+  getPopularProducts,
+  getNewArrivals
 } from "@/data/products"
-import { deliveryZones, isLocationServiceable } from "@/data/warehouses"
-import { Product, ProductCategory, ProductFilter } from "@/types/product"
-import { UserLocation } from "@/types/delivery"
+import { Product, ProductCategory } from "@/types/product"
 
-const categories: Array<{ id: ProductCategory; name: string }> = [
-  { id: "skincare", name: "Cuidado Facial" },
-  { id: "makeup", name: "Maquillaje" },
-  { id: "haircare", name: "Cuidado Capilar" },
-  { id: "nailcare", name: "Cuidado Uñas" },
-  { id: "tools", name: "Herramientas" }
-]
-
-const sortOptions = [
-  { value: "popular", label: "Más populares" },
-  { value: "newest", label: "Más recientes" },
-  { value: "price-low", label: "Precio: menor a mayor" },
-  { value: "price-high", label: "Precio: mayor a menor" },
-  { value: "rating", label: "Mejor valorados" },
-  { value: "name", label: "Nombre A-Z" }
-]
-
-export default function ShopPage() {
-  const router = useRouter()
-  const { itemCount, userLocation, setUserLocation } = useCart()
+export default function ShopNewPage() {
+  const { addToCart } = useCart()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | "all">("all")
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | "all">("all")
   const [sortBy, setSortBy] = useState("popular")
-  const [showFilters, setShowFilters] = useState(false)
-  const [showLocationModal, setShowLocationModal] = useState(false)
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null)
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false)
 
-  // Initialize location on mount if not already set
-  useEffect(() => {
-    if (!userLocation) {
-      // Mock user location for Santo Domingo Centro
-      const mockLocation: UserLocation = {
-        coordinates: { lat: 18.4861, lng: -69.9312 },
-        address: "Av. Winston Churchill, Piantini",
-        district: "Piantini",
-        city: "Santo Domingo",
-        isServiceable: true
-      }
-      
-      const serviceabilityCheck = isLocationServiceable(mockLocation.coordinates)
-      mockLocation.isServiceable = serviceabilityCheck.isServiceable
-      mockLocation.deliveryZone = serviceabilityCheck.zone
-      
-      setUserLocation(mockLocation)
-    }
-  }, [userLocation, setUserLocation])
+  // Get featured product sections
+  const saleProducts = useMemo(() => getProductsOnSale().slice(0, 8), [])
+  const bestSellers = useMemo(() => getPopularProducts().slice(0, 8), [])
+  const newArrivals = useMemo(() => getNewArrivals().slice(0, 8), [])
+
+  // Get categories with product counts
+  const categoriesWithCounts = useMemo(() => {
+    const inStockProducts = mockProducts.filter(p => p.availability.inStock)
+    return [
+      { id: "skincare" as ProductCategory, name: "Cuidado Facial", count: inStockProducts.filter(p => p.category === "skincare").length },
+      { id: "makeup" as ProductCategory, name: "Maquillaje", count: inStockProducts.filter(p => p.category === "makeup").length },
+      { id: "haircare" as ProductCategory, name: "Cuidado Capilar", count: inStockProducts.filter(p => p.category === "haircare").length },
+      { id: "hair-extensions" as ProductCategory, name: "Extensiones & Cabello", count: inStockProducts.filter(p => p.category === "hair-extensions").length },
+      { id: "nailcare" as ProductCategory, name: "Cuidado de Uñas", count: inStockProducts.filter(p => p.category === "nailcare").length },
+      { id: "tools" as ProductCategory, name: "Herramientas & Accesorios", count: inStockProducts.filter(p => p.category === "tools").length }
+    ]
+  }, [])
 
   // Filter and search products
   const filteredProducts = useMemo(() => {
@@ -92,33 +64,23 @@ export default function ShopPage() {
       products = products.filter(product => product.category === selectedCategory)
     }
 
-    // Apply subcategory filter
-    if (selectedSubcategory !== "all") {
-      products = products.filter(product => product.subcategory === selectedSubcategory)
-    }
-
-    // Apply location filter - only show products available in user's warehouse
-    if (userLocation?.deliveryZone) {
-      const warehouseId = deliveryZones.find(zone => zone.id === userLocation.deliveryZone?.id)?.warehouseId
-      if (warehouseId) {
-        products = products.filter(product => product.availability.warehouseId === warehouseId)
-      }
-    }
-
     return products
-  }, [searchQuery, selectedCategory, selectedSubcategory, userLocation])
+  }, [searchQuery, selectedCategory])
 
   // Sort products
   const sortedProducts = useMemo(() => {
     const sorted = [...filteredProducts]
-    
+
     switch (sortBy) {
+      case "featured":
       case "popular":
         return sorted.sort((a, b) => (b.isPopular ? 1 : 0) - (a.isPopular ? 1 : 0) || b.rating - a.rating)
       case "newest":
         return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      case "price-asc":
       case "price-low":
         return sorted.sort((a, b) => a.price - b.price)
+      case "price-desc":
       case "price-high":
         return sorted.sort((a, b) => b.price - a.price)
       case "rating":
@@ -130,289 +92,100 @@ export default function ShopPage() {
     }
   }, [filteredProducts, sortBy])
 
-  // Get available subcategories for selected category
-  const availableSubcategories = useMemo(() => {
-    if (selectedCategory === "all") return []
-    
-    const categoryProducts = mockProducts.filter(product => 
-      product.category === selectedCategory && product.availability.inStock
-    )
-    
-    return [...new Set(categoryProducts.map(product => product.subcategory))]
-  }, [selectedCategory])
+  const handleQuickView = (product: Product) => {
+    setQuickViewProduct(product)
+    setIsQuickViewOpen(true)
+  }
 
-  // Calculate product counts by category
-  const productCounts = useMemo(() => {
-    const counts: Record<string, number> = {
-      all: sortedProducts.length
+  const handleCloseQuickView = () => {
+    setIsQuickViewOpen(false)
+    setTimeout(() => setQuickViewProduct(null), 300) // Delay reset for animation
+  }
+
+  const handleAddAllToCart = async (products: Product[]) => {
+    if (products.length === 0) {
+      toast.error("No hay productos en esta rutina")
+      return
     }
-    
-    categories.forEach((category) => {
-      const categoryProducts = filteredProducts.filter(product => product.category === category.id)
-      counts[category.id] = categoryProducts.length
-    })
-    
-    return counts
-  }, [sortedProducts, filteredProducts])
 
-  const handleBack = () => {
-    router.push("/")
-  }
+    // Add each product to cart
+    for (const product of products) {
+      await addToCart(product.id, 1)
+    }
 
-  const handleLocationUpdate = (location: UserLocation) => {
-    setUserLocation(location)
-    setShowLocationModal(false)
-  }
-
-  const handleAddToCart = (productId: string) => {
-    // Cart functionality is handled in ProductCard component
+    toast.success(`${products.length} productos agregados al carrito`)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Custom Shop Header - Desktop Only */}
-      <header className="hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            {/* Back Button and Title */}
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleBack}
-                className="p-2"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-              <div>
-                <h1 className="text-xl font-bold text-femfuel-dark">Tienda</h1>
-                <p className="text-sm text-femfuel-medium">Productos de belleza premium</p>
-              </div>
-            </div>
+    <>
+      {/* Unified Shop Header with Categories */}
+      <ShopHeader />
 
-            {/* Cart and User Actions */}
-            <div className="flex items-center gap-2">
-              <CartDrawer>
-                <Button variant="ghost" size="sm" className="relative">
-                  <ShoppingCart className="h-5 w-5" />
-                  {itemCount > 0 && (
-                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-femfuel-rose text-white text-xs flex items-center justify-center p-0">
-                      {itemCount}
-                    </Badge>
-                  )}
-                </Button>
-              </CartDrawer>
-              <UserMenu />
-            </div>
-          </div>
+      {/* Hero Section - Full Width */}
+      <ShopHeroEnhanced />
+
+      {/* Hair Extensions Spotlight */}
+      <HairExtensionsSpotlight />
+
+      {/* Hair Extensions Grid */}
+      <HairExtensionsGrid />
+
+      {/* Flash Sale Section */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div id="ofertas">
+          <FlashSaleBanner />
+          {saleProducts.length > 0 && (
+            <ProductCarousel
+              products={saleProducts}
+              onProductClick={handleQuickView}
+              showDiscount={true}
+            />
+          )}
         </div>
-      </header>
+      </div>
 
-      <div className="px-4 py-4 max-w-7xl mx-auto">
-        {/* Hero Section */}
-        <ShopHero />
-
-        {/* Enhanced Search */}
-        <div className="mb-8">
-          <Card className="p-6 bg-gradient-to-r from-white via-femfuel-light/20 to-pink-50 border-femfuel-rose/20">
-            <div className="space-y-4">
-              <div className="text-center">
-                <h2 className="text-xl sm:text-2xl font-bold text-femfuel-dark mb-2">
-                  ¿Qué estás buscando hoy?
-                </h2>
-                <p className="text-femfuel-medium text-sm">
-                  Encuentra productos perfectos para realzar tu belleza natural
-                </p>
-              </div>
-
-              <div className="max-w-2xl mx-auto">
-                <div className="flex gap-3">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-femfuel-medium h-5 w-5" />
-                    <Input
-                      placeholder="Buscar productos, marcas, categorías..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-12 h-12 text-base border-femfuel-rose/30 focus:border-femfuel-rose"
-                    />
-                  </div>
-                  <Button
-                    variant="outline"
-                    className="h-12 px-6 glassmorphism-button-perfect"
-                    onClick={() => setShowFilters(!showFilters)}
-                  >
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filtros
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
+      {/* Best Sellers Section */}
+      {bestSellers.length > 0 && (
+        <div className="max-w-7xl mx-auto px-6">
+          <BestSellersGrid
+            products={bestSellers}
+            onProductClick={handleQuickView}
+          />
         </div>
+      )}
 
-        {/* Advanced Filters */}
-        {showFilters && (
-          <div className="mb-6">
-            <Card className="border-femfuel-rose/20">
-              <CardContent className="p-6">
-                <h3 className="font-semibold text-femfuel-dark mb-4">Filtros Avanzados</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-white rounded-lg border">
-              <div>
-                <label className="block text-sm font-medium mb-2">Categoría</label>
-                <Select value={selectedCategory} onValueChange={(value: string) => setSelectedCategory(value as any)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Todas las categorías" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas las categorías</SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+      {/* New Arrivals Section */}
+      {newArrivals.length > 0 && (
+        <div className="max-w-7xl mx-auto px-6">
+          <NewArrivalsCarousel
+            products={newArrivals}
+            onProductClick={handleQuickView}
+          />
+        </div>
+      )}
 
-              {availableSubcategories.length > 0 && (
-                <div>
-                  <label className="block text-sm font-medium mb-2">Subcategoría</label>
-                  <Select value={selectedSubcategory} onValueChange={setSelectedSubcategory}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Todas las subcategorías" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Todas las subcategorías</SelectItem>
-                      {availableSubcategories.map((subcategory) => (
-                        <SelectItem key={subcategory} value={subcategory}>
-                          {subcategory}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+      {/* Curated Routines Section */}
+      <CuratedRoutines
+        onProductClick={handleQuickView}
+        onAddAllToCart={handleAddAllToCart}
+      />
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Ordenar por</label>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sortOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {/* Category Carousel */}
-        <CategoryCarousel
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          productCounts={productCounts}
+      {/* Smart Recommendations */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <ShopRecommendations
+          currentCategory={selectedCategory !== "all" ? selectedCategory : undefined}
         />
-
-        {/* Featured Collections */}
-        {!searchQuery && selectedCategory === "all" && (
-          <div className="mb-8">
-            <FeaturedCollections />
-          </div>
-        )}
-
-        {/* Results Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-lg font-semibold text-femfuel-dark">
-              {searchQuery ? `Resultados para "${searchQuery}"` : 
-               selectedCategory === "all" ? "Todos los productos" : 
-               categories.find(c => c.id === selectedCategory)?.name}
-            </h2>
-            <p className="text-sm text-femfuel-medium">
-              {sortedProducts.length} productos encontrados
-              {userLocation && !userLocation.isServiceable && (
-                <span className="text-red-600 ml-2">
-                  • No hay entrega disponible en tu ubicación
-                </span>
-              )}
-            </p>
-          </div>
-        </div>
-
-        {/* Products Grid */}
-        {!userLocation?.isServiceable ? (
-          <Card className="p-8 text-center bg-red-50 border-red-200">
-            <div className="mb-4">
-              <Truck className="h-12 w-12 mx-auto text-red-400 mb-4" />
-              <h3 className="text-lg font-semibold text-red-800 mb-2">
-                Entrega no disponible en tu área
-              </h3>
-              <p className="text-red-600 mb-4">
-                Actualmente solo ofrecemos entrega en Santo Domingo. 
-                Estamos trabajando para expandir a más ciudades pronto.
-              </p>
-              <Button 
-                onClick={() => setShowLocationModal(true)}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                Cambiar ubicación
-              </Button>
-            </div>
-          </Card>
-        ) : sortedProducts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {sortedProducts.map((product) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        ) : (
-          <Card className="p-8 text-center">
-            <div className="mb-4">
-              <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
-                No se encontraron productos
-              </h3>
-              <p className="text-femfuel-medium mb-4">
-                Intenta ajustar tus filtros o términos de búsqueda
-              </p>
-              <Button 
-                variant="outline"
-                onClick={() => {
-                  setSearchQuery("")
-                  setSelectedCategory("all")
-                  setSelectedSubcategory("all")
-                  setShowFilters(false)
-                }}
-              >
-                Limpiar filtros
-              </Button>
-            </div>
-          </Card>
-        )}
       </div>
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="shop" />
 
-      {/* Location Modal */}
-      <LocationModal
-        isOpen={showLocationModal}
-        onClose={() => setShowLocationModal(false)}
-        onLocationUpdate={handleLocationUpdate}
-        currentLocation={userLocation}
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={isQuickViewOpen}
+        onClose={handleCloseQuickView}
       />
-    </div>
+    </>
   )
 }

@@ -49,7 +49,7 @@ export function ProfessionalCard({
   // List layout (current professionals page style)
   if (layout === "list") {
     return (
-      <Card className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
+      <Card className="border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm">
         {/* Badges */}
         {showBadges && (
           <div className="absolute top-4 right-4 flex gap-2 z-10">
@@ -134,13 +134,13 @@ export function ProfessionalCard({
               <div className="flex gap-3">
                 <button
                   onClick={handleViewProfile}
-                  className="glassmorphism-button flex-1"
+                  className="flex-1 px-4 py-2 bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/30 hover:border-femfuel-rose hover:bg-femfuel-light/50 text-femfuel-rose font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
                 >
                   Ver Perfil
                 </button>
                 <button
                   onClick={handleContactClick}
-                  className="flex-1 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
                 >
                   Contactar
                 </button>
@@ -155,7 +155,7 @@ export function ProfessionalCard({
   // Horizontal layout (compact view)
   if (layout === "horizontal") {
     return (
-      <Card className="shadow-sm border-0 hover:shadow-md transition-shadow cursor-pointer" onClick={handleViewProfile}>
+      <Card className="border-2 border-femfuel-rose/10 hover:border-femfuel-rose/20 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer rounded-2xl bg-white" onClick={handleViewProfile}>
         <CardContent className="p-4">
           <div className="flex items-start gap-4">
             {/* Profile Image */}
@@ -230,10 +230,10 @@ export function ProfessionalCard({
 
   // Vertical layout for grid view
   return (
-    <Card className="overflow-hidden shadow-sm border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={handleViewProfile}>
+    <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-105 cursor-pointer rounded-2xl bg-white" onClick={handleViewProfile}>
       <CardContent className="p-0">
         {/* Cover/Header */}
-        <div className="relative bg-gradient-to-br from-purple-100 to-rose-100 h-32">
+        <div className="relative bg-gradient-to-br from-purple-100 via-pink-50 to-rose-100 h-32">
           {showBadges && professional.isTopRated && (
             <div className="absolute top-3 right-3">
               <TopRatedBadge variant="icon" />
@@ -290,7 +290,7 @@ export function ProfessionalCard({
 
           {/* Action Button */}
           <button
-            className="w-full px-4 py-2 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-medium rounded-lg transition-all duration-300"
+            className="w-full px-4 py-2 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
             onClick={(e) => {
               e.stopPropagation()
               handleViewProfile()

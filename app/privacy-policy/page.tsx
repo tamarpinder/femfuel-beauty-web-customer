@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4">
+      <section className="relative lg:pt-32 pb-16 px-4">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-4xl mx-auto relative text-center">
@@ -44,15 +44,15 @@ export default function PrivacyPolicyPage() {
       {/* Privacy Content */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 lg:p-12 space-y-12">
+          <div className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl shadow-xl p-8 lg:p-12 space-y-12">
 
             {/* Section 1: Information We Collect */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Database className="h-4 w-4 text-purple-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Database className="h-5 w-5 text-purple-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">1. Información que Recopilamos</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">1. Información que Recopilamos</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -77,10 +77,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 2: How We Use Information */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center">
-                  <Settings className="h-4 w-4 text-rose-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-rose-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Settings className="h-5 w-5 text-rose-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">2. Cómo Usamos tu Información</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">2. Cómo Usamos tu Información</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -109,10 +109,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 3: Information Sharing */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                  <Users className="h-4 w-4 text-amber-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Users className="h-5 w-5 text-amber-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">3. Compartir Información</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">3. Compartir Información</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -137,10 +137,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 4: Data Security */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Lock className="h-4 w-4 text-green-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-green-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Lock className="h-5 w-5 text-green-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">4. Seguridad de Datos</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">4. Seguridad de Datos</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -165,10 +165,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 5: Your Rights */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-purple-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center">
+                  <CheckCircle className="h-5 w-5 text-purple-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">5. Tus Derechos</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">5. Tus Derechos</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -197,10 +197,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 6: Cookies and Tracking */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center">
-                  <Globe className="h-4 w-4 text-rose-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-rose-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Globe className="h-5 w-5 text-rose-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">6. Cookies y Seguimiento</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">6. Cookies y Seguimiento</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -225,10 +225,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 7: Children's Privacy */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                  <Shield className="h-4 w-4 text-amber-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-amber-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">7. Privacidad de Menores</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">7. Privacidad de Menores</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -249,10 +249,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 8: International Data */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Globe className="h-4 w-4 text-green-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-green-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Globe className="h-5 w-5 text-green-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">8. Datos Internacionales</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">8. Datos Internacionales</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -273,10 +273,10 @@ export default function PrivacyPolicyPage() {
             {/* Section 9: Policy Updates */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-purple-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center">
+                  <CheckCircle className="h-5 w-5 text-purple-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">9. Actualizaciones de Política</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">9. Actualizaciones de Política</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -295,12 +295,14 @@ export default function PrivacyPolicyPage() {
             </div>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-purple-50 to-rose-50 rounded-xl p-6">
+            <div className="bg-gradient-to-r from-purple-50 to-rose-50 border-2 border-femfuel-rose/20 rounded-2xl shadow-lg p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Mail className="h-5 w-5 text-purple-600" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-rose-100 shadow-md flex items-center justify-center">
+                  <Mail className="h-5 w-5 text-purple-600" />
+                </div>
                 <h3 className="text-lg font-semibold text-femfuel-dark">Contacto sobre Privacidad</h3>
               </div>
-              <p className="text-femfuel-medium mb-4">
+              <p className="text-gray-700 mb-4">
                 Si tienes preguntas sobre esta política de privacidad o quieres ejercer tus derechos,
                 contáctanos directamente.
               </p>
@@ -317,14 +319,14 @@ export default function PrivacyPolicyPage() {
               <div className="flex flex-col sm:flex-row gap-3 mt-6">
                 <a
                   href="mailto:privacy@femfuelbeauty.com"
-                  className="femfuel-button-lg text-center"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 justify-center text-center"
                 >
                   <Mail className="h-4 w-4" />
                   Contactar Privacidad
                 </a>
                 <a
                   href="/help"
-                  className="bg-white border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 transition-all duration-300 shadow-lg text-center"
+                  className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-center"
                 >
                   Centro de Ayuda
                 </a>

@@ -8,7 +8,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4">
+      <section className="relative lg:pt-32 pb-16 px-4">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-4xl mx-auto relative text-center">
@@ -44,15 +44,15 @@ export default function TermsOfServicePage() {
       {/* Terms Content */}
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 lg:p-12 space-y-12">
+          <div className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl shadow-xl p-8 lg:p-12 space-y-12">
 
             {/* Section 1: Acceptance of Terms */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-purple-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center">
+                  <CheckCircle className="h-5 w-5 text-purple-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">1. Aceptación de Términos</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">1. Aceptación de Términos</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -70,10 +70,10 @@ export default function TermsOfServicePage() {
             {/* Section 2: User Accounts */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center">
-                  <Users className="h-4 w-4 text-rose-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-rose-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Users className="h-5 w-5 text-rose-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">2. Cuentas de Usuario</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">2. Cuentas de Usuario</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -94,10 +94,10 @@ export default function TermsOfServicePage() {
             {/* Section 3: Booking and Payments */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                  <Calendar className="h-4 w-4 text-amber-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Calendar className="h-5 w-5 text-amber-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">3. Reservas y Pagos</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">3. Reservas y Pagos</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -122,10 +122,10 @@ export default function TermsOfServicePage() {
             {/* Section 4: Professional Standards */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Shield className="h-4 w-4 text-green-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-green-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-green-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">4. Estándares Profesionales</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">4. Estándares Profesionales</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -146,10 +146,10 @@ export default function TermsOfServicePage() {
             {/* Section 5: User Conduct */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <AlertTriangle className="h-4 w-4 text-purple-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 text-purple-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">5. Conducta del Usuario</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">5. Conducta del Usuario</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -170,10 +170,10 @@ export default function TermsOfServicePage() {
             {/* Section 6: Privacy and Data */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-rose-100 rounded-lg flex items-center justify-center">
-                  <Shield className="h-4 w-4 text-rose-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-rose-100 to-rose-50 rounded-lg shadow-md flex items-center justify-center">
+                  <Shield className="h-5 w-5 text-rose-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">6. Privacidad y Datos</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">6. Privacidad y Datos</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -190,10 +190,10 @@ export default function TermsOfServicePage() {
             {/* Section 7: Liability and Disclaimers */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
-                  <AlertTriangle className="h-4 w-4 text-amber-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg shadow-md flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 text-amber-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">7. Responsabilidad</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">7. Responsabilidad</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -214,10 +214,10 @@ export default function TermsOfServicePage() {
             {/* Section 8: Modifications */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-green-600" />
+                <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-green-50 rounded-lg shadow-md flex items-center justify-center">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
                 </div>
-                <h2 className="text-xl font-bold text-femfuel-dark">8. Modificaciones</h2>
+                <h2 className="text-2xl font-bold text-femfuel-dark">8. Modificaciones</h2>
               </div>
               <div className="space-y-4 text-femfuel-medium">
                 <p>
@@ -232,25 +232,27 @@ export default function TermsOfServicePage() {
             </div>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-purple-50 to-rose-50 rounded-xl p-6">
+            <div className="bg-gradient-to-r from-purple-50 to-rose-50 border-2 border-femfuel-rose/20 rounded-2xl shadow-lg p-6">
               <div className="flex items-center gap-3 mb-4">
-                <Mail className="h-5 w-5 text-purple-600" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-rose-100 shadow-md flex items-center justify-center">
+                  <Mail className="h-5 w-5 text-purple-600" />
+                </div>
                 <h3 className="text-lg font-semibold text-femfuel-dark">¿Preguntas sobre estos términos?</h3>
               </div>
-              <p className="text-femfuel-medium mb-4">
+              <p className="text-gray-700 mb-4">
                 Nuestro equipo está aquí para ayudarte a entender cualquier aspecto de nuestros términos de servicio.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
                   href="mailto:legal@femfuelbeauty.com"
-                  className="femfuel-button-lg text-center"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 justify-center text-center"
                 >
                   <Mail className="h-4 w-4" />
                   Contactar Equipo Legal
                 </a>
                 <a
                   href="/help"
-                  className="bg-white border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 transition-all duration-300 shadow-lg text-center"
+                  className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-center"
                 >
                   Centro de Ayuda
                 </a>

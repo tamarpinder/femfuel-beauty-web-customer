@@ -82,37 +82,37 @@ export function ChatButton({
   const getButtonSize = () => {
     switch (size) {
       case "sm":
-        return "h-8 px-3 text-xs"
+        return "min-h-[44px] px-3 text-xs"
       case "lg":
-        return "h-12 px-6 text-base"
+        return "min-h-[48px] px-6 text-base"
       default:
-        return "h-10 px-4 text-sm"
+        return "min-h-[44px] px-4 text-sm"
     }
   }
 
   const getButtonStyles = () => {
-    const baseStyles = "bg-green-500 hover:bg-green-600 text-white font-medium transition-all duration-200 hover:scale-105 hover:shadow-md"
-    
+    const baseStyles = "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold transition-all duration-300 active:scale-95"
+
     switch (variant) {
       case "floating":
         return cn(
           baseStyles,
-          "fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full shadow-lg hover:shadow-xl hover:scale-110",
+          "w-14 h-14 rounded-full shadow-xl hover:shadow-2xl",
           "flex items-center justify-center transform",
-          "md:bottom-6 md:right-6",
+          "border-2 border-white/20",
           className
         )
       case "card":
         return cn(
           baseStyles,
-          "w-full justify-center gap-2 hover:shadow-lg",
+          "w-full justify-center gap-2 shadow-lg hover:shadow-xl rounded-xl",
           getButtonSize(),
           className
         )
       default:
         return cn(
           baseStyles,
-          "rounded-lg gap-2 hover:shadow-lg transform",
+          "rounded-xl gap-2 shadow-lg hover:shadow-xl transform",
           getButtonSize(),
           className
         )
@@ -120,7 +120,11 @@ export function ChatButton({
   }
 
   return (
-    <div className="relative">
+    <div className={cn(
+      variant === "floating"
+        ? "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50"
+        : "relative inline-block"
+    )}>
       <Button
         onClick={handleChatClick}
         disabled={isLoading}
@@ -129,10 +133,10 @@ export function ChatButton({
       >
         {getButtonContent()}
       </Button>
-      
+
       {/* Notification Badge for Floating Variant */}
       {variant === "floating" && unreadCount > 0 && (
-        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center font-bold border-2 border-white">
+        <div className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center font-bold border-2 border-white shadow-lg animate-pulse z-[60] px-1.5">
           {unreadCount > 99 ? '99+' : unreadCount}
         </div>
       )}

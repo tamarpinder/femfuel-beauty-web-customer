@@ -27,26 +27,35 @@ export function MobileNavigation({ activeTab = "home", onTabChange }: MobileNavi
 
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-2 z-50">
-        <div className="flex items-center justify-around">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t-2 border-femfuel-rose/10 px-2 z-50 shadow-2xl pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+        <div className="flex items-center justify-around gap-2 py-2">
           {tabs.map((tab) => (
             <Button
               key={tab.id}
               variant="ghost"
-              size="sm"
-              className={`flex flex-col items-center gap-1 ${
-                activeTab === tab.id ? "text-femfuel-rose" : "text-femfuel-medium"
-              }`}
+              className={`
+                flex flex-col items-center gap-1 relative transition-all duration-300
+                min-h-[48px] min-w-[48px] flex-1 max-w-[80px]
+                ${activeTab === tab.id
+                  ? "text-femfuel-rose bg-femfuel-light rounded-xl"
+                  : "text-femfuel-medium hover:text-femfuel-rose hover:bg-femfuel-light/50 rounded-xl"
+                }
+              `}
               onClick={() => handleTabClick(tab)}
             >
-              <tab.icon className="h-5 w-5" />
-              <span className="text-xs">{tab.label}</span>
+              <tab.icon className="h-5 w-5 transition-all duration-300 flex-shrink-0" />
+              <span className={`text-xs font-medium leading-tight ${activeTab === tab.id ? 'font-bold' : ''}`}>{tab.label}</span>
+
+              {/* Active indicator - larger and more visible */}
+              {activeTab === tab.id && (
+                <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-10 h-1.5 bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full shadow-md" />
+              )}
             </Button>
           ))}
         </div>
       </nav>
-      {/* Bottom Padding for Mobile Navigation */}
-      <div className="md:hidden h-24"></div>
+      {/* Bottom Padding for Mobile Navigation - with safe area */}
+      <div className="md:hidden h-[calc(4.5rem+env(safe-area-inset-bottom))]"></div>
     </>
   )
 }

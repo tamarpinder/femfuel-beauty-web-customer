@@ -172,7 +172,7 @@ export function EnhancedBookingCalendar({
         </div>
         
         {quickSuggestions.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
             {quickSuggestions.map((suggestion, index) => (
               <div
                 key={index}
@@ -196,10 +196,10 @@ export function EnhancedBookingCalendar({
                         variant={isSelectedTime ? "default" : "ghost"}
                         size="sm"
                         className={cn(
-                          "w-full justify-start h-8 lg:h-9 px-3 border transition-all duration-200",
+                          "w-full justify-start min-h-[44px] px-3 border transition-all duration-200",
                           isSelectedTime
                             ? "bg-femfuel-rose text-white border-femfuel-rose shadow-md"
-                            : "bg-femfuel-light/30 hover:bg-femfuel-rose hover:text-white text-femfuel-dark border-femfuel-rose/20 hover:border-femfuel-rose"
+                            : "bg-femfuel-light/30 hover:bg-femfuel-rose active:bg-femfuel-rose hover:text-white active:text-white text-femfuel-dark border-femfuel-rose/20 hover:border-femfuel-rose"
                         )}
                         onClick={() => {
                           handleDateSelect(suggestion.date)
@@ -213,8 +213,9 @@ export function EnhancedBookingCalendar({
                             }
                           }, 200)
                         }}
+                        aria-label={`Seleccionar ${time}`}
                       >
-                        <Clock className="h-3 w-3 mr-2" />
+                        <Clock className="h-3 w-3 mr-2 flex-shrink-0" />
                         <span className="font-medium text-xs lg:text-sm">{time}</span>
                         {isSelectedTime && (
                           <span className="ml-auto text-xs">✓</span>
@@ -228,8 +229,9 @@ export function EnhancedBookingCalendar({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full mt-3 lg:mt-4 h-8 lg:h-9 border-femfuel-rose/30 text-femfuel-rose hover:bg-femfuel-rose hover:text-white transition-all duration-200 text-xs lg:text-sm"
+                  className="w-full mt-3 lg:mt-4 min-h-[44px] border-femfuel-rose/30 text-femfuel-rose hover:bg-femfuel-rose active:bg-femfuel-rose hover:text-white active:text-white transition-all duration-200 text-xs lg:text-sm"
                   onClick={() => handleDateSelect(suggestion.date)}
+                  aria-label={`Ver más horarios para ${format(suggestion.date, 'd MMM')}`}
                 >
                   Ver más horarios
                 </Button>
@@ -374,7 +376,7 @@ export function EnhancedBookingCalendar({
             </div>
           ) : (
             <div className="max-h-80 overflow-y-auto border rounded-md p-3">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {currentDateAvailability?.timeSlots.map((slot: TimeSlot) => (
                   <Button
                     key={slot.time}
@@ -382,16 +384,17 @@ export function EnhancedBookingCalendar({
                     size="sm"
                     disabled={!slot.available}
                     className={cn(
-                      "relative",
+                      "relative min-h-[48px]",
                       selectedTime === slot.time ? "bg-femfuel-rose hover:bg-femfuel-rose-hover text-white" : "",
                       !slot.available && "opacity-50 cursor-not-allowed"
                     )}
                     onClick={() => slot.available && handleTimeSelect(slot.time)}
+                    aria-label={slot.available ? `Seleccionar ${slot.time}` : `${slot.time} no disponible`}
                   >
                     <div className="flex flex-col items-center">
-                      <span className="text-sm">{slot.time}</span>
+                      <span className="text-sm font-medium">{slot.time}</span>
                       {!slot.available && slot.reason && (
-                        <span className="text-xs opacity-75 truncate">{slot.reason}</span>
+                        <span className="text-xs opacity-75 truncate max-w-full">{slot.reason}</span>
                       )}
                     </div>
                   </Button>

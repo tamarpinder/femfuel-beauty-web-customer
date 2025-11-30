@@ -77,13 +77,13 @@ export default function BlogPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="animate-pulse">
-            <div className="h-48 bg-gray-200 rounded-3xl mb-8"></div>
+            <div className="h-48 bg-gradient-to-r from-gray-200 to-gray-300 rounded-3xl mb-8 shadow-lg"></div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-80 bg-gray-200 rounded-2xl"></div>
+                <div key={i} className="h-80 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl shadow-lg"></div>
               ))}
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-femfuel-rose via-femfuel-purple to-femfuel-dark text-white py-16 md:py-24">
         <div className="absolute inset-0 bg-black/20"></div>
@@ -113,21 +113,21 @@ export default function BlogPage() {
               placeholder="Buscar artículos..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-4 py-3 bg-white/90 backdrop-blur-sm border-0 rounded-full text-gray-900 placeholder-gray-500 focus:bg-white transition-all"
+              className="pl-12 pr-4 py-3 min-h-[44px] bg-white/90 backdrop-blur-sm border-0 rounded-full text-gray-900 placeholder-gray-500 focus:bg-white transition-all"
             />
           </div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Category Filter */}
+        {/* Category Filter - Enhanced */}
         <div className="flex items-center gap-3 mb-8 overflow-x-auto pb-2">
           <button
             onClick={() => setSelectedCategory("all")}
-            className={`flex-shrink-0 px-6 py-3 rounded-full text-sm font-medium transition-all ${
+            className={`flex-shrink-0 px-6 py-3 min-h-[44px] rounded-full text-sm font-bold transition-all duration-300 ${
               selectedCategory === "all"
-                ? "bg-femfuel-rose text-white shadow-md"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg"
+                : "bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/20 text-gray-700 hover:border-femfuel-rose/40 hover:shadow-md active:bg-femfuel-light active:border-femfuel-rose"
             }`}
           >
             Todos ({blogArticles.length})
@@ -138,10 +138,10 @@ export default function BlogPage() {
               <button
                 key={categoryId}
                 onClick={() => setSelectedCategory(categoryId as BlogCategory)}
-                className={`flex-shrink-0 px-6 py-3 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
+                className={`flex-shrink-0 px-6 py-3 min-h-[44px] rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
                   selectedCategory === categoryId
-                    ? "bg-femfuel-rose text-white shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg"
+                    : "bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/20 text-gray-700 hover:border-femfuel-rose/40 hover:shadow-md active:bg-femfuel-light active:border-femfuel-rose"
                 }`}
               >
                 <span>{category.icon}</span>
@@ -162,7 +162,7 @@ export default function BlogPage() {
                   href={`/blog/${article.slug}`}
                   className="group block"
                 >
-                  <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                  <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 active:scale-95">
                     <div className="aspect-[16/10] relative overflow-hidden">
                       <OptimizedImage
                         src={article.featuredImage}
@@ -251,7 +251,7 @@ export default function BlogPage() {
                 href={`/blog/${article.slug}`}
                 className="group block"
               >
-                <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] h-full flex flex-col">
+                <article className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 active:scale-95 h-full flex flex-col">
                   <div className="aspect-[16/10] relative overflow-hidden">
                     <OptimizedImage
                       src={article.featuredImage}
@@ -307,28 +307,30 @@ export default function BlogPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="w-24 h-24 mx-auto mb-4 bg-femfuel-purple rounded-full flex items-center justify-center">
-              <Search className="h-8 w-8 text-femfuel-medium" />
+          <div className="text-center py-16 px-4">
+            <div className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/20 rounded-2xl p-8 max-w-md mx-auto shadow-xl">
+              <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-full flex items-center justify-center shadow-lg">
+                <Search className="h-10 w-10 text-femfuel-rose" />
+              </div>
+              <h3 className="text-2xl font-bold text-femfuel-dark mb-3">
+                No se encontraron artículos
+              </h3>
+              <p className="text-femfuel-medium mb-6">
+                {searchQuery
+                  ? `No hay artículos que coincidan con "${searchQuery}"`
+                  : "No hay artículos en esta categoría"
+                }
+              </p>
+              <Button
+                onClick={() => {
+                  setSearchQuery("")
+                  setSelectedCategory("all")
+                }}
+                className="min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold rounded-full px-8 py-3 shadow-lg hover:shadow-xl active:scale-95 transition-all"
+              >
+                Ver Todos los Artículos
+              </Button>
             </div>
-            <h3 className="text-lg font-medium text-femfuel-dark mb-2">
-              No se encontraron artículos
-            </h3>
-            <p className="text-gray-600 mb-4">
-              {searchQuery
-                ? `No hay artículos que coincidan con "${searchQuery}"`
-                : "No hay artículos en esta categoría"
-              }
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setSearchQuery("")
-                setSelectedCategory("all")
-              }}
-            >
-              Ver Todos los Artículos
-            </Button>
           </div>
         )}
       </div>

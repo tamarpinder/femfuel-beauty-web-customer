@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ChevronLeft, ChevronRight, Star, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,6 +15,8 @@ export function ShopHero() {
   const { addToCart } = useCart()
   const [currentSlide, setCurrentSlide] = useState(0)
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
+  const touchStartX = useRef<number>(0)
+  const touchEndX = useRef<number>(0)
 
   useEffect(() => {
     const products = getFeaturedProducts().slice(0, 3) // Get top 3 featured products
@@ -36,6 +38,24 @@ export function ShopHero() {
   const handleAddToCart = async (product: Product, e: React.MouseEvent) => {
     e.stopPropagation()
     await addToCart(product.id, 1)
+  }
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      nextSlide() // Swiped left
+    }
+    if (touchStartX.current - touchEndX.current < -50) {
+      prevSlide() // Swiped right
+    }
   }
 
   if (featuredProducts.length === 0) return null
@@ -73,7 +93,12 @@ export function ShopHero() {
 
         {/* Featured Product Carousel */}
         <div className="max-w-4xl mx-auto">
-          <div className="relative">
+          <div
+            className="relative touch-pan-x"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <Card
               className="cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden bg-white/50 backdrop-blur-sm border-white/60"
               onClick={() => handleProductClick(currentProduct)}
@@ -134,9 +159,9 @@ export function ShopHero() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <Button
-                        className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                        className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white min-h-[44px]"
                         onClick={(e) => handleAddToCart(currentProduct, e)}
                       >
                         <ShoppingCart className="h-4 w-4 mr-2" />
@@ -144,7 +169,7 @@ export function ShopHero() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="glassmorphism-button-perfect"
+                        className="glassmorphism-button-perfect min-h-[44px] sm:w-auto w-full"
                         onClick={() => handleProductClick(currentProduct)}
                       >
                         Ver Detalles
@@ -161,18 +186,20 @@ export function ShopHero() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg rounded-full w-10 h-10 p-0"
+                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg rounded-full w-11 h-11 md:w-12 md:h-12 p-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
                   onClick={prevSlide}
+                  aria-label="Producto anterior"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg rounded-full w-10 h-10 p-0"
+                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg rounded-full w-11 h-11 md:w-12 md:h-12 p-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
                   onClick={nextSlide}
+                  aria-label="Siguiente producto"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
                 </Button>
               </>
             )}
@@ -184,13 +211,20 @@ export function ShopHero() {
               {featuredProducts.map((_, index) => (
                 <button
                   key={index}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`min-w-[32px] min-h-[32px] rounded-full transition-all duration-300 flex items-center justify-center ${
                     index === currentSlide
-                      ? "bg-femfuel-rose scale-125"
+                      ? "bg-gradient-to-r from-femfuel-rose to-pink-600"
                       : "bg-white/60 hover:bg-white/80"
                   }`}
                   onClick={() => setCurrentSlide(index)}
-                />
+                  aria-label={`Ir al producto ${index + 1}`}
+                >
+                  <span className={`rounded-full ${
+                    index === currentSlide
+                      ? 'w-4 h-1.5 md:w-6 md:h-2 bg-white'
+                      : 'w-2 h-2 bg-femfuel-rose/60'
+                  }`} />
+                </button>
               ))}
             </div>
           )}

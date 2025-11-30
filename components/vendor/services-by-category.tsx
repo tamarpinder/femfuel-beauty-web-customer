@@ -38,6 +38,27 @@ export function ServicesByCategory({
 }: ServicesByCategoryProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
 
+  // Category name translation to Dominican Spanish
+  const getCategoryNameInSpanish = (category: string): string => {
+    const translations: Record<string, string> = {
+      'nails': 'Uñas',
+      'hair': 'Cabello',
+      'makeup': 'Maquillaje',
+      'spa': 'Spa',
+      'lashes': 'Pestañas',
+      'skincare': 'Cuidado Facial',
+      'facial': 'Facial',
+      'massage': 'Masajes',
+      'waxing': 'Depilación',
+      'hair makeup': 'Cabello y Maquillaje',
+      'hairmakeup': 'Cabello y Maquillaje',
+      'barber': 'Barbería'
+    }
+
+    const lowerCategory = category.toLowerCase().trim()
+    return translations[lowerCategory] || category.charAt(0).toUpperCase() + category.slice(1)
+  }
+
   // Group services by category
   const servicesByCategory = services.reduce((acc, service) => {
     if (!acc[service.category]) {
@@ -75,13 +96,13 @@ export function ServicesByCategory({
         {/* Category Filter */}
         {hasMultipleCategories && (
           <div className="flex justify-center mb-12">
-            <div className="inline-flex bg-gray-100 p-1 rounded-xl">
+            <div className="inline-flex bg-gradient-to-r from-gray-50 to-gray-100 p-2 rounded-2xl shadow-lg border border-gray-200">
               <button
                 onClick={() => setSelectedCategory("all")}
-                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                   selectedCategory === "all"
-                    ? 'bg-white text-femfuel-dark shadow-md'
-                    : 'text-femfuel-medium hover:text-femfuel-dark'
+                    ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-xl'
+                    : 'text-femfuel-medium hover:text-femfuel-dark hover:bg-white/50'
                 }`}
               >
                 Todos los Servicios
@@ -90,13 +111,13 @@ export function ServicesByCategory({
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                     selectedCategory === category
-                      ? 'bg-white text-femfuel-dark shadow-md'
-                      : 'text-femfuel-medium hover:text-femfuel-dark'
+                      ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-xl'
+                      : 'text-femfuel-medium hover:text-femfuel-dark hover:bg-white/50'
                   }`}
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {getCategoryNameInSpanish(category)}
                 </button>
               ))}
             </div>
@@ -108,7 +129,7 @@ export function ServicesByCategory({
           {getFilteredServices().map((service) => (
             <Card
               key={service.id}
-              className="group hover:shadow-xl transition-all duration-300 border-0 bg-white hover:-translate-y-1 overflow-hidden"
+              className="group shadow-lg hover:shadow-2xl transition-all duration-300 border-0 bg-white hover:-translate-y-2 overflow-hidden rounded-2xl"
             >
               <CardContent className="p-0">
                 {/* Service Image */}
@@ -173,7 +194,7 @@ export function ServicesByCategory({
                   <div className="flex gap-2">
                     <Button
                       onClick={() => onServiceBook(service.id)}
-                      className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white group-hover:shadow-lg transition-all duration-300"
+                      className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-md group-hover:shadow-xl transition-all duration-300"
                     >
                       Reservar
                       <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
@@ -185,7 +206,7 @@ export function ServicesByCategory({
                       serviceContext={service.name}
                       variant="inline"
                       size="sm"
-                      className="bg-green-500 hover:bg-green-600 text-white shadow-md hover:shadow-lg transition-all duration-300"
+                      className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md hover:shadow-lg transition-all duration-300"
                     >
                       💬
                     </ChatButton>

@@ -23,18 +23,18 @@ export function ServiceHeaderCompact({
   }
 
   return (
-    <div className="bg-white border-b border-gray-100 py-4 px-4">
+    <div className="bg-white/95 backdrop-blur-md border-b-2 border-femfuel-rose/10 py-4 px-4 shadow-sm">
       <div className="max-w-7xl mx-auto">
         {/* Badges Only */}
         <div className="flex items-center gap-3">
           {isPopular && (
-            <Badge className="bg-femfuel-rose text-white px-2 py-1">
-              <Sparkles className="h-3 w-3 mr-1" />
-              Popular
+            <Badge className="bg-gradient-to-r from-femfuel-rose to-pink-600 text-white px-3 py-1.5 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+              <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+              <span className="font-semibold">Popular</span>
             </Badge>
           )}
-          <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark px-2 py-1">
-            {category.charAt(0).toUpperCase() + category.slice(1)}
+          <Badge variant="secondary" className="bg-femfuel-purple/20 text-femfuel-dark px-3 py-1.5 border-2 border-femfuel-purple/30 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
+            <span className="font-semibold">{category.charAt(0).toUpperCase() + category.slice(1)}</span>
           </Badge>
         </div>
       </div>

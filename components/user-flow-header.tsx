@@ -31,17 +31,23 @@ export function UserFlowHeader({
   }
 
   return (
-    <header className={`sticky top-0 z-50 bg-white border-b border-gray-100 ${className}`}>
-      <div className="px-4 py-3">
+    <header className={`sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-2 border-femfuel-rose/10 shadow-sm ${className}`}>
+      <div className="px-4 py-3 md:py-4">
         <div className="flex items-center justify-between">
           {/* Left side - Navigation */}
-          <div className="flex items-center gap-3 flex-1">
+          <div className="flex items-center gap-2 md:gap-3 flex-1">
             {showBackButton && (
-              <Button variant="ghost" size="sm" onClick={handleBack}>
-                <ArrowLeft className="h-4 w-4" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleBack}
+                className="min-w-[44px] min-h-[44px] hover:bg-femfuel-light/50 active:bg-femfuel-light active:scale-95 transition-all duration-300"
+                aria-label="Volver"
+              >
+                <ArrowLeft className="h-5 w-5 md:h-4 md:w-4" />
               </Button>
             )}
-            <h1 className="text-lg font-semibold text-femfuel-dark truncate">
+            <h1 className="text-base md:text-lg font-semibold text-femfuel-dark truncate">
               {title}
             </h1>
           </div>

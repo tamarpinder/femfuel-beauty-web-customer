@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ChevronLeft, ChevronRight, Heart, Star } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart, Star, Share2, Bookmark } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { OptimizedImage } from "@/components/ui/optimized-image"
+import { toast } from "sonner"
 
 interface Transformation {
   id: number
@@ -25,37 +26,138 @@ interface TransformationsShowcaseProps {
   onGetThisLook?: (serviceId: string, lookName: string, vendorName: string) => void
 }
 
+// Category mapping based on service types
+const getCategoryFromService = (service: string): string => {
+  const lowerService = service.toLowerCase()
+  if (lowerService.includes('uña') || lowerService.includes('nail') || lowerService.includes('manicure') || lowerService.includes('pedicure')) return 'Uñas'
+  if (lowerService.includes('maquillaje') || lowerService.includes('makeup')) return 'Maquillaje'
+  if (lowerService.includes('cabello') || lowerService.includes('pelo') || lowerService.includes('hair') || lowerService.includes('balayage') || lowerService.includes('alisado') || lowerService.includes('blowout')) return 'Cabello'
+  if (lowerService.includes('facial') || lowerService.includes('spa') || lowerService.includes('masaje')) return 'Spa'
+  if (lowerService.includes('pestaña') || lowerService.includes('lash') || lowerService.includes('extensiones de pestañas')) return 'Pestañas'
+  return 'Otro'
+}
+
 export function TransformationsShowcase({ transformations, onGetThisLook }: TransformationsShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [showAfter, setShowAfter] = useState(true)
+  const [activeFilter, setActiveFilter] = useState<string>('Ver Todo')
+  const [likedIds, setLikedIds] = useState<Set<number>>(new Set())
+  const [bookmarkedIds, setBookmarkedIds] = useState<Set<number>>(new Set())
 
-  // Note: Image preloading will be added after images are generated
+  // Filter transformations based on active category
+  const filteredTransformations = activeFilter === 'Ver Todo'
+    ? transformations
+    : transformations.filter(t => getCategoryFromService(t.service) === activeFilter)
+
+  // Reset index when filter changes
+  useEffect(() => {
+    setCurrentIndex(0)
+    setShowAfter(true)
+  }, [activeFilter])
 
   const nextTransformation = () => {
-    setCurrentIndex((prev) => (prev + 1) % transformations.length)
+    setCurrentIndex((prev) => (prev + 1) % filteredTransformations.length)
     setShowAfter(true)
   }
 
   const prevTransformation = () => {
-    setCurrentIndex((prev) => (prev - 1 + transformations.length) % transformations.length)
+    setCurrentIndex((prev) => (prev - 1 + filteredTransformations.length) % filteredTransformations.length)
     setShowAfter(true)
   }
 
-  if (!transformations.length) return null
+  if (!filteredTransformations.length) return null
 
-  const current = transformations[currentIndex]
+  const current = filteredTransformations[currentIndex]
+
+  // Social interaction handlers
+  const handleShare = async (transformation: Transformation) => {
+    const shareData = {
+      title: transformation.lookName,
+      text: `Mira esta increíble transformación: ${transformation.service} por ${transformation.vendor}`,
+      url: typeof window !== 'undefined' ? window.location.href : '',
+    }
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData)
+        toast.success('¡Compartido exitosamente!')
+      } catch (err) {
+        // User cancelled share
+      }
+    } else {
+      // Fallback: Copy link to clipboard
+      await navigator.clipboard.writeText(shareData.url)
+      toast.success('¡Link copiado al portapapeles!')
+    }
+  }
+
+  const handleLike = (id: number) => {
+    setLikedIds(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+        toast.success('Removido de favoritos')
+      } else {
+        newSet.add(id)
+        toast.success('¡Agregado a favoritos!')
+      }
+      return newSet
+    })
+  }
+
+  const handleBookmark = (id: number) => {
+    setBookmarkedIds(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+        toast.success('Marcador removido')
+      } else {
+        newSet.add(id)
+        toast.success('¡Guardado para después!')
+      }
+      return newSet
+    })
+  }
+
+  // Get unique categories from transformations
+  const categories = ['Ver Todo', ...Array.from(new Set(transformations.map(t => getCategoryFromService(t.service))))]
 
   return (
-    <section className="px-4 py-8 sm:py-12 bg-gradient-to-br from-femfuel-light to-pink-50">
+    <section className="px-4 md:px-6 py-12 md:py-16 bg-gradient-to-br from-femfuel-light to-pink-50">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-6 sm:mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-femfuel-dark mb-2 sm:mb-3">Transformaciones Increíbles</h2>
-          <p className="text-sm sm:text-base text-femfuel-medium">Descubre el poder de la belleza profesional</p>
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-femfuel-dark mb-3">Transformaciones Increíbles</h2>
+          <p className="text-base md:text-lg text-femfuel-medium">Descubre el poder de la belleza profesional</p>
+        </div>
+
+        {/* Category Filters */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveFilter(category)}
+              className={`
+                px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-medium text-sm sm:text-base
+                transition-all duration-300
+                ${activeFilter === category
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105 border-2 border-transparent'
+                  : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-white hover:shadow-md hover:scale-105 border-2 border-femfuel-rose/10'
+                }
+              `}
+            >
+              {category}
+              {activeFilter === category && (
+                <span className="ml-2 text-xs bg-white/20 px-2 py-0.5 rounded-full">
+                  {filteredTransformations.length}
+                </span>
+              )}
+            </button>
+          ))}
         </div>
 
         <div className="relative">
           {/* Main Transformation Card */}
-          <Card className="overflow-hidden shadow-xl">
+          <Card className="overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl border-2 border-femfuel-rose/10 bg-white/80 backdrop-blur-md">
             <CardContent className="p-0">
               <div className="md:flex">
                 {/* Before/After Images */}
@@ -133,10 +235,57 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                     </footer>
                   </blockquote>
 
+                  {/* Social Actions */}
+                  <div className="flex items-center gap-2 md:gap-3 mb-4 sm:mb-6">
+                    <button
+                      onClick={() => handleLike(current.id)}
+                      className={`flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl min-h-[44px] ${
+                        likedIds.has(current.id)
+                          ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white border-2 border-transparent'
+                          : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10'
+                      }`}
+                    >
+                      <Heart
+                        className={`h-4 w-4 transition-all duration-300 ${
+                          likedIds.has(current.id) ? 'fill-current' : ''
+                        }`}
+                      />
+                      <span className="text-xs sm:text-sm font-medium">
+                        {likedIds.has(current.id) ? 'Favorito' : 'Me Gusta'}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => handleBookmark(current.id)}
+                      className={`flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl min-h-[44px] ${
+                        bookmarkedIds.has(current.id)
+                          ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white border-2 border-transparent'
+                          : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10'
+                      }`}
+                    >
+                      <Bookmark
+                        className={`h-4 w-4 transition-all duration-300 ${
+                          bookmarkedIds.has(current.id) ? 'fill-current' : ''
+                        }`}
+                      />
+                      <span className="text-xs sm:text-sm font-medium hidden sm:inline">
+                        {bookmarkedIds.has(current.id) ? 'Guardado' : 'Guardar'}
+                      </span>
+                    </button>
+
+                    <button
+                      onClick={() => handleShare(current)}
+                      className="flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-h-[44px]"
+                    >
+                      <Share2 className="h-4 w-4" />
+                      <span className="text-xs sm:text-sm font-medium hidden sm:inline">Compartir</span>
+                    </button>
+                  </div>
+
                   {/* Get This Look Button */}
                   <Button
                     onClick={() => onGetThisLook?.(current.serviceId, current.lookName, current.vendor)}
-                    className="bg-femfuel-rose hover:bg-femfuel-rose/90 text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl h-11 sm:h-12 text-sm sm:text-base"
+                    className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl h-11 sm:h-12 text-sm sm:text-base font-semibold"
                   >
                     <Heart className="h-4 w-4 mr-2 animate-pulse" />
                     Obtener Este Estilo
@@ -150,18 +299,18 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
           <Button
             variant="outline"
             size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white border-femfuel-rose/20"
+            className="absolute left-1 md:left-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white transition-all duration-300 min-w-[40px] min-h-[40px]"
             onClick={prevTransformation}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
           </Button>
           <Button
             variant="outline"
             size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white border-femfuel-rose/20"
+            className="absolute right-1 md:right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white transition-all duration-300 min-w-[40px] min-h-[40px]"
             onClick={nextTransformation}
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
           </Button>
         </div>
 
@@ -170,16 +319,23 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
           {transformations.map((_, index) => (
             <button
               key={index}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentIndex 
-                  ? 'bg-femfuel-rose w-8' 
-                  : 'bg-femfuel-rose/30 hover:bg-femfuel-rose/50'
+              className={`min-w-[32px] min-h-[32px] rounded-full transition-all flex items-center justify-center ${
+                index === currentIndex
+                  ? 'bg-femfuel-rose/20'
+                  : 'bg-femfuel-rose/10 hover:bg-femfuel-rose/20'
               }`}
               onClick={() => {
                 setCurrentIndex(index)
                 setShowAfter(true)
               }}
-            />
+              aria-label={`Go to transformation ${index + 1}`}
+            >
+              <span className={`rounded-full transition-all ${
+                index === currentIndex
+                  ? 'bg-femfuel-rose w-6 h-2'
+                  : 'bg-femfuel-rose/50 w-2 h-2'
+              }`} />
+            </button>
           ))}
         </div>
 
@@ -188,8 +344,8 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
           {transformations.slice(0, 4).map((transformation, index) => (
             <div
               key={transformation.id}
-              className={`cursor-pointer rounded-lg overflow-hidden transition-all hover:scale-105 ${
-                index === currentIndex ? 'ring-2 ring-femfuel-rose' : ''
+              className={`cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 border-2 border-femfuel-rose/10 bg-white/80 backdrop-blur-md ${
+                index === currentIndex ? 'ring-2 ring-femfuel-rose shadow-xl' : ''
               }`}
               onClick={() => {
                 setCurrentIndex(index)

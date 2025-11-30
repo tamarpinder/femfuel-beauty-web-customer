@@ -192,7 +192,7 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
           </Card>
 
           {/* Booking Details */}
-          <Card className="border-green-200 shadow-lg">
+          <Card className="border-2 border-green-200 shadow-xl rounded-2xl">
             <CardHeader>
               <CardTitle className="text-center text-green-800">Detalles de tu Cita</CardTitle>
             </CardHeader>
@@ -256,13 +256,13 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
           </Card>
 
           {/* Quick Actions */}
-          <Card className="border-blue-200 shadow-lg">
+          <Card className="border-2 border-blue-200 shadow-xl rounded-2xl">
             <CardContent className="p-4">
               <div className="grid grid-cols-2 gap-3">
                 <Button
                   onClick={handleAddToCalendar}
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-femfuel-light/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
                   <Calendar className="h-4 w-4" />
                   Agregar al Calendario
@@ -270,7 +270,7 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 <Button
                   onClick={handleShare}
                   variant="outline"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-femfuel-light/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
                   <Share2 className="h-4 w-4" />
                   Compartir
@@ -329,7 +329,7 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
           </div>
 
           {/* Important Information */}
-          <Card className="border-amber-200 bg-amber-50">
+          <Card className="border-2 border-amber-200 bg-amber-50 shadow-lg rounded-2xl">
             <CardContent className="p-4">
               <h4 className="font-semibold text-amber-800 mb-2 flex items-center gap-2">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

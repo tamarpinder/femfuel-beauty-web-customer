@@ -84,15 +84,15 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
   const currentImage = displayImages[0]
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl border-2 border-femfuel-rose/10 overflow-hidden shadow-xl">
       {/* Header */}
-      <div className="p-4 border-b border-gray-100">
+      <div className="p-6 border-b-2 border-femfuel-rose/10 bg-gradient-to-r from-white to-femfuel-light/10">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-femfuel-dark">
+            <h3 className="text-xl font-bold text-femfuel-dark mb-1">
               Resultados Reales
             </h3>
-            <p className="text-sm text-femfuel-medium">
+            <p className="text-sm text-femfuel-medium font-medium">
               Mirá los increíbles resultados que logran nuestros especialistas
             </p>
           </div>
@@ -101,7 +101,11 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
               variant={viewMode === 'split' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('split')}
-              className="text-xs"
+              className={`text-xs font-semibold transition-all duration-300 ${
+                viewMode === 'split'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg hover:scale-105'
+                  : 'hover:border-femfuel-rose/40 hover:scale-105'
+              }`}
             >
               Antes/Después
             </Button>
@@ -109,7 +113,11 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
               variant={viewMode === 'before' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('before')}
-              className="text-xs"
+              className={`text-xs font-semibold transition-all duration-300 ${
+                viewMode === 'before'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg hover:scale-105'
+                  : 'hover:border-femfuel-rose/40 hover:scale-105'
+              }`}
             >
               Antes
             </Button>
@@ -117,7 +125,11 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
               variant={viewMode === 'after' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('after')}
-              className="text-xs"
+              className={`text-xs font-semibold transition-all duration-300 ${
+                viewMode === 'after'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg hover:scale-105'
+                  : 'hover:border-femfuel-rose/40 hover:scale-105'
+              }`}
             >
               Después
             </Button>
@@ -126,13 +138,13 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
       </div>
 
       {/* Main Gallery */}
-      <div className="p-4">
+      <div className="p-6">
         <div className="relative">
           {viewMode === 'split' ? (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               {/* Before Image */}
               <div className="relative">
-                <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 relative">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 relative shadow-lg border-2 border-femfuel-rose/10">
                   <OptimizedImage
                     src={currentImage.before}
                     alt={`${serviceName} - Antes`}
@@ -142,14 +154,14 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
                     loading="lazy"
                   />
                 </div>
-                <div className="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded-full">
+                <div className="absolute top-4 left-4 bg-black/90 backdrop-blur-sm text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
                   Antes
                 </div>
               </div>
 
               {/* After Image */}
               <div className="relative">
-                <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 relative">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-femfuel-light to-pink-50 relative shadow-lg border-2 border-femfuel-rose/20">
                   <OptimizedImage
                     src={currentImage.after}
                     alt={`${serviceName} - Después`}
@@ -159,14 +171,14 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
                     loading="lazy"
                   />
                 </div>
-                <div className="absolute top-3 left-3 bg-femfuel-rose text-white text-sm px-3 py-1 rounded-full">
+                <div className="absolute top-4 left-4 bg-gradient-to-r from-femfuel-rose to-pink-600 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
                   Después
                 </div>
               </div>
             </div>
           ) : (
             <div className="relative">
-              <div className="aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 relative">
+              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 relative shadow-lg border-2 border-femfuel-rose/10">
                 <OptimizedImage
                   src={viewMode === 'before' ? currentImage.before : currentImage.after}
                   alt={`${serviceName} - ${viewMode === 'before' ? 'Antes' : 'Después'}`}
@@ -176,7 +188,11 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
                   loading="lazy"
                 />
               </div>
-              <div className="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1 rounded-full">
+              <div className={`absolute top-4 left-4 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg ${
+                viewMode === 'before'
+                  ? 'bg-black/90 backdrop-blur-sm'
+                  : 'bg-gradient-to-r from-femfuel-rose to-pink-600'
+              }`}>
                 {viewMode === 'before' ? 'Antes' : 'Después'}
               </div>
             </div>

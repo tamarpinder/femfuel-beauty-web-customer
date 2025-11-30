@@ -147,9 +147,9 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">{/* Search page content relies on SmartHeader from layout */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 lg:pt-24">{/* Search page content relies on SmartHeader from layout */}
 
-      <div className="flex flex-col md:flex-row gap-6 p-4 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-6 p-4 md:p-6 max-w-7xl mx-auto">
         {/* Filters Sidebar */}
         <div className="md:w-80 flex-shrink-0">
           <SearchFiltersComponent
@@ -162,24 +162,24 @@ export default function SearchPage() {
         {/* Results */}
         <div className="flex-1">
           {/* Results Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-xl font-semibold text-femfuel-dark">
+              <h2 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-2">
                 {searchQuery ? `Resultados para "${searchQuery}"` : "Resultados de Búsqueda"}
               </h2>
-              <p className="text-sm text-femfuel-medium">{filteredServices.length} servicios encontrados</p>
+              <p className="text-sm md:text-base text-femfuel-medium">{filteredServices.length} servicios encontrados</p>
               {!searchQuery && (
-                <p className="text-xs text-femfuel-medium mt-1">
-                  Prueba buscar por servicio o usar <button 
-                    onClick={() => window.location.href = '/services'} 
-                    className="text-femfuel-rose underline"
+                <p className="text-xs md:text-sm text-femfuel-medium mt-1">
+                  Prueba buscar por servicio o usar <button
+                    onClick={() => window.location.href = '/services'}
+                    className="text-femfuel-rose font-semibold hover:underline transition-all duration-300"
                   >
                     navegación por categorías
                   </button>
                 </p>
               )}
             </div>
-            <Button variant="outline" size="sm" className="hidden md:flex bg-transparent">
+            <Button variant="outline" size="sm" className="hidden md:flex bg-white border-2 border-femfuel-rose/20 hover:bg-femfuel-light hover:border-femfuel-rose transition-all duration-300">
               <SlidersHorizontal className="h-4 w-4 mr-2" />
               Ordenar
             </Button>
@@ -203,12 +203,12 @@ export default function SearchPage() {
               </div>
             </>
           ) : (
-            <div className="text-center py-12">
-              <div className="w-24 h-24 mx-auto mb-4 bg-femfuel-purple rounded-full flex items-center justify-center">
-                <SlidersHorizontal className="h-8 w-8 text-femfuel-medium" />
+            <div className="text-center py-20 px-4">
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-femfuel-light rounded-full mb-6 shadow-lg">
+                <SlidersHorizontal className="h-10 w-10 text-femfuel-medium" />
               </div>
-              <h3 className="text-lg font-medium text-femfuel-dark mb-2">No se encontraron servicios</h3>
-              <p className="text-femfuel-medium mb-4">Intenta ajustar tus filtros o buscar algo diferente</p>
+              <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">No se encontraron servicios</h3>
+              <p className="text-base md:text-lg text-femfuel-medium mb-6 max-w-md mx-auto">Intenta ajustar tus filtros o buscar algo diferente</p>
               <Button
                 variant="outline"
                 onClick={() => {
@@ -222,6 +222,7 @@ export default function SearchPage() {
                     availability: "anytime",
                   })
                 }}
+                className="bg-white border-2 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
               >
                 Limpiar Búsqueda
               </Button>

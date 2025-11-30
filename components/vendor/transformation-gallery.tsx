@@ -72,7 +72,7 @@ export function TransformationGallery({
             {transformations.map((transformation, index) => (
               <Card
                 key={transformation.id}
-                className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 bg-white overflow-hidden"
+                className="group cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 bg-white overflow-hidden rounded-2xl"
                 onClick={() => openModal(transformation, index)}
               >
                 <CardContent className="p-0">
@@ -164,7 +164,7 @@ export function TransformationGallery({
             <div className="text-center mt-12">
               <Button
                 variant="outline"
-                className="text-femfuel-rose border-femfuel-rose hover:bg-femfuel-rose hover:text-white"
+                className="text-femfuel-rose border-2 border-femfuel-rose hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white shadow-md hover:shadow-lg transition-all duration-300"
               >
                 Ver Más Transformaciones
               </Button>
@@ -176,7 +176,7 @@ export function TransformationGallery({
       {/* Modal */}
       {selectedTransformation && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b">
               <div>
@@ -240,9 +240,9 @@ export function TransformationGallery({
                     variant="secondary"
                     size="sm"
                     onClick={prevTransformation}
-                    className="rounded-full w-10 h-10 p-0 bg-white/90 hover:bg-white"
+                    className="rounded-full w-12 h-12 p-0 bg-white/90 hover:bg-white shadow-xl hover:shadow-2xl transition-all duration-300"
                   >
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-5 w-5" />
                   </Button>
                 </div>
 
@@ -251,9 +251,9 @@ export function TransformationGallery({
                     variant="secondary"
                     size="sm"
                     onClick={nextTransformation}
-                    className="rounded-full w-10 h-10 p-0 bg-white/90 hover:bg-white"
+                    className="rounded-full w-12 h-12 p-0 bg-white/90 hover:bg-white shadow-xl hover:shadow-2xl transition-all duration-300"
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-5 w-5" />
                   </Button>
                 </div>
               </div>
@@ -301,7 +301,7 @@ export function TransformationGallery({
                     <div className="pt-4 border-t">
                       <Button
                         onClick={() => onGetThisLook(selectedTransformation)}
-                        className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                        className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl transition-all duration-300"
                       >
                         <Heart className="h-4 w-4 mr-2" />
                         Quiero Este Look

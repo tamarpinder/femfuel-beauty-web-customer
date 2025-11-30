@@ -164,80 +164,129 @@ export function PaymentMethodsSettings() {
             </CardTitle>
             <Dialog open={showAddCard} onOpenChange={setShowAddCard}>
               <DialogTrigger asChild>
-                <Button size="sm" className="bg-femfuel-rose hover:bg-femfuel-rose/90">
+                <Button className="min-h-[44px] bg-femfuel-rose hover:bg-femfuel-rose/90 text-sm md:text-base">
                   <Plus className="h-4 w-4 mr-2" />
                   Agregar Tarjeta
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Agregar Nueva Tarjeta</DialogTitle>
-                  <DialogDescription>
-                    Agrega una nueva tarjeta de crédito o débito para usar en tus reservas
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
+              <DialogContent className="h-full md:h-auto md:max-w-md w-full md:rounded-xl p-0 md:p-6 flex flex-col">
+                {/* Mobile Header */}
+                <div className="md:hidden sticky top-0 bg-white border-b p-4 flex-shrink-0">
+                  <DialogHeader>
+                    <DialogTitle className="text-base">Agregar Nueva Tarjeta</DialogTitle>
+                    <DialogDescription className="text-sm">
+                      Agrega una nueva tarjeta de crédito o débito
+                    </DialogDescription>
+                  </DialogHeader>
+                </div>
+
+                {/* Desktop Header */}
+                <div className="hidden md:block">
+                  <DialogHeader>
+                    <DialogTitle>Agregar Nueva Tarjeta</DialogTitle>
+                    <DialogDescription>
+                      Agrega una nueva tarjeta de crédito o débito para usar en tus reservas
+                    </DialogDescription>
+                  </DialogHeader>
+                </div>
+
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto p-4 md:p-0 md:mt-4 space-y-4">
                   <div>
-                    <Label htmlFor="cardNumber">Número de Tarjeta</Label>
+                    <Label htmlFor="cardNumber" className="text-sm">Número de Tarjeta</Label>
                     <Input
                       id="cardNumber"
                       placeholder="1234 5678 9012 3456"
                       value={formData.cardNumber}
                       onChange={handleCardNumberChange}
                       maxLength={19}
+                      className="min-h-[44px] mt-1"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="expiryDate">Fecha de Vencimiento</Label>
+                      <Label htmlFor="expiryDate" className="text-sm">Fecha de Vencimiento</Label>
                       <Input
                         id="expiryDate"
                         placeholder="MM/YY"
                         value={formData.expiryDate}
                         onChange={handleExpiryChange}
                         maxLength={5}
+                        className="min-h-[44px] mt-1"
                       />
                     </div>
                     <div>
-                      <Label htmlFor="cvv">CVV</Label>
+                      <Label htmlFor="cvv" className="text-sm">CVV</Label>
                       <Input
                         id="cvv"
                         placeholder="123"
                         value={formData.cvv}
                         onChange={(e) => setFormData(prev => ({ ...prev, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
                         maxLength={4}
+                        className="min-h-[44px] mt-1"
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="cardHolderName">Nombre del Titular</Label>
+                    <Label htmlFor="cardHolderName" className="text-sm">Nombre del Titular</Label>
                     <Input
                       id="cardHolderName"
                       placeholder="Nombre como aparece en la tarjeta"
                       value={formData.cardHolderName}
                       onChange={(e) => setFormData(prev => ({ ...prev, cardHolderName: e.target.value }))}
+                      className="min-h-[44px] mt-1"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="brand">Tipo de Tarjeta</Label>
+                    <Label htmlFor="brand" className="text-sm">Tipo de Tarjeta</Label>
                     <Select value={formData.brand} onValueChange={(value) => setFormData(prev => ({ ...prev, brand: value as any }))}>
-                      <SelectTrigger>
+                      <SelectTrigger className="min-h-[44px] mt-1">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="visa">Visa</SelectItem>
-                        <SelectItem value="mastercard">Mastercard</SelectItem>
-                        <SelectItem value="amex">American Express</SelectItem>
-                        <SelectItem value="discover">Discover</SelectItem>
+                        <SelectItem value="visa" className="min-h-[44px]">Visa</SelectItem>
+                        <SelectItem value="mastercard" className="min-h-[44px]">Mastercard</SelectItem>
+                        <SelectItem value="amex" className="min-h-[44px]">American Express</SelectItem>
+                        <SelectItem value="discover" className="min-h-[44px]">Discover</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setShowAddCard(false)}>
+
+                {/* Mobile Footer */}
+                <div className="md:hidden sticky bottom-0 bg-white border-t p-4 flex-shrink-0">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      onClick={handleAddCard}
+                      disabled={isLoading}
+                      className="min-h-[48px] bg-femfuel-rose hover:bg-femfuel-rose/90"
+                    >
+                      {isLoading ? "Agregando..." : "Agregar Tarjeta"}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowAddCard(false)}
+                      className="min-h-[44px]"
+                    >
+                      Cancelar
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Desktop Footer */}
+                <DialogFooter className="hidden md:flex mt-4">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowAddCard(false)}
+                    className="min-h-[44px]"
+                  >
                     Cancelar
                   </Button>
-                  <Button onClick={handleAddCard} disabled={isLoading}>
+                  <Button
+                    onClick={handleAddCard}
+                    disabled={isLoading}
+                    className="min-h-[44px]"
+                  >
                     {isLoading ? "Agregando..." : "Agregar Tarjeta"}
                   </Button>
                 </DialogFooter>
@@ -255,7 +304,10 @@ export function PaymentMethodsSettings() {
               <p className="text-femfuel-medium mb-4">
                 Agrega una tarjeta para hacer tus reservas más rápido
               </p>
-              <Button onClick={() => setShowAddCard(true)} className="bg-femfuel-rose hover:bg-femfuel-rose/90">
+              <Button
+                onClick={() => setShowAddCard(true)}
+                className="min-h-[44px] bg-femfuel-rose hover:bg-femfuel-rose/90"
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Agregar Primera Tarjeta
               </Button>
@@ -265,15 +317,15 @@ export function PaymentMethodsSettings() {
               {user.paymentMethods.map((paymentMethod) => (
                 <div
                   key={paymentMethod.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 md:p-4 border rounded-lg hover:bg-gray-50 transition-colors gap-4"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-8 bg-gradient-to-r from-femfuel-purple/20 to-femfuel-rose/20 rounded flex items-center justify-center text-lg">
+                  <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
+                    <div className="w-12 h-10 md:h-8 bg-gradient-to-r from-femfuel-purple/20 to-femfuel-rose/20 rounded flex items-center justify-center text-lg flex-shrink-0">
                       {getCardIcon(paymentMethod.brand || 'visa')}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-medium text-sm md:text-base">
                           {getCardBrandName(paymentMethod.brand || 'visa')} ••••{paymentMethod.cardNumber}
                         </span>
                         {paymentMethod.isDefault && (
@@ -283,29 +335,29 @@ export function PaymentMethodsSettings() {
                           </Badge>
                         )}
                       </div>
-                      <div className="text-sm text-femfuel-medium">
+                      <div className="text-xs md:text-sm text-femfuel-medium mt-1">
                         {paymentMethod.cardHolderName} • Vence {paymentMethod.expiryDate}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 sm:flex-shrink-0">
                     {!paymentMethod.isDefault && (
                       <Button
                         variant="outline"
-                        size="sm"
                         onClick={() => handleSetDefault(paymentMethod.id)}
+                        className="min-h-[44px] flex-1 sm:flex-initial text-xs md:text-sm"
                       >
                         Hacer Principal
                       </Button>
                     )}
                     <Button
                       variant="outline"
-                      size="sm"
                       onClick={() => handleRemoveCard(paymentMethod.id)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      className="min-w-[44px] min-h-[44px] text-red-600 hover:text-red-700 hover:bg-red-50 active:bg-red-50"
+                      aria-label="Eliminar tarjeta"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-5 w-5 md:h-4 md:w-4" />
                     </Button>
                   </div>
                 </div>

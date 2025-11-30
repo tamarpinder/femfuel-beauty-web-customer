@@ -44,21 +44,21 @@ export function VendorCard({
   if (layout === "list" || layout === "nearby") {
     return (
       <Card
-        className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden cursor-pointer"
+        className="border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden cursor-pointer rounded-2xl bg-white/80 backdrop-blur-sm"
         onClick={handleViewVendor}
       >
         {/* Badges */}
         {showBadges && (
           <div className="absolute top-4 right-4 flex gap-2 z-10">
             {vendor.rating >= 4.5 && (
-              <div className="bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                <Crown className="h-3 w-3" />
+              <div className="bg-gradient-to-r from-amber-500 to-yellow-600 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                <Crown className="h-3.5 w-3.5" />
                 Mejor Calificado
               </div>
             )}
             {vendor.reviewCount < 50 && (
-              <div className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                <Zap className="h-3 w-3" />
+              <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                <Zap className="h-3.5 w-3.5" />
                 Nuevo
               </div>
             )}
@@ -98,30 +98,30 @@ export function VendorCard({
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             {/* Logo */}
-            <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0">
+            <div className="w-24 h-24 relative rounded-2xl overflow-hidden flex-shrink-0 shadow-lg border-2 border-femfuel-rose/10">
               {vendor.logo ? (
                 <Image
                   src={vendor.logo}
                   alt={vendor.name}
                   fill
-                  className="object-cover"
-                  sizes="80px"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  sizes="96px"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-purple-100 to-rose-100 flex items-center justify-center">
-                  <Store className="h-8 w-8 text-purple-600" />
+                <div className="w-full h-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center">
+                  <Store className="h-10 w-10 text-femfuel-rose" />
                 </div>
               )}
             </div>
 
             <div className="flex-1">
               {/* Name and Location */}
-              <div className="mb-3">
-                <h3 className="text-lg font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors">
+              <div className="mb-4">
+                <h3 className="text-xl md:text-2xl font-bold text-femfuel-dark group-hover:text-femfuel-rose transition-colors mb-2">
                   {vendor.name}
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-femfuel-medium">
-                  <MapPin className="h-4 w-4" />
+                <div className="flex items-center gap-2 text-sm md:text-base text-femfuel-medium font-medium">
+                  <MapPin className="h-4 w-4 md:h-5 md:w-5" />
                   <span>{vendor.location.district}, {vendor.location.city}</span>
                 </div>
               </div>
@@ -151,13 +151,13 @@ export function VendorCard({
                 {vendor.categories?.slice(0, 3).map((category, index) => (
                   <span
                     key={index}
-                    className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full"
+                    className="px-3 py-1.5 bg-femfuel-purple/20 text-femfuel-dark text-xs font-semibold rounded-full border border-femfuel-purple/30 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
                   >
                     {category}
                   </span>
                 ))}
                 {vendor.categories && vendor.categories.length > 3 && (
-                  <span className="text-xs text-femfuel-medium">
+                  <span className="text-xs font-semibold text-femfuel-medium px-2 py-1">
                     +{vendor.categories.length - 3} más
                   </span>
                 )}
@@ -194,24 +194,25 @@ export function VendorCard({
 
               {/* Action Buttons */}
               <div className="flex gap-3">
-                <button
-                  className="glassmorphism-button flex-1"
+                <Button
+                  variant="outline"
+                  className="flex-1 border-2 border-femfuel-rose/30 hover:border-femfuel-rose hover:bg-femfuel-light/50 font-semibold transition-all duration-300"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleViewVendor()
                   }}
                 >
                   {layout === "nearby" ? "Ver Servicios" : "Ver Salón"}
-                </button>
-                <button
-                  className="femfuel-button-lg"
+                </Button>
+                <Button
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                   onClick={(e) => {
                     e.stopPropagation()
                     // TODO: Implement contact
                   }}
                 >
                   {layout === "nearby" ? "Reservar Ahora" : "Contactar"}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

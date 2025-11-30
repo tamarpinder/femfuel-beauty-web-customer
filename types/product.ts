@@ -67,14 +67,15 @@ export interface ShippingInfo {
   temperatureControlled?: boolean
 }
 
-export type ProductCategory = 
-  | "skincare" 
-  | "makeup" 
-  | "haircare" 
-  | "nailcare" 
-  | "fragrance" 
-  | "bodycare" 
-  | "tools" 
+export type ProductCategory =
+  | "skincare"
+  | "makeup"
+  | "haircare"
+  | "hair-extensions"
+  | "nailcare"
+  | "fragrance"
+  | "bodycare"
+  | "tools"
   | "accessories"
 
 export interface ProductFilter {

@@ -146,7 +146,6 @@ export default function VendorPage() {
 
   const handleGetThisLook = (transformation: any) => {
     // TODO: Implement transformation booking
-    console.log('Get this look:', transformation.title)
   }
 
   const handleBookingComplete = (booking: any) => {
@@ -223,9 +222,9 @@ export default function VendorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20 pt-20">
       {/* Cover Image - Full Width */}
-      <div className="relative h-64 md:h-80">
+      <div className="relative h-64 md:h-96">
         <img
           src={vendor.coverImage || "/placeholder.svg?height=320&width=800&query=beauty salon"}
           alt={`${vendor.name} cover`}
@@ -234,16 +233,18 @@ export default function VendorPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
         {/* Vendor Info Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6">
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-end gap-6">
-              <img
-                src={vendor.logo || "/placeholder.svg?height=80&width=80&query=business logo"}
-                alt={`${vendor.name} logo`}
-                className="w-20 h-20 rounded-xl object-cover border-4 border-white/20 backdrop-blur-sm flex-shrink-0"
-              />
+            <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
+              <div className="w-24 h-24 rounded-2xl overflow-hidden ring-4 ring-white/30 shadow-2xl flex-shrink-0">
+                <img
+                  src={vendor.logo || "/placeholder.svg?height=96&width=96&query=business logo"}
+                  alt={`${vendor.name} logo`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="flex-1 text-white">
-                <h1 className="text-3xl md:text-4xl font-bold mb-2">{vendor.name}</h1>
+                <h1 className="text-3xl md:text-5xl font-bold mb-3">{vendor.name}</h1>
                 <div className="flex items-center gap-6 text-white/90">
                   <div className="flex items-center gap-2">
                     <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
@@ -264,17 +265,17 @@ export default function VendorPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 <ChatButton
                   vendorId={vendor.id}
                   vendorName={vendor.name}
                   variant="inline"
                   size="md"
-                  className="bg-green-500 hover:bg-green-600 text-white shadow-lg backdrop-blur-sm"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
                 >
                   💬 Chat
                 </ChatButton>
-                <Button className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white shadow-lg backdrop-blur-sm">
+                <Button className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1">
                   <Phone className="h-4 w-4 mr-2" />
                   Llamar
                 </Button>
@@ -285,18 +286,23 @@ export default function VendorPage() {
       </div>
 
       {/* Vendor Description - Full Width */}
-      <div className="py-12 bg-white">
+      <div className="py-16 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-lg text-femfuel-medium leading-relaxed mb-8">{vendor.description}</p>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-femfuel-dark mb-4">Sobre Nosotros</h2>
+              <p className="text-lg text-femfuel-medium leading-relaxed">{vendor.description}</p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div className="p-4">
-                <Clock className="h-8 w-8 text-femfuel-rose mx-auto mb-2" />
-                <p className="font-semibold text-femfuel-dark">Horario Hoy</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                <div className="w-12 h-12 bg-femfuel-rose/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Clock className="h-6 w-6 text-femfuel-rose" />
+                </div>
+                <p className="font-bold text-femfuel-dark text-lg mb-2">Horario Hoy</p>
                 <p className="text-femfuel-medium">{getTodayHours()}</p>
               </div>
-              <div className="p-4">
+              <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                 <Calendar className="h-8 w-8 text-femfuel-rose mx-auto mb-2" />
                 <p className="font-semibold text-femfuel-dark">Disponibilidad</p>
                 <p className="text-femfuel-medium">
@@ -323,24 +329,24 @@ export default function VendorPage() {
 
       {/* Service Context Banner */}
       {contextService && (
-        <div className="py-8 bg-gradient-to-r from-femfuel-rose to-femfuel-purple">
+        <div className="py-12 bg-gradient-to-r from-femfuel-rose via-pink-600 to-femfuel-purple shadow-2xl">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="flex items-center justify-between text-white">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
-                  <span className="text-2xl">✨</span>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-white">
+              <div className="flex items-center gap-6">
+                <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl">
+                  <span className="text-3xl">✨</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Interesado en {contextService.name}</h3>
-                  <p className="text-white/90">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-2">Interesado en {contextService.name}</h3>
+                  <p className="text-lg text-white/90 font-medium">
                     {formatPrice(contextService.price)} • {contextService.duration} min
                   </p>
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   onClick={() => handleServiceBook(contextService.id)}
-                  className="bg-white text-femfuel-rose hover:bg-white/90"
+                  className="bg-white text-femfuel-rose hover:bg-white/90 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 px-6"
                 >
                   Reservar Ahora
                 </Button>
@@ -350,7 +356,7 @@ export default function VendorPage() {
                   serviceContext={contextService.name}
                   variant="inline"
                   size="md"
-                  className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                  className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/40 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
                 >
                   💬 Preguntar
                 </ChatButton>

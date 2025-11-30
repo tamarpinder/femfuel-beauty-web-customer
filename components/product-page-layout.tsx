@@ -44,19 +44,19 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">
+      {/* Header - Enhanced with glassmorphism */}
+      <div className="bg-white/90 backdrop-blur-md border-b border-femfuel-rose/10 shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => router.back()}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 hover:bg-femfuel-light rounded-full transition-all duration-300"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Volver</span>
+              <span className="hidden sm:inline font-medium">Volver</span>
             </Button>
 
             <div className="flex items-center gap-2">
@@ -64,18 +64,23 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsLiked(!isLiked)}
+                className="hover:bg-femfuel-light rounded-full transition-all duration-300"
               >
-                <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`} />
+                <Heart className={`h-5 w-5 ${isLiked ? "fill-red-500 text-red-500" : ""}`} />
               </Button>
-              <Button variant="ghost" size="sm">
-                <Share2 className="h-4 w-4" />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hover:bg-femfuel-light rounded-full transition-all duration-300"
+              >
+                <Share2 className="h-5 w-5" />
               </Button>
               <div className="hidden md:block">
                 <CartDrawer>
-                  <Button variant="ghost" size="sm" className="relative">
-                    <ShoppingBag className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" className="relative hover:bg-femfuel-light rounded-full transition-all duration-300">
+                    <ShoppingBag className="h-5 w-5" />
                     {itemCount > 0 && (
-                      <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-femfuel-rose text-white text-xs flex items-center justify-center p-0">
+                      <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 text-white text-xs flex items-center justify-center p-0 shadow-md">
                         {itemCount}
                       </Badge>
                     )}
@@ -89,10 +94,10 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image Gallery */}
+          {/* Image Gallery - Enhanced */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="relative aspect-square bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div className="relative aspect-square bg-white/80 backdrop-blur-md rounded-2xl border-2 border-femfuel-rose/10 shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300">
               {allImages[selectedImageIndex] && (
                 <Image
                   src={allImages[selectedImageIndex].url}
@@ -104,33 +109,37 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
                 />
               )}
 
-              {/* Badges */}
+              {/* Badges - Enhanced with gradients */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
                 {product.isNewArrival && (
-                  <Badge className="bg-green-500 text-white">Nuevo</Badge>
+                  <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md px-3 py-1">
+                    Nuevo
+                  </Badge>
                 )}
                 {product.isOnSale && (
-                  <Badge className="bg-red-500 text-white">
+                  <Badge className="bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md px-3 py-1">
                     -{calculateDiscount()}%
                   </Badge>
                 )}
                 {product.isFeatured && (
-                  <Badge className="bg-purple-500 text-white">Destacado</Badge>
+                  <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md px-3 py-1">
+                    Destacado
+                  </Badge>
                 )}
               </div>
             </div>
 
-            {/* Thumbnail Gallery */}
+            {/* Thumbnail Gallery - Enhanced */}
             {allImages.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto">
+              <div className="flex gap-3 overflow-x-auto pb-2">
                 {allImages.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`relative w-16 h-16 rounded-lg border-2 overflow-hidden flex-shrink-0 ${
+                    className={`relative w-20 h-20 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-all duration-300 ${
                       selectedImageIndex === index
-                        ? "border-femfuel-rose"
-                        : "border-gray-200"
+                        ? "border-femfuel-rose shadow-lg scale-105"
+                        : "border-gray-200 hover:border-femfuel-rose/50 hover:shadow-md"
                     }`}
                   >
                     <Image
@@ -138,7 +147,7 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
                       alt={image.alt || `${product.name} ${index + 1}`}
                       fill
                       className="object-cover"
-                      sizes="64px"
+                      sizes="80px"
                     />
                   </button>
                 ))}
@@ -185,49 +194,49 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
               )}
             </div>
 
-            {/* Stock Status - Centered on Mobile */}
+            {/* Stock Status - Enhanced */}
             {product.availability.stockQuantity <= product.availability.lowStockThreshold && (
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-center md:text-left">
-                <p className="text-sm text-orange-700 font-medium">
-                  ¡Solo quedan {product.availability.stockQuantity}!
+              <div className="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-200 rounded-xl p-4 text-center md:text-left shadow-sm">
+                <p className="text-sm text-orange-700 font-bold">
+                  ⚠️ ¡Solo quedan {product.availability.stockQuantity} unidades!
                 </p>
               </div>
             )}
 
             {/* Note: Variants functionality will be added in Phase 2 */}
 
-            {/* Quantity & Add to Cart - Centered on Mobile */}
+            {/* Quantity & Add to Cart - Enhanced */}
             <div className="space-y-4">
               <div className="flex items-center justify-center md:justify-start gap-4">
-                <div className="flex items-center border border-gray-300 rounded-lg">
+                <div className="flex items-center border-2 border-femfuel-rose/20 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleQuantityChange(-1)}
                     disabled={quantity <= 1}
-                    className="h-10 w-10 p-0"
+                    className="h-12 w-12 p-0 hover:bg-femfuel-light rounded-l-xl disabled:opacity-30"
                   >
-                    <Minus className="h-4 w-4" />
+                    <Minus className="h-5 w-5" />
                   </Button>
-                  <span className="w-12 text-center font-medium">{quantity}</span>
+                  <span className="w-16 text-center font-bold text-lg">{quantity}</span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => handleQuantityChange(1)}
                     disabled={quantity >= product.availability.stockQuantity}
-                    className="h-10 w-10 p-0"
+                    className="h-12 w-12 p-0 hover:bg-femfuel-light rounded-r-xl disabled:opacity-30"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-5 w-5" />
                   </Button>
                 </div>
-                <span className="text-sm text-femfuel-light">
+                <span className="text-sm font-medium text-femfuel-medium">
                   {product.availability.stockQuantity} disponibles
                 </span>
               </div>
 
               <Button
                 onClick={handleAddToCart}
-                className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white text-lg py-6"
+                className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white text-lg font-bold py-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                 disabled={!product.availability.inStock}
               >
                 <ShoppingCart className="h-5 w-5 mr-2" />
@@ -235,26 +244,32 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
               </Button>
             </div>
 
-            {/* Benefits */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-200">
-              <div className="flex items-center gap-2 text-sm text-femfuel-light">
-                <Truck className="h-4 w-4" />
-                Envío gratis
+            {/* Benefits - Enhanced with cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t-2 border-femfuel-rose/10">
+              <div className="flex items-center gap-3 text-sm font-medium bg-white/80 backdrop-blur-sm border border-femfuel-rose/10 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center flex-shrink-0">
+                  <Truck className="h-4 w-4 text-femfuel-rose" />
+                </div>
+                <span className="text-femfuel-dark">Envío gratis</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-femfuel-light">
-                <RotateCcw className="h-4 w-4" />
-                30 días devolución
+              <div className="flex items-center gap-3 text-sm font-medium bg-white/80 backdrop-blur-sm border border-femfuel-rose/10 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center flex-shrink-0">
+                  <RotateCcw className="h-4 w-4 text-femfuel-rose" />
+                </div>
+                <span className="text-femfuel-dark">30 días devolución</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-femfuel-light">
-                <Shield className="h-4 w-4" />
-                Garantía oficial
+              <div className="flex items-center gap-3 text-sm font-medium bg-white/80 backdrop-blur-sm border border-femfuel-rose/10 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center flex-shrink-0">
+                  <Shield className="h-4 w-4 text-femfuel-rose" />
+                </div>
+                <span className="text-femfuel-dark">Garantía oficial</span>
               </div>
             </div>
 
-            {/* Description */}
-            <div className="pt-6 border-t border-gray-200">
-              <h3 className="font-medium mb-3">Descripción</h3>
-              <p className="text-femfuel-light leading-relaxed">
+            {/* Description - Enhanced */}
+            <div className="pt-6 border-t-2 border-femfuel-rose/10">
+              <h3 className="text-xl font-bold text-femfuel-dark mb-4">Descripción del Producto</h3>
+              <p className="text-femfuel-medium leading-relaxed text-base">
                 {product.description}
               </p>
             </div>

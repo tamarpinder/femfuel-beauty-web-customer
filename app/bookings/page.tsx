@@ -201,13 +201,13 @@ export default function BookingsPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "upcoming":
-        return "bg-blue-100 text-blue-800"
+        return "bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 shadow-sm"
       case "completed":
-        return "bg-green-100 text-green-800"
+        return "bg-gradient-to-r from-green-100 to-green-200 text-green-800 shadow-sm"
       case "cancelled":
-        return "bg-red-100 text-red-800"
+        return "bg-gradient-to-r from-red-100 to-red-200 text-red-800 shadow-sm"
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 shadow-sm"
     }
   }
 
@@ -230,62 +230,69 @@ export default function BookingsPage() {
   // }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 lg:pt-24">
 
-      <div className="px-2 sm:px-4 py-4 max-w-4xl mx-auto overflow-hidden">
-        {/* Search and Filters */}
-        <div className="mb-4 space-y-3">
+      <div className="px-2 sm:px-4 py-6 max-w-4xl mx-auto overflow-hidden">
+        {/* Search and Filters - Enhanced */}
+        <div className="mb-6 space-y-3">
           <div className="flex gap-2">
             <Input
               placeholder="Buscar servicios o salones..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1"
+              className="flex-1 min-h-[44px] border-2 border-femfuel-rose/20 focus:border-femfuel-rose rounded-xl shadow-md bg-white/90 backdrop-blur-md transition-all duration-300 hover:shadow-lg"
             />
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
               onClick={() => setShowFilters(!showFilters)}
+              className="min-h-[44px] min-w-[44px] sm:min-w-[100px] border-2 border-femfuel-rose/20 hover:bg-femfuel-light active:bg-femfuel-light hover:border-femfuel-rose rounded-xl font-semibold transition-all duration-300 bg-white/90 backdrop-blur-md shadow-md hover:shadow-lg active:shadow-lg active:scale-95 text-sm px-3"
+              aria-label="Filtros de búsqueda"
             >
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Filtros
+              <SlidersHorizontal className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Filtros</span>
             </Button>
           </div>
-          
+
           {showFilters && (
-            <div className="flex flex-col sm:flex-row gap-2 p-3 bg-gray-50 rounded-lg">
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[140px]">
-                  <SelectValue placeholder="Ordenar por" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="date">Fecha</SelectItem>
-                  <SelectItem value="service">Servicio</SelectItem>
-                  <SelectItem value="vendor">Salón</SelectItem>
-                  <SelectItem value="price">Precio</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-full sm:w-[140px]">
-                  <SelectValue placeholder="Estado" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="upcoming">Próximas</SelectItem>
-                  <SelectItem value="completed">Completadas</SelectItem>
-                  <SelectItem value="cancelled">Canceladas</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="p-3 bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-xl shadow-lg">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-femfuel-dark whitespace-nowrap">Ordenar por:</span>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="flex-1 min-h-[44px]">
+                    <SelectValue placeholder="Seleccionar" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="date" className="min-h-[44px]">Fecha</SelectItem>
+                    <SelectItem value="service" className="min-h-[44px]">Servicio</SelectItem>
+                    <SelectItem value="vendor" className="min-h-[44px]">Salón</SelectItem>
+                    <SelectItem value="price" className="min-h-[44px]">Precio</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           )}
         </div>
         
         <Tabs defaultValue="upcoming" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 text-xs sm:text-sm">
-            <TabsTrigger value="upcoming" className="truncate">Próximas ({upcomingBookings.length})</TabsTrigger>
-            <TabsTrigger value="completed" className="truncate">Completadas ({completedBookings.length})</TabsTrigger>
-            <TabsTrigger value="cancelled" className="truncate">Canceladas ({cancelledBookings.length})</TabsTrigger>
+          <TabsList className="flex w-full border-b-2 border-gray-200 bg-transparent p-0 h-auto">
+            <TabsTrigger
+              value="upcoming"
+              className="flex-1 min-h-[48px] px-4 py-3 bg-transparent text-femfuel-medium font-semibold border-b-3 border-transparent data-[state=active]:border-b-3 data-[state=active]:border-femfuel-rose data-[state=active]:text-femfuel-dark transition-all duration-300"
+            >
+              Próximas ({upcomingBookings.length})
+            </TabsTrigger>
+            <TabsTrigger
+              value="completed"
+              className="flex-1 min-h-[48px] px-4 py-3 bg-transparent text-femfuel-medium font-semibold border-b-3 border-transparent data-[state=active]:border-b-3 data-[state=active]:border-femfuel-rose data-[state=active]:text-femfuel-dark transition-all duration-300"
+            >
+              Completadas ({completedBookings.length})
+            </TabsTrigger>
+            <TabsTrigger
+              value="cancelled"
+              className="flex-1 min-h-[48px] px-4 py-3 bg-transparent text-femfuel-medium font-semibold border-b-3 border-transparent data-[state=active]:border-b-3 data-[state=active]:border-femfuel-rose data-[state=active]:text-femfuel-dark transition-all duration-300"
+            >
+              Canceladas ({cancelledBookings.length})
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="upcoming" className="space-y-4 mt-6">
@@ -293,7 +300,7 @@ export default function BookingsPage() {
               <BookingSkeletonList count={3} />
             ) : upcomingBookings.length > 0 ? (
               upcomingBookings.map((booking) => (
-                <Card key={booking.id} className="shadow-sm">
+                <Card key={booking.id} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl active:shadow-xl transition-all duration-300">
                   <CardContent className="p-3 sm:p-4">
                     <div className="flex items-start gap-3">
                       <img
@@ -353,23 +360,23 @@ export default function BookingsPage() {
                           <p className="text-sm text-femfuel-medium mb-3 italic">Nota: {booking.notes}</p>
                         )}
 
-                        {/* Mobile-optimized buttons - no price here since it's in header */}
-                        <div className="flex gap-1.5">
+                        {/* Mobile-optimized buttons */}
+                        <div className="flex gap-2">
                           <Button
-                            size="sm"
                             onClick={() => handleChat(booking)}
-                            className="relative flex-1 text-xs py-1.5 px-2 bg-green-500 hover:bg-green-600 text-white border-0"
+                            className="relative flex-1 min-h-[44px] text-xs sm:text-sm px-3 bg-green-500 hover:bg-green-600 active:bg-green-600 text-white border-0 active:scale-95 transition-all"
+                            aria-label="Chatear con profesional"
                           >
-                            <MessageCircle className="h-3 w-3 mr-1" />
+                            <MessageCircle className="h-4 w-4 mr-1" />
                             Chatear
                             {booking.vendor.isOnline && (
                               <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full border border-white"></div>
                             )}
                           </Button>
                           <Button
-                            size="sm"
                             onClick={() => handleReschedule(booking.id)}
-                            className="glassmorphism-button-perfect flex-1 text-xs py-1.5 px-2"
+                            className="glassmorphism-button-perfect flex-1 min-h-[44px] text-xs sm:text-sm px-3 active:scale-95 transition-all"
+                            aria-label="Cambiar fecha y hora"
                           >
                             Cambiar
                           </Button>
@@ -393,40 +400,48 @@ export default function BookingsPage() {
                     </p>
                   </div>
 
-                  {/* Service Cards - Modern 2x2 Grid */}
+                  {/* Service Cards - Modern 2x2 Grid - Enhanced */}
                   <div className="grid grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
                     <div
                       onClick={() => router.push("/category/unas")}
-                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
                     >
-                      <Hand className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
+                        <Hand className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                      </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Manicure</h4>
                       <p className="text-sm text-gray-500">Uñas perfectas</p>
                     </div>
 
                     <div
                       onClick={() => router.push("/category/spa")}
-                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
                     >
-                      <Flower2 className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
+                        <Flower2 className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                      </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Facial</h4>
                       <p className="text-sm text-gray-500">Cuidado de la piel</p>
                     </div>
 
                     <div
                       onClick={() => router.push("/category/maquillaje")}
-                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
                     >
-                      <Palette className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
+                        <Palette className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                      </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Maquillaje</h4>
                       <p className="text-sm text-gray-500">Look perfecto</p>
                     </div>
 
                     <div
                       onClick={() => router.push("/category/peinados")}
-                      className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 hover:shadow-lg hover:border-femfuel-rose/30 transition-all duration-200 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
                     >
-                      <Scissors className="h-8 w-8 md:h-10 md:w-10 text-femfuel-rose mb-4 mx-auto group-hover:scale-110 transition-transform" />
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
+                        <Scissors className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                      </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Peinado</h4>
                       <p className="text-sm text-gray-500">Estilo único</p>
                     </div>
@@ -435,7 +450,7 @@ export default function BookingsPage() {
                   {/* CTA Button */}
                   <Button
                     onClick={() => router.push("/")}
-                    className="w-full md:w-auto bg-femfuel-rose hover:bg-femfuel-rose/90 text-white px-8 py-3 text-base font-medium rounded-xl shadow-sm hover:shadow-md transition-all"
+                    className="w-full md:w-auto bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white px-8 py-4 text-base font-semibold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
                   >
                     Explorar Todos los Servicios
                   </Button>
@@ -449,7 +464,7 @@ export default function BookingsPage() {
               <BookingSkeletonList count={2} />
             ) : completedBookings.length > 0 ? (
               completedBookings.map((booking) => (
-                <Card key={booking.id} className="shadow-sm">
+                <Card key={booking.id} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
                   <CardContent className="p-3 sm:p-4">
                     <div className="flex items-start gap-3">
                       <img
@@ -525,35 +540,37 @@ export default function BookingsPage() {
                 </Card>
               ))
             ) : (
-              <div className="text-center py-12">
-                <Star className="h-12 w-12 mx-auto text-femfuel-medium mb-4" />
-                <h3 className="text-lg font-medium text-femfuel-dark mb-2">Aún no tienes servicios completados</h3>
-                <p className="text-femfuel-medium mb-6">Una vez que completes tu primera cita, podrás dejar reseñas y reservar de nuevo</p>
-                
-                {/* Quick Service Access */}
-                <div className="bg-femfuel-purple rounded-lg p-4 max-w-sm mx-auto mb-4">
-                  <p className="text-sm text-femfuel-dark mb-3">Servicios más populares:</p>
+              <div className="text-center py-16 px-4">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-full mb-6 shadow-lg">
+                  <Star className="h-10 w-10 text-femfuel-rose" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">Aún no tienes servicios completados</h3>
+                <p className="text-base md:text-lg text-femfuel-medium mb-6 max-w-md mx-auto">Una vez que completes tu primera cita, podrás dejar reseñas y reservar de nuevo</p>
+
+                {/* Quick Service Access - Enhanced */}
+                <div className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 max-w-sm mx-auto mb-6 shadow-lg">
+                  <p className="text-sm text-femfuel-dark font-semibold mb-3">Servicios más populares:</p>
                   <div className="flex justify-center gap-2">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => router.push("/category/unas")}
-                      className="bg-white"
+                      className="bg-white/90 backdrop-blur-sm border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:shadow-md transition-all"
                     >
                       Manicure
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => router.push("/category/spa")}
-                      className="bg-white"
+                      className="bg-white/90 backdrop-blur-sm border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:shadow-md transition-all"
                     >
                       Facial
                     </Button>
                   </div>
                 </div>
 
-                <Button className="bg-femfuel-rose hover:bg-femfuel-rose-hover" onClick={() => router.push("/")}>
+                <Button onClick={() => router.push("/")} className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
                   Reservar Mi Primera Cita
                 </Button>
               </div>
@@ -565,7 +582,7 @@ export default function BookingsPage() {
               <BookingSkeletonList count={1} />
             ) : cancelledBookings.length > 0 ? (
               cancelledBookings.map((booking) => (
-                <Card key={booking.id} className="shadow-sm opacity-75">
+                <Card key={booking.id} className="bg-white/70 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg opacity-75">
                   <CardContent className="p-3 sm:p-4">
                     <div className="flex items-start gap-3">
                       <img
@@ -623,10 +640,12 @@ export default function BookingsPage() {
                 </Card>
               ))
             ) : (
-              <div className="text-center py-12">
-                <Calendar className="h-12 w-12 mx-auto text-femfuel-medium mb-4" />
-                <h3 className="text-lg font-medium text-femfuel-dark mb-2">No tienes reservas canceladas</h3>
-                <p className="text-femfuel-medium">Las citas canceladas aparecerán aquí</p>
+              <div className="text-center py-16 px-4">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-full mb-6 shadow-lg">
+                  <Calendar className="h-10 w-10 text-femfuel-rose" />
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">No tienes reservas canceladas</h3>
+                <p className="text-base md:text-lg text-femfuel-medium">Las citas canceladas aparecerán aquí</p>
               </div>
             )}
           </TabsContent>
@@ -637,33 +656,34 @@ export default function BookingsPage() {
       <ChatButton
         variant="floating"
         className="shadow-lg hover:shadow-xl"
+        unreadCount={3}
       />
 
       {/* Mobile Navigation */}
       <MobileNavigation activeTab="bookings" />
       
-      {/* Reschedule/Cancel Modal */}
+      {/* Reschedule/Cancel Modal - Enhanced */}
       <Dialog open={showRescheduleModal} onOpenChange={setShowRescheduleModal}>
-        <DialogContent className="w-[95%] max-w-md rounded-2xl">
+        <DialogContent className="w-[95%] max-w-md rounded-2xl bg-white/95 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-2xl">
           <DialogHeader>
-            <DialogTitle>Cambiar Cita</DialogTitle>
+            <DialogTitle className="text-xl font-bold text-femfuel-dark">Cambiar Cita</DialogTitle>
           </DialogHeader>
 
           {selectedBooking && (
             <div className="space-y-4">
-              {/* Current Booking Info */}
-              <div className="bg-femfuel-purple rounded-lg p-3">
-                <h4 className="font-medium text-femfuel-dark mb-1">{selectedBooking.service.name}</h4>
-                <p className="text-sm text-femfuel-medium">{selectedBooking.vendor.name}</p>
-                <div className="flex items-center gap-2 mt-2 text-sm text-femfuel-medium">
+              {/* Current Booking Info - Enhanced */}
+              <div className="bg-gradient-to-br from-femfuel-light to-pink-50 rounded-xl p-4 border-2 border-femfuel-rose/10 shadow-md">
+                <h4 className="font-semibold text-femfuel-dark mb-1">{selectedBooking.service.name}</h4>
+                <p className="text-sm text-femfuel-medium mb-2">{selectedBooking.vendor.name}</p>
+                <div className="flex items-center gap-2 text-sm text-femfuel-medium">
                   <Calendar className="h-4 w-4" />
                   <span>{selectedBooking.date.toLocaleDateString("es-DO")} - {selectedBooking.time}</span>
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons - Enhanced */}
               <div className="space-y-3">
-                <div className="text-sm text-femfuel-medium">
+                <div className="text-sm text-femfuel-medium font-medium">
                   ¿Qué te gustaría hacer?
                 </div>
 
@@ -673,7 +693,7 @@ export default function BookingsPage() {
                     setShowRescheduleModal(false)
                     setSelectedBooking(null)
                   }}
-                  className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                  className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white rounded-xl shadow-lg hover:shadow-xl transition-all"
                 >
                   <Calendar className="h-4 w-4 mr-2" />
                   Reagendar Cita
@@ -688,7 +708,7 @@ export default function BookingsPage() {
                     }
                   }}
                   variant="outline"
-                  className="w-full border-red-200 text-red-600 hover:bg-red-50"
+                  className="w-full border-2 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 rounded-xl shadow-sm hover:shadow-md transition-all"
                 >
                   <X className="h-4 w-4 mr-2" />
                   Cancelar Cita
@@ -700,7 +720,7 @@ export default function BookingsPage() {
                     setSelectedBooking(null)
                   }}
                   variant="ghost"
-                  className="w-full"
+                  className="w-full hover:bg-femfuel-light rounded-xl transition-all"
                 >
                   Volver
                 </Button>

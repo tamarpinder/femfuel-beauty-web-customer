@@ -66,14 +66,14 @@ export function ProviderListCompact({
   }
 
   return (
-    <div className="px-4 py-6">
+    <div className="px-4 py-6 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-femfuel-dark">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold text-femfuel-dark">
             Especialistas Verificados
           </h2>
-          <div className="bg-femfuel-rose text-white px-3 py-1 rounded-full text-sm font-medium">
+          <div className="bg-gradient-to-r from-femfuel-rose to-pink-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
             {providers.length}
           </div>
         </div>

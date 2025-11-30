@@ -59,37 +59,37 @@ export function HowItWorks() {
   ]
 
   return (
-    <section className="px-4 py-12 bg-white">
+    <section className="px-4 py-16 bg-gradient-to-b from-white via-femfuel-light/10 to-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-femfuel-rose via-pink-600 to-femfuel-rose bg-clip-text text-transparent mb-3">
             Cómo Funciona FemFuel
           </h2>
-          <p className="text-lg text-femfuel-medium max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-femfuel-medium font-medium max-w-2xl mx-auto">
             Descubre tu belleza en 4 simples pasos con los mejores profesionales de República Dominicana
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((step, index) => {
             const IconComponent = step.icon
             return (
-              <div key={index} className="text-center">
-                <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center mx-auto mb-4`}>
+              <div key={index} className="text-center p-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30">
+                <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center mx-auto mb-4 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300`}>
                   <IconComponent className="h-8 w-8" />
                 </div>
-                
-                <div className="mb-2">
-                  <span className="inline-flex items-center justify-center w-6 h-6 bg-femfuel-rose text-white rounded-full text-sm font-bold mb-3">
+
+                <div className="mb-3">
+                  <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-femfuel-rose to-pink-600 text-white rounded-full text-sm font-bold shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300">
                     {index + 1}
                   </span>
                 </div>
 
-                <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
+                <h3 className="text-lg font-bold text-femfuel-dark mb-3 font-serif">
                   {step.title}
                 </h3>
-                
-                <p className="text-sm text-femfuel-medium leading-relaxed">
+
+                <p className="text-sm text-femfuel-medium leading-relaxed font-medium">
                   {step.description}
                 </p>
               </div>
@@ -101,16 +101,16 @@ export function HowItWorks() {
         <div className="text-center mt-12">
           <button
             onClick={handleCTAClick}
-            className="femfuel-button-lg"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 border-2 border-white/20"
           >
             {isAuthenticated ? (
               <>
-                <Calendar className="h-4 w-4" />
+                <Calendar className="h-5 w-5" />
                 <span>Hola {user?.name ? getFirstName(user.name) : 'hermosa'}, reserva tu próxima cita</span>
               </>
             ) : (
               <>
-                <UserPlus className="h-4 w-4" />
+                <UserPlus className="h-5 w-5" />
                 <span>Comenzar</span>
               </>
             )}

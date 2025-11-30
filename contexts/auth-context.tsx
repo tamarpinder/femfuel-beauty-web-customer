@@ -21,6 +21,11 @@ export interface User {
   phone?: string
   avatar?: string
   paymentMethods?: PaymentMethod[]
+  address?: string
+  city?: string
+  province?: string
+  postalCode?: string
+  deliveryInstructions?: string
 }
 
 interface AuthContextType {
@@ -61,21 +66,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (mockUser) {
       const parsedUser = JSON.parse(mockUser);
 
-      // Ensure María González always has her test payment method
-      if (parsedUser.name === 'María González' && (!parsedUser.paymentMethods || parsedUser.paymentMethods.length === 0)) {
-        parsedUser.paymentMethods = [
-          {
-            id: 'pm-001',
-            type: 'card' as const,
-            cardNumber: '4242',
-            expiryDate: '12/27',
-            cardHolderName: 'María González',
-            brand: 'visa' as const,
-            isDefault: true
-          }
-        ];
-        // Update localStorage with the corrected user data
-        localStorage.setItem('mockCustomerUser', JSON.stringify(parsedUser));
+      // Ensure María González always has her test data
+      if (parsedUser.name === 'María González') {
+        let needsUpdate = false;
+
+        // Add payment method if missing
+        if (!parsedUser.paymentMethods || parsedUser.paymentMethods.length === 0) {
+          parsedUser.paymentMethods = [
+            {
+              id: 'pm-001',
+              type: 'card' as const,
+              cardNumber: '4242',
+              expiryDate: '12/27',
+              cardHolderName: 'María González',
+              brand: 'visa' as const,
+              isDefault: true
+            }
+          ];
+          needsUpdate = true;
+        }
+
+        // Add address if missing
+        if (!parsedUser.address) {
+          parsedUser.address = 'Calle El Conde #123, Apto 5B';
+          parsedUser.city = 'Santo Domingo';
+          parsedUser.province = 'Distrito Nacional';
+          parsedUser.postalCode = '10210';
+          parsedUser.deliveryInstructions = 'Llamar al llegar, portero disponible 24/7';
+          needsUpdate = true;
+        }
+
+        // Update localStorage if any data was added
+        if (needsUpdate) {
+          localStorage.setItem('mockCustomerUser', JSON.stringify(parsedUser));
+        }
       }
 
       setUser(parsedUser);
@@ -132,13 +156,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // TODO: Replace with real Supabase auth
     // const result = await auth.signIn(email, password)
 
-    // Mock signin - always successful with test payment method
+    // Mock signin - always successful with test payment method and saved address
     const mockUser = {
       id: 'customer-001',
       name: 'María González',
       email: email,
       phone: '+1 809 555 0101',
       avatar: '',
+      address: 'Calle El Conde #123, Apto 5B',
+      city: 'Santo Domingo',
+      province: 'Distrito Nacional',
+      postalCode: '10210',
+      deliveryInstructions: 'Llamar al llegar, portero disponible 24/7',
       paymentMethods: [
         {
           id: 'pm-001',

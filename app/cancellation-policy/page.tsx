@@ -168,7 +168,7 @@ export default function CancellationPolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative lg:pt-32 pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-6xl mx-auto text-center relative">
@@ -205,7 +205,7 @@ export default function CancellationPolicyPage() {
       </section>
 
       {/* Interactive Timeline Visual */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 px-4 bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-femfuel-dark mb-12 text-center">
             Ventanas de Cancelación
@@ -241,7 +241,7 @@ export default function CancellationPolicyPage() {
             {cancellationTiers.map((tier) => (
               <Card
                 key={tier.id}
-                className={`border-2 ${tier.borderColor} ${selectedTier === tier.id ? 'shadow-2xl scale-105' : 'shadow-lg'} hover:shadow-xl transition-all duration-300 cursor-pointer`}
+                className={`bg-white/80 backdrop-blur-md border-2 ${tier.borderColor} ${selectedTier === tier.id ? 'shadow-2xl scale-105' : 'shadow-lg'} hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer rounded-2xl`}
                 onClick={() => setSelectedTier(tier.id)}
               >
                 <CardContent className="p-6">
@@ -297,9 +297,9 @@ export default function CancellationPolicyPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {specialCircumstances.map((circumstance, index) => (
-              <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl">
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center mb-4">
                     <circumstance.icon className="h-6 w-6 text-purple-600" />
                   </div>
                   <h3 className="font-semibold text-femfuel-dark mb-2">
@@ -320,7 +320,7 @@ export default function CancellationPolicyPage() {
       </section>
 
       {/* How to Cancel */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-femfuel-dark mb-12 text-center">
             ¿Cómo Cancelar tu Reserva?
@@ -332,8 +332,8 @@ export default function CancellationPolicyPage() {
                 {index < howToCancel.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-purple-200"></div>
                 )}
-                <div className="relative bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center h-full flex flex-col min-h-[280px]">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="relative bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-center h-full flex flex-col min-h-[280px]">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-full shadow-md flex items-center justify-center mx-auto mb-4">
                     <step.icon className="h-8 w-8 text-purple-600" />
                   </div>
                   <div className="flex items-center justify-center w-8 h-8 bg-purple-600 text-white rounded-full text-sm font-bold mb-3 mx-auto">
@@ -350,16 +350,16 @@ export default function CancellationPolicyPage() {
             ))}
           </div>
 
-          <div className="bg-purple-50 rounded-2xl p-8 text-center">
+          <div className="bg-gradient-to-r from-purple-50 to-rose-50 border-2 border-femfuel-rose/20 rounded-2xl shadow-lg p-8 text-center">
             <h3 className="text-xl font-semibold text-femfuel-dark mb-4">
               ¿Necesitas Cancelar Ahora?
             </h3>
-            <p className="text-femfuel-medium mb-6">
+            <p className="text-gray-700 mb-6">
               Accede a tus reservas y gestiona tus citas fácilmente
             </p>
             <button
               onClick={handleManageBookings}
-              className="femfuel-button-lg"
+              className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
             >
               <Calendar className="h-5 w-5" />
               Gestionar Mis Reservas
@@ -376,10 +376,10 @@ export default function CancellationPolicyPage() {
           </h2>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <Card className="border-none shadow-lg">
+            <Card className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl">
               <CardContent className="p-8">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-50 rounded-full shadow-md flex items-center justify-center">
                     <CreditCard className="h-6 w-6 text-green-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-femfuel-dark">Reembolso en Efectivo</h3>
@@ -410,10 +410,10 @@ export default function CancellationPolicyPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-none shadow-lg">
+            <Card className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl">
               <CardContent className="p-8">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-full shadow-md flex items-center justify-center">
                     <RefreshCw className="h-6 w-6 text-purple-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-femfuel-dark">Crédito FemFuel</h3>
@@ -459,7 +459,7 @@ export default function CancellationPolicyPage() {
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <Card key={index} className="border-none shadow-md hover:shadow-lg transition-all duration-300">
+              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 rounded-xl">
                 <CardContent className="p-0">
                   <button
                     onClick={() => toggleFaq(index)}
@@ -494,7 +494,9 @@ export default function CancellationPolicyPage() {
       {/* Contact Support CTA */}
       <section className="py-20 px-4 bg-gradient-to-r from-purple-600 to-rose-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <Heart className="h-12 w-12 text-white mx-auto mb-6" />
+          <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md shadow-xl flex items-center justify-center mx-auto mb-6">
+            <Heart className="h-8 w-8 text-white" />
+          </div>
           <h2 className="text-4xl font-bold mb-6">
             Estamos Aquí para Ayudarte
           </h2>
@@ -506,12 +508,12 @@ export default function CancellationPolicyPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleContactSupport}
-              className="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3 justify-center"
+              className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-3 justify-center"
             >
               <MessageSquare className="h-5 w-5" />
               Contactar Soporte
             </button>
-            <button className="border-2 border-white/30 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/10 transition-all duration-300 flex items-center gap-3 justify-center">
+            <button className="border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-3 justify-center">
               <FileText className="h-5 w-5" />
               Descargar Política PDF
             </button>

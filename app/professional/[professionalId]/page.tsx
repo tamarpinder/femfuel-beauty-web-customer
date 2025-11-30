@@ -328,7 +328,7 @@ export default function ProfessionalPortfolioPage() {
   return (
     <>
       {/* Mobile Layout */}
-      <div className="md:hidden min-h-screen bg-white">
+      <div className="md:hidden min-h-screen bg-white pt-20">
 
         {/* Hero Section */}
         <div className="relative">
@@ -338,14 +338,14 @@ export default function ProfessionalPortfolioPage() {
               variant="ghost"
               size="icon"
               onClick={handleBack}
-              className="bg-white/90 backdrop-blur-sm hover:bg-white"
+              className="bg-white/95 backdrop-blur-md hover:bg-white shadow-lg rounded-full w-10 h-10"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="bg-white/90 backdrop-blur-sm hover:bg-white"
+              className="bg-white/95 backdrop-blur-md hover:bg-white shadow-lg rounded-full w-10 h-10"
             >
               <Share2 className="h-5 w-5" />
             </Button>
@@ -470,23 +470,28 @@ export default function ProfessionalPortfolioPage() {
           </div>
 
           {/* Signature Service */}
-          <Card className="mb-6 bg-gradient-to-r from-femfuel-light to-pink-50 border-femfuel-rose/20">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Trophy className="h-4 w-4 text-femfuel-rose" />
-                <span className="text-sm font-medium text-femfuel-rose">Servicio Exclusivo</span>
+          <Card className="mb-6 bg-gradient-to-br from-femfuel-light to-pink-50 border-0 shadow-lg">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 bg-gradient-to-br from-femfuel-rose to-pink-600 rounded-full flex items-center justify-center shadow-md">
+                  <Trophy className="h-4 w-4 text-white" />
+                </div>
+                <span className="text-sm font-bold text-femfuel-rose">Servicio Exclusivo</span>
               </div>
-              <h3 className="font-bold text-femfuel-dark mb-1">{professional.portfolio.signature.serviceName}</h3>
-              <p className="text-sm text-femfuel-medium mb-3">{professional.portfolio.signature.description}</p>
+              <h3 className="font-bold text-femfuel-dark mb-2">{professional.portfolio.signature.serviceName}</h3>
+              <p className="text-sm text-femfuel-medium mb-4 leading-relaxed">{professional.portfolio.signature.description}</p>
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-lg font-bold text-femfuel-dark">{professional.portfolio.signature.price}</span>
-                  <span className="text-sm text-femfuel-medium ml-2">• {professional.portfolio.signature.duration} min</span>
+                  <span className="text-xl font-bold text-femfuel-dark">{professional.portfolio.signature.price}</span>
+                  <div className="flex items-center gap-1 text-sm text-femfuel-medium mt-1">
+                    <Clock className="h-3 w-3" />
+                    <span>{professional.portfolio.signature.duration} min</span>
+                  </div>
                 </div>
                 <Button
                   onClick={handleBookNow}
                   size="sm"
-                  className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold"
                 >
                   Reservar
                 </Button>
@@ -671,29 +676,29 @@ export default function ProfessionalPortfolioPage() {
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden md:block min-h-screen bg-gray-50">
+      <div className="hidden md:block min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 lg:pt-24">
         <div className="max-w-7xl mx-auto p-6">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Button
               variant="ghost"
               onClick={handleBack}
-              className="text-femfuel-medium hover:text-femfuel-dark"
+              className="text-femfuel-medium hover:text-femfuel-rose hover:bg-femfuel-light transition-all duration-300"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver
             </Button>
-            <div className="h-6 w-px bg-gray-300" />
-            <h1 className="text-2xl font-bold text-femfuel-dark">Portafolio Profesional</h1>
+            <div className="h-6 w-px bg-femfuel-rose/20" />
+            <h1 className="text-3xl font-bold text-femfuel-dark">Portafolio Profesional</h1>
           </div>
 
           <div className="grid grid-cols-12 gap-8">
             {/* Left Column - Portfolio Gallery */}
             <div className="col-span-8">
               {/* Main Gallery */}
-              <Card className="mb-6">
+              <Card className="mb-6 border-0 shadow-xl">
                 <CardContent className="p-6">
-                  <div className="aspect-[4/3] relative rounded-xl overflow-hidden mb-4">
+                  <div className="aspect-[4/3] relative rounded-2xl overflow-hidden mb-4 shadow-lg">
                     <OptimizedImage
                       src={professional.portfolio.images[selectedGalleryIndex] || professional.image || "/professional-placeholder.png"}
                       alt={`${professional.name} portfolio`}
@@ -710,10 +715,10 @@ export default function ProfessionalPortfolioPage() {
                       <button
                         key={index}
                         onClick={() => setSelectedGalleryIndex(index)}
-                        className={`aspect-square relative rounded-lg overflow-hidden border-2 transition-colors ${
+                        className={`aspect-square relative rounded-lg overflow-hidden border-2 transition-all duration-300 ${
                           index === selectedGalleryIndex
-                            ? "border-femfuel-rose"
-                            : "border-transparent hover:border-gray-300"
+                            ? "border-femfuel-rose shadow-md scale-105"
+                            : "border-transparent hover:border-femfuel-rose/50 hover:shadow-md hover:scale-105"
                         }`}
                       >
                         <OptimizedImage
@@ -871,14 +876,14 @@ export default function ProfessionalPortfolioPage() {
                   <div className="flex gap-3 mb-6">
                     <Button
                       variant="outline"
-                      className="flex-1 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light"
+                      className="flex-1 border-2 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light hover:scale-105 transition-all duration-300 font-semibold"
                     >
                       <MessageCircle className="h-4 w-4 mr-2" />
                       Chatear
                     </Button>
                     <Button
                       onClick={handleBookNow}
-                      className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                      className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold"
                     >
                       Reservar Cita
                     </Button>
@@ -887,18 +892,20 @@ export default function ProfessionalPortfolioPage() {
               </Card>
 
               {/* Signature Service */}
-              <Card className="mb-6 bg-gradient-to-br from-femfuel-light to-pink-50 border-femfuel-rose/20">
+              <Card className="mb-6 bg-gradient-to-br from-femfuel-light to-pink-50 border-0 shadow-xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <Trophy className="h-5 w-5 text-femfuel-rose" />
-                    <span className="font-medium text-femfuel-rose">Servicio Exclusivo</span>
+                    <div className="w-10 h-10 bg-gradient-to-br from-femfuel-rose to-pink-600 rounded-full flex items-center justify-center shadow-md">
+                      <Trophy className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="font-bold text-femfuel-rose">Servicio Exclusivo</span>
                   </div>
-                  <h3 className="text-lg font-bold text-femfuel-dark mb-2">{professional.portfolio.signature.serviceName}</h3>
-                  <p className="text-sm text-femfuel-medium mb-4">{professional.portfolio.signature.description}</p>
-                  <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold text-femfuel-dark mb-3">{professional.portfolio.signature.serviceName}</h3>
+                  <p className="text-sm text-femfuel-medium mb-4 leading-relaxed">{professional.portfolio.signature.description}</p>
+                  <div className="flex items-center justify-between mb-6">
                     <div>
-                      <span className="text-xl font-bold text-femfuel-dark">{professional.portfolio.signature.price}</span>
-                      <div className="flex items-center gap-1 text-sm text-femfuel-medium">
+                      <span className="text-2xl font-bold text-femfuel-dark">{professional.portfolio.signature.price}</span>
+                      <div className="flex items-center gap-1 text-sm text-femfuel-medium mt-1">
                         <Clock className="h-3 w-3" />
                         <span>{professional.portfolio.signature.duration} min</span>
                       </div>
@@ -906,7 +913,7 @@ export default function ProfessionalPortfolioPage() {
                   </div>
                   <Button
                     onClick={handleBookNow}
-                    className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                    className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold text-base h-12"
                   >
                     Reservar Servicio Exclusivo
                   </Button>

@@ -151,9 +151,22 @@ export default function ServicesPage() {
 
   // Return JSX
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white lg:pt-24">
+      {/* Mobile Search Bar */}
+      <div className="lg:hidden sticky top-14 z-30 bg-white border-b border-gray-200 px-4 py-3">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-femfuel-medium" />
+          <Input
+            type="text"
+            placeholder="Buscar servicios..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 h-12 border-2 border-femfuel-rose/20 focus:border-femfuel-rose rounded-xl bg-white shadow-sm"
+          />
+        </div>
+      </div>
 
-      <div className="flex flex-col md:flex-row gap-6 p-4 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-6 p-4 md:p-6 max-w-7xl mx-auto">
         {/* Filters Sidebar - Desktop */}
         <div className="md:w-80 flex-shrink-0">
           <SearchFiltersComponent
@@ -166,7 +179,7 @@ export default function ServicesPage() {
         {/* Main Content */}
         <div className="flex-1">
           {/* Category Filter Pills */}
-          <div className="flex items-center gap-3 mb-6 overflow-x-auto pb-2">
+          <div className="flex items-center gap-3 mb-8 overflow-x-auto pb-2">
             <button
               onClick={() => setSelectedCategory("all")}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all ${
@@ -197,12 +210,12 @@ export default function ServicesPage() {
           </div>
 
           {/* Results Header */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-xl font-semibold text-femfuel-dark">
+              <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
                 {selectedCategory === "all" ? "Todos los Servicios" : categories.find(c => c.id === selectedCategory)?.name}
               </h2>
-              <p className="text-sm text-femfuel-medium">
+              <p className="text-base text-femfuel-medium">
                 {filteredServices.length} servicios {searchQuery ? `para "${searchQuery}"` : "disponibles"}
               </p>
             </div>
@@ -226,7 +239,7 @@ export default function ServicesPage() {
                   <div
                     key={service.id}
                     onClick={() => handleServiceClick(service)}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-[1.02] flex flex-col h-auto md:h-[420px] min-h-[380px]"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 flex flex-col"
                   >
                     {/* Service Image */}
                     <div className="aspect-[3/2] relative overflow-hidden flex-shrink-0">
@@ -299,8 +312,11 @@ export default function ServicesPage() {
                         </div>
                       </div>
 
+                      {/* Spacer to push button to bottom */}
+                      <div className="flex-1" />
+
                       {/* Action Button */}
-                      <div className="flex items-center mt-auto">
+                      <div className="flex items-center">
                         <button
                           className="w-full glassmorphism-button-perfect"
                           onClick={(e) => {
@@ -349,6 +365,7 @@ export default function ServicesPage() {
       <ChatButton
         variant="floating"
         className="shadow-lg hover:shadow-xl"
+        unreadCount={3}
       />
 
       {/* Mobile Navigation */}

@@ -48,12 +48,12 @@ export function ProfessionalShowcase({
   }
 
   return (
-    <section className="w-full py-12 bg-gradient-to-br from-purple-50/30 via-white to-rose-50/20">
+    <section className="w-full py-16 bg-gradient-to-br from-purple-50/30 via-white to-rose-50/20">
       <div className="px-4 md:px-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-12">
           <div>
-            <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
+            <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-3">
               Nuestro Equipo
             </h2>
             <p className="text-femfuel-medium text-lg">
@@ -68,18 +68,18 @@ export function ProfessionalShowcase({
               size="sm"
               onClick={() => scrollContainer('left')}
               disabled={!canScrollLeft}
-              className="rounded-full w-10 h-10 p-0"
+              className="rounded-full w-12 h-12 p-0 bg-white hover:bg-femfuel-purple border-femfuel-medium hover:border-femfuel-rose transition-all duration-300 disabled:opacity-30"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-5 w-5" />
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => scrollContainer('right')}
               disabled={!canScrollRight}
-              className="rounded-full w-10 h-10 p-0"
+              className="rounded-full w-12 h-12 p-0 bg-white hover:bg-femfuel-purple border-femfuel-medium hover:border-femfuel-rose transition-all duration-300 disabled:opacity-30"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -93,7 +93,7 @@ export function ProfessionalShowcase({
           {professionals.map((professional) => (
             <Card
               key={professional.id}
-              className="flex-shrink-0 w-80 hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm"
+              className="flex-shrink-0 w-80 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 bg-white rounded-2xl"
             >
               <CardContent className="p-6">
                 {/* Header with photo and basic info */}
@@ -115,11 +115,12 @@ export function ProfessionalShowcase({
                         <h3 className="font-bold text-femfuel-dark text-lg leading-tight">
                           {professional.name}
                         </h3>
-                        {professional.isTopRated && (
-                          <div className="mt-1">
+                        {/* Reserve space for badge to keep layout consistent */}
+                        <div className="mt-1 h-5">
+                          {professional.isTopRated && (
                             <TopRatedBadge variant="full" />
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -133,7 +134,7 @@ export function ProfessionalShowcase({
                   </div>
                 </div>
 
-                {/* Specialties */}
+                {/* Specialties - Now at consistent position */}
                 <div className="mb-4">
                   <ProfessionalSpecialties
                     specialties={professional.specialties}
@@ -169,14 +170,14 @@ export function ProfessionalShowcase({
                     variant="outline"
                     size="sm"
                     onClick={() => onViewProfile(professional)}
-                    className="flex-1"
+                    className="flex-1 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white transition-all duration-300"
                   >
                     Ver Perfil
                   </Button>
                   <Button
                     size="sm"
                     onClick={() => onBookNow(professional)}
-                    className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white"
+                    className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-md hover:shadow-lg transition-all duration-300"
                   >
                     Reservar
                   </Button>

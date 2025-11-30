@@ -126,12 +126,12 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 overflow-hidden opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-femfuel-rose/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-femfuel-gold/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-femfuel-rose/3 rounded-full blur-2xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-femfuel-rose/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-500/10 rounded-full blur-2xl animate-pulse delay-500"></div>
       </div>
 
       {/* Desktop Layout */}
@@ -141,9 +141,8 @@ export default function CheckoutPage() {
           {/* Back Button */}
           <Button
             variant="ghost"
-            size="sm"
             onClick={() => currentStep === "delivery" ? router.back() : handlePreviousStep()}
-            className="absolute top-8 left-8 text-gray-600 hover:text-gray-800 hover:bg-gray-100"
+            className="absolute top-8 left-8 min-h-[44px] text-gray-600 hover:text-gray-800 active:text-gray-800 hover:bg-gray-100 active:bg-gray-100 text-sm"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             {currentStep === "delivery" ? "Volver a la tienda" : "Anterior"}
@@ -284,7 +283,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Right Panel - Form */}
-        <div className="w-2/5 bg-white/80 backdrop-blur-sm border-l border-gray-200/50 p-8 overflow-y-auto">
+        <div className="w-2/5 bg-white/90 backdrop-blur-md border-l border-femfuel-rose/10 p-8 overflow-y-auto shadow-2xl">
           {/* Delivery Step */}
           {currentStep === "delivery" && (
             <div className="space-y-6">
@@ -295,12 +294,14 @@ export default function CheckoutPage() {
 
               {/* Location */}
               <div className="space-y-3">
-                <label className="text-sm font-medium text-femfuel-dark">Ubicación de entrega</label>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+                <label className="text-sm font-bold text-femfuel-dark">Ubicación de entrega</label>
+                <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm rounded-xl border-2 border-femfuel-rose/20 shadow-sm">
                   <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-black" />
+                    <div className="w-10 h-10 bg-femfuel-light rounded-full flex items-center justify-center">
+                      <MapPin className="h-5 w-5 text-femfuel-rose" />
+                    </div>
                     <div>
-                      <p className="font-medium text-femfuel-dark">
+                      <p className="font-bold text-femfuel-dark">
                         {userLocation?.district || "Ubicación no seleccionada"}
                       </p>
                       <p className="text-sm text-femfuel-medium">
@@ -310,9 +311,8 @@ export default function CheckoutPage() {
                   </div>
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={() => setShowLocationModal(true)}
-                    className="text-black border-femfuel-rose hover:bg-femfuel-rose hover:text-white"
+                    className="min-h-[44px] text-femfuel-rose border-2 border-femfuel-rose/20 hover:bg-femfuel-light active:bg-femfuel-light hover:border-femfuel-rose active:border-femfuel-rose transition-all duration-300 text-sm"
                   >
                     Cambiar
                   </Button>
@@ -321,49 +321,49 @@ export default function CheckoutPage() {
 
               {/* Phone */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-femfuel-dark">Teléfono de contacto *</label>
+                <label className="text-sm font-bold text-femfuel-dark">Teléfono de contacto *</label>
                 <input
                   type="tel"
                   value={orderData.phone}
                   onChange={(e) => setOrderData(prev => ({ ...prev, phone: e.target.value }))}
                   placeholder="(809) 000-0000"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose"
+                  className="w-full min-h-[44px] px-4 py-3 border-2 border-femfuel-rose/20 rounded-xl focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose shadow-sm transition-all duration-300"
                   required
                 />
               </div>
 
               {/* Delivery Notes */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-femfuel-dark">Notas para el repartidor (opcional)</label>
+                <label className="text-sm font-bold text-femfuel-dark">Notas para el repartidor (opcional)</label>
                 <textarea
                   value={orderData.deliveryNotes}
                   onChange={(e) => setOrderData(prev => ({ ...prev, deliveryNotes: e.target.value }))}
                   placeholder="Ej: Apartamento 2B, portón azul, timbre rojo..."
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose resize-none"
+                  className="w-full min-h-[100px] px-4 py-3 border-2 border-femfuel-rose/20 rounded-xl focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose resize-none shadow-sm transition-all duration-300"
                 />
               </div>
 
               {/* Cart Summary */}
               <div className="space-y-3">
-                <h3 className="font-semibold text-femfuel-dark">Resumen del pedido</h3>
-                <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                <h3 className="font-bold text-femfuel-dark">Resumen del pedido</h3>
+                <div className="bg-gradient-to-br from-femfuel-light to-pink-50 rounded-xl p-4 space-y-3 border border-femfuel-rose/10 shadow-md">
                   <div className="flex justify-between text-sm">
-                    <span className="text-femfuel-medium">Productos ({itemCount})</span>
-                    <span className="font-medium">{formatPrice(subtotal)}</span>
+                    <span className="text-femfuel-medium font-semibold">Productos ({itemCount})</span>
+                    <span className="font-bold">{formatPrice(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-femfuel-medium">ITBIS (18%)</span>
-                    <span className="font-medium">{formatPrice(itbisAmount)}</span>
+                    <span className="text-femfuel-medium font-semibold">ITBIS (18%)</span>
+                    <span className="font-bold">{formatPrice(itbisAmount)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-femfuel-medium">Entrega</span>
-                    <span className="font-medium">{formatPrice(MOTO_DELIVERY_FEE)}</span>
+                    <span className="text-femfuel-medium font-semibold">Entrega</span>
+                    <span className="font-bold">{formatPrice(MOTO_DELIVERY_FEE)}</span>
                   </div>
-                  <div className="border-t pt-2">
+                  <div className="border-t border-femfuel-rose/20 pt-2">
                     <div className="flex justify-between">
-                      <span className="font-semibold text-femfuel-dark">Total</span>
-                      <span className="font-bold text-black text-lg">{formatPrice(finalTotal)}</span>
+                      <span className="font-bold text-femfuel-dark">Total</span>
+                      <span className="font-bold text-black text-xl">{formatPrice(finalTotal)}</span>
                     </div>
                   </div>
                 </div>
@@ -373,7 +373,7 @@ export default function CheckoutPage() {
               <Button
                 onClick={handleNextStep}
                 disabled={!userLocation || !orderData.phone}
-                className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white py-3 font-semibold"
+                className="w-full min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white text-base font-semibold rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 Continuar al pago
               </Button>
@@ -417,7 +417,7 @@ export default function CheckoutPage() {
 
                 {/* Card */}
                 <div
-                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  className={`min-h-[56px] p-4 border-2 rounded-lg cursor-pointer transition-all active:scale-[0.98] ${
                     orderData.paymentMethod === "card"
                       ? "border-femfuel-rose bg-femfuel-rose/5"
                       : "border-gray-200 hover:border-gray-300"
@@ -442,7 +442,7 @@ export default function CheckoutPage() {
 
                 {/* Apple Pay */}
                 <div
-                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  className={`min-h-[56px] p-4 border-2 rounded-lg cursor-pointer transition-all active:scale-[0.98] ${
                     orderData.paymentMethod === "apple_pay"
                       ? "border-femfuel-rose bg-femfuel-rose/5"
                       : "border-gray-200 hover:border-gray-300"
@@ -473,7 +473,7 @@ export default function CheckoutPage() {
                   {user.paymentMethods.map((card: any) => (
                     <div
                       key={card.id}
-                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      className={`min-h-[56px] p-4 border-2 rounded-lg cursor-pointer transition-all active:scale-[0.98] ${
                         orderData.paymentMethod === `saved_card_${card.id}`
                           ? "border-femfuel-rose bg-femfuel-rose/5"
                           : "border-gray-200 hover:border-gray-300"
@@ -625,7 +625,7 @@ export default function CheckoutPage() {
                 <Button
                   onClick={onHandlePlaceOrder}
                   disabled={isProcessing}
-                  className="flex-1 bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-semibold py-3"
+                  className="flex-1 min-h-[44px] bg-femfuel-rose hover:bg-femfuel-rose-hover active:bg-femfuel-rose-hover text-white font-semibold"
                 >
                   {isProcessing ? "Procesando..." : "Confirmar pedido"}
                 </Button>
@@ -663,9 +663,8 @@ export default function CheckoutPage() {
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
-              size="sm"
               onClick={() => currentStep === "delivery" ? router.back() : handlePreviousStep()}
-              className="text-gray-600"
+              className="min-h-[44px] text-gray-600 hover:text-gray-800 active:text-gray-800 text-sm"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               {currentStep === "delivery" ? "Volver" : "Anterior"}
@@ -735,9 +734,8 @@ export default function CheckoutPage() {
                   </div>
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={() => setShowLocationModal(true)}
-                    className="w-full text-black border-femfuel-rose hover:bg-femfuel-rose hover:text-white"
+                    className="w-full min-h-[44px] text-black border-femfuel-rose hover:bg-femfuel-rose active:bg-femfuel-rose hover:text-white active:text-white text-sm"
                   >
                     Cambiar ubicación
                   </Button>
@@ -752,7 +750,7 @@ export default function CheckoutPage() {
                   value={orderData.phone}
                   onChange={(e) => setOrderData(prev => ({ ...prev, phone: e.target.value }))}
                   placeholder="(809) 000-0000"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose"
+                  className="w-full min-h-[44px] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose"
                   required
                 />
               </div>
@@ -765,7 +763,7 @@ export default function CheckoutPage() {
                   onChange={(e) => setOrderData(prev => ({ ...prev, deliveryNotes: e.target.value }))}
                   placeholder="Ej: Apartamento 2B, portón azul..."
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose resize-none"
+                  className="w-full min-h-[100px] px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-femfuel-rose focus:border-femfuel-rose resize-none"
                 />
               </div>
             </div>
@@ -784,10 +782,10 @@ export default function CheckoutPage() {
               {/* Mobile Payment Methods */}
               <div className="space-y-3">
                 <div
-                  className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                  className={`min-h-[56px] p-4 border-2 rounded-lg cursor-pointer transition-all active:scale-[0.98] ${
                     orderData.paymentMethod === "cash"
                       ? "border-femfuel-rose bg-femfuel-rose/5"
-                      : "border-gray-200"
+                      : "border-gray-200 hover:border-gray-300"
                   }`}
                   onClick={() => setOrderData(prev => ({ ...prev, paymentMethod: "cash" }))}
                 >
@@ -943,7 +941,7 @@ export default function CheckoutPage() {
               <Button
                 onClick={handleNextStep}
                 disabled={!userLocation || !orderData.phone}
-                className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white py-3 font-semibold"
+                className="w-full min-h-[44px] bg-femfuel-rose hover:bg-femfuel-rose-hover active:bg-femfuel-rose-hover text-white font-semibold"
               >
                 Continuar al pago
               </Button>
@@ -951,7 +949,7 @@ export default function CheckoutPage() {
             {currentStep === "payment" && (
               <Button
                 onClick={handleNextStep}
-                className="w-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white py-3 font-semibold"
+                className="w-full min-h-[44px] bg-femfuel-rose hover:bg-femfuel-rose-hover active:bg-femfuel-rose-hover text-white font-semibold"
               >
                 Revisar pedido
               </Button>

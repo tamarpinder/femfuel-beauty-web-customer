@@ -95,7 +95,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
           <div className="flex-1 grid grid-cols-2 gap-4 max-w-md">
             {/* Before Image */}
             <div className="relative">
-              <div className="aspect-square rounded-lg overflow-hidden bg-white shadow-sm relative">
+              <div className="aspect-square rounded-xl overflow-hidden bg-white/80 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-femfuel-rose/10 relative">
                 <OptimizedImage
                   src={currentImage.before}
                   alt={`${serviceName} - Antes`}
@@ -105,14 +105,14 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
                   loading="lazy"
                 />
               </div>
-              <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+              <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-lg shadow-lg">
                 Antes
               </div>
             </div>
 
             {/* After Image */}
             <div className="relative">
-              <div className="aspect-square rounded-lg overflow-hidden bg-white shadow-sm relative">
+              <div className="aspect-square rounded-xl overflow-hidden bg-white/80 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-femfuel-rose/10 relative">
                 <OptimizedImage
                   src={currentImage.after}
                   alt={`${serviceName} - Después`}
@@ -122,7 +122,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
                   loading="lazy"
                 />
               </div>
-              <div className="absolute top-2 left-2 bg-femfuel-rose text-white text-xs px-2 py-1 rounded">
+              <div className="absolute top-2 left-2 bg-gradient-to-r from-femfuel-rose to-pink-600 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-lg shadow-lg">
                 Después
               </div>
             </div>
@@ -158,7 +158,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
         <div className="md:hidden">
           {/* Full Width Image Display */}
           <div className="relative mb-4">
-            <div className="aspect-[4/3] rounded-xl overflow-hidden bg-white shadow-lg relative">
+            <div className="aspect-[4/3] rounded-xl overflow-hidden bg-white/80 backdrop-blur-md shadow-lg border-2 border-femfuel-rose/10 relative">
               <OptimizedImage
                 src={showBefore ? currentImage.before : currentImage.after}
                 alt={`${serviceName} - ${showBefore ? 'Antes' : 'Después'}`}
@@ -167,7 +167,9 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
                 className="object-cover transition-opacity duration-300"
                 loading="lazy"
               />
-              <div className="absolute top-3 left-3 bg-black/80 text-white text-sm px-3 py-1.5 rounded-full font-medium">
+              <div className={`absolute top-3 left-3 text-white text-sm px-3 py-1.5 rounded-full font-medium backdrop-blur-md shadow-lg ${
+                showBefore ? 'bg-black/80' : 'bg-gradient-to-r from-femfuel-rose to-pink-600'
+              }`}>
                 {showBefore ? 'Antes' : 'Después'}
               </div>
             </div>
@@ -177,20 +179,20 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
           <div className="flex gap-3 mb-4">
             <button
               onClick={() => setShowBefore(true)}
-              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 ${
-                showBefore 
-                  ? 'bg-femfuel-rose text-white shadow-lg' 
-                  : 'bg-white text-femfuel-dark border border-gray-200 hover:border-femfuel-rose/30'
+              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
+                showBefore
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg border-2 border-transparent'
+                  : 'bg-white/80 backdrop-blur-md text-femfuel-dark border-2 border-femfuel-rose/10 hover:shadow-lg'
               }`}
             >
               Ver Antes
             </button>
             <button
               onClick={() => setShowBefore(false)}
-              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 ${
-                !showBefore 
-                  ? 'bg-femfuel-rose text-white shadow-lg' 
-                  : 'bg-white text-femfuel-dark border border-gray-200 hover:border-femfuel-rose/30'
+              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
+                !showBefore
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg border-2 border-transparent'
+                  : 'bg-white/80 backdrop-blur-md text-femfuel-dark border-2 border-femfuel-rose/10 hover:shadow-lg'
               }`}
             >
               Ver Después
@@ -199,14 +201,14 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
 
           {/* Customer Testimonial - Mobile */}
           {beforeAfter?.testimonial && beforeAfter?.customerName ? (
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg border-2 border-femfuel-rose/10">
               <p className="text-sm text-femfuel-dark mb-2 italic leading-relaxed">
                 "{beforeAfter.testimonial}"
               </p>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-femfuel-medium">- {beforeAfter.customerName}</span>
                 {beforeAfter.rating && (
-                  <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-full">
+                  <div className="flex items-center bg-gradient-to-r from-yellow-50 to-yellow-100 px-2 py-1 rounded-full shadow-lg">
                     <span className="text-sm text-yellow-500">★</span>
                     <span className="text-sm text-femfuel-dark ml-1 font-medium">{beforeAfter.rating}</span>
                   </div>
@@ -214,7 +216,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+            <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 shadow-lg border-2 border-femfuel-rose/10 text-center">
               <p className="text-sm text-femfuel-medium">
                 Ve los increíbles resultados que nuestros especialistas logran
               </p>

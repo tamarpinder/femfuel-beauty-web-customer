@@ -119,76 +119,75 @@ export default function NearbySalonsPage() {
   const showSections = filterType === "all" && !searchTerm
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-rose-50/30 to-purple-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-white via-rose-50/30 to-purple-50/20 lg:pt-24">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative pt-16 pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 via-purple-500/5 to-orange-500/5"></div>
 
         <div className="max-w-4xl mx-auto text-center relative">
-          <div className="inline-flex items-center gap-2 bg-rose-500/10 px-4 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md border border-rose-500/20 px-4 py-2 rounded-full mb-6 shadow-md">
             <MapPin className="h-4 w-4 text-rose-600" />
-            <span className="text-rose-600 font-medium text-sm">Salones Cercanos</span>
+            <span className="text-rose-600 font-bold text-sm">Salones Cercanos</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold text-femfuel-dark mb-6 leading-tight">
-            Salones <span className="text-rose-600">Cercanos</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-femfuel-dark mb-6 leading-tight">
+            Salones <span className="bg-gradient-to-r from-rose-600 to-femfuel-rose bg-clip-text text-transparent">Cercanos</span>
           </h1>
 
-          <p className="text-xl text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
+          <p className="text-base md:text-lg text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
             Encuentra tu salón de belleza ideal en segundos. Reserva fácil y accede a expertos verificados en tu área.
           </p>
 
-          <div className="max-w-md mx-auto mb-6">
+          <div className="max-w-md mx-auto mb-8">
             <div className="relative">
-              <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Search className="h-5 w-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-femfuel-medium" />
               <Input
                 type="text"
                 placeholder="Buscar salones o servicios..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 border-2 border-gray-200 focus:border-femfuel-rose h-12"
+                className="pl-12 pr-4 border-2 border-femfuel-rose/20 focus:border-femfuel-rose h-14 rounded-2xl shadow-lg text-base bg-white/80 backdrop-blur-md transition-all duration-300"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 text-sm text-femfuel-medium">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center gap-6 text-sm">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md rounded-full border border-green-600/20 shadow-md">
               <Navigation className="h-4 w-4 text-green-600" />
-              <span>Tu ubicación: Santo Domingo</span>
+              <span className="font-bold text-femfuel-dark">Santo Domingo</span>
             </div>
-            <span>•</span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md rounded-full border border-rose-600/20 shadow-md">
               <TrendingUp className="h-4 w-4 text-rose-600" />
-              <span>{vendors.length}+ Salones Disponibles</span>
+              <span className="font-bold text-femfuel-dark">{vendors.length}+ Salones</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Filters */}
-      <section className="py-8 px-4 bg-femfuel-light/50">
+      <section className="py-8 px-4 bg-gradient-to-r from-femfuel-light/50 to-rose-50/30">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-4 mb-4">
-            <Filter className="h-5 w-5 text-femfuel-medium" />
-            <span className="text-femfuel-dark font-medium">Filtrar por:</span>
+          <div className="flex items-center gap-4 mb-6">
+            <Filter className="h-5 w-5 text-femfuel-dark" />
+            <span className="text-femfuel-dark font-bold text-lg">Filtrar por:</span>
           </div>
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setFilterType("all")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 ${
                 filterType === "all"
-                  ? 'bg-femfuel-rose text-white shadow-lg'
-                  : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-gray-200'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                  : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-femfuel-rose/20 hover:shadow-md hover:scale-105'
               }`}
             >
               Todos
             </button>
             <button
               onClick={() => setFilterType("topRated")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
                 filterType === "topRated"
-                  ? 'bg-amber-500 text-white shadow-lg'
-                  : 'bg-white text-femfuel-medium hover:bg-amber-50 hover:text-amber-600 border border-gray-200'
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                  : 'bg-white text-femfuel-medium hover:bg-amber-50 hover:text-amber-600 border border-amber-500/20 hover:shadow-md hover:scale-105'
               }`}
             >
               <Crown className="h-4 w-4" />
@@ -196,10 +195,10 @@ export default function NearbySalonsPage() {
             </button>
             <button
               onClick={() => setFilterType("openNow")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
                 filterType === "openNow"
-                  ? 'bg-green-500 text-white shadow-lg'
-                  : 'bg-white text-femfuel-medium hover:bg-green-50 hover:text-green-600 border border-gray-200'
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl hover:scale-105'
+                  : 'bg-white text-femfuel-medium hover:bg-green-50 hover:text-green-600 border border-green-500/20 hover:shadow-md hover:scale-105'
               }`}
             >
               <Zap className="h-4 w-4" />
@@ -211,10 +210,10 @@ export default function NearbySalonsPage() {
 
       {/* Sticky Category Navigation - Only show when viewing all */}
       {showSections && (
-        <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
+        <div className="sticky top-20 md:top-24 z-40 bg-white/95 backdrop-blur-lg border-b border-femfuel-rose/10 shadow-lg">
           <div className="max-w-6xl mx-auto px-4 py-4">
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-              <span className="text-sm text-femfuel-medium whitespace-nowrap mr-2">Ir a:</span>
+              <span className="text-sm text-femfuel-dark font-bold whitespace-nowrap mr-2">Ir a:</span>
               {categoryConfig.map((cat) => {
                 const count = groupedVendors[cat.key].length
                 if (count === 0) return null
@@ -223,10 +222,10 @@ export default function NearbySalonsPage() {
                   <button
                     key={cat.key}
                     onClick={() => scrollToSection(cat.key)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                    className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 ${
                       activeSection === cat.key
-                        ? 'bg-femfuel-rose text-white shadow-md'
-                        : 'bg-gray-100 text-femfuel-dark hover:bg-gray-200'
+                        ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105'
+                        : 'bg-white border border-femfuel-rose/20 text-femfuel-dark hover:bg-femfuel-light hover:scale-105 hover:shadow-md'
                     }`}
                   >
                     {cat.name} ({count})
@@ -242,11 +241,11 @@ export default function NearbySalonsPage() {
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           {!showSections && (
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-femfuel-dark mb-2">
+            <div className="mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-3">
                 {filteredVendors.length} Salones Encontrados
               </h2>
-              <p className="text-femfuel-medium">Ordenados por distancia</p>
+              <p className="text-base md:text-lg text-femfuel-medium">Ordenados por distancia</p>
             </div>
           )}
 
@@ -265,10 +264,10 @@ export default function NearbySalonsPage() {
                     className="mb-16"
                   >
                     <div className="mb-8">
-                      <h2 className="text-3xl font-bold text-femfuel-dark mb-1">
+                      <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-3">
                         {cat.name}
                       </h2>
-                      <p className="text-femfuel-medium">{vendors.length} salones disponibles</p>
+                      <p className="text-base md:text-lg text-femfuel-medium">{vendors.length} salones disponibles</p>
                     </div>
 
                     <div className="grid lg:grid-cols-2 gap-6">
@@ -303,12 +302,14 @@ export default function NearbySalonsPage() {
 
           {/* No Results */}
           {filteredVendors.length === 0 && (
-            <div className="text-center py-16">
-              <MapPin className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-femfuel-dark mb-2">
+            <div className="text-center py-20 px-4">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-femfuel-light rounded-full mb-6">
+                <MapPin className="h-10 w-10 text-femfuel-medium" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">
                 No se encontraron salones
               </h3>
-              <p className="text-femfuel-medium">
+              <p className="text-base md:text-lg text-femfuel-medium max-w-md mx-auto">
                 Intenta cambiar los filtros o buscar con diferentes términos
               </p>
             </div>
@@ -317,21 +318,23 @@ export default function NearbySalonsPage() {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 px-4 bg-femfuel-light/50">
+      <section className="py-20 px-4 bg-gradient-to-br from-femfuel-light to-rose-50/50">
         <div className="max-w-4xl mx-auto text-center">
-          <MapPin className="h-12 w-12 text-femfuel-rose mx-auto mb-6" />
-          <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-femfuel-rose to-pink-600 rounded-full mb-6 shadow-lg">
+            <MapPin className="h-8 w-8 text-white" />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-4">
             ¿No encuentras tu salón favorito?
           </h2>
-          <p className="text-lg text-femfuel-medium mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-femfuel-medium mb-8 max-w-2xl mx-auto leading-relaxed">
             Ayúdanos a crecer nuestra comunidad. Invita a tu salón favorito a unirse a FemFuel Beauty.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="glassmorphism-button-lg">
+            <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white border-2 border-femfuel-rose text-femfuel-rose rounded-full font-semibold text-lg hover:bg-femfuel-light hover:shadow-xl hover:scale-105 transition-all duration-300">
               Sugerir un Salón
             </button>
-            <button className="femfuel-button-lg">
+            <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
               Explorar Más Zonas
             </button>
           </div>

@@ -192,13 +192,13 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
   return (
     <>
       {/* Desktop Filters */}
-      <div className="hidden md:block">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Filtros</CardTitle>
-            {resultsCount !== undefined && <p className="text-sm text-femfuel-medium">{resultsCount} resultados</p>}
+      <div className="hidden md:block sticky top-28">
+        <Card className="border-gray-100 bg-white/80 backdrop-blur-md shadow-lg">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-xl font-bold text-femfuel-dark">Filtros</CardTitle>
+            {resultsCount !== undefined && <p className="text-sm text-femfuel-medium mt-1">{resultsCount} resultados</p>}
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <FilterContent />
           </CardContent>
         </Card>

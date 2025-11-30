@@ -128,13 +128,13 @@ export function DesktopProviderList({
   return (
     <div className="h-full flex flex-col">
       {/* Header with Filters */}
-      <div className="bg-white border-b border-gray-200 p-4 sticky top-0 z-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-femfuel-dark">
+      <div className="bg-gradient-to-r from-white to-gray-50 border-b border-gray-200 p-6 sticky top-0 z-10 backdrop-blur-md">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-femfuel-dark">
             Elegí tu Especialista
           </h2>
-          <div className="bg-femfuel-rose text-white px-3 py-1 rounded-full text-sm font-medium">
-            {sortedProviders.length}
+          <div className="bg-gradient-to-r from-femfuel-rose to-pink-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+            {sortedProviders.length} disponibles
           </div>
         </div>
 
@@ -173,7 +173,7 @@ export function DesktopProviderList({
       </div>
 
       {/* Provider Cards - Clean Vertical Layout (Option C) */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {sortedProviders.map((vendor, index) => {
           const vendorService = vendor.services.find(s => s.name === serviceName)
           const isSelected = selectedProvider === vendor.id
@@ -181,12 +181,12 @@ export function DesktopProviderList({
           const reviewPreview = getReviewPreview(vendor)
           const availabilityStatus = getAvailabilityStatus(vendor)
           const isTopPerformer = index < 3
-          
+
           return (
-            <Card 
+            <Card
               key={vendor.id}
-              className={`cursor-pointer transition-all duration-200 bg-white shadow-lg hover:shadow-xl ${
-                isSelected ? 'ring-2 ring-femfuel-rose shadow-xl' : ''
+              className={`cursor-pointer transition-all duration-300 bg-white border-gray-100 hover:border-femfuel-rose/30 hover:shadow-2xl hover:-translate-y-1 ${
+                isSelected ? 'ring-2 ring-femfuel-rose shadow-2xl border-femfuel-rose' : 'shadow-lg'
               }`}
               onClick={() => setSelectedProvider(vendor.id)}
             >

@@ -72,7 +72,7 @@ export default function SitemapPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4">
+      <section className="relative lg:pt-32 pb-16 px-4">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-4xl mx-auto relative text-center">
@@ -100,9 +100,9 @@ export default function SitemapPage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid gap-8">
             {sitePages.map((section, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-lg p-8">
+              <div key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl shadow-xl p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl shadow-md flex items-center justify-center">
                     <section.icon className="h-5 w-5 text-purple-600" />
                   </div>
                   <h2 className="text-2xl font-bold text-femfuel-dark">{section.category}</h2>
@@ -115,7 +115,7 @@ export default function SitemapPage() {
                       href={page.href}
                       target={page.external ? "_blank" : "_self"}
                       rel={page.external ? "noopener noreferrer" : undefined}
-                      className="group block p-4 rounded-xl border border-gray-100 hover:border-purple-200 hover:bg-purple-50/50 transition-all duration-300"
+                      className="group block p-4 rounded-xl border-2 border-gray-100 hover:border-femfuel-rose/20 hover:bg-gradient-to-br hover:from-purple-50/30 hover:to-rose-50/20 hover:shadow-md hover:scale-105 transition-all duration-300"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <h3 className="font-semibold text-femfuel-dark group-hover:text-purple-600 transition-colors">
@@ -136,12 +136,12 @@ export default function SitemapPage() {
           </div>
 
           {/* Quick Stats */}
-          <div className="mt-12 bg-gradient-to-r from-purple-50 to-rose-50 rounded-2xl p-8">
+          <div className="mt-12 bg-gradient-to-r from-purple-50 to-rose-50 border-2 border-femfuel-rose/20 rounded-2xl shadow-lg p-8">
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold text-femfuel-dark mb-2">
                 Plataforma en Crecimiento
               </h3>
-              <p className="text-femfuel-medium">
+              <p className="text-gray-700">
                 FemFuel Beauty conecta la comunidad de belleza dominicana
               </p>
             </div>
@@ -167,24 +167,24 @@ export default function SitemapPage() {
           </div>
 
           {/* Contact Section */}
-          <div className="mt-8 bg-white rounded-2xl shadow-lg p-8 text-center">
+          <div className="mt-8 bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl shadow-xl p-8 text-center">
             <h3 className="text-xl font-bold text-femfuel-dark mb-4">
               ¿No encuentras lo que buscas?
             </h3>
-            <p className="text-femfuel-medium mb-6">
+            <p className="text-gray-700 mb-6">
               Nuestro equipo de soporte está aquí para ayudarte a navegar FemFuel Beauty
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href="/help"
-                className="femfuel-button-lg"
+                className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 justify-center"
               >
                 <HelpCircle className="h-4 w-4" />
                 Centro de Ayuda
               </a>
               <a
                 href="/help#contacto"
-                className="bg-white border-2 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-xl font-medium flex items-center gap-2 transition-all duration-300 shadow-lg"
+                className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
               >
                 Contactar Soporte
               </a>

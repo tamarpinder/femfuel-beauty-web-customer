@@ -13,6 +13,7 @@ export interface Vendor {
     district: string
     city: string
     distance?: string
+    coordinates?: { lat: number; lng: number }
   }
   contact: {
     phone: string

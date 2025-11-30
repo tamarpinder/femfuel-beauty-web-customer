@@ -178,7 +178,7 @@ export function SmartSearch({
     <div className={`relative ${className}`}>
       {/* Search Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-femfuel-medium" />
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-femfuel-medium" />
         <Input
           ref={inputRef}
           value={query}
@@ -187,12 +187,13 @@ export function SmartSearch({
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="pl-10 pr-10 h-12 rounded-xl border-gray-200 focus:border-femfuel-rose focus:ring-femfuel-rose"
+          className="pl-12 pr-12 min-h-[48px] h-14 rounded-2xl border-2 border-femfuel-rose/20 bg-white/90 backdrop-blur-sm shadow-md focus:border-femfuel-rose focus:ring-femfuel-rose focus:shadow-lg transition-all duration-300 font-medium text-sm md:text-base"
         />
         {query && (
           <button
             onClick={clearSearch}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-femfuel-medium hover:text-femfuel-dark"
+            aria-label="Limpiar búsqueda"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-femfuel-light hover:bg-femfuel-rose/20 active:bg-femfuel-rose/20 flex items-center justify-center text-femfuel-medium hover:text-femfuel-rose transition-all duration-300"
           >
             <X className="h-4 w-4" />
           </button>
@@ -201,35 +202,36 @@ export function SmartSearch({
 
       {/* Suggestions Dropdown */}
       {showSuggestions && (
-        <div 
+        <div
           ref={suggestionsRef}
-          className="absolute top-full left-0 right-0 z-50 mt-1 bg-white rounded-xl border border-gray-200 shadow-lg max-h-80 overflow-y-auto"
+          className="absolute top-full left-0 right-0 z-50 mt-2 bg-white/95 backdrop-blur-md rounded-2xl border-2 border-femfuel-rose/10 shadow-2xl max-h-96 overflow-y-auto pb-[env(safe-area-inset-bottom)]"
         >
           {/* Search History */}
           {!query.trim() && searchHistory.length > 0 && (
-            <div className="p-3 border-b border-gray-100">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium text-femfuel-medium uppercase tracking-wide">
+            <div className="p-4 border-b-2 border-femfuel-rose/10">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-bold text-femfuel-dark uppercase tracking-wide">
                   Búsquedas Recientes
                 </span>
                 <button
                   onClick={handleClearHistory}
-                  className="text-xs text-femfuel-medium hover:text-femfuel-dark"
+                  aria-label="Limpiar historial de búsqueda"
+                  className="min-h-[44px] px-3 text-xs font-semibold text-femfuel-medium hover:text-femfuel-rose active:text-femfuel-rose transition-colors duration-300"
                 >
                   Limpiar
                 </button>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-2">
                 {searchHistory.map((item, index) => (
                   <button
                     key={item}
                     onClick={() => handleHistoryClick(item)}
-                    className={`w-full text-left px-2 py-1.5 rounded-lg text-sm hover:bg-gray-50 flex items-center gap-2 ${
-                      selectedIndex === index ? 'bg-femfuel-rose/10' : ''
+                    className={`w-full text-left px-3 py-3 min-h-[44px] rounded-xl text-sm font-medium hover:bg-femfuel-light/50 active:bg-femfuel-light/50 hover:shadow-sm flex items-center gap-3 transition-all duration-300 ${
+                      selectedIndex === index ? 'bg-femfuel-rose/10 shadow-sm' : ''
                     }`}
                   >
-                    <Clock className="h-3 w-3 text-femfuel-medium" />
-                    {item}
+                    <Clock className="h-4 w-4 text-femfuel-medium flex-shrink-0" />
+                    <span className="truncate">{item}</span>
                   </button>
                 ))}
               </div>
@@ -252,7 +254,7 @@ export function SmartSearch({
                   <button
                     key={suggestion.id}
                     onClick={() => handleSuggestionClick(suggestion)}
-                    className={`w-full text-left p-3 rounded-lg hover:bg-gray-50 border-b border-gray-50 last:border-b-0 ${
+                    className={`w-full text-left p-3 min-h-[56px] rounded-lg hover:bg-gray-50 active:bg-gray-50 border-b border-gray-50 last:border-b-0 ${
                       selectedIndex === adjustedIndex ? 'bg-femfuel-rose/10' : ''
                     }`}
                   >
@@ -285,14 +287,14 @@ export function SmartSearch({
 
           {/* No Results */}
           {query.trim() && suggestions.length === 0 && (
-            <div className="p-6 text-center">
-              <div className="w-12 h-12 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center">
-                <Search className="h-5 w-5 text-gray-400" />
+            <div className="p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-full flex items-center justify-center shadow-lg">
+                <Search className="h-6 w-6 text-femfuel-rose" />
               </div>
-              <h4 className="font-medium text-femfuel-dark mb-1">
+              <h4 className="font-bold text-femfuel-dark mb-2 text-lg">
                 No se encontraron servicios
               </h4>
-              <p className="text-sm text-femfuel-medium">
+              <p className="text-sm text-femfuel-medium font-medium">
                 Intenta con otro término de búsqueda
               </p>
             </div>

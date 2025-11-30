@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { useState, useEffect, useRef, CSSProperties } from 'react'
 import { cn } from '@/lib/utils'
-import { getDefaultImage } from '@/lib/default-images'
 
 interface OptimizedImageProps {
   src: string
@@ -54,8 +53,6 @@ export function OptimizedImage({
   }, [src, instant, priority])
 
   const handleError = () => {
-    const fallback = getDefaultImage(context)
-    setImageSrc(fallback)
     setHasError(true)
     onError?.()
   }
@@ -72,7 +69,7 @@ export function OptimizedImage({
   return (
     <div className={cn('relative overflow-hidden', fill && 'w-full h-full', className)}>
       {isLoading && !instant && !priority && (
-        <div className="absolute inset-0 bg-gray-100 animate-pulse pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-femfuel-light/20 animate-pulse pointer-events-none rounded-lg" />
       )}
       <Image
         ref={imageRef}

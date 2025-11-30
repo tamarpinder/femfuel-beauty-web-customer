@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
@@ -20,11 +20,21 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        // FemFuel-specific variants
+        femfuel:
+          "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 hover:from-femfuel-rose/90 hover:to-pink-600/90",
+        "femfuel-outline":
+          "border-2 border-femfuel-rose/30 bg-white/80 backdrop-blur-md text-femfuel-dark shadow-sm hover:bg-femfuel-rose hover:text-white hover:border-femfuel-rose hover:shadow-lg",
+        glass:
+          "bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 text-femfuel-dark shadow-lg hover:shadow-xl hover:bg-white/90 hover:border-femfuel-rose/20",
+        success:
+          "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 hover:from-green-600 hover:to-green-700",
       },
       size: {
         default: "min-h-[44px] sm:h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "min-h-[40px] sm:h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "min-h-[48px] sm:h-10 rounded-md px-6 has-[>svg]:px-4",
+        xl: "min-h-[52px] sm:h-12 rounded-lg px-8 has-[>svg]:px-6 text-base",
         icon: "min-h-[44px] min-w-[44px] sm:size-9",
       },
     },

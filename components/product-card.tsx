@@ -54,8 +54,8 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
 
   if (layout === "list") {
     return (
-      <Card 
-        className="cursor-pointer hover:shadow-md transition-all duration-200 overflow-hidden"
+      <Card
+        className="cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/20 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 overflow-hidden rounded-2xl bg-white"
         onClick={handleViewProduct}
       >
         <CardContent className="p-4">
@@ -68,7 +68,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
                 className="w-20 h-20 object-cover rounded-lg"
               />
               {product.isOnSale && (
-                <Badge className="absolute -top-2 -right-2 bg-red-500 text-white text-xs">
+                <Badge className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs shadow-md">
                   -{calculateDiscount()}%
                 </Badge>
               )}
@@ -122,7 +122,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
                 <Button
                   size="sm"
                   onClick={handleAddToCart}
-                  className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white text-xs px-3 py-1"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white text-xs px-3 py-1 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
                   <ShoppingCart className="h-3 w-3 mr-1" />
                   Agregar
@@ -138,7 +138,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
   // Grid layout (default)
   return (
     <Card
-      className="cursor-pointer hover:shadow-2xl hover:shadow-femfuel-rose/10 hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 overflow-hidden group bg-white border border-gray-100 hover:border-femfuel-rose/20"
+      className="cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden group bg-white rounded-2xl"
       onClick={handleViewProduct}
     >
       <CardContent className="p-0">
@@ -156,17 +156,17 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-1">
             {product.isNewArrival && (
-              <Badge className="bg-green-500 text-white text-xs px-2 py-1">
+              <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-2 py-1 shadow-md">
                 Nuevo
               </Badge>
             )}
             {product.isOnSale && (
-              <Badge className="bg-red-500 text-white text-xs px-2 py-1">
+              <Badge className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs px-2 py-1 shadow-md">
                 -{calculateDiscount()}%
               </Badge>
             )}
             {product.isFeatured && (
-              <Badge className="bg-purple-500 text-white text-xs px-2 py-1">
+              <Badge className="bg-gradient-to-r from-purple-500 to-purple-600 text-white text-xs px-2 py-1 shadow-md">
                 Destacado
               </Badge>
             )}
@@ -187,7 +187,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
           <Button
             size="sm"
             onClick={handleQuickAddToCart}
-            className="absolute bottom-2 right-2 h-10 w-10 p-0 rounded-full bg-femfuel-rose hover:bg-femfuel-rose-hover text-white shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-200 z-10 min-h-[40px] min-w-[40px]"
+            className="absolute bottom-2 right-2 h-10 w-10 p-0 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 z-10 min-h-[40px] min-w-[40px]"
             title="Agregar al carrito"
           >
             <Plus className="h-5 w-5" />

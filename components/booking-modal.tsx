@@ -18,6 +18,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { useBooking } from "@/contexts/booking-context"
 import { ProcessingOverlay } from "@/components/processing-overlay"
 import { formatPrice } from "@/lib/price-utils"
+import { getProfessionalBySlug } from "@/lib/getAllProfessionals"
 import {
   BookingStep,
   BookingData,
@@ -59,9 +60,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   const [showAddCardModal, setShowAddCardModal] = useState(false)
   const [selectedCardId, setSelectedCardId] = useState<string>('')
   const [completedBooking, setCompletedBooking] = useState<any>(null)
+  const [enhancedProfessionals, setEnhancedProfessionals] = useState<Professional[]>([])
 
   // Use ref to avoid stale closures with booking data
   const completedBookingRef = useRef<any>(null)
+  const professionalLoadedRef = useRef<string | null>(null)
+  const scrollableContentRef = useRef<HTMLDivElement>(null)
 
   // Auto-select default payment method when modal opens
   useEffect(() => {
@@ -79,6 +83,48 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   const vendor = VendorAdapter.findVendor(resolvedVendorId)
   const professionals = vendor?.professionals || []
   const serviceProfessionals = getServiceProfessionals(professionals, service)
+
+  // Use enhanced professionals list if available, otherwise use service professionals
+  const displayProfessionals = enhancedProfessionals.length > 0 ? enhancedProfessionals : serviceProfessionals
+
+  // Auto-select professional if professionalId is provided and fetch them if not in list
+  useEffect(() => {
+    if (!isOpen) {
+      setEnhancedProfessionals([])
+      professionalLoadedRef.current = null
+      return
+    }
+
+    if (!professionalId || professionalLoadedRef.current === professionalId) {
+      return
+    }
+
+    // Mark as loaded to prevent re-running
+    professionalLoadedRef.current = professionalId
+
+    // Try to find the professional in the serviceProfessionals list
+    let matchingProfessional = serviceProfessionals.find(
+      p => p.id === professionalId || p.id.toString() === professionalId
+    )
+
+    if (matchingProfessional) {
+      // Professional found in list - auto-select them
+      setBookingData(prev => ({ ...prev, professional: matchingProfessional }))
+      setEnhancedProfessionals(serviceProfessionals)
+    } else {
+      // Professional not in list - try to fetch them
+      const fetchedProfessional = getProfessionalBySlug(professionalId.toString())
+      if (fetchedProfessional) {
+        // Add the fetched professional to the list
+        const enhanced = [...serviceProfessionals, fetchedProfessional]
+        setEnhancedProfessionals(enhanced)
+        // Auto-select the fetched professional
+        setBookingData(prev => ({ ...prev, professional: fetchedProfessional }))
+      } else {
+        setEnhancedProfessionals(serviceProfessionals)
+      }
+    }
+  }, [isOpen, professionalId])
 
   const pricing = calculatePricing(service, bookingData.selectedAddons)
   const { basePrice, totalPrice, serviceDuration, totalDuration, subtotal, commission, itbis } = pricing
@@ -139,12 +185,12 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
       handleBooking()
     }
 
+    // Scroll to top of scrollable content
     setTimeout(() => {
-      const dialogContent = document.querySelector('[role="dialog"]')
-      if (dialogContent) {
-        dialogContent.scrollTop = 0
+      if (scrollableContentRef.current) {
+        scrollableContentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
       }
-    }, 100)
+    }, 50)
   }
 
   const handleBack = () => {
@@ -155,6 +201,13 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
     } else if (currentStep === "payment") {
       setCurrentStep("details")
     }
+
+    // Scroll to top of scrollable content
+    setTimeout(() => {
+      if (scrollableContentRef.current) {
+        scrollableContentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }, 50)
   }
 
   const handleBooking = async () => {
@@ -248,7 +301,8 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
 
   const canContinue = () => {
     if (currentStep === "professional") {
-      return bookingData.professional !== null
+      // Allow continuing with OR without a professional selected (null = no preference)
+      return true
     } else if (currentStep === "configuration") {
       return bookingData.date && bookingData.time
     } else if (currentStep === "details") {
@@ -275,8 +329,30 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-4xl lg:max-w-5xl max-h-[90vh] overflow-y-auto p-0">
-          <DialogHeader className="p-6 pb-4 border-b border-gray-100">
+        <DialogContent className="h-full md:h-auto md:max-w-4xl lg:max-w-5xl md:max-h-[90vh] p-0 border-2 border-femfuel-rose/20 flex flex-col md:rounded-2xl">
+          {/* Mobile Header - Fixed */}
+          <div className="md:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 bg-white border-b border-gray-200">
+            {currentStep !== "professional" && (
+              <button
+                onClick={handleBack}
+                className="min-w-[44px] min-h-[44px] -ml-2 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
+                aria-label="Volver"
+              >
+                <ArrowLeft className="h-5 w-5 text-femfuel-dark" />
+              </button>
+            )}
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base font-bold text-femfuel-dark truncate">
+                {getStepLabel()}
+              </h2>
+              <p className="text-xs text-femfuel-medium truncate">
+                {service?.name}
+              </p>
+            </div>
+          </div>
+
+          {/* Desktop Header */}
+          <DialogHeader className="hidden md:block p-6 pb-4 border-b-2 border-femfuel-rose/10 bg-gradient-to-r from-white to-femfuel-light/10 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 {currentStep !== "professional" && (
@@ -284,16 +360,17 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                     variant="ghost"
                     size="sm"
                     onClick={handleBack}
-                    className="p-2"
+                    className="min-w-[44px] min-h-[44px] p-2 hover:bg-femfuel-light rounded-full transition-all duration-300 hover:scale-110"
+                    aria-label="Volver"
                   >
                     <ArrowLeft className="h-4 w-4" />
                   </Button>
                 )}
                 <div>
-                  <DialogTitle className="text-xl font-bold text-femfuel-dark">
+                  <DialogTitle className="text-xl md:text-2xl font-bold text-femfuel-dark">
                     {getStepLabel()}
                   </DialogTitle>
-                  <DialogDescription className="text-femfuel-medium">
+                  <DialogDescription className="text-femfuel-medium font-medium">
                     Completa los detalles de tu reserva
                   </DialogDescription>
                 </div>
@@ -301,40 +378,41 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             </div>
           </DialogHeader>
 
-          <div className="p-6 space-y-6">
+          {/* Scrollable Content */}
+          <div ref={scrollableContentRef} className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
             {/* Service Information */}
-            <Card className="border-femfuel-rose/20 bg-gradient-to-r from-femfuel-light/30 to-white">
+            <Card className="border-2 border-femfuel-rose/20 bg-gradient-to-r from-femfuel-light/30 to-white shadow-lg">
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col gap-4">
                   {/* Service Title and Description */}
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-femfuel-rose/10 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-xl flex items-center justify-center shadow-md">
                       <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-femfuel-rose" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="text-base sm:text-lg font-bold text-femfuel-dark mb-1 line-clamp-1 break-words">
                         {service.name}
                       </h3>
-                      <p className="text-xs sm:text-sm text-femfuel-medium line-clamp-2 break-words">
+                      <p className="text-xs sm:text-sm text-femfuel-medium font-medium line-clamp-2 break-words">
                         {service.description || "Manicure profesional con cuidado de cutículas"}
                       </p>
                     </div>
                   </div>
 
                   {/* Centered Price & Duration */}
-                  <div className="flex items-center justify-center gap-4 py-3 px-4 bg-gradient-to-r from-femfuel-light/10 to-pink-50/30 rounded-lg border border-femfuel-rose/10">
+                  <div className="flex items-center justify-center gap-4 py-3 px-4 bg-gradient-to-r from-femfuel-light/20 to-pink-50/40 rounded-xl border-2 border-femfuel-rose/20 shadow-md">
                     <div className="text-center">
-                      <p className="text-xl sm:text-2xl font-bold text-black">{formatPrice(basePrice)}</p>
-                      <p className="text-xs sm:text-sm text-femfuel-medium">Precio</p>
+                      <p className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-femfuel-rose to-pink-600 bg-clip-text text-transparent">{formatPrice(basePrice)}</p>
+                      <p className="text-xs sm:text-sm text-femfuel-medium font-semibold">Precio</p>
                     </div>
-                    <div className="w-px h-8 bg-femfuel-rose/20"></div>
+                    <div className="w-px h-8 bg-femfuel-rose/30"></div>
                     <div className="text-center">
                       <div className="flex items-center justify-center gap-1">
                         <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-femfuel-rose" />
                         <p className="text-xl sm:text-2xl font-bold text-black">{serviceDuration}</p>
-                        <span className="text-xs sm:text-sm text-femfuel-medium">min</span>
+                        <span className="text-xs sm:text-sm text-femfuel-medium font-semibold">min</span>
                       </div>
-                      <p className="text-xs sm:text-sm text-femfuel-medium">Duración</p>
+                      <p className="text-xs sm:text-sm text-femfuel-medium font-semibold">Duración</p>
                     </div>
                   </div>
                 </div>
@@ -344,7 +422,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             {/* Step Content */}
             {currentStep === "professional" && (
               <ProfessionalSelector
-                professionals={serviceProfessionals}
+                professionals={displayProfessionals}
                 selectedProfessionalId={bookingData.professional?.id}
                 onProfessionalSelect={handleProfessionalSelect}
               />
@@ -627,39 +705,29 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             )}
 
 
-            {/* Action Buttons */}
-            <div className={`${
-              currentStep === "configuration" && bookingData.date && bookingData.time
-                ? "sticky bottom-0 bg-white border-t-2 border-femfuel-rose/20 shadow-lg z-10"
-                : ""
-            } flex justify-between pt-4 px-6 -mx-6 border-t border-gray-200`}>
-              <div></div>
-              <Button
-                onClick={handleNext}
-                disabled={!canContinue() || isLoading}
-                className={`bg-femfuel-rose hover:bg-femfuel-rose/90 px-8 ${
-                  currentStep === "configuration" && bookingData.date && bookingData.time
-                    ? "animate-pulse shadow-lg"
-                    : ""
-                }`}
-              >
-                {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
-              </Button>
-            </div>
+          </div>
 
-            {/* Mobile Sticky Continue Button for Configuration Step */}
-            {currentStep === "configuration" && bookingData.date && bookingData.time && (
-              <div className="block sm:hidden fixed bottom-20 left-4 right-4 z-50">
-                <Button
-                  onClick={handleNext}
-                  disabled={!canContinue() || isLoading}
-                  className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 h-12 text-base font-semibold shadow-xl border-2 border-white animate-bounce"
-                >
-                  ✅ Continuar con la Reserva
-                </Button>
-              </div>
-            )}
+          {/* Sticky Footer - Always visible on mobile */}
+          <div className="md:hidden sticky bottom-0 bg-white border-t border-gray-200 p-4 shadow-2xl flex-shrink-0">
+            <Button
+              onClick={handleNext}
+              disabled={!canContinue() || isLoading}
+              className="w-full min-h-[52px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold rounded-xl shadow-lg text-base"
+            >
+              {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar Reserva" : "Continuar"}
+            </Button>
+          </div>
 
+          {/* Desktop Footer */}
+          <div className="hidden md:flex justify-between p-6 pt-4 border-t-2 border-femfuel-rose/10 flex-shrink-0">
+            <div></div>
+            <Button
+              onClick={handleNext}
+              disabled={!canContinue() || isLoading}
+              className="min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+            >
+              {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

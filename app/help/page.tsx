@@ -191,7 +191,7 @@ export default function HelpPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative lg:pt-32 pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-4xl mx-auto text-center relative">
@@ -217,7 +217,7 @@ export default function HelpPage() {
                 placeholder="Buscar en FAQs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 border-2 border-gray-200 focus:border-femfuel-rose h-12"
+                className="pl-10 border-2 border-gray-200 focus:border-femfuel-rose min-h-[48px]"
               />
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function HelpPage() {
       </section>
 
       {/* Quick Contact */}
-      <section id="contacto" className="py-16 px-4 bg-femfuel-light/50">
+      <section id="contacto" className="py-16 px-4 bg-gradient-to-br from-purple-50/30 to-rose-50/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
@@ -252,18 +252,18 @@ export default function HelpPage() {
             {contactMethods.map((method, index) => (
               <Card
                 key={index}
-                className={`border-none shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer ${
-                  method.primary ? 'ring-2 ring-femfuel-rose/20' : ''
-                }`}
+                className={`bg-white/80 backdrop-blur-md border-2 ${
+                  method.primary ? 'border-femfuel-rose/20 ring-2 ring-femfuel-rose/20' : 'border-femfuel-rose/10'
+                } shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 group cursor-pointer rounded-2xl`}
                 onClick={() => handleContact(method.title.toLowerCase().includes('chat') ? 'chat' : method.title.toLowerCase().includes('whatsapp') ? 'whatsapp' : 'email')}
               >
                 <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full shadow-md flex items-center justify-center ${
                     method.primary
-                      ? 'bg-femfuel-rose text-white'
+                      ? 'bg-gradient-to-br from-femfuel-rose to-pink-600 text-white'
                       : method.title === 'WhatsApp'
-                      ? 'bg-green-100 text-green-600 group-hover:bg-green-500 group-hover:text-white'
-                      : 'bg-purple-100 text-purple-600 group-hover:bg-purple-500 group-hover:text-white'
+                      ? 'bg-gradient-to-br from-green-100 to-green-50 text-green-600 group-hover:from-green-500 group-hover:to-green-600 group-hover:text-white'
+                      : 'bg-gradient-to-br from-purple-100 to-purple-50 text-purple-600 group-hover:from-purple-500 group-hover:to-purple-600 group-hover:text-white'
                   } transition-all duration-300`}>
                     <method.icon className="h-8 w-8" />
                   </div>
@@ -276,16 +276,16 @@ export default function HelpPage() {
                     {method.description}
                   </p>
 
-                  <p className="text-sm text-femfuel-light mb-4">
+                  <p className="text-sm text-gray-700 mb-4">
                     {method.detail}
                   </p>
 
-                  <button className={`w-full py-2 px-4 rounded-lg font-medium transition-all duration-300 ${
+                  <button className={`w-full min-h-[44px] py-2 px-4 rounded-full font-medium transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 ${
                     method.primary
-                      ? 'bg-femfuel-rose text-white hover:bg-rose-600 shadow-md hover:shadow-lg'
+                      ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white'
                       : method.title === 'WhatsApp'
-                      ? 'bg-green-500 text-white hover:bg-green-600 shadow-md hover:shadow-lg'
-                      : 'glassmorphism-button'
+                      ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white'
+                      : 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white'
                   }`}>
                     {method.action}
                   </button>
@@ -302,10 +302,10 @@ export default function HelpPage() {
           <div className="flex flex-wrap gap-3 justify-center">
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`min-h-[44px] px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 selectedCategory === "all"
                   ? 'bg-femfuel-rose text-white shadow-lg'
-                  : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-gray-200'
+                  : 'bg-white text-femfuel-medium hover:bg-rose-50 active:bg-rose-50 hover:text-femfuel-rose border border-gray-200'
               }`}
             >
               Todas las Categorías
@@ -314,10 +314,10 @@ export default function HelpPage() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                className={`min-h-[44px] px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
                   selectedCategory === category.id
                     ? 'bg-purple-500 text-white shadow-lg'
-                    : 'bg-white text-femfuel-medium hover:bg-purple-50 hover:text-purple-600 border border-gray-200'
+                    : 'bg-white text-femfuel-medium hover:bg-purple-50 active:bg-purple-50 hover:text-purple-600 border border-gray-200'
                 }`}
               >
                 <category.icon className="h-4 w-4" />
@@ -344,13 +344,13 @@ export default function HelpPage() {
             {filteredFAQs.map((category) => (
               <div key={category.id}>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center">
                     <category.icon className="h-5 w-5 text-purple-600" />
                   </div>
                   <h3 className="text-xl font-bold text-femfuel-dark">
                     {category.title}
                   </h3>
-                  <div className="text-sm text-femfuel-medium bg-purple-50 px-3 py-1 rounded-full">
+                  <div className="text-sm text-femfuel-medium bg-gradient-to-br from-purple-50 to-rose-50 px-3 py-1 rounded-full">
                     {category.questions.length} preguntas
                   </div>
                 </div>
@@ -361,11 +361,11 @@ export default function HelpPage() {
                     const isExpanded = expandedQuestion === questionId
 
                     return (
-                      <Card key={index} className="border-none shadow-md hover:shadow-lg transition-all duration-300">
+                      <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl active:scale-[0.99] transition-all duration-300 rounded-xl">
                         <CardContent className="p-0">
                           <button
                             onClick={() => toggleQuestion(category.id, index)}
-                            className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                            className="w-full min-h-[44px] p-6 text-left flex items-center justify-between hover:bg-purple-50/50 active:bg-purple-50/50 transition-colors rounded-xl"
                           >
                             <h4 className="text-lg font-medium text-femfuel-dark pr-4">
                               {faq.question}
@@ -379,8 +379,8 @@ export default function HelpPage() {
 
                           {isExpanded && (
                             <div className="px-6 pb-6">
-                              <div className="pt-4 border-t border-gray-100">
-                                <p className="text-femfuel-medium leading-relaxed">
+                              <div className="pt-4 border-t border-purple-100">
+                                <p className="text-gray-700 leading-relaxed">
                                   {faq.answer}
                                 </p>
                               </div>
@@ -407,7 +407,7 @@ export default function HelpPage() {
               </p>
               <button
                 onClick={() => handleContact('chat')}
-                className="femfuel-button-lg"
+                className="femfuel-button-lg min-h-[48px]"
               >
                 Contactar Soporte
               </button>
@@ -419,11 +419,13 @@ export default function HelpPage() {
       {/* Still Need Help CTA */}
       <section className="py-16 px-4 bg-gradient-to-r from-purple-500/10 to-rose-500/10">
         <div className="max-w-4xl mx-auto text-center">
-          <MessageCircle className="h-12 w-12 text-purple-600 mx-auto mb-6" />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-100 to-rose-100 shadow-md flex items-center justify-center mx-auto mb-6">
+            <MessageCircle className="h-8 w-8 text-purple-600" />
+          </div>
           <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
             ¿Aún necesitas ayuda?
           </h2>
-          <p className="text-lg text-femfuel-medium mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
             Nuestro equipo de soporte está listo para ayudarte. Contáctanos por chat,
             teléfono o email y resolveremos tu consulta rápidamente.
           </p>
@@ -431,13 +433,13 @@ export default function HelpPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => handleContact('chat')}
-              className="femfuel-button-lg"
+              className="min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center gap-3 justify-center"
             >
               Iniciar Chat en Vivo
             </button>
             <button
               onClick={() => handleContact('email')}
-              className="glassmorphism-button-lg"
+              className="min-h-[48px] border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 active:bg-purple-50 px-8 py-4 rounded-full font-bold text-femfuel-dark transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 flex items-center gap-3 justify-center"
             >
               Enviar Email
             </button>

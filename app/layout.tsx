@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Playfair_Display } from "next/font/google"
 import { AuthProvider } from "@/contexts/auth-context"
 import { CartProvider } from "@/contexts/cart-context"
 import { BookingProvider } from "@/contexts/booking-context"
@@ -15,9 +15,36 @@ const inter = Inter({
   variable: "--font-inter",
 })
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700", "800", "900"],
+})
+
 export const metadata: Metadata = {
   title: "FemFuel Beauty - Tu belleza, redefinida",
-  description: "Conecta con los mejores profesionales de belleza en República Dominicana",
+  description: "Conecta con los mejores profesionales de belleza en República Dominicana. Reserva servicios de uñas, maquillaje, cabello, spa y más. Miles de transformaciones, profesionales verificados.",
+  keywords: ["belleza", "salón", "spa", "maquillaje", "uñas", "cabello", "República Dominicana", "Santo Domingo", "beauty", "nail salon"],
+  authors: [{ name: "FemFuel Beauty" }],
+  creator: "FemFuel Beauty",
+  publisher: "FemFuel Beauty",
+  openGraph: {
+    type: "website",
+    locale: "es_DO",
+    title: "FemFuel Beauty - Tu belleza, redefinida",
+    description: "Conecta con los mejores profesionales de belleza en República Dominicana",
+    siteName: "FemFuel Beauty",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FemFuel Beauty - Tu belleza, redefinida",
+    description: "Conecta con los mejores profesionales de belleza en República Dominicana",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   generator: "v0.app",
 }
 
@@ -27,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   // Handle potential translation classes that might be added by browser extensions
-  const htmlClasses = `${inter.variable} antialiased`
+  const htmlClasses = `${inter.variable} ${playfair.variable} antialiased`
 
   return (
     <html lang="es" className={htmlClasses} suppressHydrationWarning>

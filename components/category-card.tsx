@@ -23,34 +23,34 @@ export function CategoryCard({ category, onClick }: CategoryCardProps) {
 
   return (
     <Card
-      className="p-0 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border-0 shadow-sm overflow-hidden"
+      className="p-0 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-105 cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-lg overflow-hidden rounded-2xl"
       onClick={handleClick}
     >
       <CardContent className="p-0">
         {category.bannerImage ? (
-          <div className="relative h-20 sm:h-24 w-full">
+          <div className="relative h-24 sm:h-28 w-full">
             <OptimizedImage
               src={category.bannerImage}
               alt={`${category.name} category`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover"
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
               context={category.name.toLowerCase()}
               quality={80}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div className="absolute bottom-1 sm:bottom-2 left-0 right-0 text-center">
-              <h3 className="font-medium text-white text-xs sm:text-sm mb-0.5 sm:mb-1">{category.name}</h3>
-              <p className="text-xs text-white/80">{category.count}</p>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+            <div className="absolute bottom-2 sm:bottom-3 left-0 right-0 text-center">
+              <h3 className="font-bold text-white text-sm sm:text-base mb-1 drop-shadow-lg">{category.name}</h3>
+              <p className="text-xs sm:text-sm text-white/90 font-medium drop-shadow">{category.count}</p>
             </div>
           </div>
         ) : (
-          <div className="p-3 sm:p-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 bg-gradient-to-br from-[var(--femfuel-rose)] to-[var(--femfuel-gold)] rounded-full flex items-center justify-center">
-              <category.icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+          <div className="p-4 sm:p-5 bg-gradient-to-br from-white to-femfuel-light/30">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 bg-gradient-to-br from-femfuel-rose to-pink-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <category.icon className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
             </div>
-            <h3 className="font-medium text-femfuel-dark text-xs sm:text-sm mb-0.5 sm:mb-1">{category.name}</h3>
-            <p className="text-xs text-femfuel-medium">{category.count}</p>
+            <h3 className="font-bold text-femfuel-dark text-sm sm:text-base mb-1">{category.name}</h3>
+            <p className="text-xs sm:text-sm text-femfuel-medium font-medium">{category.count}</p>
           </div>
         )}
       </CardContent>

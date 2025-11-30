@@ -147,7 +147,7 @@ Saludos,
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+      <section className="relative lg:pt-32 pb-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-rose-500/5 to-amber-500/5"></div>
 
         <div className="max-w-6xl mx-auto relative text-center">
@@ -187,7 +187,7 @@ Saludos,
       </section>
 
       {/* Job Openings */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 px-4 bg-gradient-to-br from-purple-50/30 to-rose-50/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
@@ -203,13 +203,13 @@ Saludos,
             {jobOpenings.map((job, index) => (
               <Card
                 key={index}
-                className="border-none shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 cursor-pointer rounded-2xl"
                 onClick={() => setSelectedJob(selectedJob === index ? null : index)}
               >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4 flex-1">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${job.color}`}>
+                      <div className={`w-12 h-12 rounded-xl shadow-md flex items-center justify-center ${job.color}`}>
                         <job.icon className="h-6 w-6" />
                       </div>
 
@@ -253,7 +253,7 @@ Saludos,
                                 e.stopPropagation()
                                 handleApply(job.title)
                               }}
-                              className="femfuel-button"
+                              className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
                             >
                               <Mail className="h-4 w-4" />
                               Aplicar a {job.title}
@@ -291,9 +291,9 @@ Saludos,
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {benefits.map((benefit, index) => (
-              <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl">
                 <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl shadow-md flex items-center justify-center mx-auto mb-4">
                     <benefit.icon className="h-6 w-6 text-purple-600" />
                   </div>
                   <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
@@ -308,12 +308,12 @@ Saludos,
           </div>
 
           {/* Team Values */}
-          <div className="bg-gradient-to-r from-purple-50 to-rose-50 rounded-2xl p-8 lg:p-12">
+          <div className="bg-gradient-to-r from-purple-50 to-rose-50 border-2 border-femfuel-rose/20 rounded-2xl shadow-lg p-8 lg:p-12">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-femfuel-dark mb-4">
                 Nuestros Valores
               </h3>
-              <p className="text-femfuel-medium">
+              <p className="text-gray-700">
                 Lo que nos define como equipo y guía cada decisión que tomamos
               </p>
             </div>
@@ -321,7 +321,7 @@ Saludos,
             <div className="grid md:grid-cols-2 gap-6">
               {teamValues.map((value, index) => (
                 <div key={index} className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 bg-white rounded-xl shadow-md flex items-center justify-center flex-shrink-0">
                     <value.icon className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
@@ -340,16 +340,16 @@ Saludos,
       </section>
 
       {/* Application Process */}
-      <section className="py-16 px-4 bg-white/50">
+      <section className="py-16 px-4 bg-gradient-to-br from-purple-50/30 to-rose-50/20">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-femfuel-dark mb-6">
             Proceso de Aplicación
           </h2>
 
-          <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
+          <div className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-8 shadow-xl mb-8">
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-full shadow-md flex items-center justify-center mx-auto mb-4">
                   <span className="text-purple-600 font-bold">1</span>
                 </div>
                 <h3 className="font-semibold text-femfuel-dark mb-2">Envía tu CV</h3>
@@ -359,17 +359,17 @@ Saludos,
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-rose-100 to-rose-50 rounded-full shadow-md flex items-center justify-center mx-auto mb-4">
                   <span className="text-rose-600 font-bold">2</span>
                 </div>
                 <h3 className="font-semibold text-femfuel-dark mb-2">Conversación</h3>
-                <p className="text-sm text-femfuel-medium">
+                <p className="text-sm text-gray-700">
                   Dianna y el equipo revisarán tu aplicación personalmente
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-amber-50 rounded-full shadow-md flex items-center justify-center mx-auto mb-4">
                   <span className="text-amber-600 font-bold">3</span>
                 </div>
                 <h3 className="font-semibold text-femfuel-dark mb-2">¡Bienvenido/a!</h3>
@@ -380,11 +380,11 @@ Saludos,
             </div>
           </div>
 
-          <div className="bg-purple-50 rounded-xl p-6 mb-8">
+          <div className="bg-gradient-to-r from-purple-50 to-rose-50 border-2 border-femfuel-rose/20 rounded-2xl shadow-lg p-6 mb-8">
             <p className="text-femfuel-dark font-medium mb-2">
               📧 Envía tu aplicación a: <span className="text-purple-600">jobs@femfuelbeauty.com</span>
             </p>
-            <p className="text-sm text-femfuel-medium">
+            <p className="text-sm text-gray-700">
               Incluye tu CV y cuéntanos por qué quieres revolucionar la industria de la belleza en República Dominicana.
               Dianna revisa personalmente cada aplicación.
             </p>
@@ -392,7 +392,7 @@ Saludos,
 
           <button
             onClick={() => handleApply("Posición General")}
-            className="femfuel-button-lg"
+            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
           >
             <Mail className="h-5 w-5" />
             Enviar Aplicación

@@ -45,20 +45,22 @@ export function ServiceInfoCards({ duration, category, includes }: ServiceInfoCa
   ]
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {cards.map((card, index) => {
             const IconComponent = card.icon
             return (
               <div
                 key={index}
-                className={`rounded-lg p-4 text-center ${card.color}`}
+                className={`rounded-xl p-5 text-center shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-transparent hover:border-femfuel-rose/20 ${card.color}`}
               >
-                <div className="flex justify-center mb-2">
-                  <IconComponent className="h-5 w-5" />
+                <div className="flex justify-center mb-3">
+                  <div className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center shadow-md">
+                    <IconComponent className="h-5 w-5" />
+                  </div>
                 </div>
-                <p className="text-xs font-medium opacity-80 mb-1">
+                <p className="text-xs font-bold opacity-80 mb-1.5 uppercase tracking-wide">
                   {card.title}
                 </p>
                 <p className="text-sm font-bold">

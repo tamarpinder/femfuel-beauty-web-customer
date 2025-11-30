@@ -98,11 +98,52 @@ export function ProfessionalSelector({
     }
   }
 
+  // Find the selected professional to show in banner
+  const selectedProfessional = professionals.find(p => p.id === selectedProfessionalId)
+
   return (
     <div className="space-y-6">
+      {/* Pre-selected Professional Banner */}
+      {selectedProfessional && (
+        <Card className="border-2 border-femfuel-rose bg-gradient-to-r from-femfuel-light/50 to-pink-50/50 shadow-lg">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <Avatar className="h-14 w-14 border-3 border-white shadow-lg">
+                  <AvatarImage src={selectedProfessional.image} alt={selectedProfessional.name} />
+                  <AvatarFallback className="bg-gradient-to-br from-femfuel-rose to-pink-600 text-white font-bold">
+                    {selectedProfessional.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <Check className="h-3 w-3 text-white" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <Check className="h-4 w-4 text-femfuel-rose" />
+                  <span className="text-sm font-semibold text-femfuel-rose uppercase tracking-wide">Preseleccionado</span>
+                </div>
+                <h4 className="text-lg font-bold text-femfuel-dark">
+                  Reservando con {selectedProfessional.name}
+                </h4>
+                <p className="text-sm text-femfuel-medium">
+                  {selectedProfessional.specialties[0]} • {selectedProfessional.yearsExperience} años de experiencia
+                </p>
+              </div>
+            </div>
+            <div className="mt-3 pt-3 border-t border-femfuel-rose/20">
+              <p className="text-xs text-femfuel-medium text-center">
+                También puedes elegir otro profesional disponible abajo o continuar sin preferencia
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="text-center space-y-2">
         <h3 className="text-xl font-bold text-femfuel-dark">
-          Elige tu profesional preferido
+          {selectedProfessional ? 'Otros profesionales disponibles' : 'Elige tu profesional preferido'}
         </h3>
         <p className="text-femfuel-medium">
           Cada profesional tiene especialidades únicas y horarios diferentes

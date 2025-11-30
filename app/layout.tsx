@@ -35,11 +35,20 @@ export const metadata: Metadata = {
     title: "FemFuel Beauty - Tu belleza, redefinida",
     description: "Conecta con los mejores profesionales de belleza en República Dominicana",
     siteName: "FemFuel Beauty",
+    images: [
+      {
+        url: "/femfuel-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "FemFuel Beauty Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "FemFuel Beauty - Tu belleza, redefinida",
     description: "Conecta con los mejores profesionales de belleza en República Dominicana",
+    images: ["/femfuel-logo.png"],
   },
   robots: {
     index: true,

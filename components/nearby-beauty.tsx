@@ -302,10 +302,10 @@ export function NearbyBeauty({
                     vendorName={location.name}
                     serviceContext={location.localSpecialty}
                     variant="inline"
-                    size="sm"
-                    className="w-full bg-green-500 hover:bg-green-600 text-white text-sm transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 active:scale-95"
+                    size="md"
+                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm font-bold rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-green-500/30 active:scale-95"
                   >
-                    <MessageCircle className="h-3 w-3 mr-1" />
+                    <MessageCircle className="h-4 w-4 mr-1.5" />
                     Chatear
                   </ChatButton>
                 </div>

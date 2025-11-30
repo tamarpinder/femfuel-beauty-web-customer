@@ -2,9 +2,16 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronDown, Facebook, Instagram, Twitter, Music } from "lucide-react"
+import { ChevronDown, Facebook, Instagram, Music } from "lucide-react"
 import { customerFooterSections } from "@/components/customer-footer-content"
 import { AuthModal } from "@/components/auth-modal"
+
+// X (Twitter) Icon Component
+const XIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+)
 
 interface FooterSection {
   title: string
@@ -65,7 +72,7 @@ export function CustomerFooter() {
 
   const socialLinks = [
     { icon: Facebook, href: "https://facebook.com/femfuelbeauty", label: "Facebook" },
-    { icon: Twitter, href: "https://twitter.com/femfuelbeauty", label: "X (Twitter)" },
+    { icon: XIcon, href: "https://x.com/femfuelbeauty", label: "X" },
     { icon: Instagram, href: "https://instagram.com/femfuelbeauty", label: "Instagram" },
     { icon: Music, href: "https://tiktok.com/@femfuelbeauty", label: "TikTok" },
   ]

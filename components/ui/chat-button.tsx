@@ -123,7 +123,7 @@ export function ChatButton({
     <div className={cn(
       variant === "floating"
         ? "fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50"
-        : "relative inline-block"
+        : "relative w-full"
     )}>
       <Button
         onClick={handleChatClick}

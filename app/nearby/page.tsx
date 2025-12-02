@@ -135,7 +135,7 @@ export default function NearbySalonsPage() {
           </h1>
 
           <p className="text-base md:text-lg text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
-            Encuentra tu salón de belleza ideal en segundos. Reserva fácil y accede a expertos verificados en tu área.
+            Tu salón perfecto, en segundos. Reserva fácil y descubre expertos verificados en tu zona.
           </p>
 
           <div className="max-w-md mx-auto mb-8">
@@ -324,15 +324,15 @@ export default function NearbySalonsPage() {
             <MapPin className="h-8 w-8 text-white" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-femfuel-dark mb-4">
-            ¿No encuentras tu salón favorito?
+            ¿Aún no encuentras tu salón preferido?
           </h2>
           <p className="text-base md:text-lg text-femfuel-medium mb-8 max-w-2xl mx-auto leading-relaxed">
-            Ayúdanos a crecer nuestra comunidad. Invita a tu salón favorito a unirse a FemFuel Beauty.
+            Haz crecer la comunidad FemFuel Beauty. Invita a tu salón preferido a unirse hoy.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white border-2 border-femfuel-rose text-femfuel-rose rounded-full font-semibold text-lg hover:bg-femfuel-light hover:shadow-xl hover:scale-105 transition-all duration-300">
-              Sugerir un Salón
+              Recomendar tu salón preferido
             </button>
             <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
               Explorar Más Zonas

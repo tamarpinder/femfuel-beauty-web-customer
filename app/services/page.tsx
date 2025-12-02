@@ -49,7 +49,7 @@ export default function ServicesPage() {
     priceRange: [0, 10000],
     distance: "25km",
     rating: 0,
-    availability: "anytime",
+    availability: "today",
   })
 
   // Load all services on mount
@@ -167,13 +167,15 @@ export default function ServicesPage() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-6 p-4 md:p-6 max-w-7xl mx-auto">
-        {/* Filters Sidebar - Desktop */}
+        {/* Filters Sidebar - Desktop with Sticky + Independent Scrolling */}
         <div className="md:w-80 flex-shrink-0">
-          <SearchFiltersComponent
-            filters={filters}
-            onFiltersChange={setFilters}
-            resultsCount={filteredServices.length}
-          />
+          <div className="md:sticky md:top-24 md:max-h-[calc(100vh-7rem)] md:overflow-y-auto md:pr-2 scrollbar-thin scrollbar-thumb-femfuel-rose/20 scrollbar-track-transparent">
+            <SearchFiltersComponent
+              filters={filters}
+              onFiltersChange={setFilters}
+              resultsCount={filteredServices.length}
+            />
+          </div>
         </div>
 
         {/* Main Content */}

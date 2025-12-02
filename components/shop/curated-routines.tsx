@@ -180,10 +180,10 @@ export function CuratedRoutines({ onProductClick, onAddAllToCart }: CuratedRouti
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-femfuel-dark mb-4 font-serif">
-            Rutinas de Belleza Curadas
+            Rutinas creadas por especialistas, adaptadas a tus necesidades.
           </h2>
           <p className="text-xl text-femfuel-medium max-w-3xl mx-auto">
-            Descubre sets perfectamente balanceados para cada momento de tu día. Ahorra hasta 15% comprando la rutina completa.
+            Encuentra sets diseñados para cada momento de tu día. Llévate la rutina completa y ahorra hasta un 15%.
           </p>
         </div>
 
@@ -199,18 +199,6 @@ export function CuratedRoutines({ onProductClick, onAddAllToCart }: CuratedRouti
           ))}
         </div>
 
-        {/* Browse All Link */}
-        <div className="text-center">
-          <p className="text-femfuel-medium mb-3">
-            ¿Prefieres explorar por tu cuenta?
-          </p>
-          <a
-            href="/shop#products"
-            className="text-femfuel-rose hover:text-femfuel-rose-hover font-semibold underline underline-offset-4 transition-colors"
-          >
-            Ver todos los productos →
-          </a>
-        </div>
       </div>
     </section>
   )

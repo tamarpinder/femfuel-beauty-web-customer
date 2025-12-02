@@ -222,7 +222,7 @@ export default function VendorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20 pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/30 to-rose-50/20 lg:pt-24">
       {/* Cover Image - Full Width */}
       <div className="relative h-64 md:h-96">
         <img

@@ -127,7 +127,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-femfuel-dark mb-3">Transformaciones Increíbles</h2>
-          <p className="text-base md:text-lg text-femfuel-medium">Descubre el poder de la belleza profesional</p>
+          <p className="text-base md:text-lg text-femfuel-medium">Descubre lo que la belleza profesional puede lograr</p>
         </div>
 
         {/* Category Filters */}

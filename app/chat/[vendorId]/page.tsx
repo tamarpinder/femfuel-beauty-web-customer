@@ -202,7 +202,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 flex flex-col pt-20">{/* Chat page content relies on SmartHeader from layout */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 flex flex-col lg:pt-24">{/* Chat page content relies on SmartHeader from layout */}
 
       {/* Booking Context */}
       {bookingContext && (

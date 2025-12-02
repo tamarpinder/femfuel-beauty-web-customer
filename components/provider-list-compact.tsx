@@ -193,36 +193,36 @@ export function ProviderListCompact({
                   {/* Compact Action Buttons */}
                   <div className="flex items-center gap-2">
                     <Button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onBookNow(vendor)
-                      }}
-                      className="bg-femfuel-rose hover:bg-pink-600 text-white flex-1 h-8 text-sm font-medium"
-                    >
-                      Reservar
-                    </Button>
-                    
-                    <ChatButton
-                      vendorId={vendor.id}
-                      vendorName={vendor.name}
-                      serviceContext={serviceName}
-                      variant="inline"
-                      size="sm"
-                      className="bg-green-500 hover:bg-green-600 h-8 w-8 p-0"
-                    >
-                      <MessageCircle className="h-3 w-3" />
-                    </ChatButton>
-                    
-                    <Button
                       size="sm"
                       variant="outline"
                       onClick={(e) => {
                         e.stopPropagation()
                         onProviderSelect(vendor)
                       }}
-                      className="bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-gray-800 h-8 px-3 text-sm"
+                      className="bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-gray-800 h-8 px-3 text-sm flex-1"
                     >
-                      Ver
+                      Ver Detalles
+                    </Button>
+
+                    <ChatButton
+                      vendorId={vendor.id}
+                      vendorName={vendor.name}
+                      serviceContext={serviceName}
+                      variant="inline"
+                      size="sm"
+                      className="bg-green-500 hover:bg-green-600 h-8 w-8 p-0 flex-shrink-0"
+                    >
+                      <MessageCircle className="h-3 w-3" />
+                    </ChatButton>
+
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onBookNow(vendor)
+                      }}
+                      className="bg-femfuel-rose hover:bg-pink-600 text-white h-8 text-sm font-medium flex-1"
+                    >
+                      Reservar
                     </Button>
                   </div>
                 </CardContent>

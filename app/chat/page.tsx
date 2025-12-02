@@ -117,7 +117,7 @@ export default function ChatMessagesPage() {
   return (
     <>
       {/* Mobile Layout */}
-      <div className="md:hidden min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10 pt-20">{/* Mobile chat page relies on SmartHeader */}
+      <div className="md:hidden min-h-screen bg-gradient-to-br from-white via-purple-50/20 to-rose-50/10">{/* Mobile chat page relies on SmartHeader */}
 
         {/* Search */}
         <div className="p-4 border-b border-femfuel-rose/10 bg-white/80 backdrop-blur-md">

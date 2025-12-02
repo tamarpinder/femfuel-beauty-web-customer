@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { OptimizedImage } from "@/components/ui/optimized-image"
+import { AuthModal } from "@/components/auth-modal"
+import { useAuth } from "@/contexts/auth-context"
 import type { Professional } from "@/types/vendor"
 import {
   ProfessionalRating,
@@ -23,7 +25,10 @@ interface StarProfessionalsProps {
 }
 
 export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio, onBook }: StarProfessionalsProps) {
+  const { isAuthenticated } = useAuth()
   const [selectedProfessional, setSelectedProfessional] = useState(0)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [pendingBooking, setPendingBooking] = useState<{ professionalId: string; serviceName?: string } | null>(null)
 
   if (!professionals.length) return null
 
@@ -36,6 +41,23 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
 
   const prevProfessional = () => {
     setSelectedProfessional((prev) => (prev - 1 + professionals.length) % professionals.length)
+  }
+
+  const handleBookClick = (professionalId: string, serviceName?: string) => {
+    if (!isAuthenticated) {
+      setPendingBooking({ professionalId, serviceName })
+      setShowAuthModal(true)
+      return
+    }
+    onBook?.(professionalId, serviceName)
+  }
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false)
+    if (pendingBooking) {
+      onBook?.(pendingBooking.professionalId, pendingBooking.serviceName)
+      setPendingBooking(null)
+    }
   }
 
   return (
@@ -154,7 +176,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
                   {/* Enhanced Book Now CTA */}
                   <div className="space-y-3">
                     <Button
-                      onClick={() => onBook?.(current.id, current.portfolio?.signature?.serviceName)}
+                      onClick={() => handleBookClick(current.id, current.portfolio?.signature?.serviceName)}
                       className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold py-6 rounded-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl"
                     >
                       <CalendarPlus className="h-5 w-5 mr-2" />
@@ -285,6 +307,13 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
           })}
         </div>
       </div>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+        initialMode="login"
+      />
     </section>
   )
 }

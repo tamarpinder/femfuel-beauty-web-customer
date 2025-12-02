@@ -393,10 +393,10 @@ export default function BookingsPage() {
                   <div className="mb-8 md:mb-12">
                     <Calendar className="h-16 w-16 md:h-20 md:w-20 mx-auto text-gray-300 mb-6" />
                     <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-3">
-                      No tienes reservas próximas
+                      Aún no tienes reservas programadas
                     </h3>
                     <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-                      ¡Es hora de consentirte! Reserva tu próximo servicio de belleza
+                      ¡Toca consentirte! Agenda tu próximo servicio de belleza.
                     </p>
                   </div>
 
@@ -544,7 +544,7 @@ export default function BookingsPage() {
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-full mb-6 shadow-lg">
                   <Star className="h-10 w-10 text-femfuel-rose" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">Aún no tienes servicios completados</h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">Todavía no tienes servicios completados</h3>
                 <p className="text-base md:text-lg text-femfuel-medium mb-6 max-w-md mx-auto">Una vez que completes tu primera cita, podrás dejar reseñas y reservar de nuevo</p>
 
                 {/* Quick Service Access - Enhanced */}
@@ -644,7 +644,7 @@ export default function BookingsPage() {
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-femfuel-light to-pink-50 rounded-full mb-6 shadow-lg">
                   <Calendar className="h-10 w-10 text-femfuel-rose" />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">No tienes reservas canceladas</h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-femfuel-dark mb-3">Aún no tienes reservas canceladas</h3>
                 <p className="text-base md:text-lg text-femfuel-medium">Las citas canceladas aparecerán aquí</p>
               </div>
             )}

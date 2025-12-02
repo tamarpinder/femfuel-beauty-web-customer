@@ -39,8 +39,6 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
   const availabilityOptions = [
     { value: "today", label: "Hoy" },
     { value: "tomorrow", label: "Mañana" },
-    { value: "week", label: "Esta semana" },
-    { value: "anytime", label: "Cualquier momento" },
   ]
 
   const updateFilters = (updates: Partial<SearchFilters>) => {
@@ -60,7 +58,7 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
       priceRange: [0, 10000],
       distance: "25km",
       rating: 0,
-      availability: "anytime",
+      availability: "today",
     })
   }
 
@@ -69,7 +67,7 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
     (filters.priceRange[0] > 0 || filters.priceRange[1] < 10000 ? 1 : 0) +
     (filters.distance !== "25km" ? 1 : 0) +
     (filters.rating > 0 ? 1 : 0) +
-    (filters.availability !== "anytime" ? 1 : 0)
+    (filters.availability !== "today" ? 1 : 0)
 
   const FilterContent = () => (
     <div className="space-y-6">
@@ -255,10 +253,10 @@ export function SearchFiltersComponent({ filters, onFiltersChange, resultsCount 
               <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => updateFilters({ rating: 0 })} />
             </Badge>
           )}
-          {filters.availability !== "anytime" && (
+          {filters.availability !== "today" && (
             <Badge variant="secondary" className="bg-femfuel-purple text-femfuel-dark">
               {availabilityOptions.find((a) => a.value === filters.availability)?.label}
-              <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => updateFilters({ availability: "anytime" })} />
+              <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => updateFilters({ availability: "today" })} />
             </Badge>
           )}
         </div>

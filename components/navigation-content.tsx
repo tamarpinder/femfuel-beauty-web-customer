@@ -17,6 +17,8 @@ import {
 import { UserMenu } from "@/components/user-menu"
 import { LocationSelector } from "@/components/location-selector"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
+import { useCart } from "@/contexts/cart-context"
 
 interface NavigationContentProps {
   onServicesHover?: () => void
@@ -27,6 +29,8 @@ export function NavigationContent({
   onServicesHover,
   onServicesLeave
 }: NavigationContentProps) {
+  const { isAuthenticated } = useAuth()
+  const { items } = useCart()
   const pathname = usePathname()
   const router = useRouter()
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
@@ -34,6 +38,9 @@ export function NavigationContent({
   const [currentLocation, setCurrentLocation] = useState("Santo Domingo")
   const searchInputRef = useRef<HTMLInputElement>(null)
   const searchContainerRef = useRef<HTMLDivElement>(null)
+
+  // Calculate cart count safely
+  const cartCount = items?.reduce((sum, item) => sum + item.quantity, 0) || 0
 
   // Auto-focus when search expands
   useEffect(() => {
@@ -278,10 +285,12 @@ export function NavigationContent({
           aria-label="Favorites"
         >
           <Heart className="h-5 w-5 transition-transform duration-300 group-hover:scale-110 group-hover:fill-femfuel-rose" />
-          {/* Badge - shown if there are favorites */}
-          <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full animate-in zoom-in duration-200 shadow-md">
-            3
-          </span>
+          {/* Badge - only shown if authenticated and has favorites */}
+          {isAuthenticated && (
+            <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full animate-in zoom-in duration-200 shadow-md">
+              0
+            </span>
+          )}
         </Link>
 
         {/* Cart Button */}
@@ -291,10 +300,12 @@ export function NavigationContent({
           aria-label="Shopping cart"
         >
           <ShoppingBag className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-          {/* Badge - shown if there are items in cart */}
-          <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full animate-in zoom-in duration-200 shadow-md">
-            2
-          </span>
+          {/* Badge - only shown if authenticated and has items */}
+          {isAuthenticated && cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full animate-in zoom-in duration-200 shadow-md">
+              {cartCount}
+            </span>
+          )}
         </Link>
 
         {/* Separator */}

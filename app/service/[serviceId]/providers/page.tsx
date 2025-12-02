@@ -206,7 +206,7 @@ export default function ServiceProvidersPage() {
   return (
     <>
       {/* Mobile Layout (< md screens) */}
-      <div className="md:hidden min-h-screen bg-white pt-20">{/* Mobile service page relies on SmartHeader */}
+      <div className="md:hidden min-h-screen bg-white">{/* Mobile service page relies on SmartHeader */}
 
         {/* Compact Service Header */}
         <ServiceHeaderCompact

@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { AuthGuard } from "@/components/auth-guard"
+import { AuthModal } from "@/components/auth-modal"
 import { BookingModal } from "@/components/booking-modal"
 import { OptimizedImage } from "@/components/ui/optimized-image"
+import { useAuth } from "@/contexts/auth-context"
 
 export interface MarketplaceService {
   id: string
@@ -63,7 +65,9 @@ interface ServiceCardProps {
 }
 
 export function ServiceCard({ service, layout = "vertical", vendorId, vendorName, vendorRating, onViewProviders, onBook, onViewVendor }: ServiceCardProps) {
+  const { isAuthenticated } = useAuth()
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
 
   // Use explicit vendor props or fallback to service featuredProvider
   const effectiveVendorId = vendorId || service.featuredProvider?.id
@@ -101,6 +105,18 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
   }
 
   const handleBook = () => {
+    // Check if user is authenticated before showing booking modal
+    if (!isAuthenticated) {
+      setShowAuthModal(true)
+      return
+    }
+    setShowBookingModal(true)
+    onBook?.(service.id)
+  }
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false)
+    // After successful auth, open booking modal
     setShowBookingModal(true)
     onBook?.(service.id)
   }
@@ -173,6 +189,13 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
             </div>
           </CardContent>
         </Card>
+
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess}
+          initialMode="login"
+        />
 
         <BookingModal
           isOpen={showBookingModal}
@@ -295,6 +318,13 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
           </div>
         </CardContent>
       </Card>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+        initialMode="login"
+      />
 
       <BookingModal
         isOpen={showBookingModal}

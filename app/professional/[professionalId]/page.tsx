@@ -328,7 +328,7 @@ export default function ProfessionalPortfolioPage() {
   return (
     <>
       {/* Mobile Layout */}
-      <div className="md:hidden min-h-screen bg-white pt-20">
+      <div className="md:hidden min-h-screen bg-white">
 
         {/* Hero Section */}
         <div className="relative">

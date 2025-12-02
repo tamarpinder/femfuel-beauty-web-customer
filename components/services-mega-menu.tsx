@@ -106,7 +106,7 @@ export function ServicesMegaMenu({ onClose }: ServicesMegaMenuProps) {
             Categorías
           </h3>
           <p className="text-xs text-femfuel-medium">
-            Explora servicios por categoría
+            Explorar servicios
           </p>
         </div>
 

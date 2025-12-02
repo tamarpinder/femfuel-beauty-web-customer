@@ -27,8 +27,8 @@ const categoryMetadata: Record<string, {
   subcategories: string[]
 }> = {
   skincare: {
-    name: "Cuidado Facial",
-    description: "Productos premium para el cuidado de tu piel. Limpiadores, serums, hidratantes y más.",
+    name: "Cuidado de la Piel",
+    description: "Mantén tu piel saludable y luminosa con productos de alta calidad.",
     imageUrl: "/categories/banners/skincare-banner.png",
     subcategories: ["Limpiadores", "Serums", "Hidratantes", "Mascarillas"]
   },
@@ -57,8 +57,8 @@ const categoryMetadata: Record<string, {
     subcategories: ["Esmaltes", "Bases", "Tratamientos", "Herramientas"]
   },
   tools: {
-    name: "Herramientas & Accesorios",
-    description: "Brochas, esponjas y herramientas profesionales para tu rutina de belleza.",
+    name: "Herramientas y Accesorios de Belleza",
+    description: "",
     imageUrl: "/categories/banners/tools-banner.png",
     subcategories: ["Brochas", "Esponjas", "Aplicadores", "Organizadores"]
   }

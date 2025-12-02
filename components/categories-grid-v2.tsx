@@ -43,7 +43,7 @@ export function CategoriesGridV2({ categories }: CategoriesGridV2Props) {
             Categorías Populares
           </h2>
           <p className="text-base md:text-lg text-femfuel-medium max-w-2xl mx-auto px-4">
-            Explora nuestros servicios de belleza más solicitados
+            Descubre nuestros servicios de belleza más populares.
           </p>
         </div>
 
@@ -70,24 +70,24 @@ export function CategoriesGridV2({ categories }: CategoriesGridV2Props) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 transition-opacity duration-500 group-hover:from-black/90 group-hover:via-black/50" />
 
                 {/* Content */}
-                <div className="relative h-full flex flex-col justify-end p-4 md:p-5 lg:p-6">
+                <div className="relative h-full flex flex-col justify-center md:justify-end items-center md:items-start p-4 md:p-5 lg:p-6">
                   {/* Icon */}
-                  <div className="absolute top-4 left-4 md:top-5 md:left-5 lg:top-6 lg:left-6">
+                  <div className="md:absolute md:top-5 md:left-5 lg:top-6 lg:left-6 mb-3 md:mb-0">
                     <div className="w-12 h-12 md:w-13 md:h-13 lg:w-14 lg:h-14 rounded-xl bg-white/90 backdrop-blur-md border border-white/50 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-femfuel-rose group-hover:border-femfuel-rose">
                       <Icon className="h-6 w-6 md:h-6.5 md:w-6.5 lg:h-7 lg:w-7 text-femfuel-dark transition-colors duration-500 group-hover:text-white" />
                     </div>
                   </div>
 
                   {/* Category Info */}
-                  <div className="space-y-1.5 md:space-y-2">
-                    <h3 className="text-xl md:text-xl lg:text-2xl font-bold text-white transition-transform duration-500 group-hover:translate-x-1">
+                  <div className="space-y-1.5 md:space-y-2 text-center md:text-left w-full">
+                    <h3 className="text-xl md:text-xl lg:text-2xl font-bold text-white transition-transform duration-500 md:group-hover:translate-x-1">
                       {category.name}
                     </h3>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-center md:justify-between">
                       <p className="text-white/80 text-sm font-medium">
                         {category.count} servicios
                       </p>
-                      <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center transition-all duration-500 group-hover:bg-femfuel-rose group-hover:w-32">
+                      <div className="hidden md:flex w-8 h-8 rounded-full bg-white/20 backdrop-blur-md items-center justify-center transition-all duration-500 group-hover:bg-femfuel-rose group-hover:w-32">
                         <span className="text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:mr-2">
                           Ver Todo
                         </span>

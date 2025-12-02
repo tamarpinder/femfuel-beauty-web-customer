@@ -50,7 +50,7 @@ export function ShopHeroEnhanced() {
         }}
       >
         {/* Seasonal Badge */}
-        <Badge className="mb-6 px-6 py-2.5 rounded-full bg-white/90 backdrop-blur-md text-femfuel-dark border border-white/60 shadow-xl hover:scale-105 transition-transform duration-300">
+        <Badge className="hidden md:inline-flex mb-6 px-6 py-2.5 rounded-full bg-white/90 backdrop-blur-md text-femfuel-dark border border-white/60 shadow-xl hover:scale-105 transition-transform duration-300">
           <span className="font-semibold">Nueva Colección Verano 2026</span>
         </Badge>
 

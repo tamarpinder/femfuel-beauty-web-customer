@@ -23,11 +23,10 @@ export function HeroSectionV2() {
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-femfuel-dark leading-tight">
                 Tu belleza,
                 <br />
-                <span className="text-femfuel-rose">a un click</span>
+                <span className="text-femfuel-rose">a un solo clic</span>
               </h1>
               <p className="text-base md:text-lg text-femfuel-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Descubre los mejores salones de belleza en República Dominicana.
-                Reserva tu cita en minutos y transforma tu look.
+                Reserva rápido y transforma tu look hoy mismo.
               </p>
             </div>
 

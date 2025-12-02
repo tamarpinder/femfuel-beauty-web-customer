@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ShoppingBag, Heart } from "lucide-react"
 import { useCart } from "@/contexts/cart-context"
+import { useAuth } from "@/contexts/auth-context"
 
 export function MobileHeader() {
+  const { isAuthenticated } = useAuth()
   const { itemCount } = useCart()
 
   return (
@@ -51,7 +53,7 @@ export function MobileHeader() {
                 aria-label={`Carrito (${itemCount} artículos)`}
               >
                 <ShoppingBag className="h-5 w-5 text-femfuel-dark" />
-                {itemCount > 0 && (
+                {isAuthenticated && itemCount > 0 && (
                   <Badge
                     variant="destructive"
                     className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 flex items-center justify-center bg-femfuel-rose text-white text-xs font-bold rounded-full shadow-md"

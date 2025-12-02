@@ -131,7 +131,7 @@ export function DesktopProviderList({
       <div className="bg-gradient-to-r from-white to-gray-50 border-b border-gray-200 p-6 sticky top-0 z-10 backdrop-blur-md">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-femfuel-dark">
-            Elegí tu Especialista
+            Selecciona tu especialista
           </h2>
           <div className="bg-gradient-to-r from-femfuel-rose to-pink-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
             {sortedProviders.length} disponibles
@@ -321,20 +321,20 @@ export function DesktopProviderList({
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
-                      onBookNow(vendor)
+                      onProviderSelect(vendor)
                     }}
-                    className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
+                    className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4 flex-1"
                   >
-                    Reservar
+                    Ver Detalles
                   </Button>
-                  
+
                   <ChatButton
                     vendorId={vendor.id}
                     vendorName={vendor.name}
                     serviceContext={serviceName}
                     variant="inline"
                     size="sm"
-                    className="bg-green-500 hover:bg-green-600 px-4"
+                    className="bg-green-500 hover:bg-green-600 px-4 flex-shrink-0"
                   >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Chatear
@@ -343,11 +343,11 @@ export function DesktopProviderList({
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
-                      onProviderSelect(vendor)
+                      onBookNow(vendor)
                     }}
-                    className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4"
+                    className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
                   >
-                    Ver Detalles
+                    Reservar
                   </Button>
                 </div>
               </CardContent>

@@ -29,7 +29,7 @@ export function FlashSaleBanner() {
                 Ofertas Especiales
               </h2>
               <p className="text-lg text-white/90">
-                Hasta 50% OFF en Productos Seleccionados
+                Ahorra hasta un 50% en productos seleccionados.
               </p>
             </div>
           </div>

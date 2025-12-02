@@ -30,7 +30,7 @@ export function NavigationContent({
   onServicesLeave
 }: NavigationContentProps) {
   const { isAuthenticated } = useAuth()
-  const { items } = useCart()
+  const { cart } = useCart()
   const pathname = usePathname()
   const router = useRouter()
   const [isSearchExpanded, setIsSearchExpanded] = useState(false)
@@ -40,7 +40,7 @@ export function NavigationContent({
   const searchContainerRef = useRef<HTMLDivElement>(null)
 
   // Calculate cart count safely
-  const cartCount = items?.reduce((sum, item) => sum + item.quantity, 0) || 0
+  const cartCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0
 
   // Auto-focus when search expands
   useEffect(() => {

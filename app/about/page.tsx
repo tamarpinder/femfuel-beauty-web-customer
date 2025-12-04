@@ -244,7 +244,7 @@ export default function AboutPage() {
             {impactMetrics.map((metric, index) => (
               <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform">
                     <metric.icon className="h-8 w-8 text-purple-600" />
                   </div>
                   <div className="text-3xl font-bold text-femfuel-dark mb-2">

@@ -23,7 +23,7 @@ export function CategoryCard({ category, onClick }: CategoryCardProps) {
 
   return (
     <Card
-      className="p-0 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-105 cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-lg overflow-hidden rounded-2xl"
+      className="p-0 text-center hover:shadow-2xl transition-all duration-300 active:scale-[0.98] cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-lg overflow-hidden rounded-2xl"
       onClick={handleClick}
     >
       <CardContent className="p-0">
@@ -34,7 +34,7 @@ export function CategoryCard({ category, onClick }: CategoryCardProps) {
               alt={`${category.name} category`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover group-hover:scale-110 transition-transform duration-500"
+              className="object-cover transition-transform duration-500"
               context={category.name.toLowerCase()}
               quality={80}
             />

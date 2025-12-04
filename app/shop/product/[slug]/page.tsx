@@ -67,7 +67,7 @@ export default function ProductDetailPage() {
           <p className="text-femfuel-medium mb-6">El producto "<span className="font-semibold">{productSlug}</span>" no existe en nuestra tienda.</p>
           <Button
             onClick={() => router.push("/shop")}
-            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold rounded-full px-8 py-3 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold rounded-full px-8 py-3 shadow-lg hover:shadow-xl active:scale-95 transition-all"
           >
             Ir a la Tienda
           </Button>

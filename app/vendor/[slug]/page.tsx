@@ -271,11 +271,11 @@ export default function VendorPage() {
                   vendorName={vendor.name}
                   variant="inline"
                   size="md"
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-xl backdrop-blur-md transition-all duration-300 active:scale-95"
                 >
                   💬 Chat
                 </ChatButton>
-                <Button className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-y-1">
+                <Button className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-xl backdrop-blur-md transition-all duration-300 active:scale-95">
                   <Phone className="h-4 w-4 mr-2" />
                   Llamar
                 </Button>
@@ -346,7 +346,7 @@ export default function VendorPage() {
               <div className="flex flex-wrap gap-3">
                 <Button
                   onClick={() => handleServiceBook(contextService.id)}
-                  className="bg-white text-femfuel-rose hover:bg-white/90 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 px-6"
+                  className="bg-white text-femfuel-rose hover:bg-white/90 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-95 px-6"
                 >
                   Reservar Ahora
                 </Button>
@@ -356,7 +356,7 @@ export default function VendorPage() {
                   serviceContext={contextService.name}
                   variant="inline"
                   size="md"
-                  className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/40 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                  className="bg-white/20 hover:bg-white/30 text-white border-2 border-white/40 backdrop-blur-md shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-95"
                 >
                   💬 Preguntar
                 </ChatButton>

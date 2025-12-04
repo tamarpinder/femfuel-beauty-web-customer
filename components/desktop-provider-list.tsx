@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { Star, MapPin, Clock, MessageCircle, Crown, Filter, SlidersHorizontal, ChevronDown, Quote, Verified, Sparkles, TrendingUp } from "lucide-react"
+import { Star, MapPin, Clock, MessageCircle, Crown, Filter, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { ChatButton } from "@/components/ui/chat-button"
+import { VerifiedBadge } from "@/components/ui/verified-badge"
 import type { Vendor } from "@/types/vendor"
 
 interface DesktopProviderListProps {
@@ -42,26 +43,6 @@ export function DesktopProviderList({
     return vendor.availability?.nextSlot || "Today 3:30 PM"
   }
 
-  const getReviewPreview = (vendor: Vendor) => {
-    const reviews = [
-      "Arte de uñas increíble, muy profesional y espacio limpio",
-      "Excelente servicio, mis uñas se ven increíbles!", 
-      "La mejor experiencia de salón, muy recomendado!",
-      "Resultados perfectos cada vez, me encanta venir aquí",
-      "Personal profesional y resultados hermosos",
-      "Calidad excepcional y atención al detalle"
-    ]
-    return reviews[Math.floor(Math.random() * reviews.length)]
-  }
-
-  const getServiceHighlights = (vendor: Vendor, serviceName: string) => {
-    const highlights: Record<string, string[]> = {
-      'Arte de Uñas Tropical': ['Recubrimiento gel', 'Arte de uñas', 'Cuidado profesional'],
-      'Alisado Dominicano': ['Tratamiento queratina', 'Protección térmica', 'Duradero'],
-      'Manicure': ['Cuidado cutículas', 'Aplicación esmalte', 'Masaje manos']
-    }
-    return highlights[serviceName] || ['Servicio profesional', 'Cuidado experto', 'Productos calidad']
-  }
 
   const getAvailabilityStatus = (vendor: Vendor) => {
     const nextSlot = getNextSlot(vendor)
@@ -172,52 +153,47 @@ export function DesktopProviderList({
         </div>
       </div>
 
-      {/* Provider Cards - Clean Vertical Layout (Option C) */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      {/* Provider Cards - Rich Information Layout (Option 2) */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {sortedProviders.map((vendor, index) => {
           const vendorService = vendor.services.find(s => s.name === serviceName)
           const isSelected = selectedProvider === vendor.id
-          const serviceHighlights = getServiceHighlights(vendor, serviceName)
-          const reviewPreview = getReviewPreview(vendor)
-          const availabilityStatus = getAvailabilityStatus(vendor)
           const isTopPerformer = index < 3
+          const businessHours = vendor.businessHours?.monday
+            ? `${vendor.businessHours.monday.open} - ${vendor.businessHours.monday.close}`
+            : "9:00 AM - 7:00 PM"
 
           return (
             <Card
               key={vendor.id}
-              className={`cursor-pointer transition-all duration-300 bg-white border-gray-100 hover:border-femfuel-rose/30 hover:shadow-2xl hover:-translate-y-1 ${
-                isSelected ? 'ring-2 ring-femfuel-rose shadow-2xl border-femfuel-rose' : 'shadow-lg'
+              className={`cursor-pointer transition-all duration-300 bg-white border-0 hover:shadow-2xl ${
+                isSelected ? 'ring-2 ring-femfuel-rose shadow-2xl' : 'shadow-lg'
               }`}
               onClick={() => setSelectedProvider(vendor.id)}
             >
               <CardContent className="p-6">
-                {/* Top Section: Logo + Name on left, Price box on right */}
-                <div className="flex justify-between items-start mb-4">
-                  {/* Left: Logo and Vendor Info */}
-                  <div className="flex items-start gap-4 flex-1">
-                    {/* Logo */}
-                    <div className="relative flex-shrink-0">
-                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 shadow-lg">
-                        <OptimizedImage
-                          src={vendor.logo || "/vendor-logo-placeholder.png"}
-                          alt={`${vendor.name} logo`}
-                          fill
-                          sizes="64px"
-                          className="object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      {isTopPerformer && (
-                        <div className="absolute -top-2 -right-2 bg-yellow-500 text-white rounded-full p-1">
-                          <Crown className="h-3 w-3" />
-                        </div>
-                      )}
+                {/* Top Row: Logo + Name/Badge/Rating */}
+                <div className="flex items-center gap-4 mb-4">
+                  {/* Logo */}
+                  <div className="relative flex-shrink-0">
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-femfuel-rose/10 shadow-lg bg-gradient-to-br from-femfuel-light/30 to-white">
+                      <OptimizedImage
+                        src={vendor.logo || "/vendor-logo-placeholder.png"}
+                        alt={`${vendor.name} logo`}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                        loading="lazy"
+                      />
                     </div>
+                  </div>
 
-                    {/* Vendor Name and Info */}
-                    <div className="flex-1">
-                      <h3 
-                        className="text-xl font-bold text-femfuel-dark mb-2 cursor-pointer hover:text-femfuel-rose transition-colors"
+                  {/* Vendor Info */}
+                  <div className="flex-1 min-w-0">
+                    {/* Name + Badges */}
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <h3
+                        className="text-xl font-bold text-femfuel-dark hover:text-femfuel-rose transition-colors cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation()
                           onProviderSelect(vendor)
@@ -225,130 +201,114 @@ export function DesktopProviderList({
                       >
                         {vendor.name}
                       </h3>
-                      <div className="flex items-center gap-3 mb-2">
-                        {vendor.badges && vendor.badges.length > 0 && (
-                          <Badge className="bg-femfuel-rose text-white px-2 py-1 text-xs">
-                            <Verified className="h-3 w-3 mr-1" />
-                            Verificado
-                          </Badge>
-                        )}
-                        {isTopPerformer && (
-                          <Badge className="bg-yellow-500 text-white px-2 py-1 text-xs">
-                            <Sparkles className="h-3 w-3 mr-1" />
-                            Primera Opción
-                          </Badge>
-                        )}
+                      {vendor.badges && vendor.badges.length > 0 && (
+                        <VerifiedBadge size="md" showTooltip />
+                      )}
+                    </div>
+
+                    {/* Rating and Distance */}
+                    <div className="flex items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400 flex-shrink-0" />
+                        <span className="font-bold text-femfuel-dark">{vendor.rating}</span>
+                        <span className="text-femfuel-medium">({vendor.reviewCount})</span>
                       </div>
-                      <div className="flex items-center gap-4 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
-                          <span className="text-femfuel-medium">({vendor.reviewCount} reseñas)</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-femfuel-medium">
-                          <MapPin className="h-4 w-4" />
-                          <span>{getDistanceText(vendor)}</span>
-                        </div>
+                      <span className="text-gray-300">•</span>
+                      <div className="flex items-center gap-1 text-femfuel-medium">
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        <span>{getDistanceText(vendor)}</span>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Right: Price Box */}
-                  {vendorService && (
-                    <div className="text-right bg-femfuel-purple rounded-lg p-3 min-w-[120px]">
-                      <div className="text-xl font-bold text-black">
+                {/* Info Cards Row */}
+                {vendorService && (
+                  <div className="grid grid-cols-3 gap-3 mb-4">
+                    {/* Price Card */}
+                    <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                      <div className="text-xs text-femfuel-medium mb-1 font-medium">Precio</div>
+                      <div className="text-2xl font-bold text-femfuel-dark">
                         {formatPrice(vendorService.price)}
                       </div>
-                      <div className="text-sm text-femfuel-medium">
-                        {vendorService.duration} min
+                    </div>
+
+                    {/* Duration Card */}
+                    <div className="bg-gradient-to-br from-purple-50 to-white rounded-xl p-4 border border-purple-200 shadow-sm">
+                      <div className="text-xs text-purple-700 mb-1 font-medium">Duración</div>
+                      <div className="text-2xl font-bold text-purple-700">
+                        {vendorService.duration}
+                        <span className="text-sm ml-1">min</span>
                       </div>
                     </div>
-                  )}
-                </div>
 
-                {/* Review Quote Section */}
-                <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <div className="flex items-start gap-2">
-                    <Quote className="h-4 w-4 text-femfuel-medium flex-shrink-0 mt-1" />
-                    <div className="flex-1">
-                      <p className="text-sm text-femfuel-dark italic">
-                        "{reviewPreview}"
-                      </p>
-                      <p className="text-xs text-femfuel-medium mt-1">- Cliente verificado</p>
+                    {/* Availability Card */}
+                    <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-4 border border-green-200 shadow-sm">
+                      <div className="text-xs text-green-700 mb-1 font-medium">Disponibilidad</div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0 animate-pulse" />
+                        <span className="text-sm font-bold text-green-700">{getNextSlot(vendor)}</span>
+                      </div>
                     </div>
                   </div>
+                )}
+
+                {/* Business Hours */}
+                <div className="flex items-center gap-2 text-sm text-femfuel-medium mb-3">
+                  <Clock className="h-4 w-4" />
+                  <span>Horario: Lun-Sab {businessHours}</span>
                 </div>
 
-                {/* Service Highlights - Horizontal */}
+                {/* Service Specialties */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {serviceHighlights.map((highlight, index) => (
-                    <Badge 
-                      key={index}
-                      variant="outline" 
-                      className="text-sm bg-white border-femfuel-rose/30 text-femfuel-dark"
+                  {vendor.services?.slice(0, 4).map((service, idx) => (
+                    <Badge
+                      key={idx}
+                      variant="outline"
+                      className="text-xs bg-white border-femfuel-rose/30 text-femfuel-dark px-2 py-1"
                     >
-                      ✓ {highlight}
+                      ✓ {service.name}
                     </Badge>
                   ))}
                 </div>
 
-                {/* Multiple Available Time Slots - Desktop Only */}
-                <div className="mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Clock className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium text-femfuel-dark">
-                      Horarios disponibles:
-                    </span>
+                {/* Action Buttons */}
+                <div className="space-y-2">
+                  {/* Top Row: Ver Perfil + Reservar */}
+                  <div className="flex items-center gap-3">
+                    <Button
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onProviderSelect(vendor)
+                      }}
+                      className="flex-1 h-11 border-2 border-femfuel-rose/30 text-femfuel-dark hover:bg-femfuel-rose hover:text-white font-semibold transition-all duration-300"
+                    >
+                      Ver Perfil
+                    </Button>
+
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onBookNow(vendor)
+                      }}
+                      className="flex-1 h-11 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white font-bold shadow-md hover:shadow-xl transition-all duration-300"
+                    >
+                      Reservar
+                    </Button>
                   </div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 text-sm font-medium">
-                      {getNextSlot(vendor)}
-                    </Badge>
-                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 text-sm font-medium">
-                      {getNextSlot(vendor).includes('Today') ? 'Hoy 5:00 PM' : 'Mañana 2:30 PM'}
-                    </Badge>
-                    <Badge className="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 text-sm font-medium">
-                      {getNextSlot(vendor).includes('Today') ? 'Hoy 7:00 PM' : 'Mañana 4:00 PM'}
-                    </Badge>
-                  </div>
-                </div>
 
-                {/* Divider */}
-                <div className="border-t border-gray-200 mb-4"></div>
-
-                {/* Action Buttons at Bottom */}
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onProviderSelect(vendor)
-                    }}
-                    className="glassmorphism-button-perfect border-femfuel-rose text-femfuel-rose hover:bg-femfuel-rose hover:text-white px-4 flex-1"
-                  >
-                    Ver Detalles
-                  </Button>
-
+                  {/* Bottom Row: Chat Button Full Width */}
                   <ChatButton
                     vendorId={vendor.id}
                     vendorName={vendor.name}
                     serviceContext={serviceName}
                     variant="inline"
-                    size="sm"
-                    className="bg-green-500 hover:bg-green-600 px-4 flex-shrink-0"
+                    className="w-full h-11 bg-green-500 hover:bg-green-600 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                   >
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Chatear
+                    <MessageCircle className="h-4 w-4" />
+                    Chatear con {vendor.name}
                   </ChatButton>
-
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onBookNow(vendor)
-                    }}
-                    className="bg-femfuel-rose hover:bg-femfuel-rose-hover text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 flex-1"
-                  >
-                    Reservar
-                  </Button>
                 </div>
               </CardContent>
             </Card>

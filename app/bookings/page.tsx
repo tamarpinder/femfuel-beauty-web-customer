@@ -404,10 +404,10 @@ export default function BookingsPage() {
                   <div className="grid grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-12">
                     <div
                       onClick={() => router.push("/category/unas")}
-                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 active:scale-95 transition-all duration-300 cursor-pointer group"
                     >
                       <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
-                        <Hand className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                        <Hand className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose transition-transform" />
                       </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Manicure</h4>
                       <p className="text-sm text-gray-500">Uñas perfectas</p>
@@ -415,10 +415,10 @@ export default function BookingsPage() {
 
                     <div
                       onClick={() => router.push("/category/spa")}
-                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 active:scale-95 transition-all duration-300 cursor-pointer group"
                     >
                       <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
-                        <Flower2 className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                        <Flower2 className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose transition-transform" />
                       </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Facial</h4>
                       <p className="text-sm text-gray-500">Cuidado de la piel</p>
@@ -426,10 +426,10 @@ export default function BookingsPage() {
 
                     <div
                       onClick={() => router.push("/category/maquillaje")}
-                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 active:scale-95 transition-all duration-300 cursor-pointer group"
                     >
                       <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
-                        <Palette className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                        <Palette className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose transition-transform" />
                       </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Maquillaje</h4>
                       <p className="text-sm text-gray-500">Look perfecto</p>
@@ -437,10 +437,10 @@ export default function BookingsPage() {
 
                     <div
                       onClick={() => router.push("/category/peinados")}
-                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 hover:scale-105 transition-all duration-300 cursor-pointer group"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 md:p-8 shadow-lg hover:shadow-xl hover:border-femfuel-rose/30 active:scale-95 transition-all duration-300 cursor-pointer group"
                     >
                       <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-femfuel-light to-pink-50 flex items-center justify-center mx-auto mb-4 shadow-md group-hover:shadow-lg transition-shadow">
-                        <Scissors className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose group-hover:scale-110 transition-transform" />
+                        <Scissors className="h-6 w-6 md:h-7 md:w-7 text-femfuel-rose transition-transform" />
                       </div>
                       <h4 className="font-semibold text-gray-900 mb-2">Peinado</h4>
                       <p className="text-sm text-gray-500">Estilo único</p>
@@ -450,7 +450,7 @@ export default function BookingsPage() {
                   {/* CTA Button */}
                   <Button
                     onClick={() => router.push("/")}
-                    className="w-full md:w-auto bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white px-8 py-4 text-base font-semibold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                    className="w-full md:w-auto bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white px-8 py-4 text-base font-semibold rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
                   >
                     Explorar Todos los Servicios
                   </Button>
@@ -464,7 +464,7 @@ export default function BookingsPage() {
               <BookingSkeletonList count={2} />
             ) : completedBookings.length > 0 ? (
               completedBookings.map((booking) => (
-                <Card key={booking.id} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                <Card key={booking.id} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98]">
                   <CardContent className="p-3 sm:p-4">
                     <div className="flex items-start gap-3">
                       <img
@@ -529,8 +529,8 @@ export default function BookingsPage() {
                               <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full border border-white"></div>
                             )}
                           </Button>
-                          <Button variant="outline" size="sm" onClick={() => handleReview(booking.id)} className="flex-1 text-xs py-1.5 px-2">
-                            <Star className="h-3 w-3 mr-1" />
+                          <Button variant="outline" onClick={() => handleReview(booking.id)} className="min-h-[44px] flex-1 text-sm px-3">
+                            <Star className="h-4 w-4 mr-1.5" />
                             Reseñar
                           </Button>
                         </div>
@@ -570,7 +570,7 @@ export default function BookingsPage() {
                   </div>
                 </div>
 
-                <Button onClick={() => router.push("/")} className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                <Button onClick={() => router.push("/")} className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300">
                   Reservar Mi Primera Cita
                 </Button>
               </div>

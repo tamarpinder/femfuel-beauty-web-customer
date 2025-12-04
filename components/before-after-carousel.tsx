@@ -179,7 +179,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
           <div className="flex gap-3 mb-4">
             <button
               onClick={() => setShowBefore(true)}
-              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
+              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 active:scale-95 ${
                 showBefore
                   ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg border-2 border-transparent'
                   : 'bg-white/80 backdrop-blur-md text-femfuel-dark border-2 border-femfuel-rose/10 hover:shadow-lg'
@@ -189,7 +189,7 @@ export function BeforeAfterCarousel({ serviceName, category, images, beforeAfter
             </button>
             <button
               onClick={() => setShowBefore(false)}
-              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
+              className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 active:scale-95 ${
                 !showBefore
                   ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg border-2 border-transparent'
                   : 'bg-white/80 backdrop-blur-md text-femfuel-dark border-2 border-femfuel-rose/10 hover:shadow-lg'

@@ -81,7 +81,7 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center space-y-4">
-          <h2 className="text-xl font-bold text-femfuel-dark">Inicia sesión para ver tu perfil</h2>
+          <h2 className="text-xl font-bold text-femfuel-dark">Inicia sesión para acceder a tu perfil.</h2>
           <Button onClick={() => router.push("/login")} className="bg-femfuel-rose hover:bg-femfuel-rose/90">
             Iniciar Sesión
           </Button>

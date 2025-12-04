@@ -92,7 +92,7 @@ export function NearbyBeauty({
               className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-300 ${
                 viewMode === 'list'
                   ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105'
-                  : 'text-femfuel-dark hover:bg-white/50 hover:scale-105'
+                  : 'text-femfuel-dark hover:bg-white/50 '
               }`}
             >
               <List className="h-4 w-4" />
@@ -103,7 +103,7 @@ export function NearbyBeauty({
               className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-300 ${
                 viewMode === 'map'
                   ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105'
-                  : 'text-femfuel-dark hover:bg-white/50 hover:scale-105'
+                  : 'text-femfuel-dark hover:bg-white/50 '
               }`}
             >
               <Map className="h-4 w-4" />
@@ -117,7 +117,7 @@ export function NearbyBeauty({
           <Button
             variant={selectedNeighborhood === null ? "default" : "outline"}
             size="sm"
-            className={`whitespace-nowrap rounded-xl font-bold transition-all duration-300 ${selectedNeighborhood === null ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl hover:scale-105' : 'border-2 border-femfuel-rose/20 text-femfuel-medium hover:bg-femfuel-rose hover:text-white hover:scale-105 hover:shadow-md'}`}
+            className={`whitespace-nowrap rounded-xl font-bold transition-all duration-300 ${selectedNeighborhood === null ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl ' : 'border-2 border-femfuel-rose/20 text-femfuel-medium hover:bg-femfuel-rose hover:text-white  hover:shadow-md'}`}
             onClick={() => setSelectedNeighborhood(null)}
           >
             Todos los sectores
@@ -127,7 +127,7 @@ export function NearbyBeauty({
               key={neighborhood}
               variant={selectedNeighborhood === neighborhood ? "default" : "outline"}
               size="sm"
-              className={`whitespace-nowrap rounded-xl font-bold transition-all duration-300 ${selectedNeighborhood === neighborhood ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl hover:scale-105' : 'border-2 border-femfuel-rose/20 text-femfuel-medium hover:bg-femfuel-rose hover:text-white hover:scale-105 hover:shadow-md'}`}
+              className={`whitespace-nowrap rounded-xl font-bold transition-all duration-300 ${selectedNeighborhood === neighborhood ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl ' : 'border-2 border-femfuel-rose/20 text-femfuel-medium hover:bg-femfuel-rose hover:text-white  hover:shadow-md'}`}
               onClick={() => setSelectedNeighborhood(neighborhood)}
             >
               {neighborhood}
@@ -153,12 +153,12 @@ export function NearbyBeauty({
         {viewMode === 'list' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredLocations.map((location) => (
-            <Card key={location.id} className="overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group flex flex-col h-full bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30">
+            <Card key={location.id} className="overflow-hidden shadow-lg hover:shadow-2xl  transition-all duration-300 group flex flex-col h-full bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30">
               <div className="relative">
                 <img
                   src={location.image}
                   alt={location.name}
-                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-48 object-cover  transition-transform duration-500"
                 />
                 {/* Enhanced Open Now Badge */}
                 <div className="absolute top-3 left-3">
@@ -226,13 +226,13 @@ export function NearbyBeauty({
                 </div>
 
                 {/* Local Specialty */}
-                <div className="bg-gradient-to-br from-femfuel-light/50 to-pink-50/50 backdrop-blur-sm rounded-xl p-3 mb-4 border-2 border-femfuel-rose/20 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
+                <div className="bg-gradient-to-br from-femfuel-light/50 to-pink-50/50 backdrop-blur-sm rounded-xl p-3 mb-4 border-2 border-femfuel-rose/20 shadow-sm hover:shadow-md  transition-all duration-300">
                   <p className="text-xs text-femfuel-medium mb-1 font-semibold uppercase tracking-wide">Especialidad Local</p>
                   <p className="font-bold text-femfuel-dark text-sm">{location.localSpecialty}</p>
                 </div>
 
                 {/* Service Availability */}
-                <div className="bg-gradient-to-br from-white/80 to-femfuel-light/30 backdrop-blur-sm border-2 border-femfuel-rose/30 rounded-xl p-3 mb-4 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
+                <div className="bg-gradient-to-br from-white/80 to-femfuel-light/30 backdrop-blur-sm border-2 border-femfuel-rose/30 rounded-xl p-3 mb-4 shadow-sm hover:shadow-md  transition-all duration-300">
                   <p className="text-xs text-femfuel-medium mb-2 font-semibold uppercase tracking-wide">Servicios Disponibles</p>
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2">
@@ -251,12 +251,12 @@ export function NearbyBeauty({
                 {/* Specialties */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {location.specialties.slice(0, 3).map((specialty) => (
-                    <Badge key={specialty} className="text-xs bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/30 text-femfuel-dark hover:bg-femfuel-light hover:scale-105 transition-all duration-300 font-medium shadow-sm">
+                    <Badge key={specialty} className="text-xs bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/30 text-femfuel-dark hover:bg-femfuel-light  transition-all duration-300 font-medium shadow-sm">
                       {specialty}
                     </Badge>
                   ))}
                   {location.specialties.length > 3 && (
-                    <Badge className="text-xs bg-gradient-to-r from-femfuel-rose to-pink-600 text-white border-0 hover:scale-105 transition-all duration-300 font-bold shadow-md">
+                    <Badge className="text-xs bg-gradient-to-r from-femfuel-rose to-pink-600 text-white border-0  transition-all duration-300 font-bold shadow-md">
                       +{location.specialties.length - 3}
                     </Badge>
                   )}
@@ -266,7 +266,7 @@ export function NearbyBeauty({
                 <div className="space-y-2 mt-auto">
                   <Button
                     onClick={() => onBookLocation?.(location.id)}
-                    className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white text-sm font-bold rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-femfuel-rose/30 active:scale-95"
+                    className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white text-sm font-bold rounded-xl transition-all duration-300   hover:shadow-xl hover:shadow-femfuel-rose/30 active:scale-95"
                     disabled={!location.openNow}
                   >
                     {location.openNow ? "Reservar Ahora" : "Ver Horarios"}
@@ -278,7 +278,7 @@ export function NearbyBeauty({
                       variant="outline"
                       size="sm"
                       onClick={() => onGetDirections?.(location.id)}
-                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/30 text-femfuel-dark hover:bg-femfuel-rose hover:text-white hover:border-femfuel-rose rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 text-sm md:text-xs font-bold min-h-[44px]"
+                      className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/30 text-femfuel-dark hover:bg-femfuel-rose hover:text-white hover:border-femfuel-rose rounded-xl transition-all duration-300  hover:shadow-lg active:scale-95 text-sm md:text-xs font-bold min-h-[44px]"
                     >
                       <Navigation className="h-4 w-4 md:h-3.5 md:w-3.5 mr-1.5 flex-shrink-0" />
                       <span className="hidden sm:inline">Cómo llegar</span>
@@ -289,7 +289,7 @@ export function NearbyBeauty({
                       variant="outline"
                       size="sm"
                       onClick={() => onCallLocation?.(location.phone)}
-                      className="bg-white/80 backdrop-blur-md border-2 border-green-500/30 text-green-700 hover:bg-green-500 hover:text-white hover:border-green-500 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 text-sm md:text-xs font-bold min-h-[44px]"
+                      className="bg-white/80 backdrop-blur-md border-2 border-green-500/30 text-green-700 hover:bg-green-500 hover:text-white hover:border-green-500 rounded-xl transition-all duration-300  hover:shadow-lg active:scale-95 text-sm md:text-xs font-bold min-h-[44px]"
                     >
                       <Phone className="h-4 w-4 md:h-3.5 md:w-3.5 mr-1.5 flex-shrink-0" />
                       Llamar
@@ -303,7 +303,7 @@ export function NearbyBeauty({
                     serviceContext={location.localSpecialty}
                     variant="inline"
                     size="md"
-                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm font-bold rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-green-500/30 active:scale-95"
+                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm font-bold rounded-xl transition-all duration-300   hover:shadow-xl hover:shadow-green-500/30 active:scale-95"
                   >
                     <MessageCircle className="h-4 w-4 mr-1.5" />
                     Chatear
@@ -320,7 +320,7 @@ export function NearbyBeauty({
           <div className="text-center mt-8">
             <Button
               variant="outline"
-              className="border-2 border-femfuel-rose text-femfuel-rose hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white hover:border-transparent rounded-xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 font-bold"
+              className="border-2 border-femfuel-rose text-femfuel-rose hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white hover:border-transparent rounded-xl shadow-md hover:shadow-xl  transition-all duration-300 font-bold"
             >
               Ver Más Ubicaciones
               <ChevronRight className="h-4 w-4 ml-2" />
@@ -330,23 +330,23 @@ export function NearbyBeauty({
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 p-6 bg-gradient-to-br from-femfuel-light/50 to-pink-50/50 rounded-2xl shadow-lg border-2 border-femfuel-rose/20">
-          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg  transition-all duration-300">
             <div className="text-3xl font-bold bg-gradient-to-r from-femfuel-rose to-pink-600 bg-clip-text text-transparent">{locations.length}</div>
             <div className="text-sm text-femfuel-medium font-semibold mt-1">Ubicaciones cerca</div>
           </div>
-          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg  transition-all duration-300">
             <div className="text-3xl font-bold bg-gradient-to-r from-femfuel-rose to-pink-600 bg-clip-text text-transparent">
               {Math.round(locations.reduce((acc, loc) => acc + loc.rating, 0) / locations.length * 10) / 10}
             </div>
             <div className="text-sm text-femfuel-medium font-semibold mt-1">Promedio rating</div>
           </div>
-          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg  transition-all duration-300">
             <div className="text-3xl font-bold bg-gradient-to-r from-femfuel-rose to-pink-600 bg-clip-text text-transparent">
               {locations.filter(loc => loc.openNow).length}
             </div>
             <div className="text-sm text-femfuel-medium font-semibold mt-1">Abiertas ahora</div>
           </div>
-          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <div className="text-center p-4 bg-white/80 backdrop-blur-sm rounded-xl shadow-md hover:shadow-lg  transition-all duration-300">
             <div className="text-3xl font-bold bg-gradient-to-r from-femfuel-rose to-pink-600 bg-clip-text text-transparent">
               {Math.min(...locations.map(loc => parseInt(loc.travelTime)))}min
             </div>

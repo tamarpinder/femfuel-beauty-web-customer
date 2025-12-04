@@ -22,13 +22,13 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         // FemFuel-specific variants
         femfuel:
-          "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 hover:from-femfuel-rose/90 hover:to-pink-600/90",
+          "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl active:scale-95 hover:from-femfuel-rose/90 hover:to-pink-600/90",
         "femfuel-outline":
           "border-2 border-femfuel-rose/30 bg-white/80 backdrop-blur-md text-femfuel-dark shadow-sm hover:bg-femfuel-rose hover:text-white hover:border-femfuel-rose hover:shadow-lg",
         glass:
           "bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 text-femfuel-dark shadow-lg hover:shadow-xl hover:bg-white/90 hover:border-femfuel-rose/20",
         success:
-          "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-1 hover:from-green-600 hover:to-green-700",
+          "bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl active:scale-95 hover:from-green-600 hover:to-green-700",
       },
       size: {
         default: "min-h-[44px] sm:h-9 px-4 py-2 has-[>svg]:px-3",

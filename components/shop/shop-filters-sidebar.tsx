@@ -318,7 +318,7 @@ export function ShopFiltersSidebar({ onFiltersChange, className = "" }: ShopFilt
                     filters.colors.includes(color.name)
                       ? 'border-femfuel-rose ring-2 ring-femfuel-rose/30'
                       : 'border-gray-300'
-                  } hover:scale-110 transition-all duration-300`}
+                  } active:scale-95 transition-all duration-300`}
                   style={{ backgroundColor: color.hex }}
                   title={color.name}
                 >

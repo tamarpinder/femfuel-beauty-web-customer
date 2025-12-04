@@ -224,7 +224,7 @@ export default function CancellationPolicyPage() {
                   className="flex flex-col items-center cursor-pointer group"
                   onClick={() => setSelectedTier(tier.id)}
                 >
-                  <div className={`w-16 h-16 ${tier.bgColor} rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform ${selectedTier === tier.id ? 'ring-4 ring-offset-2 ring-purple-500' : ''}`}>
+                  <div className={`w-16 h-16 ${tier.bgColor} rounded-full flex items-center justify-center mb-3 transition-transform ${selectedTier === tier.id ? 'ring-4 ring-offset-2 ring-purple-500' : ''}`}>
                     <tier.icon className={`h-8 w-8 ${tier.iconColor}`} />
                   </div>
                   <div className="text-center">
@@ -241,7 +241,7 @@ export default function CancellationPolicyPage() {
             {cancellationTiers.map((tier) => (
               <Card
                 key={tier.id}
-                className={`bg-white/80 backdrop-blur-md border-2 ${tier.borderColor} ${selectedTier === tier.id ? 'shadow-2xl scale-105' : 'shadow-lg'} hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer rounded-2xl`}
+                className={`bg-white/80 backdrop-blur-md border-2 ${tier.borderColor} ${selectedTier === tier.id ? 'shadow-2xl scale-105' : 'shadow-lg'} hover:shadow-xl active:scale-95 transition-all duration-300 cursor-pointer rounded-2xl`}
                 onClick={() => setSelectedTier(tier.id)}
               >
                 <CardContent className="p-6">
@@ -297,7 +297,7 @@ export default function CancellationPolicyPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {specialCircumstances.map((circumstance, index) => (
-              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl">
+              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 rounded-2xl">
                 <CardContent className="p-6">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-lg shadow-md flex items-center justify-center mb-4">
                     <circumstance.icon className="h-6 w-6 text-purple-600" />
@@ -332,7 +332,7 @@ export default function CancellationPolicyPage() {
                 {index < howToCancel.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-purple-200"></div>
                 )}
-                <div className="relative bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-center h-full flex flex-col min-h-[280px]">
+                <div className="relative bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 rounded-2xl p-6 shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 text-center h-full flex flex-col min-h-[280px]">
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-full shadow-md flex items-center justify-center mx-auto mb-4">
                     <step.icon className="h-8 w-8 text-purple-600" />
                   </div>
@@ -359,7 +359,7 @@ export default function CancellationPolicyPage() {
             </p>
             <button
               onClick={handleManageBookings}
-              className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
+              className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center gap-3 mx-auto"
             >
               <Calendar className="h-5 w-5" />
               Gestionar Mis Reservas
@@ -459,7 +459,7 @@ export default function CancellationPolicyPage() {
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 rounded-xl">
+              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl active:scale-[0.99] transition-all duration-300 rounded-xl">
                 <CardContent className="p-0">
                   <button
                     onClick={() => toggleFaq(index)}
@@ -508,12 +508,12 @@ export default function CancellationPolicyPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleContactSupport}
-              className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-3 justify-center"
+              className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-3 justify-center"
             >
               <MessageSquare className="h-5 w-5" />
               Contactar Soporte
             </button>
-            <button className="border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-3 justify-center">
+            <button className="border-2 border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 flex items-center gap-3 justify-center">
               <FileText className="h-5 w-5" />
               Descargar Política PDF
             </button>

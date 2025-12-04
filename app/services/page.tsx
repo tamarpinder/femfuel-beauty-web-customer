@@ -241,7 +241,7 @@ export default function ServicesPage() {
                   <div
                     key={service.id}
                     onClick={() => handleServiceClick(service)}
-                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 flex flex-col"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-[0.98] flex flex-col"
                   >
                     {/* Service Image */}
                     <div className="aspect-[3/2] relative overflow-hidden flex-shrink-0">
@@ -250,7 +250,7 @@ export default function ServicesPage() {
                         alt={service.name}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-cover transition-transform duration-500"
                         context={service.category}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

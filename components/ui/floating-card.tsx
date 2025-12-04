@@ -8,9 +8,9 @@ export interface FloatingCardProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 const liftMap = {
-  sm: "hover:-translate-y-1",
-  md: "hover:-translate-y-2",
-  lg: "hover:-translate-y-3"
+  sm: "active:scale-[0.98]",
+  md: "active:scale-[0.98]",
+  lg: "active:scale-95"
 }
 
 const shadowMap = {

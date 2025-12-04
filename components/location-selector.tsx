@@ -113,7 +113,7 @@ export function LocationSelector({ currentLocation, onLocationChange }: Location
         className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-femfuel-medium hover:text-femfuel-dark hover:bg-femfuel-light/50 border-2 border-transparent hover:border-femfuel-rose/20 transition-all duration-300 group shadow-sm hover:shadow-md"
         aria-label="Select location"
       >
-        <MapPin className="h-4 w-4 text-femfuel-rose group-hover:scale-110 transition-transform duration-300" />
+        <MapPin className="h-4 w-4 text-femfuel-rose transition-transform duration-300" />
         <span className="font-medium">{currentLocation}</span>
         <svg
           className={`h-4 w-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
@@ -159,7 +159,7 @@ export function LocationSelector({ currentLocation, onLocationChange }: Location
               <div className="border-t-2 border-femfuel-rose/10 p-3">
                 <button
                   onClick={() => setShowAllLocations(true)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 group"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose shadow-md hover:shadow-lg active:scale-95 transition-all duration-300 group"
                 >
                   <span>Ver Todas las Ubicaciones</span>
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />

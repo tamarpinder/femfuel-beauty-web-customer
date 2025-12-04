@@ -11,7 +11,7 @@ export const buttonPress = {
   subtle: "active:scale-[0.98] transition-transform duration-100",
   medium: "active:scale-95 transition-transform duration-150",
   strong: "active:scale-90 transition-transform duration-150",
-  bounce: "active:scale-95 hover:scale-105 transition-transform duration-200 ease-out"
+  bounce: "active:scale-95 transition-transform duration-200 ease-out"
 }
 
 /**
@@ -19,11 +19,11 @@ export const buttonPress = {
  * Apply to cards for interactive feedback
  */
 export const cardHover = {
-  lift: "transition-all duration-300 hover:-translate-y-2 hover:shadow-xl",
-  liftSubtle: "transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
-  scale: "transition-transform duration-300 hover:scale-[1.02]",
+  lift: "transition-all duration-300 active:scale-[0.98] hover:shadow-xl",
+  liftSubtle: "transition-all duration-300 active:scale-[0.98] hover:shadow-lg",
+  scale: "transition-transform duration-300 active:scale-[0.98]",
   glow: "transition-all duration-300 hover:shadow-2xl hover:shadow-femfuel-rose/20",
-  float: "transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl animate-float"
+  float: "transition-all duration-500 active:scale-95 hover:shadow-2xl animate-float"
 }
 
 /**

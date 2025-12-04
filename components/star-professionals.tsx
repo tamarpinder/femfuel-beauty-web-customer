@@ -75,7 +75,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
               {/* Professional Info */}
               <div className="md:w-1/3 p-6 md:p-8 bg-gradient-to-br from-femfuel-light to-pink-50">
                 <div className="text-center">
-                  <Avatar className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 ring-4 ring-femfuel-rose/20 hover:ring-femfuel-rose/40 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105">
+                  <Avatar className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 ring-4 ring-femfuel-rose/20 hover:ring-femfuel-rose/40 transition-all duration-300 shadow-xl hover:shadow-2xl">
                     <AvatarImage src={current.image} alt={current.name} />
                     <AvatarFallback className="bg-gradient-to-br from-femfuel-rose to-pink-600 text-white text-xl md:text-2xl font-bold shadow-md">
                       {current.name.split(' ').map(n => n[0]).join('')}
@@ -119,7 +119,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
                       return (
                         <div
                           key={index}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-femfuel-rose/30 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-femfuel-rose/30 shadow-sm hover:shadow-md transition-all duration-300"
                         >
                           <SpecialtyIcon className="h-3.5 w-3.5 text-femfuel-rose" />
                           <span className="text-xs font-medium text-femfuel-dark">{specialty}</span>
@@ -166,7 +166,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
 
                   {/* Signature Service */}
                   {current.portfolio?.signature && (
-                    <div className="bg-gradient-to-br from-white/80 to-femfuel-light/50 backdrop-blur-sm rounded-xl p-4 mb-6 border-2 border-femfuel-rose/20 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                    <div className="bg-gradient-to-br from-white/80 to-femfuel-light/50 backdrop-blur-sm rounded-xl p-4 mb-6 border-2 border-femfuel-rose/20 shadow-lg hover:shadow-xl transition-all duration-300">
                       <p className="text-xs text-femfuel-medium mb-1 font-semibold uppercase tracking-wide">Especialidad Exclusiva</p>
                       <p className="font-bold text-femfuel-dark text-sm mb-1">{current.portfolio.signature.serviceName}</p>
                       <p className="text-lg font-bold bg-gradient-to-r from-femfuel-rose to-pink-600 bg-clip-text text-transparent">{current.portfolio.signature.price}</p>
@@ -177,7 +177,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
                   <div className="space-y-3">
                     <Button
                       onClick={() => handleBookClick(current.id, current.portfolio?.signature?.serviceName)}
-                      className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold py-6 rounded-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-xl hover:shadow-2xl"
+                      className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold py-6 rounded-xl active:scale-95 transition-all duration-300 shadow-xl hover:shadow-2xl"
                     >
                       <CalendarPlus className="h-5 w-5 mr-2" />
                       Reservar Ahora
@@ -207,7 +207,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
                         alt={`${current.name} portfolio ${index + 1}`}
                         fill
                         sizes="(max-width: 768px) 50vw, 33vw"
-                        className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-90"
+                        className="object-cover transition-all duration-500 group-hover:brightness-90"
                         context="portfolio"
                         quality={75}
                         instant={true}
@@ -272,7 +272,7 @@ export function StarProfessionals({ professionals, onViewVendor, onViewPortfolio
             return (
               <Card
                 key={professional.id}
-                className={`cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 rounded-2xl border-2 ${
+                className={`cursor-pointer shadow-lg hover:shadow-2xl active:scale-[0.98] transition-all duration-300 rounded-2xl border-2 ${
                   index === selectedProfessional
                     ? 'ring-4 ring-femfuel-rose/30 shadow-2xl scale-105 border-femfuel-rose bg-gradient-to-br from-white to-femfuel-light/30'
                     : 'border-femfuel-rose/10 hover:border-femfuel-rose/30 bg-white/80 backdrop-blur-sm'

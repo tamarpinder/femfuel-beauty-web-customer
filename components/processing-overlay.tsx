@@ -311,13 +311,13 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
                   className="relative z-20 w-full bg-white/20 hover:bg-femfuel-rose backdrop-blur-md
                            border border-white/30 hover:border-femfuel-rose rounded-xl p-3 sm:p-4
                            text-white font-semibold transition-all duration-300 ease-out
-                           hover:scale-105 hover:shadow-2xl hover:shadow-femfuel-rose/50
+                           hover:shadow-2xl hover:shadow-femfuel-rose/50
                            active:scale-95 group transform cursor-pointer
                            focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2
                            hover:brightness-110 pointer-events-auto"
                 >
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
-                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 group-hover:rotate-12 transition-all duration-300 ease-out" />
                     <span className="text-sm sm:text-base group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-bold">Ver Mis Citas</span>
                   </div>
                   {/* Enhanced hover feedback */}
@@ -330,13 +330,13 @@ export function ProcessingOverlay({ isVisible, onComplete, bookingData, fullBook
                   className="relative z-20 w-full bg-white/15 hover:bg-white/40 backdrop-blur-md
                            border border-white/20 hover:border-white/80 rounded-xl p-3 sm:p-4
                            text-white font-medium transition-all duration-300 ease-out
-                           hover:scale-105 hover:shadow-xl hover:shadow-white/50
+                           hover:shadow-xl hover:shadow-white/50
                            active:scale-95 group transform cursor-pointer
                            focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2
                            hover:brightness-110 pointer-events-auto"
                 >
                   <div className="flex items-center justify-center gap-2 sm:gap-3">
-                    <Home className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />
+                    <Home className="h-4 w-4 sm:h-5 sm:w-5 group-hover:-rotate-6 transition-all duration-300 ease-out" />
                     <span className="text-sm sm:text-base group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-semibold">Volver al Inicio</span>
                   </div>
                   {/* Enhanced hover feedback */}

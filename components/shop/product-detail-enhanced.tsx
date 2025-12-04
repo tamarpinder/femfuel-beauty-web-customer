@@ -77,13 +77,12 @@ export function ProductDetailEnhanced({ product, relatedProducts = [] }: Product
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
-                size="sm"
                 onClick={() => setIsLiked(!isLiked)}
-                className="rounded-full hover:bg-femfuel-light"
+                className="min-h-[44px] min-w-[44px] rounded-full hover:bg-femfuel-light"
               >
                 <Heart className={`h-5 w-5 ${isLiked ? "fill-red-500 text-red-500" : "text-femfuel-medium"}`} />
               </Button>
-              <Button variant="ghost" size="sm" className="rounded-full hover:bg-femfuel-light">
+              <Button variant="ghost" className="min-h-[44px] min-w-[44px] rounded-full hover:bg-femfuel-light">
                 <Share2 className="h-5 w-5 text-femfuel-medium" />
               </Button>
             </div>
@@ -118,7 +117,7 @@ export function ProductDetailEnhanced({ product, relatedProducts = [] }: Product
                   src={allImages[selectedImageIndex].url}
                   alt={allImages[selectedImageIndex].alt || product.name}
                   fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
+                  className="object-cover transition-transform duration-700"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority
                 />
@@ -265,7 +264,7 @@ export function ProductDetailEnhanced({ product, relatedProducts = [] }: Product
               <Button
                 size="lg"
                 onClick={handleAddToCart}
-                className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold py-6 text-lg rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold py-6 text-lg rounded-full shadow-xl hover:shadow-2xl active:scale-95 transition-all duration-300"
               >
                 <ShoppingCart className="h-5 w-5 mr-2" />
                 Agregar al Carrito
@@ -273,7 +272,7 @@ export function ProductDetailEnhanced({ product, relatedProducts = [] }: Product
               <Button
                 size="lg"
                 onClick={handleBuyNow}
-                className="flex-1 bg-femfuel-dark hover:bg-femfuel-dark/90 text-white font-semibold py-6 text-lg rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="flex-1 bg-femfuel-dark hover:bg-femfuel-dark/90 text-white font-semibold py-6 text-lg rounded-full shadow-xl hover:shadow-2xl active:scale-95 transition-all duration-300"
               >
                 Comprar Ahora
               </Button>

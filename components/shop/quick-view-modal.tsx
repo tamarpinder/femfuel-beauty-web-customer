@@ -96,7 +96,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
           {/* Desktop Close Button */}
           <button
             onClick={onClose}
-            className="hidden md:flex absolute top-4 right-4 z-10 min-w-[44px] min-h-[44px] rounded-full bg-white/90 backdrop-blur-md hover:bg-white shadow-lg items-center justify-center transition-all duration-300 hover:scale-110"
+            className="hidden md:flex absolute top-4 right-4 z-10 min-w-[44px] min-h-[44px] rounded-full bg-white/90 backdrop-blur-md hover:bg-white shadow-lg items-center justify-center transition-all duration-300 active:scale-95"
             aria-label="Cerrar vista rápida"
           >
             <X className="h-5 w-5 text-femfuel-dark" />
@@ -138,14 +138,14 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-white/90 backdrop-blur-md hover:bg-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-white/90 backdrop-blur-md hover:bg-white shadow-lg flex items-center justify-center transition-all duration-300 active:scale-95"
                       aria-label="Imagen anterior"
                     >
                       <ChevronLeft className="h-5 w-5" />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-white/90 backdrop-blur-md hover:bg-white shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] rounded-full bg-white/90 backdrop-blur-md hover:bg-white shadow-lg flex items-center justify-center transition-all duration-300 active:scale-95"
                       aria-label="Siguiente imagen"
                     >
                       <ChevronRight className="h-5 w-5" />
@@ -274,7 +274,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                 <Button
                   size="lg"
                   onClick={handleAddToCart}
-                  className="w-full min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                  className="w-full min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
                 >
                   <ShoppingCart className="h-5 w-5 mr-2" />
                   Agregar al Carrito

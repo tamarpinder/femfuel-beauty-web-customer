@@ -118,15 +118,15 @@ export function ServicesMegaMenu({ onClose }: ServicesMegaMenuProps) {
                 key={category.slug}
                 href={`/services?category=${category.slug}`}
                 onClick={onClose}
-                className="group relative flex items-center gap-3 p-4 rounded-xl bg-white/80 backdrop-blur-sm hover:bg-femfuel-light/50 border-2 border-gray-100 hover:border-femfuel-rose/40 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
+                className="group relative flex items-center gap-3 p-4 rounded-xl bg-white/80 backdrop-blur-sm hover:bg-femfuel-light/50 border-2 border-gray-100 hover:border-femfuel-rose/40 transition-all duration-300 hover:shadow-2xl active:scale-[0.98] cursor-pointer"
               >
                 {/* Icon Container */}
                 <div className={`
                   flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-md
-                  transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg
+                  transition-all duration-300 group-hover:shadow-lg
                   ${category.bgColor}
                 `}>
-                  <Icon className={`h-6 w-6 ${category.color} transition-transform duration-300 group-hover:scale-110`} />
+                  <Icon className={`h-6 w-6 ${category.color} transition-transform duration-300`} />
                 </div>
 
                 {/* Content */}
@@ -150,7 +150,7 @@ export function ServicesMegaMenu({ onClose }: ServicesMegaMenuProps) {
         <Link
           href="/services"
           onClick={onClose}
-          className="mt-4 flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-femfuel-rose/10 to-pink-500/10 hover:from-femfuel-rose hover:to-pink-600 text-femfuel-rose hover:text-white border-2 border-femfuel-rose/30 hover:border-femfuel-rose transition-all duration-300 hover:shadow-xl hover:scale-105 group cursor-pointer"
+          className="mt-4 flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-femfuel-rose/10 to-pink-500/10 hover:from-femfuel-rose hover:to-pink-600 text-femfuel-rose hover:text-white border-2 border-femfuel-rose/30 hover:border-femfuel-rose transition-all duration-300 hover:shadow-xl active:scale-95 group cursor-pointer"
         >
           <span className="text-sm font-bold">Ver Todos los Servicios</span>
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -178,16 +178,16 @@ export function ServicesMegaMenu({ onClose }: ServicesMegaMenuProps) {
                 onClick={onClose}
                 className={`
                   group block p-4 rounded-xl border-2 border-gray-100 hover:border-femfuel-rose/40
-                  transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer
+                  transition-all duration-300 hover:shadow-2xl active:scale-[0.98] cursor-pointer
                   ${section.bgColor} hover:brightness-95
                 `}
               >
                 <div className="flex items-start gap-3">
                   <div className={`
                     flex-shrink-0 w-10 h-10 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md
-                    transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg
+                    transition-all duration-300 group-hover:shadow-lg
                   `}>
-                    <Icon className={`h-5 w-5 ${section.color} transition-transform duration-300 group-hover:scale-110`} />
+                    <Icon className={`h-5 w-5 ${section.color} transition-transform duration-300`} />
                   </div>
 
                   <div className="flex-1 min-w-0">

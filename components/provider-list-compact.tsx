@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Star, MapPin, Clock, MessageCircle, ChevronRight, Quote, Verified, Sparkles } from "lucide-react"
+import { Star, MapPin, Clock, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { OptimizedImage } from "@/components/ui/optimized-image"
 import { ChatButton } from "@/components/ui/chat-button"
+import { VerifiedBadge } from "@/components/ui/verified-badge"
 import type { Vendor } from "@/types/vendor"
 
 interface ProviderListCompactProps {
@@ -16,11 +16,11 @@ interface ProviderListCompactProps {
   onBookNow: (vendor: Vendor) => void
 }
 
-export function ProviderListCompact({ 
-  providers, 
-  serviceName, 
-  onProviderSelect, 
-  onBookNow 
+export function ProviderListCompact({
+  providers,
+  serviceName,
+  onProviderSelect,
+  onBookNow
 }: ProviderListCompactProps) {
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
 
@@ -39,7 +39,7 @@ export function ProviderListCompact({
   const getReviewPreview = (vendor: Vendor) => {
     const reviews = [
       "Arte de uñas increíble, muy profesional y espacio limpio",
-      "Excelente servicio, mis uñas se ven increíbles!", 
+      "Excelente servicio, mis uñas se ven increíbles!",
       "La mejor experiencia de salón, muy recomendado!",
       "Resultados perfectos cada vez, me encanta venir aquí"
     ]
@@ -85,145 +85,130 @@ export function ProviderListCompact({
             const isSelected = selectedProvider === vendor.id
             const serviceHighlights = getServiceHighlights(vendor, serviceName)
             const reviewPreview = getReviewPreview(vendor)
-            
+
             return (
-              <Card 
+              <Card
                 key={vendor.id}
-                className={`cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-white shadow-lg ${
-                  isSelected ? 'ring-2 ring-femfuel-rose shadow-2xl transform scale-[1.02]' : 'hover:shadow-2xl'
+                className={`cursor-pointer transition-all duration-300 border-0 bg-white shadow-md ${
+                  isSelected ? 'ring-2 ring-femfuel-rose shadow-xl' : 'hover:shadow-lg'
                 }`}
                 onClick={() => setSelectedProvider(vendor.id)}
               >
                 <CardContent className="p-4">
-                  {/* Compact Header with Logo and Name */}
+                  {/* Top Section: Logo + Name + Rating - Centered */}
                   <div className="flex items-center gap-3 mb-3">
-                    {/* Smaller Provider Logo */}
+                    {/* Vendor Logo - 80px */}
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-lg overflow-hidden bg-gradient-to-br from-femfuel-purple to-femfuel-rose/20 relative">
+                      <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-femfuel-rose/10 shadow-md bg-gradient-to-br from-femfuel-light/30 to-white relative">
                         <OptimizedImage
                           src={vendor.logo || "/vendor-logo-placeholder.png"}
                           alt={`${vendor.name} logo`}
                           fill
-                          sizes="48px"
+                          sizes="80px"
                           className="object-cover"
                           loading="lazy"
                         />
                       </div>
                     </div>
 
-                    {/* Provider Info - Name and Basic Info */}
+                    {/* Name + Rating + Distance - Vertically Centered */}
                     <div className="flex-1 min-w-0">
-                      <h3
-                        className="text-base font-bold text-femfuel-dark cursor-pointer hover:text-femfuel-rose transition-colors line-clamp-1 mb-1"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onProviderSelect(vendor)
-                        }}
-                      >
-                        {vendor.name}
-                      </h3>
+                      {/* Vendor Name with Verification Badge - Inline, No Gap */}
+                      <div className="flex items-center gap-0.5 mb-1.5">
+                        <h3
+                          className="text-base font-bold text-femfuel-dark hover:text-femfuel-rose transition-colors line-clamp-1 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onProviderSelect(vendor)
+                          }}
+                        >
+                          {vendor.name}
+                        </h3>
+                        {vendor.badges && vendor.badges.length > 0 && (
+                          <VerifiedBadge size="sm" showTooltip />
+                        )}
+                      </div>
 
-                      {/* Rating and Distance in one compact line */}
-                      <div className="flex items-center gap-3 text-xs text-femfuel-medium">
+                      {/* Rating and Distance */}
+                      <div className="flex items-center gap-2 text-sm text-femfuel-medium">
                         <div className="flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium">{vendor.rating}</span>
-                          <span>({vendor.reviewCount})</span>
+                          <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400 flex-shrink-0" />
+                          <span className="font-semibold text-femfuel-dark">{vendor.rating}</span>
+                          <span className="text-femfuel-medium">({vendor.reviewCount})</span>
                         </div>
+                        <span className="text-gray-300">•</span>
                         <div className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
+                          <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
                           <span>{getDistanceText(vendor)}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Price and Duration Info */}
+                  {/* Info Grid: Price/Duration | Availability */}
                   {vendorService && (
-                    <div className="bg-femfuel-purple rounded-lg p-3 mb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="text-xl font-bold text-black">
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      {/* Left Column: Price & Duration */}
+                      <div className="bg-gray-50 rounded-lg p-3 border border-gray-100">
+                        <div className="text-lg font-bold text-femfuel-dark mb-0.5">
                           {formatPrice(vendorService.price)}
                         </div>
-                        <div className="text-sm text-femfuel-medium">
-                          {vendorService.duration} min
+                        <div className="text-xs text-femfuel-medium">
+                          {vendorService.duration} minutos
+                        </div>
+                      </div>
+
+                      {/* Right Column: Availability */}
+                      <div className="bg-green-50 rounded-lg p-3 border border-green-100">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+                          <span className="text-xs font-semibold text-green-700">Disponible</span>
+                        </div>
+                        <div className="text-xs text-green-700 font-medium">
+                          {getNextSlot(vendor)}
                         </div>
                       </div>
                     </div>
                   )}
 
-                  {/* Availability, Verification and Review */}
-                  <div className="space-y-2 mb-3">
-                    {/* Time availability */}
-                    <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded text-xs w-fit">
-                      <Clock className="h-3 w-3" />
-                      <span className="font-medium">{getNextSlot(vendor)}</span>
-                    </div>
-
-                    {/* Verification badge below time */}
-                    {vendor.badges && vendor.badges.length > 0 && (
-                      <div>
-                        <Badge className="bg-femfuel-rose text-white px-2 py-1 text-xs">
-                          <Verified className="h-3 w-3 mr-1" />
-                          Verificado
-                        </Badge>
-                      </div>
-                    )}
-
-                    {/* Review */}
-                    <div className="bg-gray-50 text-femfuel-dark px-2 py-1 rounded text-xs">
-                      <Quote className="h-3 w-3 inline mr-1 text-femfuel-medium" />
-                      <span className="italic line-clamp-1">"{reviewPreview}"</span>
-                    </div>
-                  </div>
-
-                  {/* Compact Service Highlights */}
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {serviceHighlights.slice(0, 3).map((highlight, index) => (
-                      <Badge 
-                        key={index}
-                        variant="outline" 
-                        className="text-xs bg-femfuel-purple text-femfuel-dark border-femfuel-medium px-1 py-0 h-5"
+                  {/* Action Buttons */}
+                  <div className="space-y-2">
+                    {/* Top Row: Ver Perfil + Reservar */}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onProviderSelect(vendor)
+                        }}
+                        className="flex-1 h-10 border-2 border-femfuel-rose/30 text-femfuel-dark hover:bg-femfuel-light hover:border-femfuel-rose font-semibold text-sm"
                       >
-                        ✓ {highlight}
-                      </Badge>
-                    ))}
-                  </div>
+                        Ver Perfil
+                      </Button>
 
-                  {/* Compact Action Buttons */}
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onProviderSelect(vendor)
-                      }}
-                      className="bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 hover:text-gray-800 h-8 px-3 text-sm flex-1"
-                    >
-                      Ver Detalles
-                    </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onBookNow(vendor)
+                        }}
+                        className="flex-1 h-10 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300"
+                      >
+                        Reservar
+                      </Button>
+                    </div>
 
+                    {/* Bottom Row: Chat Button Full Width */}
                     <ChatButton
                       vendorId={vendor.id}
                       vendorName={vendor.name}
                       serviceContext={serviceName}
                       variant="inline"
-                      size="sm"
-                      className="bg-green-500 hover:bg-green-600 h-8 w-8 p-0 flex-shrink-0"
+                      className="w-full h-10 bg-green-500 hover:bg-green-600 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                     >
-                      <MessageCircle className="h-3 w-3" />
+                      <MessageCircle className="h-4 w-4" />
+                      Chatear con {vendor.name}
                     </ChatButton>
-
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onBookNow(vendor)
-                      }}
-                      className="bg-femfuel-rose hover:bg-pink-600 text-white h-8 text-sm font-medium flex-1"
-                    >
-                      Reservar
-                    </Button>
                   </div>
                 </CardContent>
               </Card>

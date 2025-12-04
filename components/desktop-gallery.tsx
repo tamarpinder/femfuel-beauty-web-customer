@@ -101,10 +101,10 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
               variant={viewMode === 'split' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('split')}
-              className={`text-xs font-semibold transition-all duration-300 ${
+              className={`text-xs font-semibold transition-all duration-300 active:scale-95 ${
                 viewMode === 'split'
-                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg hover:scale-105'
-                  : 'hover:border-femfuel-rose/40 hover:scale-105'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg'
+                  : 'hover:border-femfuel-rose/40'
               }`}
             >
               Antes/Después
@@ -113,10 +113,10 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
               variant={viewMode === 'before' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('before')}
-              className={`text-xs font-semibold transition-all duration-300 ${
+              className={`text-xs font-semibold transition-all duration-300 active:scale-95 ${
                 viewMode === 'before'
-                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg hover:scale-105'
-                  : 'hover:border-femfuel-rose/40 hover:scale-105'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg'
+                  : 'hover:border-femfuel-rose/40'
               }`}
             >
               Antes
@@ -125,10 +125,10 @@ export function DesktopGallery({ serviceName, category, images, beforeAfter }: D
               variant={viewMode === 'after' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('after')}
-              className={`text-xs font-semibold transition-all duration-300 ${
+              className={`text-xs font-semibold transition-all duration-300 active:scale-95 ${
                 viewMode === 'after'
-                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg hover:scale-105'
-                  : 'hover:border-femfuel-rose/40 hover:scale-105'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 hover:shadow-lg'
+                  : 'hover:border-femfuel-rose/40'
               }`}
             >
               Después

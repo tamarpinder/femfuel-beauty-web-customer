@@ -102,8 +102,7 @@ export default function BlogPage() {
             Blog de <span className="text-yellow-300">Belleza</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
-            Descubre las últimas tendencias, consejos de expertos y secretos de belleza
-            inspirados en la cultura dominicana.
+            Descubre las últimas tendencias, consejos de expertos y secretos de belleza.
           </p>
 
           {/* Search Bar */}
@@ -169,7 +168,7 @@ export default function BlogPage() {
                         alt={article.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-cover transition-transform duration-500"
                         context="blog"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -258,7 +257,7 @@ export default function BlogPage() {
                       alt={article.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="object-cover transition-transform duration-500"
                       context="blog"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

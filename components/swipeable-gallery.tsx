@@ -34,7 +34,9 @@ export function SwipeableGallery({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
+  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState(false)
   const galleryRef = useRef<HTMLDivElement>(null)
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -80,7 +82,10 @@ export function SwipeableGallery({
   const handleStart = (e: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true)
     const pageX = 'touches' in e ? e.touches[0].pageX : e.pageX
+    const pageY = 'touches' in e ? e.touches[0].pageY : e.pageY
     setStartX(pageX)
+    setStartY(pageY)
+    setIsHorizontalSwipe(false)
     if (galleryRef.current) {
       setScrollLeft(galleryRef.current.scrollLeft)
     }
@@ -88,11 +93,35 @@ export function SwipeableGallery({
 
   const handleMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDragging || !galleryRef.current) return
-    e.preventDefault()
-    
+
     const pageX = 'touches' in e ? e.touches[0].pageX : e.pageX
-    const walk = (pageX - startX) * 2
-    galleryRef.current.scrollLeft = scrollLeft - walk
+    const pageY = 'touches' in e ? e.touches[0].pageY : e.pageY
+
+    const deltaX = Math.abs(pageX - startX)
+    const deltaY = Math.abs(pageY - startY)
+
+    // Wait for enough movement to determine direction
+    if (!isHorizontalSwipe && deltaX < 10 && deltaY < 10) {
+      return
+    }
+
+    // Determine swipe direction
+    if (!isHorizontalSwipe) {
+      if (deltaX > deltaY) {
+        setIsHorizontalSwipe(true)
+      } else {
+        // Vertical swipe detected - stop tracking and allow scroll
+        setIsDragging(false)
+        return
+      }
+    }
+
+    // Only prevent default and handle horizontal swipe
+    if (isHorizontalSwipe) {
+      e.preventDefault()
+      const walk = (pageX - startX) * 2
+      galleryRef.current.scrollLeft = scrollLeft - walk
+    }
   }
 
   const handleEnd = () => {
@@ -141,7 +170,7 @@ export function SwipeableGallery({
                 <ProgressiveImage
                   src={item.image}
                   alt={item.title || `Gallery item ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-300"
                 />
                 
                 {/* Overlay with title/subtitle */}

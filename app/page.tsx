@@ -19,6 +19,7 @@ import { NearbyBeauty } from "@/components/nearby-beauty"
 import { CustomerFooter } from "@/components/customer-footer"
 import { ChatButton } from "@/components/ui/chat-button"
 import { BookingModal } from "@/components/booking-modal"
+import { AuthModal } from "@/components/auth-modal"
 import type { Vendor, VendorService } from "@/types/vendor"
 import { useAuth } from "@/contexts/auth-context"
 
@@ -30,9 +31,11 @@ export default function HomePage() {
   const [allVendors, setAllVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null)
   const [selectedService, setSelectedService] = useState<VendorService | null>(null)
   const [selectedProfessionalId, setSelectedProfessionalId] = useState<string | undefined>(undefined)
+  const [pendingBooking, setPendingBooking] = useState<{ serviceId: string, lookName: string, vendorName: string } | null>(null)
 
   // Load marketplace services on component mount
   useEffect(() => {
@@ -341,7 +344,24 @@ export default function HomePage() {
     router.push(`/services?category=${categoryId}`)
   }
 
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false)
+    // If there's a pending booking, execute it after successful authentication
+    if (pendingBooking) {
+      const { serviceId, lookName, vendorName } = pendingBooking
+      setPendingBooking(null)
+      handleGetThisLook(serviceId, lookName, vendorName)
+    }
+  }
+
   const handleGetThisLook = async (serviceId: string, lookName: string, vendorName: string) => {
+    // Check if user is authenticated first
+    if (!isAuthenticated) {
+      setPendingBooking({ serviceId, lookName, vendorName })
+      setShowAuthModal(true)
+      return
+    }
+
     try {
       // Find the real marketplace service by name (since serviceId is slug-based)
       const allServices = await getMarketplaceServices()
@@ -360,13 +380,11 @@ export default function HomePage() {
         return
       }
 
-      // Find a vendor that offers this service from our vendor list
-      const serviceVendor = allVendors.find(v =>
-        v.services.some(s => s.name === transformation.service)
-      )
+      // Find the SPECIFIC vendor by name from the transformation
+      const serviceVendor = allVendors.find(v => v.name === vendorName)
 
       if (!serviceVendor) {
-        toast.error("No hay proveedores disponibles para este servicio")
+        toast.error(`No encontramos al proveedor ${vendorName}`)
         return
       }
 
@@ -374,15 +392,15 @@ export default function HomePage() {
       const vendorService = serviceVendor.services.find(s => s.name === transformation.service)
 
       if (!vendorService) {
-        toast.error("Servicio no encontrado")
+        toast.error("Servicio no encontrado con este proveedor")
         return
       }
 
-      // Open the booking modal with the real service and vendor
+      // Open the booking modal with the correct service and vendor
       setSelectedVendor(serviceVendor)
       setSelectedService(vendorService)
       setShowBookingModal(true)
-      toast.success(`¡Perfecto! Reserva tu ${lookName}`)
+      toast.success(`¡Perfecto! Reserva tu ${lookName} con ${vendorName}`)
 
     } catch (error) {
       toast.error("Error al cargar el servicio. Inténtalo de nuevo.")
@@ -682,6 +700,17 @@ export default function HomePage() {
           onBookingComplete={handleBookingComplete}
         />
       )}
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => {
+          setShowAuthModal(false)
+          setPendingBooking(null)
+        }}
+        onAuthSuccess={handleAuthSuccess}
+        initialMode="signup"
+      />
 
     </div>
   )

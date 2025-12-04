@@ -22,10 +22,10 @@ export function CategoryFilterPills({
       {/* All Products Pill */}
       <button
         onClick={() => onCategoryChange("all")}
-        className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 ${
+        className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 active:scale-95 ${
           selectedCategory === "all"
             ? "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105"
-            : "bg-white text-femfuel-medium border-2 border-femfuel-rose/20 hover:border-femfuel-rose/40 hover:bg-femfuel-light/30 hover:scale-105"
+            : "bg-white text-femfuel-medium border-2 border-femfuel-rose/20 hover:border-femfuel-rose/40 hover:bg-femfuel-light/30"
         }`}
       >
         Todos
@@ -36,10 +36,10 @@ export function CategoryFilterPills({
         <button
           key={category.id}
           onClick={() => onCategoryChange(category.id)}
-          className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 ${
+          className={`px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 active:scale-95 ${
             selectedCategory === category.id
               ? "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105"
-              : "bg-white text-femfuel-medium border-2 border-femfuel-rose/20 hover:border-femfuel-rose/40 hover:bg-femfuel-light/30 hover:scale-105"
+              : "bg-white text-femfuel-medium border-2 border-femfuel-rose/20 hover:border-femfuel-rose/40 hover:bg-femfuel-light/30"
           }`}
         >
           <span>{category.name}</span>

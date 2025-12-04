@@ -55,7 +55,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
   if (layout === "list") {
     return (
       <Card
-        className="cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/20 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 overflow-hidden rounded-2xl bg-white"
+        className="cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/20 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-300 overflow-hidden rounded-2xl bg-white"
         onClick={handleViewProduct}
       >
         <CardContent className="p-4">
@@ -122,7 +122,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
                 <Button
                   size="sm"
                   onClick={handleAddToCart}
-                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white text-xs px-3 py-1 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white text-xs px-3 py-1 shadow-md hover:shadow-lg active:scale-95 transition-all duration-300"
                 >
                   <ShoppingCart className="h-3 w-3 mr-1" />
                   Agregar
@@ -138,7 +138,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
   // Grid layout (default)
   return (
     <Card
-      className="cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl hover:-translate-y-2 hover:scale-105 transition-all duration-300 overflow-hidden group bg-white rounded-2xl"
+      className="cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all duration-300 overflow-hidden group bg-white rounded-2xl"
       onClick={handleViewProduct}
     >
       <CardContent className="p-0">
@@ -147,7 +147,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
           <img
             src={primaryImage?.url || "/placeholder.svg?height=200&width=200&query=beauty product"}
             alt={primaryImage?.alt || product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-500"
           />
 
           {/* Subtle Gradient for depth - no black */}
@@ -178,7 +178,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
             variant="ghost"
             size="sm"
             onClick={handleToggleLike}
-            className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110 transition-all duration-200 shadow-md"
+            className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm hover:bg-white active:scale-95 transition-all duration-200 shadow-md"
           >
             <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-gray-600 hover:text-red-500"}`} />
           </Button>
@@ -187,7 +187,7 @@ export function ProductCard({ product, onAddToCart, layout = "grid" }: ProductCa
           <Button
             size="sm"
             onClick={handleQuickAddToCart}
-            className="absolute bottom-2 right-2 h-10 w-10 p-0 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 z-10 min-h-[40px] min-w-[40px]"
+            className="absolute bottom-2 right-2 h-10 w-10 p-0 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 z-10 min-h-[40px] min-w-[40px]"
             title="Agregar al carrito"
           >
             <Plus className="h-5 w-5" />

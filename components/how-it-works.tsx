@@ -74,13 +74,13 @@ export function HowItWorks() {
           {steps.map((step, index) => {
             const IconComponent = step.icon
             return (
-              <div key={index} className="text-center p-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30">
-                <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center mx-auto mb-4 shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300`}>
+              <div key={index} className="text-center p-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl active:scale-[0.98] transition-all duration-300 border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30">
+                <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center mx-auto mb-4 shadow-lg hover:shadow-xl transition-all duration-300`}>
                   <IconComponent className="h-8 w-8" />
                 </div>
 
                 <div className="mb-3">
-                  <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-femfuel-rose to-pink-600 text-white rounded-full text-sm font-bold shadow-md hover:shadow-lg hover:scale-110 transition-all duration-300">
+                  <span className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-r from-femfuel-rose to-pink-600 text-white rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all duration-300">
                     {index + 1}
                   </span>
                 </div>
@@ -101,12 +101,12 @@ export function HowItWorks() {
         <div className="text-center mt-12">
           <button
             onClick={handleCTAClick}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 border-2 border-white/20"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl active:scale-95 transition-all duration-300 border-2 border-white/20"
           >
             {isAuthenticated ? (
               <>
                 <Calendar className="h-5 w-5" />
-                <span>Hola {user?.name ? getFirstName(user.name) : 'hermosa'}, reserva tu próxima cita</span>
+                <span>Hola {user?.name ? getFirstName(user.name) : 'hermosa'}, Reserva Tu Próxima Cita</span>
               </>
             ) : (
               <>

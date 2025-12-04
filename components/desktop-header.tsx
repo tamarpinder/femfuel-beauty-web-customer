@@ -106,7 +106,7 @@ export function DesktopHeader({
               <img
                 src="/femfuel-logo.png"
                 alt="FemFuel Beauty"
-                className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-300"
+                className="w-12 h-12 object-contain transition-transform duration-300"
               />
               <span className="text-xl font-bold text-femfuel-dark">FemFuel Beauty</span>
             </Link>
@@ -120,7 +120,7 @@ export function DesktopHeader({
           <nav className="flex items-center gap-6">
             <Link
               href="/"
-              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 hover:scale-105 group ${
+              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 group ${
                 isActivePath('/')
                   ? 'text-femfuel-rose'
                   : 'text-femfuel-medium hover:text-femfuel-dark'
@@ -133,7 +133,7 @@ export function DesktopHeader({
             </Link>
             <Link
               href="/services"
-              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 hover:scale-105 group ${
+              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 group ${
                 isActivePath('/services')
                   ? 'text-femfuel-rose'
                   : 'text-femfuel-medium hover:text-femfuel-dark'
@@ -146,7 +146,7 @@ export function DesktopHeader({
             </Link>
             <Link
               href="/bookings"
-              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 hover:scale-105 group ${
+              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 group ${
                 isActivePath('/bookings')
                   ? 'text-femfuel-rose'
                   : 'text-femfuel-medium hover:text-femfuel-dark'
@@ -159,7 +159,7 @@ export function DesktopHeader({
             </Link>
             <Link
               href="/shop"
-              className={`relative px-2 py-1 text-sm font-bold transition-all duration-300 hover:scale-105 group ${
+              className={`relative px-2 py-1 text-sm font-bold transition-all duration-300 group ${
                 isActivePath('/shop')
                   ? 'text-femfuel-rose'
                   : 'text-femfuel-dark hover:text-femfuel-rose'
@@ -172,7 +172,7 @@ export function DesktopHeader({
             </Link>
             <Link
               href="/blog"
-              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 hover:scale-105 group ${
+              className={`relative px-2 py-1 text-sm font-medium transition-all duration-300 group ${
                 isActivePath('/blog')
                   ? 'text-femfuel-rose'
                   : 'text-femfuel-medium hover:text-femfuel-dark'

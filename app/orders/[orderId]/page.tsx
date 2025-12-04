@@ -465,7 +465,7 @@ export default function OrderDetailPage() {
                   {order.status !== 'cancelled' && (
                     <Button
                       onClick={handleReorder}
-                      className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold py-3 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+                      className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold py-3 rounded-full shadow-lg active:scale-95 transition-all duration-300"
                     >
                       <ShoppingBag className="h-4 w-4 mr-2" />
                       Comprar de Nuevo

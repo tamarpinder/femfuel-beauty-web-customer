@@ -30,8 +30,8 @@ export function ServiceDetailGallery({ isOpen, onClose, serviceName, images }: S
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="text-lg font-semibold text-femfuel-dark">{serviceName} - Proceso</h3>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <X className="h-4 w-4" />
+          <Button variant="ghost" className="min-h-[44px] min-w-[44px]" onClick={onClose}>
+            <X className="h-5 w-5" />
           </Button>
         </div>
 

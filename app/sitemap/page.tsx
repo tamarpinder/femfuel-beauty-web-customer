@@ -115,7 +115,7 @@ export default function SitemapPage() {
                       href={page.href}
                       target={page.external ? "_blank" : "_self"}
                       rel={page.external ? "noopener noreferrer" : undefined}
-                      className="group block p-4 rounded-xl border-2 border-gray-100 hover:border-femfuel-rose/20 hover:bg-gradient-to-br hover:from-purple-50/30 hover:to-rose-50/20 hover:shadow-md hover:scale-105 transition-all duration-300"
+                      className="group block p-4 rounded-xl border-2 border-gray-100 hover:border-femfuel-rose/20 hover:bg-gradient-to-br hover:from-purple-50/30 hover:to-rose-50/20 hover:shadow-md active:scale-95 transition-all duration-300"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <h3 className="font-semibold text-femfuel-dark group-hover:text-purple-600 transition-colors">
@@ -177,14 +177,14 @@ export default function SitemapPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href="/help"
-                className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 justify-center"
+                className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center gap-2 justify-center"
               >
                 <HelpCircle className="h-4 w-4" />
                 Centro de Ayuda
               </a>
               <a
                 href="/help#contacto"
-                className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95"
               >
                 Contactar Soporte
               </a>

@@ -245,14 +245,14 @@ export default function TermsOfServicePage() {
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
                   href="mailto:legal@femfuelbeauty.com"
-                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2 justify-center text-center"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center gap-2 justify-center text-center"
                 >
                   <Mail className="h-4 w-4" />
                   Contactar Equipo Legal
                 </a>
                 <a
                   href="/help"
-                  className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 text-center"
+                  className="bg-white border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-purple-50 text-femfuel-dark px-6 py-3 rounded-full font-bold flex items-center gap-2 justify-center transition-all duration-300 shadow-lg hover:shadow-xl active:scale-95 text-center"
                 >
                   Centro de Ayuda
                 </a>

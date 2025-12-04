@@ -77,7 +77,7 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
               </Button>
               <div className="hidden md:block">
                 <CartDrawer>
-                  <Button variant="ghost" size="sm" className="relative hover:bg-femfuel-light rounded-full transition-all duration-300">
+                  <Button variant="ghost" className="min-h-[44px] min-w-[44px] relative hover:bg-femfuel-light rounded-full transition-all duration-300">
                     <ShoppingBag className="h-5 w-5" />
                     {itemCount > 0 && (
                       <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 text-white text-xs flex items-center justify-center p-0 shadow-md">
@@ -236,7 +236,7 @@ export function ProductPageLayout({ product }: ProductPageLayoutProps) {
 
               <Button
                 onClick={handleAddToCart}
-                className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white text-lg font-bold py-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white text-lg font-bold py-6 rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
                 disabled={!product.availability.inStock}
               >
                 <ShoppingCart className="h-5 w-5 mr-2" />

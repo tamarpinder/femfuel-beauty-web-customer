@@ -179,7 +179,7 @@ export default function SearchPage() {
                 </p>
               )}
             </div>
-            <Button variant="outline" size="sm" className="hidden md:flex bg-white border-2 border-femfuel-rose/20 hover:bg-femfuel-light hover:border-femfuel-rose transition-all duration-300">
+            <Button variant="outline" className="min-h-[44px] hidden md:flex bg-white border-2 border-femfuel-rose/20 hover:bg-femfuel-light hover:border-femfuel-rose transition-all duration-300">
               <SlidersHorizontal className="h-4 w-4 mr-2" />
               Ordenar
             </Button>
@@ -222,7 +222,7 @@ export default function SearchPage() {
                     availability: "anytime",
                   })
                 }}
-                className="bg-white border-2 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light font-semibold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                className="bg-white border-2 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light font-semibold px-6 py-3 rounded-full transition-all duration-300 active:scale-95"
               >
                 Limpiar Búsqueda
               </Button>

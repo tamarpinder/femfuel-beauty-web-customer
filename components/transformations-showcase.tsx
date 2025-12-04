@@ -141,7 +141,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                 transition-all duration-300
                 ${activeFilter === category
                   ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105 border-2 border-transparent'
-                  : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-white hover:shadow-md hover:scale-105 border-2 border-femfuel-rose/10'
+                  : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-white hover:shadow-md active:scale-95 border-2 border-femfuel-rose/10'
                 }
               `}
             >
@@ -239,7 +239,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                   <div className="flex items-center gap-2 md:gap-3 mb-4 sm:mb-6">
                     <button
                       onClick={() => handleLike(current.id)}
-                      className={`flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl min-h-[44px] ${
+                      className={`flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full transition-all duration-300 active:scale-95 shadow-lg hover:shadow-xl min-h-[44px] ${
                         likedIds.has(current.id)
                           ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white border-2 border-transparent'
                           : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10'
@@ -257,7 +257,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
 
                     <button
                       onClick={() => handleBookmark(current.id)}
-                      className={`flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl min-h-[44px] ${
+                      className={`flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full transition-all duration-300 active:scale-95 shadow-lg hover:shadow-xl min-h-[44px] ${
                         bookmarkedIds.has(current.id)
                           ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white border-2 border-transparent'
                           : 'bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10'
@@ -275,7 +275,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
 
                     <button
                       onClick={() => handleShare(current)}
-                      className="flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 min-h-[44px]"
+                      className="flex items-center gap-2 px-3 py-2.5 md:px-4 md:py-2 rounded-full bg-white/80 backdrop-blur-md text-femfuel-dark hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 min-h-[44px]"
                     >
                       <Share2 className="h-4 w-4" />
                       <span className="text-xs sm:text-sm font-medium hidden sm:inline">Compartir</span>
@@ -285,7 +285,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
                   {/* Get This Look Button */}
                   <Button
                     onClick={() => onGetThisLook?.(current.serviceId, current.lookName, current.vendor)}
-                    className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white w-full md:w-auto transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl h-11 sm:h-12 text-sm sm:text-base font-semibold"
+                    className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white w-full md:w-auto active:scale-95 transition-all duration-300 shadow-xl hover:shadow-2xl h-11 sm:h-12 text-sm sm:text-base font-semibold"
                   >
                     <Heart className="h-4 w-4 mr-2 animate-pulse" />
                     Obtener Este Estilo
@@ -344,7 +344,7 @@ export function TransformationsShowcase({ transformations, onGetThisLook }: Tran
           {transformations.slice(0, 4).map((transformation, index) => (
             <div
               key={transformation.id}
-              className={`cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-2 border-2 border-femfuel-rose/10 bg-white/80 backdrop-blur-md ${
+              className={`cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98] border-2 border-femfuel-rose/10 bg-white/80 backdrop-blur-md ${
                 index === currentIndex ? 'ring-2 ring-femfuel-rose shadow-xl' : ''
               }`}
               onClick={() => {

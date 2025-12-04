@@ -127,7 +127,7 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
   if (layout === "horizontal") {
     return (
       <>
-        <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 bg-white rounded-2xl">
+        <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-lg hover:shadow-xl active:scale-[0.99] transition-all duration-300 bg-white rounded-2xl">
           <CardContent className="p-0">
             <div className="flex items-center gap-3 p-3">
               {/* Service Image - Fixed 90px square */}
@@ -212,7 +212,7 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
 
   return (
     <>
-      <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:scale-105 bg-white group rounded-2xl">
+      <Card className="overflow-hidden border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-[0.98] bg-white group rounded-2xl">
         <CardContent className="p-0">
           {/* Image with Floating Price Badge and Status Badge */}
           <div className="relative w-full aspect-[4/3] overflow-hidden">
@@ -221,7 +221,7 @@ export function ServiceCard({ service, layout = "vertical", vendorId, vendorName
               alt={service.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover transition-transform duration-300"
               context={service.category || "service"}
               priority={false}
             />

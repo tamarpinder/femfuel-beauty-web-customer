@@ -93,7 +93,7 @@ export function ProfessionalShowcase({
           {professionals.map((professional) => (
             <Card
               key={professional.id}
-              className="flex-shrink-0 w-80 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 bg-white rounded-2xl"
+              className="flex-shrink-0 w-80 shadow-lg hover:shadow-2xl active:scale-[0.98] transition-all duration-300 border-0 bg-white rounded-2xl"
             >
               <CardContent className="p-6">
                 {/* Header with photo and basic info */}

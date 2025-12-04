@@ -69,7 +69,7 @@ export function HairExtensionsGrid() {
             <div
               key={type.id}
               onClick={() => handleClick(type.subcategory)}
-              className="group relative bg-white/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30"
+              className="group relative bg-white/80 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl active:scale-[0.98] transition-all duration-300 cursor-pointer border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30"
             >
               {/* Image */}
               <div className="relative h-64 overflow-hidden">
@@ -77,7 +77,7 @@ export function HairExtensionsGrid() {
                   src={type.imageUrl}
                   alt={type.title}
                   fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
               </div>

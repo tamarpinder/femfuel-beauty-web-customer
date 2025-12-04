@@ -72,7 +72,7 @@ export function HeroSectionV2() {
               {/* Primary CTA */}
               <button
                 onClick={() => scrollToSection('categories-section')}
-                className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:scale-105 w-full sm:w-auto min-h-[48px]"
+                className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl active:scale-95 w-full sm:w-auto min-h-[48px]"
               >
                 <Sparkles className="h-5 w-5 transition-transform duration-300 group-hover:rotate-12 flex-shrink-0" />
                 <span className="text-sm md:text-base">Explorar Categorías</span>
@@ -81,9 +81,9 @@ export function HeroSectionV2() {
               {/* Secondary CTA */}
               <button
                 onClick={() => scrollToSection('transformations-section')}
-                className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-white/90 backdrop-blur-md border-2 border-femfuel-rose/20 hover:border-femfuel-rose/40 text-femfuel-dark rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1 hover:scale-105 w-full sm:w-auto min-h-[48px]"
+                className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-white/90 backdrop-blur-md border-2 border-femfuel-rose/20 hover:border-femfuel-rose/40 text-femfuel-dark rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-xl active:scale-95 w-full sm:w-auto min-h-[48px]"
               >
-                <Eye className="h-5 w-5 transition-transform duration-300 group-hover:scale-110 flex-shrink-0" />
+                <Eye className="h-5 w-5 transition-transform duration-300 flex-shrink-0" />
                 <span className="text-sm md:text-base">Ver Transformaciones</span>
               </button>
             </div>

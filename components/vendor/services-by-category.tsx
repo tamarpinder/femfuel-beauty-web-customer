@@ -129,7 +129,7 @@ export function ServicesByCategory({
           {getFilteredServices().map((service) => (
             <Card
               key={service.id}
-              className="group shadow-lg hover:shadow-2xl transition-all duration-300 border-0 bg-white hover:-translate-y-2 overflow-hidden rounded-2xl"
+              className="group shadow-lg hover:shadow-2xl transition-all duration-300 border-0 bg-white active:scale-[0.98] overflow-hidden rounded-2xl"
             >
               <CardContent className="p-0">
                 {/* Service Image */}
@@ -137,7 +137,7 @@ export function ServicesByCategory({
                   <img
                     src={getServiceImage(service.name)}
                     alt={service.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover transition-transform duration-300"
                   />
 
                   {/* Popular Badge */}

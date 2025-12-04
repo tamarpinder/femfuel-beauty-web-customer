@@ -38,7 +38,7 @@ export function FlashSaleBanner() {
           <Button
             onClick={() => router.push("/shop/ofertas")}
             size="lg"
-            className="bg-white text-rose-600 hover:bg-white/90 font-semibold px-8 py-6 text-lg rounded-full shadow-2xl hover:scale-105 transition-all duration-300 whitespace-nowrap"
+            className="bg-white text-rose-600 hover:bg-white/90 font-semibold px-8 py-6 text-lg rounded-full shadow-2xl active:scale-95 transition-all duration-300 whitespace-nowrap"
           >
             Ver Todas las Ofertas
           </Button>

@@ -46,7 +46,7 @@ export function BeautyRoutineCard({
           src={routine.imageUrl}
           alt={routine.title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          className="object-cover transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
@@ -193,7 +193,7 @@ export function BeautyRoutineCard({
         <div className="space-y-2 mt-auto">
           <Button
             onClick={() => onAddAllToCart(routine.products)}
-            className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold py-6 rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+            className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold py-6 rounded-full shadow-lg active:scale-95 transition-all duration-300"
           >
             <ShoppingCart className="h-5 w-5 mr-2" />
             Agregar Rutina Completa

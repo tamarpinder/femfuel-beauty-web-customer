@@ -360,7 +360,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
                     variant="ghost"
                     size="sm"
                     onClick={handleBack}
-                    className="min-w-[44px] min-h-[44px] p-2 hover:bg-femfuel-light rounded-full transition-all duration-300 hover:scale-110"
+                    className="min-w-[44px] min-h-[44px] p-2 hover:bg-femfuel-light rounded-full transition-all duration-300 active:scale-95"
                     aria-label="Volver"
                   >
                     <ArrowLeft className="h-4 w-4" />
@@ -724,7 +724,7 @@ export function BookingModal({ isOpen, onClose, service, vendorName, vendorRatin
             <Button
               onClick={handleNext}
               disabled={!canContinue() || isLoading}
-              className="min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              className="min-h-[48px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
             >
               {isLoading ? "Procesando..." : currentStep === "payment" ? "Confirmar reserva" : "Continuar"}
             </Button>

@@ -103,10 +103,10 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
               onNavigate('bookings')
             }}
             className="w-full bg-femfuel-rose hover:bg-femfuel-rose/90 text-white py-4 text-lg font-bold
-                       transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-xl hover:shadow-femfuel-rose/50
+                       transition-all duration-300 ease-out hover:shadow-xl hover:shadow-femfuel-rose/50
                        active:scale-95 group hover:brightness-110"
           >
-            <Calendar className="h-5 w-5 mr-2 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
+            <Calendar className="h-5 w-5 mr-2 group-hover:rotate-12 transition-all duration-300 ease-out" />
             <span className="group-hover:tracking-wide transition-all duration-300 ease-out">Ver Mis Citas</span>
           </Button>
 
@@ -117,10 +117,10 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
               }}
               variant="outline"
               className="py-3 text-sm border-2 border-gray-300 hover:border-femfuel-rose hover:bg-femfuel-rose/10 hover:text-femfuel-rose
-                         transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-lg
+                         transition-all duration-300 ease-out hover:shadow-lg
                          active:scale-95 group"
             >
-              <Home className="h-4 w-4 mr-1 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />
+              <Home className="h-4 w-4 mr-1 group-hover:-rotate-6 transition-all duration-300 ease-out" />
               <span className="group-hover:tracking-wide transition-all duration-300 ease-out">Inicio</span>
             </Button>
             <Button
@@ -129,10 +129,10 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
               }}
               variant="outline"
               className="py-3 text-sm border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 hover:text-green-700
-                         transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-lg
+                         transition-all duration-300 ease-out hover:shadow-lg
                          active:scale-95 group"
             >
-              <Plus className="h-4 w-4 mr-1 group-hover:scale-125 group-hover:rotate-90 transition-all duration-300 ease-out" />
+              <Plus className="h-4 w-4 mr-1 group-hover:rotate-90 transition-all duration-300 ease-out" />
               <span className="group-hover:tracking-wide transition-all duration-300 ease-out">Nueva Cita</span>
             </Button>
           </div>
@@ -262,7 +262,7 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 <Button
                   onClick={handleAddToCalendar}
                   variant="outline"
-                  className="flex items-center gap-2 border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-femfuel-light/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  className="flex items-center gap-2 border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-femfuel-light/50 shadow-md hover:shadow-lg active:scale-95 transition-all duration-300"
                 >
                   <Calendar className="h-4 w-4" />
                   Agregar al Calendario
@@ -270,7 +270,7 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 <Button
                   onClick={handleShare}
                   variant="outline"
-                  className="flex items-center gap-2 border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-femfuel-light/50 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  className="flex items-center gap-2 border-2 border-femfuel-rose/20 hover:border-femfuel-rose hover:bg-femfuel-light/50 shadow-md hover:shadow-lg active:scale-95 transition-all duration-300"
                 >
                   <Share2 className="h-4 w-4" />
                   Compartir
@@ -288,11 +288,11 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 onNavigate('bookings')
               }}
               className="w-full bg-femfuel-rose hover:bg-femfuel-rose text-white py-6 text-xl font-bold
-                         transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-2xl hover:shadow-femfuel-rose/50
+                         transition-all duration-300 ease-out hover:shadow-2xl hover:shadow-femfuel-rose/50
                          active:scale-95 group hover:brightness-110 cursor-pointer
                          focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2"
             >
-              <Calendar className="h-6 w-6 mr-3 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out" />
+              <Calendar className="h-6 w-6 mr-3 group-hover:rotate-12 transition-all duration-300 ease-out" />
               <span className="group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-black">Ver Mis Citas</span>
               {/* Enhanced hover feedback */}
               <div className="absolute inset-0 bg-gradient-to-r from-femfuel-rose/20 to-purple-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -305,11 +305,11 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 }}
                 variant="outline"
                 className="py-4 text-lg border-2 border-gray-300 hover:border-femfuel-rose hover:bg-femfuel-rose/10 hover:text-femfuel-rose
-                           transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-xl
+                           transition-all duration-300 ease-out hover:shadow-xl
                            active:scale-95 group cursor-pointer
                            focus:outline-none focus:ring-2 focus:ring-femfuel-rose focus:ring-offset-2"
               >
-                <Home className="h-5 w-5 mr-2 group-hover:scale-125 group-hover:-rotate-6 transition-all duration-300 ease-out" />
+                <Home className="h-5 w-5 mr-2 group-hover:-rotate-6 transition-all duration-300 ease-out" />
                 <span className="group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-bold">Volver al Inicio</span>
               </Button>
               <Button
@@ -318,11 +318,11 @@ export function BookingSuccessOverlay({ isVisible, onClose, bookingData, onNavig
                 }}
                 variant="outline"
                 className="py-4 text-lg border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 hover:text-green-700
-                           transition-all duration-300 ease-out transform hover:scale-105 hover:shadow-xl
+                           transition-all duration-300 ease-out hover:shadow-xl
                            active:scale-95 group cursor-pointer
                            focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
-                <Plus className="h-5 w-5 mr-2 group-hover:scale-125 group-hover:rotate-90 transition-all duration-300 ease-out" />
+                <Plus className="h-5 w-5 mr-2 group-hover:rotate-90 transition-all duration-300 ease-out" />
                 <span className="group-hover:tracking-wide transition-all duration-300 ease-out group-hover:font-bold">Reservar Otra Cita</span>
               </Button>
             </div>

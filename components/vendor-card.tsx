@@ -44,7 +44,7 @@ export function VendorCard({
   if (layout === "list" || layout === "nearby") {
     return (
       <Card
-        className="border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden cursor-pointer rounded-2xl bg-white/80 backdrop-blur-sm"
+        className="border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 shadow-xl hover:shadow-2xl active:scale-[0.98] transition-all duration-300 group relative overflow-hidden cursor-pointer rounded-2xl bg-white/80 backdrop-blur-sm"
         onClick={handleViewVendor}
       >
         {/* Badges */}
@@ -104,7 +104,7 @@ export function VendorCard({
                   src={vendor.logo}
                   alt={vendor.name}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="object-cover transition-transform duration-500"
                   sizes="96px"
                 />
               ) : (
@@ -151,7 +151,7 @@ export function VendorCard({
                 {vendor.categories?.slice(0, 3).map((category, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1.5 bg-femfuel-purple/20 text-femfuel-dark text-xs font-semibold rounded-full border border-femfuel-purple/30 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
+                    className="px-3 py-1.5 bg-femfuel-purple/20 text-femfuel-dark text-xs font-semibold rounded-full border border-femfuel-purple/30 shadow-sm hover:shadow-md transition-all duration-300"
                   >
                     {category}
                   </span>
@@ -205,7 +205,7 @@ export function VendorCard({
                   {layout === "nearby" ? "Ver Servicios" : "Ver Salón"}
                 </Button>
                 <Button
-                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
                   onClick={(e) => {
                     e.stopPropagation()
                     // TODO: Implement contact
@@ -314,7 +314,7 @@ export function VendorCard({
 
   // Vertical layout for desktop grid view
   return (
-    <Card className="overflow-hidden shadow-sm border-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer" onClick={handleViewVendor}>
+    <Card className="overflow-hidden shadow-sm border-0 hover:shadow-lg transition-all duration-300 active:scale-[0.98] cursor-pointer" onClick={handleViewVendor}>
       <CardContent className="p-0">
         {/* Cover Image */}
         <div className="relative">

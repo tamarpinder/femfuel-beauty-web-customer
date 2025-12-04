@@ -50,7 +50,7 @@ export function ShopHeroEnhanced() {
         }}
       >
         {/* Seasonal Badge */}
-        <Badge className="hidden md:inline-flex mb-6 px-6 py-2.5 rounded-full bg-white/90 backdrop-blur-md text-femfuel-dark border border-white/60 shadow-xl hover:scale-105 transition-transform duration-300">
+        <Badge className="hidden md:inline-flex mb-6 px-6 py-2.5 rounded-full bg-white/90 backdrop-blur-md text-femfuel-dark border border-white/60 shadow-xl active:scale-95 transition-transform duration-300">
           <span className="font-semibold">Nueva Colección Verano 2026</span>
         </Badge>
 
@@ -69,7 +69,7 @@ export function ShopHeroEnhanced() {
           <Button
             size="lg"
             onClick={() => router.push("/shop#categories")}
-            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-femfuel-rose/50 hover:scale-105 transition-all duration-300"
+            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold px-8 py-6 text-lg rounded-full shadow-2xl hover:shadow-femfuel-rose/50 active:scale-95 transition-all duration-300"
           >
             <ShoppingBag className="h-5 w-5 mr-2" />
             Explorar Ahora
@@ -78,7 +78,7 @@ export function ShopHeroEnhanced() {
             size="lg"
             variant="outline"
             onClick={() => router.push("/shop#trending")}
-            className="bg-white/90 backdrop-blur-md hover:bg-white text-femfuel-dark font-semibold px-8 py-6 text-lg rounded-full border-2 border-white shadow-2xl hover:scale-105 transition-all duration-300"
+            className="bg-white/90 backdrop-blur-md hover:bg-white text-femfuel-dark font-semibold px-8 py-6 text-lg rounded-full border-2 border-white shadow-2xl active:scale-95 transition-all duration-300"
           >
             <TrendingUp className="h-5 w-5 mr-2" />
             Ver Tendencias

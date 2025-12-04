@@ -236,7 +236,7 @@ export function ShopRecommendations({
                         <img
                           src={product.images.find(img => img.isPrimary)?.url || product.images[0]?.url}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          className="w-full h-full object-cover transition-transform duration-300"
                         />
                       </div>
                       <div className="min-w-0">

@@ -53,7 +53,7 @@ export function ServiceInfoCards({ duration, category, includes }: ServiceInfoCa
             return (
               <div
                 key={index}
-                className={`rounded-xl p-5 text-center shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 border-2 border-transparent hover:border-femfuel-rose/20 ${card.color}`}
+                className={`rounded-xl p-5 text-center shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-300 border-2 border-transparent hover:border-femfuel-rose/20 ${card.color}`}
               >
                 <div className="flex justify-center mb-3">
                   <div className="w-10 h-10 rounded-full bg-white/50 backdrop-blur-sm flex items-center justify-center shadow-md">

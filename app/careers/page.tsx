@@ -203,7 +203,7 @@ Saludos,
             {jobOpenings.map((job, index) => (
               <Card
                 key={index}
-                className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300 cursor-pointer rounded-2xl"
+                className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-300 cursor-pointer rounded-2xl"
                 onClick={() => setSelectedJob(selectedJob === index ? null : index)}
               >
                 <CardContent className="p-6">
@@ -253,7 +253,7 @@ Saludos,
                                 e.stopPropagation()
                                 handleApply(job.title)
                               }}
-                              className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-2"
+                              className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-6 py-3 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center gap-2"
                             >
                               <Mail className="h-4 w-4" />
                               Aplicar a {job.title}
@@ -291,7 +291,7 @@ Saludos,
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {benefits.map((benefit, index) => (
-              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 rounded-2xl">
+              <Card key={index} className="bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 rounded-2xl">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl shadow-md flex items-center justify-center mx-auto mb-4">
                     <benefit.icon className="h-6 w-6 text-purple-600" />
@@ -392,7 +392,7 @@ Saludos,
 
           <button
             onClick={() => handleApply("Posición General")}
-            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto"
+            className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center gap-3 mx-auto"
           >
             <Mail className="h-5 w-5" />
             Enviar Aplicación

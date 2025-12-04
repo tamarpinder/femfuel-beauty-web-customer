@@ -111,7 +111,7 @@ export function ShopCategoryGrid() {
             return (
               <Card
                 key={category.id}
-                className="relative group cursor-pointer overflow-hidden h-72 md:h-64 border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 active:border-femfuel-rose/50 transition-all duration-500 hover:shadow-2xl active:shadow-2xl md:hover:scale-102"
+                className="relative group cursor-pointer overflow-hidden h-72 md:h-64 border-2 border-femfuel-rose/10 hover:border-femfuel-rose/30 active:border-femfuel-rose/50 transition-all duration-500 hover:shadow-2xl active:shadow-2xl active:scale-[0.98]"
                 onClick={() => handleCategoryClick(category.id)}
                 onMouseEnter={() => setHoveredCategory(category.id)}
                 onMouseLeave={() => setHoveredCategory(null)}

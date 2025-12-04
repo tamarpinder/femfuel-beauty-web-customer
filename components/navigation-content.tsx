@@ -141,7 +141,7 @@ export function NavigationContent({
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3 group transition-transform duration-300 hover:scale-105"
+          className="flex items-center gap-3 group transition-transform duration-300 active:scale-95"
         >
           <div className="relative w-12 h-12">
             <img
@@ -189,7 +189,7 @@ export function NavigationContent({
               <Icon
                 className={`
                   h-4 w-4 transition-all duration-300
-                  ${isActive ? 'text-femfuel-rose scale-110' : 'group-hover:scale-110'}
+                  ${isActive ? 'text-femfuel-rose' : ''}
                 `}
               />
 
@@ -212,7 +212,7 @@ export function NavigationContent({
                   absolute inset-0 -z-10 rounded-lg transition-all duration-300
                   ${isActive
                     ? 'shadow-md'
-                    : 'shadow-none group-hover:shadow-md group-hover:-translate-y-0.5'
+                    : 'shadow-none group-hover:shadow-md'
                   }
                 `}
               />
@@ -269,7 +269,7 @@ export function NavigationContent({
                 className="relative flex items-center justify-center w-10 h-10 rounded-lg text-femfuel-medium hover:text-femfuel-rose hover:bg-femfuel-light/50 transition-all duration-300 group hover:shadow-md"
                 aria-label="Open search"
               >
-                <Search className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+                <Search className="h-5 w-5 transition-transform duration-300" />
               </button>
             </>
           )}
@@ -284,7 +284,7 @@ export function NavigationContent({
           className="relative flex items-center justify-center w-10 h-10 rounded-lg text-femfuel-medium hover:text-femfuel-rose hover:bg-femfuel-light/50 transition-all duration-300 group hover:shadow-md"
           aria-label="Favorites"
         >
-          <Heart className="h-5 w-5 transition-transform duration-300 group-hover:scale-110 group-hover:fill-femfuel-rose" />
+          <Heart className="h-5 w-5 transition-transform duration-300 group-hover:fill-femfuel-rose" />
           {/* Badge - only shown if authenticated and has favorites */}
           {isAuthenticated && (
             <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full animate-in zoom-in duration-200 shadow-md">
@@ -299,7 +299,7 @@ export function NavigationContent({
           className="relative flex items-center justify-center w-10 h-10 rounded-lg text-femfuel-medium hover:text-femfuel-rose hover:bg-femfuel-light/50 transition-all duration-300 group hover:shadow-md"
           aria-label="Shopping cart"
         >
-          <ShoppingBag className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
+          <ShoppingBag className="h-5 w-5 transition-transform duration-300" />
           {/* Badge - only shown if authenticated and has items */}
           {isAuthenticated && cartCount > 0 && (
             <span className="absolute -top-1 -right-1 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-gradient-to-r from-femfuel-rose to-pink-600 rounded-full animate-in zoom-in duration-200 shadow-md">

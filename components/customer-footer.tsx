@@ -94,7 +94,7 @@ export function CustomerFooter() {
               <img
                 src="/femfuel-logo.png"
                 alt="FemFuel Beauty"
-                className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-300 drop-shadow-lg"
+                className="w-12 h-12 object-contain transition-transform duration-300 drop-shadow-lg"
               />
               <span className="text-3xl font-bold bg-gradient-to-r from-femfuel-rose via-pink-600 to-femfuel-rose bg-clip-text text-transparent font-serif">FemFuel Beauty</span>
             </div>
@@ -116,7 +116,7 @@ export function CustomerFooter() {
                       <a
                         href={link.href}
                         onClick={(e) => handleLinkClick(link, section.title, e)}
-                        className="text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:scale-[1.02] hover:-translate-y-0.5 hover:px-3 hover:py-1.5 hover:rounded-xl hover:shadow-md transition-all duration-300 text-sm block cursor-pointer font-medium"
+                        className="text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-1.5 hover:rounded-xl hover:shadow-md active:scale-95 transition-all duration-300 text-sm block cursor-pointer font-medium"
                       >
                         {link.label}
                       </a>
@@ -142,7 +142,7 @@ export function CustomerFooter() {
                     <a
                       key={index}
                       href={link.href}
-                      className="text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-1.5 hover:rounded-xl hover:shadow-md hover:scale-105 transition-all duration-300 text-sm font-bold"
+                      className="text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-1.5 hover:rounded-xl hover:shadow-md active:scale-95 transition-all duration-300 text-sm font-bold"
                     >
                       {link.label}
                     </a>
@@ -154,7 +154,7 @@ export function CustomerFooter() {
               <div className="flex items-center gap-6">
                 {/* Language Toggle */}
                 <div className="relative">
-                  <button className="flex items-center gap-2 text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-xl hover:shadow-md hover:scale-105 transition-all duration-300 text-sm font-bold">
+                  <button className="flex items-center gap-2 text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-xl hover:shadow-md active:scale-95 transition-all duration-300 text-sm font-bold">
                     <span className="text-base">🌐</span>
                     Español (DR)
                     <ChevronDown className="w-4 h-4" />
@@ -163,7 +163,7 @@ export function CustomerFooter() {
 
                 {/* Currency Toggle */}
                 <div className="relative">
-                  <button className="flex items-center gap-2 text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-xl hover:shadow-md hover:scale-105 transition-all duration-300 text-sm font-bold">
+                  <button className="flex items-center gap-2 text-femfuel-medium hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-2 hover:rounded-xl hover:shadow-md active:scale-95 transition-all duration-300 text-sm font-bold">
                     <span className="text-base">💰</span>
                     RD$
                     <ChevronDown className="w-4 h-4" />
@@ -178,7 +178,7 @@ export function CustomerFooter() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-femfuel-medium hover:text-white hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:scale-110 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border-2 border-femfuel-rose/20"
+                      className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-femfuel-medium hover:text-white hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:shadow-xl active:scale-95 transition-all duration-300 border-2 border-femfuel-rose/20"
                       aria-label={social.label}
                     >
                       <social.icon className="w-4 h-4" />

@@ -89,14 +89,14 @@ export const borders = {
 // Hover Effects
 export const hover = {
   lift: {
-    sm: "hover:-translate-y-1",
-    md: "hover:-translate-y-2",
-    lg: "hover:-translate-y-3"
+    sm: "active:scale-[0.98]",
+    md: "active:scale-[0.98]",
+    lg: "active:scale-95"
   },
   scale: {
-    sm: "hover:scale-105",
-    md: "hover:scale-110",
-    lg: "hover:scale-125"
+    sm: "active:scale-95",
+    md: "active:scale-95",
+    lg: "active:scale-90"
   },
   glow: "hover:shadow-2xl hover:shadow-femfuel-rose/30"
 }

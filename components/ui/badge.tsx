@@ -19,15 +19,15 @@ const badgeVariants = cva(
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         // FemFuel-specific variants
         femfuel:
-          "border-transparent bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-md hover:shadow-lg hover:scale-105 [a&]:hover:from-femfuel-rose/90 [a&]:hover:to-pink-600/90",
+          "border-transparent bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-md hover:shadow-lg [a&]:hover:from-femfuel-rose/90 [a&]:hover:to-pink-600/90",
         "femfuel-light":
-          "border-2 border-femfuel-rose/30 bg-femfuel-light/50 text-femfuel-dark hover:bg-femfuel-light hover:border-femfuel-rose/50 hover:scale-105",
+          "border-2 border-femfuel-rose/30 bg-femfuel-light/50 text-femfuel-dark hover:bg-femfuel-light hover:border-femfuel-rose/50",
         popular:
-          "border-transparent bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-lg hover:scale-105 animate-pulse",
+          "border-transparent bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:shadow-lg animate-pulse",
         success:
-          "border-transparent bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md hover:shadow-lg hover:scale-105",
+          "border-transparent bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md hover:shadow-lg",
         warning:
-          "border-transparent bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-md hover:shadow-lg hover:scale-105",
+          "border-transparent bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-md hover:shadow-lg",
       },
     },
     defaultVariants: {

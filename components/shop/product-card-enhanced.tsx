@@ -54,7 +54,7 @@ export function ProductCardEnhanced({ product, onQuickView }: ProductCardEnhance
 
   return (
     <Card
-      className="group cursor-pointer overflow-hidden border-2 border-transparent hover:border-femfuel-rose/20 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-white"
+      className="group cursor-pointer overflow-hidden border-2 border-transparent hover:border-femfuel-rose/20 transition-all duration-300 hover:shadow-2xl active:scale-[0.98] bg-white"
       onClick={handleViewProduct}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -111,10 +111,10 @@ export function ProductCardEnhanced({ product, onQuickView }: ProductCardEnhance
           variant="ghost"
           size="sm"
           onClick={handleToggleLike}
-          className={`absolute top-2 md:top-3 right-2 md:right-3 min-w-[44px] min-h-[44px] p-0 rounded-full backdrop-blur-md transition-all duration-300 z-10 shadow-md flex items-center justify-center ${
+          className={`absolute top-2 md:top-3 right-2 md:right-3 min-w-[44px] min-h-[44px] p-0 rounded-full backdrop-blur-md transition-all duration-300 z-10 shadow-md flex items-center justify-center active:scale-95 ${
             isLiked
               ? "bg-red-50 hover:bg-red-100 scale-110"
-              : "bg-white/90 hover:bg-white hover:scale-110"
+              : "bg-white/90 hover:bg-white"
           }`}
           aria-label={isLiked ? "Quitar de favoritos" : "Agregar a favoritos"}
         >
@@ -148,7 +148,7 @@ export function ProductCardEnhanced({ product, onQuickView }: ProductCardEnhance
           <Button
             size="sm"
             onClick={handleAddToCart}
-            className="w-full min-h-[44px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm"
+            className="w-full min-h-[44px] bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose/90 hover:to-pink-600/90 text-white font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 text-sm"
             aria-label="Agregar al carrito"
           >
             <ShoppingCart className="h-4 w-4 mr-2" />

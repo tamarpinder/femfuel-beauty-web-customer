@@ -258,7 +258,7 @@ export function ShopHeader() {
                 variant="ghost"
                 size="sm"
                 onClick={() => router.push("/profile?tab=favorites")}
-                className="relative hover:bg-femfuel-light rounded-full min-w-[44px] min-h-[44px] p-2.5 transition-all duration-300 hover:scale-105 flex items-center justify-center"
+                className="relative hover:bg-femfuel-light rounded-full min-w-[44px] min-h-[44px] p-2.5 transition-all duration-300 active:scale-95 flex items-center justify-center"
                 title="Mis Favoritos"
               >
                 <Heart className="h-5 w-5 text-femfuel-dark" />
@@ -269,7 +269,7 @@ export function ShopHeader() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsCartOpen(true)}
-                className="relative hover:bg-femfuel-light rounded-full min-w-[44px] min-h-[44px] p-2.5 transition-all duration-300 hover:scale-105 flex items-center justify-center"
+                className="relative hover:bg-femfuel-light rounded-full min-w-[44px] min-h-[44px] p-2.5 transition-all duration-300 active:scale-95 flex items-center justify-center"
                 title="Mi Carrito"
               >
                 <ShoppingCart className="h-5 w-5 text-femfuel-dark" />
@@ -305,12 +305,12 @@ export function ShopHeader() {
                 >
                   <button
                     onClick={() => handleCategoryClick(category.id)}
-                    className={`px-4 py-2 min-h-[44px] rounded-full font-medium text-sm whitespace-nowrap transition-all duration-300 flex items-center ${
+                    className={`px-4 py-2 min-h-[44px] rounded-full font-medium text-sm whitespace-nowrap transition-all duration-300 flex items-center active:scale-95 ${
                       isActive
                         ? "bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105"
                         : isHovered
                         ? "bg-gradient-to-r from-femfuel-rose/90 to-pink-500/90 text-white shadow-md scale-105"
-                        : "text-femfuel-medium hover:bg-gradient-to-r hover:from-femfuel-rose/20 hover:to-pink-500/20 hover:text-femfuel-rose hover:shadow-sm hover:scale-105 hover:border hover:border-femfuel-rose/30"
+                        : "text-femfuel-medium hover:bg-gradient-to-r hover:from-femfuel-rose/20 hover:to-pink-500/20 hover:text-femfuel-rose hover:shadow-sm hover:border hover:border-femfuel-rose/30"
                     }`}
                   >
                     {category.name}
@@ -351,7 +351,7 @@ export function ShopHeader() {
                               <button
                                 key={index}
                                 onClick={() => handleSubcategoryClick(category.id, subcategory)}
-                                className="text-left px-3 py-2 rounded-lg text-sm text-femfuel-medium font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-femfuel-rose/10 hover:to-pink-500/10 hover:text-femfuel-rose hover:border hover:border-femfuel-rose/20 hover:shadow-sm hover:scale-105"
+                                className="text-left px-3 py-2 rounded-lg text-sm text-femfuel-medium font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-femfuel-rose/10 hover:to-pink-500/10 hover:text-femfuel-rose hover:border hover:border-femfuel-rose/20 hover:shadow-sm active:scale-95"
                               >
                                 {subcategory}
                               </button>
@@ -361,7 +361,7 @@ export function ShopHeader() {
                           {/* View All Link */}
                           <button
                             onClick={() => handleCategoryClick(category.id)}
-                            className="mt-4 w-full py-2 px-4 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 text-white font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
+                            className="mt-4 w-full py-2 px-4 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 text-white font-semibold text-sm hover:shadow-lg active:scale-95 transition-all duration-300"
                           >
                             Ver Todos los Productos →
                           </button>

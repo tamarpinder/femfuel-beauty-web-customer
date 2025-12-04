@@ -36,7 +36,7 @@ export function HairExtensionsSpotlight() {
                 src="/hair-extensions/hero-section.png"
                 alt="Extensiones de Cabello Natural"
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
             </div>
@@ -86,7 +86,7 @@ export function HairExtensionsSpotlight() {
                     title={swatch.name}
                   >
                     <div
-                      className="w-10 h-10 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform cursor-pointer"
+                      className="w-10 h-10 rounded-full border-2 border-white shadow-md active:scale-95 transition-transform cursor-pointer"
                       style={{ backgroundColor: swatch.color }}
                     />
                   </div>
@@ -98,14 +98,14 @@ export function HairExtensionsSpotlight() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 onClick={() => router.push("/shop/hair-extensions")}
-                className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose-hover hover:to-pink-700 text-white rounded-full px-6 py-6 font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-femfuel-rose-hover hover:to-pink-700 text-white rounded-full px-6 py-6 font-semibold shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300"
               >
                 Ver Colección
               </Button>
               <Button
                 onClick={() => router.push("/help#hair-extensions")}
                 variant="outline"
-                className="flex-1 border-2 border-femfuel-rose/20 text-femfuel-dark hover:bg-femfuel-light rounded-full px-6 py-6 font-semibold hover:scale-105 transition-all duration-300"
+                className="flex-1 border-2 border-femfuel-rose/20 text-femfuel-dark hover:bg-femfuel-light rounded-full px-6 py-6 font-semibold active:scale-95 transition-all duration-300"
               >
                 Guía de Instalación
               </Button>

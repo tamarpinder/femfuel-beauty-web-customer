@@ -44,7 +44,7 @@ const bookingSteps = [
     id: 3,
     title: "Selecciona Fecha y Hora",
     subtitle: "Agenda cuando te convenga",
-    description: "Elige el momento perfecto con nuestro calendario inteligente que muestra disponibilidad en tiempo real.",
+    description: "Elige tu horario con disponibilidad en tiempo real.",
     icon: Calendar,
     color: "from-amber-500 to-orange-600",
     details: [
@@ -91,7 +91,7 @@ const bookingBenefits = [
   {
     icon: Clock,
     title: "Reserva en 2 Minutos",
-    description: "Proceso optimizado para la máxima rapidez"
+    description: "Un proceso rápido, eficiente y sin complicaciones"
   },
   {
     icon: Shield,
@@ -100,32 +100,28 @@ const bookingBenefits = [
   },
   {
     icon: Zap,
-    title: "Confirmación Instantánea",
-    description: "Recibe confirmación inmediata por WhatsApp"
+    title: "Confirmación Inmediata",
+    description: "Confirmación rápida por WhatsApp."
   },
   {
     icon: Heart,
     title: "Satisfacción Garantizada",
-    description: "98% de nuestros clientes repiten la experiencia"
+    description: "El 98% de nuestros clientes vuelve a reservar."
   }
 ]
 
 const bookingTips = [
   {
-    question: "¿Cuánto tiempo antes debo reservar?",
-    answer: "Recomendamos reservar con al menos 24 horas de anticipación para mayor disponibilidad. Sin embargo, muchos profesionales tienen horarios disponibles el mismo día."
+    question: "¿Cuándo debo reservar?",
+    answer: "Lo ideal es reservar con 24 horas de anticipación"
   },
   {
-    question: "¿Qué pasa si necesito cambiar mi cita?",
-    answer: "Puedes cambiar o cancelar tu cita hasta 24 horas antes sin penalización. Desde tu perfil en 'Mis Reservas' o contactando directamente al profesional."
+    question: "¿Cómo modificar mi cita?",
+    answer: "Cambia o cancela tu cita hasta 24 horas antes sin costo. Desde \"Mis Reservas\" o contactando al profesional."
   },
   {
-    question: "¿Cómo sé si un profesional es bueno?",
-    answer: "Todos nuestros profesionales están verificados. Revisa su portafolio, lee las reseñas de otros clientes y verifica sus calificaciones antes de reservar."
-  },
-  {
-    question: "¿Qué incluye el precio mostrado?",
-    answer: "El precio incluye el servicio completo. Las propinas son opcionales. Algunos servicios pueden tener cargos adicionales por productos premium que se informan antes del pago."
+    question: "¿Qué incluye exactamente este precio?",
+    answer: "Servicio completo incluido. Propinas opcionales. Si aplica un cargo extra, te avisaremos antes de pagar."
   }
 ]
 
@@ -245,8 +241,7 @@ export default function HowToBookPage() {
           </h1>
 
           <p className="text-xl text-femfuel-medium max-w-3xl mx-auto mb-8 leading-relaxed">
-            Descubre lo fácil que es reservar con los mejores profesionales de belleza en República Dominicana.
-            Un proceso simple, rápido y completamente seguro.
+            Reserva con los mejores profesionales de belleza en RD de forma fácil, rápida y segura.
           </p>
 
           {/* Stats */}
@@ -273,7 +268,7 @@ export default function HowToBookPage() {
               onClick={handleStartBooking}
               className="femfuel-button-lg group"
             >
-              <Play className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <Play className="h-5 w-5 transition-transform" />
               Comenzar a Reservar Ahora
             </button>
             <button className="glassmorphism-button-lg">
@@ -286,7 +281,7 @@ export default function HowToBookPage() {
           <div className="relative max-w-4xl mx-auto">
             <div className="grid md:grid-cols-3 gap-4">
               {/* Demo Card 1 */}
-              <Card className="transform hover:scale-105 transition-all duration-300 border-none shadow-lg bg-white/80 backdrop-blur-sm">
+              <Card className="transform active:scale-95 transition-all duration-300 border-none shadow-lg bg-white/80 backdrop-blur-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
@@ -302,7 +297,7 @@ export default function HowToBookPage() {
               </Card>
 
               {/* Demo Card 2 */}
-              <Card className="transform hover:scale-105 transition-all duration-300 delay-150 border-none shadow-lg bg-white/80 backdrop-blur-sm">
+              <Card className="transform active:scale-95 transition-all duration-300 delay-150 border-none shadow-lg bg-white/80 backdrop-blur-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center">
@@ -318,7 +313,7 @@ export default function HowToBookPage() {
               </Card>
 
               {/* Demo Card 3 */}
-              <Card className="transform hover:scale-105 transition-all duration-300 delay-300 border-none shadow-lg bg-white/80 backdrop-blur-sm">
+              <Card className="transform active:scale-95 transition-all duration-300 delay-300 border-none shadow-lg bg-white/80 backdrop-blur-sm">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -342,11 +337,10 @@ export default function HowToBookPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-femfuel-dark mb-4">
-              El Proceso Perfecto en 5 Pasos
+              Tu Proceso Ideal en 5 Pasos
             </h2>
             <p className="text-lg text-femfuel-medium max-w-2xl mx-auto">
-              Cada paso está diseñado para ser intuitivo, rápido y completamente seguro.
-              Haz clic en cada paso para ver los detalles.
+              Pasos simples, rápidos y seguros. Toca para ver más.
             </p>
           </div>
 
@@ -403,7 +397,7 @@ export default function HowToBookPage() {
 
                   <div className="p-8">
                     <h4 className="text-lg font-semibold text-femfuel-dark mb-4">
-                      Características destacadas:
+                      Destacados
                     </h4>
                     <div className="grid md:grid-cols-2 gap-4">
                       {step.details.map((detail, index) => (
@@ -444,7 +438,7 @@ export default function HowToBookPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
-              ¿Por Qué Elegir FemFuel para Reservar?
+              ¿Por qué FemFuel?
             </h2>
             <p className="text-lg text-femfuel-medium">
               Experiencia optimizada para tu comodidad y tranquilidad
@@ -455,7 +449,7 @@ export default function HowToBookPage() {
             {bookingBenefits.map((benefit, index) => (
               <Card key={index} className="border-none shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-transform">
                     <benefit.icon className="h-8 w-8 text-purple-600" />
                   </div>
                   <h3 className="text-lg font-semibold text-femfuel-dark mb-2">
@@ -476,7 +470,7 @@ export default function HowToBookPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
-              Tips para una Reserva Perfecta
+              Guía Rápida para una Reserva Perfecta
             </h2>
             <p className="text-lg text-femfuel-medium">
               Respuestas a las preguntas más frecuentes sobre el proceso de reserva
@@ -522,7 +516,7 @@ export default function HowToBookPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-femfuel-dark mb-4">
-              Historias de Éxito
+              Historias que Inspiran
             </h2>
             <p className="text-lg text-femfuel-medium">
               Lo que dicen nuestras clientas sobre el proceso de reserva
@@ -570,8 +564,7 @@ export default function HowToBookPage() {
             ¿Lista para Tu Primera Reserva?
           </h2>
           <p className="text-xl mb-8 text-white/90">
-            Únete a miles de mujeres que ya descubrieron la forma más fácil
-            de reservar servicios de belleza en República Dominicana.
+            Súmate a miles de mujeres que ya descubrieron lo fácil que es reservar sus servicios de belleza en República Dominicana.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

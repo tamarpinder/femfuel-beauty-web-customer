@@ -174,20 +174,20 @@ export default function NearbySalonsPage() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setFilterType("all")}
-              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 ${
+              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 active:scale-95 ${
                 filterType === "all"
-                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl hover:scale-105'
-                  : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-femfuel-rose/20 hover:shadow-md hover:scale-105'
+                  ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg hover:shadow-xl'
+                  : 'bg-white text-femfuel-medium hover:bg-rose-50 hover:text-femfuel-rose border border-femfuel-rose/20 hover:shadow-md'
               }`}
             >
               Todos
             </button>
             <button
               onClick={() => setFilterType("topRated")}
-              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 active:scale-95 ${
                 filterType === "topRated"
-                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg hover:shadow-xl hover:scale-105'
-                  : 'bg-white text-femfuel-medium hover:bg-amber-50 hover:text-amber-600 border border-amber-500/20 hover:shadow-md hover:scale-105'
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-lg hover:shadow-xl'
+                  : 'bg-white text-femfuel-medium hover:bg-amber-50 hover:text-amber-600 border border-amber-500/20 hover:shadow-md'
               }`}
             >
               <Crown className="h-4 w-4" />
@@ -195,10 +195,10 @@ export default function NearbySalonsPage() {
             </button>
             <button
               onClick={() => setFilterType("openNow")}
-              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
+              className={`px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 flex items-center gap-2 active:scale-95 ${
                 filterType === "openNow"
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl hover:scale-105'
-                  : 'bg-white text-femfuel-medium hover:bg-green-50 hover:text-green-600 border border-green-500/20 hover:shadow-md hover:scale-105'
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:shadow-xl'
+                  : 'bg-white text-femfuel-medium hover:bg-green-50 hover:text-green-600 border border-green-500/20 hover:shadow-md'
               }`}
             >
               <Zap className="h-4 w-4" />
@@ -222,10 +222,10 @@ export default function NearbySalonsPage() {
                   <button
                     key={cat.key}
                     onClick={() => scrollToSection(cat.key)}
-                    className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 ${
+                    className={`px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 active:scale-95 ${
                       activeSection === cat.key
                         ? 'bg-gradient-to-r from-femfuel-rose to-pink-600 text-white shadow-lg scale-105'
-                        : 'bg-white border border-femfuel-rose/20 text-femfuel-dark hover:bg-femfuel-light hover:scale-105 hover:shadow-md'
+                        : 'bg-white border border-femfuel-rose/20 text-femfuel-dark hover:bg-femfuel-light hover:shadow-md'
                     }`}
                   >
                     {cat.name} ({count})
@@ -331,10 +331,10 @@ export default function NearbySalonsPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white border-2 border-femfuel-rose text-femfuel-rose rounded-full font-semibold text-lg hover:bg-femfuel-light hover:shadow-xl hover:scale-105 transition-all duration-300">
+            <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white border-2 border-femfuel-rose text-femfuel-rose rounded-full font-semibold text-lg hover:bg-femfuel-light hover:shadow-xl active:scale-95 transition-all duration-300">
               Recomendar tu salón preferido
             </button>
-            <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <button className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white rounded-full font-semibold text-lg shadow-xl hover:shadow-2xl active:scale-95 transition-all duration-300">
               Explorar Más Zonas
             </button>
           </div>

@@ -49,7 +49,7 @@ export function ProfessionalFooter({ sections }: ProfessionalFooterProps) {
             <img
               src="/femfuel-logo.png"
               alt="FemFuel Beauty"
-              className="w-10 h-10 object-contain hover:scale-105 transition-transform duration-300"
+              className="w-10 h-10 object-contain active:scale-95 transition-transform duration-300"
             />
             <span className="text-2xl font-bold text-gray-900">FemFuel Beauty</span>
           </div>
@@ -70,7 +70,7 @@ export function ProfessionalFooter({ sections }: ProfessionalFooterProps) {
                   <li key={linkIndex}>
                     <a
                       href={link.href}
-                      className="text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:scale-[1.02] hover:-translate-y-0.5 hover:px-3 hover:py-1 hover:rounded-lg hover:shadow-sm transition-all duration-300 text-sm block"
+                      className="text-gray-600 hover:text-femfuel-rose hover:bg-rose-50 hover:px-3 hover:py-1 hover:rounded-lg hover:shadow-sm active:scale-95 transition-all duration-300 text-sm block"
                     >
                       {link.label}
                     </a>
@@ -132,7 +132,7 @@ export function ProfessionalFooter({ sections }: ProfessionalFooterProps) {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 hover:text-white hover:bg-femfuel-rose hover:scale-110 hover:shadow-md transition-all duration-300"
+                    className="w-9 h-9 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 hover:text-white hover:bg-femfuel-rose hover:shadow-md active:scale-95 transition-all duration-300"
                     aria-label={social.label}
                   >
                     <social.icon className="w-4 h-4" />

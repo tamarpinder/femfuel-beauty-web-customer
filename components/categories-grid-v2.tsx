@@ -56,11 +56,11 @@ export function CategoriesGridV2({ categories }: CategoriesGridV2Props) {
               <button
                 key={category.name}
                 onClick={() => handleCategoryClick(category)}
-                className="group relative h-56 md:h-60 lg:h-64 rounded-2xl overflow-hidden transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl min-h-[48px]"
+                className="group relative h-56 md:h-60 lg:h-64 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl active:scale-[0.98] min-h-[48px]"
               >
                 {/* Background Image with Overlay */}
                 <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700"
                   style={{
                     backgroundImage: `url('${category.bannerImage}')`,
                   }}
@@ -73,7 +73,7 @@ export function CategoriesGridV2({ categories }: CategoriesGridV2Props) {
                 <div className="relative h-full flex flex-col justify-center md:justify-end items-center md:items-start p-4 md:p-5 lg:p-6">
                   {/* Icon */}
                   <div className="md:absolute md:top-5 md:left-5 lg:top-6 lg:left-6 mb-3 md:mb-0">
-                    <div className="w-12 h-12 md:w-13 md:h-13 lg:w-14 lg:h-14 rounded-xl bg-white/90 backdrop-blur-md border border-white/50 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-femfuel-rose group-hover:border-femfuel-rose">
+                    <div className="w-12 h-12 md:w-13 md:h-13 lg:w-14 lg:h-14 rounded-xl bg-white/90 backdrop-blur-md border border-white/50 flex items-center justify-center transition-all duration-500 group-hover:bg-femfuel-rose group-hover:border-femfuel-rose">
                       <Icon className="h-6 w-6 md:h-6.5 md:w-6.5 lg:h-7 lg:w-7 text-femfuel-dark transition-colors duration-500 group-hover:text-white" />
                     </div>
                   </div>
@@ -105,7 +105,7 @@ export function CategoriesGridV2({ categories }: CategoriesGridV2Props) {
         <div className="text-center mt-8 md:mt-10 lg:mt-12">
           <button
             onClick={() => router.push('/services')}
-            className="group inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-8 py-3.5 md:py-4 bg-femfuel-rose text-white rounded-xl font-medium text-base md:text-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 min-h-[48px] w-full sm:w-auto"
+            className="group inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-8 py-3.5 md:py-4 bg-femfuel-rose text-white rounded-xl font-medium text-base md:text-lg transition-all duration-300 hover:shadow-xl active:scale-95 min-h-[48px] w-full sm:w-auto"
           >
             <span>Explorar Todos los Servicios</span>
             <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 flex-shrink-0" />

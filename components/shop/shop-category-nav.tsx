@@ -180,7 +180,7 @@ export function ShopCategoryNav({ selectedCategory = "all", onCategoryChange }: 
                         {/* View All Link */}
                         <button
                           onClick={() => handleCategoryClick(category.id)}
-                          className="mt-4 w-full py-2 px-4 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 text-white font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-300"
+                          className="mt-4 w-full py-2 px-4 rounded-full bg-gradient-to-r from-femfuel-rose to-pink-600 text-white font-semibold text-sm hover:shadow-lg active:scale-95 transition-all duration-300"
                         >
                           Ver Todos los Productos →
                         </button>

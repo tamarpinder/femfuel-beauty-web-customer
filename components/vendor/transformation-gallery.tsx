@@ -72,7 +72,7 @@ export function TransformationGallery({
             {transformations.map((transformation, index) => (
               <Card
                 key={transformation.id}
-                className="group cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border-0 bg-white overflow-hidden rounded-2xl"
+                className="group cursor-pointer shadow-lg hover:shadow-2xl active:scale-[0.98] transition-all duration-300 border-0 bg-white overflow-hidden rounded-2xl"
                 onClick={() => openModal(transformation, index)}
               >
                 <CardContent className="p-0">

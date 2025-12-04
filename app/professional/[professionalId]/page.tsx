@@ -491,7 +491,7 @@ export default function ProfessionalPortfolioPage() {
                 <Button
                   onClick={handleBookNow}
                   size="sm"
-                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold"
+                  className="bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 font-semibold"
                 >
                   Reservar
                 </Button>
@@ -653,13 +653,13 @@ export default function ProfessionalPortfolioPage() {
                   <h3 className="font-semibold text-femfuel-dark mb-3">Sígueme en</h3>
                   <div className="flex gap-3">
                     {professional.socialMedia.instagram && (
-                      <Button variant="outline" size="sm" className="flex items-center gap-2">
+                      <Button variant="outline" className="min-h-[44px] flex items-center gap-2">
                         <Instagram className="h-4 w-4" />
                         Instagram
                       </Button>
                     )}
                     {professional.socialMedia.tiktok && (
-                      <Button variant="outline" size="sm" className="flex items-center gap-2">
+                      <Button variant="outline" className="min-h-[44px] flex items-center gap-2">
                         <Video className="h-4 w-4" />
                         TikTok
                       </Button>
@@ -715,10 +715,10 @@ export default function ProfessionalPortfolioPage() {
                       <button
                         key={index}
                         onClick={() => setSelectedGalleryIndex(index)}
-                        className={`aspect-square relative rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                        className={`aspect-square relative rounded-lg overflow-hidden border-2 transition-all duration-300 active:scale-95 ${
                           index === selectedGalleryIndex
                             ? "border-femfuel-rose shadow-md scale-105"
-                            : "border-transparent hover:border-femfuel-rose/50 hover:shadow-md hover:scale-105"
+                            : "border-transparent hover:border-femfuel-rose/50 hover:shadow-md"
                         }`}
                       >
                         <OptimizedImage
@@ -876,14 +876,14 @@ export default function ProfessionalPortfolioPage() {
                   <div className="flex gap-3 mb-6">
                     <Button
                       variant="outline"
-                      className="flex-1 border-2 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light hover:scale-105 transition-all duration-300 font-semibold"
+                      className="flex-1 border-2 border-femfuel-rose text-femfuel-rose hover:bg-femfuel-light active:scale-95 transition-all duration-300 font-semibold"
                     >
                       <MessageCircle className="h-4 w-4 mr-2" />
                       Chatear
                     </Button>
                     <Button
                       onClick={handleBookNow}
-                      className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 font-semibold"
+                      className="flex-1 bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300 font-semibold"
                     >
                       Reservar Cita
                     </Button>
@@ -913,7 +913,7 @@ export default function ProfessionalPortfolioPage() {
                   </div>
                   <Button
                     onClick={handleBookNow}
-                    className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 font-semibold text-base h-12"
+                    className="w-full bg-gradient-to-r from-femfuel-rose to-pink-600 hover:from-pink-600 hover:to-femfuel-rose text-white shadow-xl hover:shadow-2xl active:scale-95 transition-all duration-300 font-semibold text-base h-12"
                   >
                     Reservar Servicio Exclusivo
                   </Button>

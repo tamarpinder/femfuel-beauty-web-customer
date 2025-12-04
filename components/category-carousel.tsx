@@ -133,10 +133,10 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
               className="flex-shrink-0"
             >
               <Card
-                className={`cursor-pointer transition-all duration-300 overflow-hidden hover:shadow-lg hover:-translate-y-1 group ${
+                className={`cursor-pointer transition-all duration-300 overflow-hidden hover:shadow-lg active:scale-95 group ${
                   isSelected
                     ? "ring-2 ring-femfuel-rose shadow-xl scale-105 transform"
-                    : "hover:scale-105"
+                    : ""
                 }`}
                 onClick={() => handleCategoryClick(category.id)}
               >
@@ -166,7 +166,7 @@ export function CategoryCarousel({ selectedCategory, onCategoryChange, productCo
 
                     {/* Icon */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <category.icon className="h-8 w-8 sm:h-10 sm:w-10 text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+                      <category.icon className="h-8 w-8 sm:h-10 sm:w-10 text-white drop-shadow-lg transition-transform duration-300" />
                     </div>
 
                     {/* Product Count Badge */}

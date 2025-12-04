@@ -9,7 +9,7 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: "shadow-sm",
-        elevated: "shadow-lg hover:shadow-xl hover:-translate-y-1",
+        elevated: "shadow-lg hover:shadow-xl active:scale-[0.98]",
         glass: "bg-white/80 backdrop-blur-md border-2 border-femfuel-rose/10 shadow-xl hover:shadow-2xl",
         gradient: "bg-gradient-to-br from-white to-femfuel-light/30 border-2 border-femfuel-rose/20 shadow-lg hover:shadow-xl",
         outlined: "border-2 border-femfuel-rose/30 shadow-sm hover:shadow-md hover:border-femfuel-rose/50",

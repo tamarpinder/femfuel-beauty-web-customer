@@ -17,7 +17,7 @@ export function TrendingPills({ services, onServiceClick }: TrendingPillsProps) 
             <Badge
               key={service}
               variant="secondary"
-              className="whitespace-nowrap bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/10 text-femfuel-medium hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white hover:border-transparent cursor-pointer transition-all duration-300 px-4 py-2 shadow-md hover:shadow-lg hover:scale-105 rounded-full font-medium"
+              className="whitespace-nowrap bg-white/80 backdrop-blur-sm border-2 border-femfuel-rose/10 text-femfuel-medium hover:bg-gradient-to-r hover:from-femfuel-rose hover:to-pink-600 hover:text-white hover:border-transparent cursor-pointer transition-all duration-300 px-4 py-2 shadow-md hover:shadow-lg active:scale-95 rounded-full font-medium"
               onClick={() => onServiceClick?.(service)}
             >
               {service}

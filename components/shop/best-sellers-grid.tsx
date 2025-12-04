@@ -65,7 +65,7 @@ export function BestSellersGrid({ products, onProductClick }: BestSellersGridPro
             <div
               key={product.id}
               onClick={() => handleViewProduct(product)}
-              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-femfuel-rose/10 hover:border-femfuel-rose/30 hover:-translate-y-2"
+              className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-femfuel-rose/10 hover:border-femfuel-rose/30 active:scale-[0.98]"
             >
               {/* Image */}
               <div className="relative h-64 overflow-hidden">
@@ -73,7 +73,7 @@ export function BestSellersGrid({ products, onProductClick }: BestSellersGridPro
                   src={product.images[0].url}
                   alt={product.name}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="object-cover transition-transform duration-500"
                 />
 
                 {/* Action Buttons - Show on Hover */}
@@ -81,7 +81,7 @@ export function BestSellersGrid({ products, onProductClick }: BestSellersGridPro
                   {/* Quick View Button */}
                   <button
                     onClick={(e) => handleQuickView(e, product)}
-                    className="bg-white hover:bg-femfuel-rose text-femfuel-dark hover:text-white rounded-full p-3 shadow-lg transform scale-90 group-hover:scale-100 transition-all duration-300 hover:scale-110"
+                    className="bg-white hover:bg-femfuel-rose text-femfuel-dark hover:text-white rounded-full p-3 shadow-lg transition-all duration-300 active:scale-95"
                     title="Vista Rápida"
                   >
                     <Eye className="h-5 w-5" />
@@ -91,7 +91,7 @@ export function BestSellersGrid({ products, onProductClick }: BestSellersGridPro
                   <button
                     onClick={(e) => handleAddToCart(e, product)}
                     disabled={!product.availability.inStock || isAddingThis}
-                    className="bg-white hover:bg-femfuel-rose text-femfuel-dark hover:text-white rounded-full p-3 shadow-lg transform scale-90 group-hover:scale-100 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-white hover:bg-femfuel-rose text-femfuel-dark hover:text-white rounded-full p-3 shadow-lg transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                     title={product.availability.inStock ? "Agregar al Carrito" : "Agotado"}
                   >
                     <ShoppingCart className={`h-5 w-5 ${isAddingThis ? 'animate-pulse' : ''}`} />

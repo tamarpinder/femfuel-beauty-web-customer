@@ -31,10 +31,10 @@ export function DesktopServiceInfo({
     switch (category.toLowerCase()) {
       case 'nails':
         return [
-          'Gel coating y nail art',
+          'Recubrimiento de gel y arte de uñas',
           'Cuidado profesional de cutículas',
           'Masaje de manos e hidratación',
-          'Base + color + top coat',
+          'Base, color y capa final',
           'Modelado y pulido de uñas',
           'Herramientas y espacio sanitizado'
         ]
@@ -49,11 +49,11 @@ export function DesktopServiceInfo({
         ]
       case 'makeup':
         return [
-          'Preparación de piel y primer',
+          'Preparación de piel y prebase',
           'Base y corrector',
           'Maquillaje de ojos y pestañas',
           'Color de labios y acabado',
-          'Aplicación de spray fijador',
+          'Aplicación de fijador en aerosol',
           'Herramientas de maquillaje profesional'
         ]
       case 'spa':
@@ -63,7 +63,7 @@ export function DesktopServiceInfo({
           'Experiencia de aromaterapia',
           'Cuidado hidratante de la piel',
           'Técnicas de alivio del estrés',
-          'Productos premium de spa'
+          'Productos premium de balneario'
         ]
       case 'lashes':
         return [
@@ -79,9 +79,9 @@ export function DesktopServiceInfo({
           'Servicio profesional',
           'Garantía de calidad',
           'Cuidado experto',
-          'Productos premium',
+          'Productos de primera calidad',
           'Ambiente sanitizado',
-          'Soporte post-cuidado'
+          'Soporte posterior al cuidado'
         ]
     }
   }
@@ -95,12 +95,12 @@ export function DesktopServiceInfo({
         <div className="flex items-center gap-3 mb-4">
           <h1 className="text-3xl md:text-4xl font-bold text-femfuel-dark">{serviceName}</h1>
           {isPopular && (
-            <Badge className="bg-gradient-to-r from-femfuel-rose to-pink-600 text-white px-4 py-2 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+            <Badge className="bg-gradient-to-r from-femfuel-rose to-pink-600 text-white px-4 py-2 shadow-md hover:shadow-lg active:scale-95 transition-all duration-300">
               <Sparkles className="h-4 w-4 mr-1.5" />
-              <span className="font-semibold">Popular</span>
+              <span className="font-semibold">Más Popular</span>
             </Badge>
           )}
-          <Badge variant="secondary" className="bg-femfuel-purple/20 text-femfuel-dark px-4 py-2 border-2 border-femfuel-purple/30 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300">
+          <Badge variant="secondary" className="bg-femfuel-purple/20 text-femfuel-dark px-4 py-2 border-2 border-femfuel-purple/30 shadow-sm hover:shadow-md active:scale-95 transition-all duration-300">
             <span className="font-semibold">{category === 'nails' ? 'Uñas' :
              category === 'hair' ? 'Cabello' :
              category === 'makeup' ? 'Maquillaje' :
@@ -139,7 +139,7 @@ export function DesktopServiceInfo({
 
       {/* Service Guarantees */}
       <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white/80 backdrop-blur-md border-2 border-green-200/50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+        <div className="bg-white/80 backdrop-blur-md border-2 border-green-200/50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300">
           <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-green-50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
             <Shield className="h-7 w-7 text-green-600" />
           </div>
@@ -147,7 +147,7 @@ export function DesktopServiceInfo({
           <p className="text-sm text-femfuel-medium font-medium">100% Satisfacción</p>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-md border-2 border-yellow-200/50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+        <div className="bg-white/80 backdrop-blur-md border-2 border-yellow-200/50 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl active:scale-95 transition-all duration-300">
           <div className="w-14 h-14 bg-gradient-to-br from-yellow-100 to-yellow-50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
             <Star className="h-7 w-7 text-yellow-600" />
           </div>

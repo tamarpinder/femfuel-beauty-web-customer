@@ -26,7 +26,6 @@ export function VerifiedBadge({
         className
       )}
       aria-label="Verificado"
-      title={showTooltip ? "Proveedor Verificado" : undefined}
     />
   )
 }
